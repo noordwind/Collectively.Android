@@ -15,4 +15,8 @@
     <string name="password_confirmation">Potwierdź hasło</string>
     <string name="retrieve_password_screen_title">Odzyskaj hasło</string>
     <string name="reset_password">Zresetuj hasło</string>
+    <string name="error_no_network">Brak internetu</string>
+    <string name="login_in_progress_message">Logowanie</string>
+    <string name="login_success_message">Zostałes zalogowany</string>
+    <string name="main_screen_title">Mapa</string>
 </resources>

@@ -1,4 +1,4 @@
-package pl.adriankremski.coolector;
+package pl.adriankremski.coolector.authentication;
 
 import android.content.Context;
 import android.content.Intent;
@@ -10,26 +10,35 @@ import android.text.style.RelativeSizeSpan;
 import android.text.style.StyleSpan;
 import android.widget.TextView;
 
+import javax.inject.Inject;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import pl.adriankremski.coolector.R;
+import pl.adriankremski.coolector.TheApp;
+import pl.adriankremski.coolector.repository.AuthenticationRepository;
 
-public class RetrievePassword extends AppCompatActivity {
+public class SignUpActivity extends AppCompatActivity {
 
     @Bind(R.id.title)
     TextView titleLabel;
 
+    @Inject
+    AuthenticationRepository authenticationRepository;
+
     public static void start(Context context) {
-        Intent intent = new Intent(context, RetrievePassword.class);
+        Intent intent = new Intent(context, SignUpActivity.class);
         context.startActivity(intent);
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_retrive_password);
+        TheApp.get(this).getAppComponent().inject(this);
+        setContentView(R.layout.activity_signup);
         ButterKnife.bind(this);
 
-        Spannable span = new SpannableString(getString(R.string.retrieve_password_screen_title));
+        Spannable span = new SpannableString(getString(R.string.signup_screen_title));
         span.setSpan(new RelativeSizeSpan(1.2f), 0, 1, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
         span.setSpan(new StyleSpan(android.graphics.Typeface.BOLD), 0, 1, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
         titleLabel.setText(span);

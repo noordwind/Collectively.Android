@@ -10,6 +10,25 @@
         <item name="windowNoTitle">true</item>
     </style>
 
+    <style name="Toolbar" parent="Widget.AppCompat.Toolbar">
+        <item name="android:background">@color/red_dark_2</item>
+        <item name="android:textSize">24sp</item>
+        <item name="android:textColorPrimary">#FFF</item>
+        <item name="actionMenuTextColor">#FFF</item>
+        <item name="android:textColorSecondary">#FFF</item>
+    </style>
+
+    <style name="ToolbarTitle">
+        <item name="android:gravity">left</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_alignParentLeft">true</item>
+        <item name="android:layout_centerVertical">true</item>
+        <item name="android:textColor">#FFF</item>
+        <item name="android:textAllCaps">true</item>
+        <item name="android:textSize">@dimen/font_large</item>
+    </style>
+
     <!--<style name="MainButton" parent="Widget.AppCompat.Button">-->
         <!--<item name="android:background">@drawable/button_selector</item>-->
         <!--<item name="android:textColor">@color/button_font</item>-->
