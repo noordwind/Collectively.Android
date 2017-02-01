@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/red_light"
+    tools:context="pl.adriankremski.coolector.LoginActivity">
+
+    <FrameLayout
+        android:id="@+id/header"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:background="@color/red_dark_1"
+        android:orientation="horizontal">
+
+        <FrameLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="left"
+            android:background="@color/red_dark_2"
+            android:padding="@dimen/spacing_medium">
+
+            <ImageView
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_gravity="center_vertical"
+                android:fontFamily="@string/font_light"
+                android:src="@drawable/ic_lock_open_white_24dp"
+                android:text="@string/app_name"
+                android:textColor="@color/white"
+                android:textSize="@dimen/font_medium" />
+        </FrameLayout>
+
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal|center_vertical"
+            android:fontFamily="@string/font_light"
+            android:padding="@dimen/spacing_medium"
+            android:text="@string/app_name"
+            android:textColor="@color/white"
+            android:textSize="@dimen/font_medium" />
+
+    </FrameLayout>
+
+
+    <LinearLayout
+        android:layout_marginTop="@dimen/spacing_small"
+        android:layout_below="@id/header"
+        android:layout_marginLeft="@dimen/spacing_xl"
+        android:layout_marginRight="@dimen/spacing_xl"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <EditText
+            android:id="@+id/email"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/red_dark_1"
+            android:fontFamily="@string/font_light"
+            android:hint="@string/email"
+            android:padding="@dimen/spacing_medium"
+            android:textColor="@color/white"
+            android:textColorHint="@color/red_light" />
+
+        <EditText
+            android:id="@+id/password"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_small"
+            android:background="@color/red_dark_1"
+            android:fontFamily="@string/font_light"
+            android:inputType="textPassword"
+            android:hint="@string/password"
+            android:padding="@dimen/spacing_medium"
+            android:textColor="@color/white"
+            android:textColorHint="@color/red_light" />
+
+        <android.support.v7.widget.CardView
+            android:id="@+id/register"
+            android:layout_marginTop="@dimen/spacing_large"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right|center_vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/button_selector"
+                android:fontFamily="@string/font_normal"
+                android:padding="@dimen/spacing_normal"
+                android:gravity="center"
+                android:text="@string/register"
+                android:textColor="@color/white"
+                android:textSize="@dimen/font_medium"
+                android:textStyle="bold" />
+
+        </android.support.v7.widget.CardView>
+
+    </LinearLayout>
+
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="8dp"
+        android:layout_alignParentBottom="true"
+        android:background="@color/red_dark_2" />
+</RelativeLayout>
+

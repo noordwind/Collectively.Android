@@ -3,9 +3,19 @@
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
         <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
+        <item name="colorPrimary">@color/red_dark_1</item>
+        <item name="colorPrimaryDark">@color/red_dark_2</item>
+        <item name="windowActionBar">false</item>
+        <item name="android:windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
     </style>
+
+    <!--<style name="MainButton" parent="Widget.AppCompat.Button">-->
+        <!--<item name="android:background">@drawable/button_selector</item>-->
+        <!--<item name="android:textColor">@color/button_font</item>-->
+        <!--<item name="android:textSize">@dimen/font_medium</item>-->
+        <!--<item name="android:fontFamily">@string/font_normal</item>-->
+        <!--<item name="android:layout_margin">@dimen/margin_small</item>-->
+    <!--</style>-->
 
 </resources>

@@ -1,3 +1,18 @@
 <resources>
     <string name="app_name">Coolector</string>
+    <string name="login_screen_title">Coolector - Logowanie</string>
+    <string name="want_new_account">Nie posiadasz konta?</string>
+    <string name="font_normal">sans-serif</string>
+    <string name="font_light">sans-serif_light</string>
+    <string name="sign_up">Rejestracja</string>
+
+    <string name="email">Email</string>
+    <string name="password">Hasło</string>
+    <string name="login">Zaloguj</string>
+    <string name="forgot_password">Nie pamiętasz hasła?</string>
+    <string name="signup_screen_title">Rejestracja</string>
+    <string name="register">Zarejestruj</string>
+    <string name="password_confirmation">Potwierdź hasło</string>
+    <string name="retrieve_password_screen_title">Odzyskaj hasło</string>
+    <string name="reset_password">Zresetuj hasło</string>
 </resources>
