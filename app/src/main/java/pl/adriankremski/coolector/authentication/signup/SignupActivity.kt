@@ -20,7 +20,6 @@ import pl.adriankremski.coolector.TheApp
 import pl.adriankremski.coolector.main.MainActivity
 import pl.adriankremski.coolector.repository.AuthenticationRepository
 import pl.adriankremski.coolector.repository.SessionRepository
-import pl.adriankremski.coolector.utils.ViewUtils
 import javax.inject.Inject
 
 
@@ -51,7 +50,7 @@ class SignUpActivity : AppCompatActivity(), SignUpMvp.View {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        TheApp.get(this).appComponent.inject(this);
+        TheApp[this].appComponent?.inject(this);
         setContentView(R.layout.activity_signup);
 
         mTitleLabel = findViewById(R.id.title) as TextView
@@ -77,7 +76,6 @@ class SignUpActivity : AppCompatActivity(), SignUpMvp.View {
 
     override fun showLoading() {
         mProgressView.visibility = View.VISIBLE
-        ViewUtils.setViewsEnabledInHierarchy(window.decorView, false);
     }
 
     override fun registerDisposable(disposable: Disposable) { mCompositeDisposable.add(disposable) }
@@ -86,7 +84,6 @@ class SignUpActivity : AppCompatActivity(), SignUpMvp.View {
 
     override fun hideLoading() {
         mProgressView.visibility = View.GONE;
-        ViewUtils.setViewsEnabledInHierarchy(window.decorView, true);
     }
 
     override fun showNetworkError() {

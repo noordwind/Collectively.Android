@@ -24,14 +24,14 @@ class LoginPresenter(val mView: LoginMvp.View, val mRepository : AuthenticationR
                 mView.showLoading()
             }
 
-            override fun onNext(value: String?) {
+            override fun onNext(value: String) {
                 super.onNext(value)
-                mSessionRepository.setSessionToken(value)
+                mSessionRepository.sessionToken = value
                 mView.hideLoading()
                 mView.showLoginSuccess()
             }
 
-            override fun onError(e: Throwable?) {
+            override fun onError(e: Throwable) {
                 super.onError(e)
                 mView.hideLoading()
             }

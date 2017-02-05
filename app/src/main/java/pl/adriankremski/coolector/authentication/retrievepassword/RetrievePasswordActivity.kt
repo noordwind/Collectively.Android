@@ -31,7 +31,7 @@ class RetrievePasswordActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        TheApp.get(this).appComponent.inject(this)
+        TheApp[this].appComponent?.inject(this)
         setContentView(R.layout.activity_retrive_password)
 
         mTitleLabel = findViewById(R.id.title) as TextView

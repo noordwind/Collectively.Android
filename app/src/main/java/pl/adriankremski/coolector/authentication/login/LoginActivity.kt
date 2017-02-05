@@ -43,7 +43,7 @@ class LoginActivity : AppCompatActivity(), LoginMvp.View {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        TheApp.get(this).appComponent.inject(this)
+        TheApp[this].appComponent?.inject(this)
         setContentView(R.layout.activity_login);
 
         var span = SpannableString(getString(R.string.app_name))

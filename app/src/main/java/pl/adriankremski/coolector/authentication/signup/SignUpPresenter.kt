@@ -16,14 +16,14 @@ class SignUpPresenter(val mView: SignUpMvp.View, val mAuthRepository: Authentica
                 mView.showLoading()
             }
 
-            override fun onNext(value: String?) {
+            override fun onNext(value: String) {
                 super.onNext(value)
-                mSessionRepository.setSessionToken(value)
+                mSessionRepository.sessionToken = value
                 mView.hideLoading()
                 mView.showRegisterSuccess()
             }
 
-            override fun onError(e: Throwable?) {
+            override fun onError(e: Throwable) {
                 super.onError(e)
                 mView.hideLoading()
             }
