@@ -6,8 +6,8 @@ import javax.inject.Singleton;
 
 import dagger.Component;
 import pl.adriankremski.coolector.authentication.login.LoginActivity;
-import pl.adriankremski.coolector.authentication.RetrievePassword;
-import pl.adriankremski.coolector.authentication.SignUpActivity;
+import pl.adriankremski.coolector.authentication.retrievepassword.RetrievePasswordActivity;
+import pl.adriankremski.coolector.authentication.signup.SignUpActivity;
 import pl.adriankremski.coolector.main.MainActivity;
 import pl.adriankremski.coolector.repository.AuthenticationRepositoryImpl;
 import pl.adriankremski.coolector.repository.SessionRepositoryImpl;
@@ -23,7 +23,7 @@ public interface AppComponent {
 
     //Activites
     void inject(LoginActivity activity);
-    void inject(RetrievePassword activity);
+    void inject(RetrievePasswordActivity activity);
     void inject(SignUpActivity activity);
     void inject(MainActivity mainActivity);
 

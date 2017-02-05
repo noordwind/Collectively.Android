@@ -19,14 +19,20 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".authentication.SignUpActivity">
-        </activity>
-
-        <activity android:name=".authentication.RetrievePassword">
+        <activity android:name=".authentication.retrievepassword.RetrievePassword">
         </activity>
 
         <activity android:name=".main.MainActivity">
         </activity>
+
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyDlkI-aFHz5u8Cii9u7cgkG3u8ajoD2Eew"/>
+
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
+
     </application>
 
 </manifest>

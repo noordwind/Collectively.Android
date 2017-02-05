@@ -1,13 +1,13 @@
 package pl.adriankremski.coolector;
 
-import android.app.Application;
 import android.content.Context;
+import android.support.multidex.MultiDexApplication;
 
 import pl.adriankremski.coolector.dagger.AppComponent;
 import pl.adriankremski.coolector.dagger.AppModule;
 import pl.adriankremski.coolector.dagger.DaggerAppComponent;
 
-public class TheApp extends Application{
+public class TheApp extends MultiDexApplication{
 
     private AppComponent appComponent;
 
@@ -26,7 +26,6 @@ public class TheApp extends Application{
                 .appModule(new AppModule(this))
                 .build();
     }
-
 
     public AppComponent getAppComponent() {
         return appComponent;

@@ -5,4 +5,9 @@ public interface Constants {
         String SESSION_TOKEN = "session_token";
         String SESSION_KEY = "session";
     }
+
+    interface AuthProvider {
+        String FACEBOOK = "facebook";
+        String COOLECTOR = "coolector";
+    }
 }

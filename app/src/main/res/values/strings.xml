@@ -19,4 +19,5 @@
     <string name="login_in_progress_message">Logowanie</string>
     <string name="login_success_message">Zostałes zalogowany</string>
     <string name="main_screen_title">Mapa</string>
+    <string name="username">Nazwa użytkownika</string>
 </resources>

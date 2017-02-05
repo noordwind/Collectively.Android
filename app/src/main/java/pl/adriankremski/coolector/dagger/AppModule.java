@@ -1,8 +1,11 @@
 package pl.adriankremski.coolector.dagger;
 
 import android.app.Application;
+import android.util.Log;
 
 import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
+
+import java.util.concurrent.TimeUnit;
 
 import javax.inject.Singleton;
 
@@ -43,10 +46,15 @@ public class AppModule implements Constants {
 //        } catch (Exception e) {
 //            Log.d(TAG, "Unable to set http cache", e);
 //        }
-//        builder.readTimeout(30, TimeUnit.SECONDS);
-//        builder.connectTimeout(30, TimeUnit.SECONDS);
+        builder.readTimeout(10, TimeUnit.SECONDS);
+        builder.connectTimeout(30, TimeUnit.SECONDS);
 
-        HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
+        HttpLoggingInterceptor logging = new HttpLoggingInterceptor(new HttpLoggingInterceptor.Logger() {
+            @Override public void log(String message) {
+                Log.i("OkHttp", message);
+            }
+        });
+        logging.setLevel(HttpLoggingInterceptor.Level.BASIC);
         builder.addInterceptor(logging);
 
         return builder.build();

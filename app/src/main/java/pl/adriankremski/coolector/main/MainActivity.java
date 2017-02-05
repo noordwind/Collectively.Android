@@ -9,15 +9,16 @@ import android.text.style.RelativeSizeSpan;
 import android.text.style.StyleSpan;
 import android.widget.TextView;
 
-import butterknife.Bind;
-import butterknife.ButterKnife;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
+
 import pl.adriankremski.coolector.BaseActivity;
 import pl.adriankremski.coolector.R;
 import pl.adriankremski.coolector.TheApp;
 
-public class MainActivity extends BaseActivity{
+public class MainActivity extends BaseActivity implements OnMapReadyCallback {
 
-    @Bind(R.id.title)
     TextView mTitleLabel;
 
     public static void login(Context context) {
@@ -30,13 +31,22 @@ public class MainActivity extends BaseActivity{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         TheApp.get(this).getAppComponent().inject(this);
-
         setContentView(R.layout.activity_main);
-        ButterKnife.bind(this);
+
         Spannable span = new SpannableString(getString(R.string.main_screen_title));
         span.setSpan(new RelativeSizeSpan(1.2f), 0, 1, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
         span.setSpan(new StyleSpan(android.graphics.Typeface.BOLD), 0, 1, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+
+        mTitleLabel = (TextView) findViewById(R.id.title);
         mTitleLabel.setText(span);
+
+        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
+                .findFragmentById(R.id.map);
+        mapFragment.getMapAsync(this);
     }
 
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+
+    }
 }
