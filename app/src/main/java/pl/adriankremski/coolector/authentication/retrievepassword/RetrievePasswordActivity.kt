@@ -27,7 +27,7 @@ class RetrievePasswordActivity : AppCompatActivity() {
     private lateinit var mTitleLabel: TextView
 
     @Inject
-    private lateinit var authenticationRepository: AuthenticationRepository
+    lateinit var authenticationRepository: AuthenticationRepository
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

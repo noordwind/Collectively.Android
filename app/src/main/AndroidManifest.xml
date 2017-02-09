@@ -3,6 +3,11 @@
     package="pl.adriankremski.coolector">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES" />
+
 
     <application
         android:allowBackup="true"
@@ -19,7 +24,16 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".authentication.retrievepassword.RetrievePassword">
+        <activity android:name=".authentication.signup.SignUpActivity">
+        </activity>
+
+        <activity android:name=".main.MainActivity">
+        </activity>
+
+        <activity android:name=".addremark.AddRemarkActivity">
+        </activity>
+
+        <activity android:name=".authentication.retrievepassword.RetrievePasswordActivity">
         </activity>
 
         <meta-data

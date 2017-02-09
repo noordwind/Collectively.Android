@@ -20,4 +20,9 @@
     <string name="login_success_message">Zostałes zalogowany</string>
     <string name="main_screen_title">Mapa</string>
     <string name="username">Nazwa użytkownika</string>
+    <string name="add_remark_screen_title">Add remark</string>
+    <string name="description_hint">Description (optional)</string>
+    <string name="add_remark_category_hint">I would like to report a...</string>
+    <string name="add_remark_tags_hint">Tags (optional)</string>
+    <string name="location">Location</string>
 </resources>

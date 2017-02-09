@@ -60,6 +60,9 @@ dependencies {
     })
     testCompile 'junit:junit:4.12'
     compile 'com.google.android.gms:play-services-maps:10.0.1'
+    compile 'com.google.android.gms:play-services-location:10.0.1'
+
+    compile 'com.getbase:floatingactionbutton:1.10.1'
 
     compile "com.android.support:support-annotations:$rootProject.supportLibraryVersion"
     compile "com.android.support:support-v13:$rootProject.supportLibraryVersion"
@@ -94,4 +97,12 @@ dependencies {
     compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
 
     compile "com.android.support:multidex:1.0.0"
+
+    compile group: 'com.google.code.gson', name: 'gson', version: '1.7.2'
+
+    compile "com.hannesdorfmann:adapterdelegates:1.0.2"
+
+    compile("com.wefika:flowlayout:0.4.1") {
+        exclude group: 'com.intellij', module: 'annotations'
+    }
 }

@@ -2,6 +2,7 @@ package pl.adriankremski.coolector.dagger
 
 import android.app.Application
 import dagger.Component
+import pl.adriankremski.coolector.addremark.AddRemarkActivity
 import pl.adriankremski.coolector.authentication.login.LoginActivity
 import pl.adriankremski.coolector.authentication.retrievepassword.RetrievePasswordActivity
 import pl.adriankremski.coolector.authentication.signup.SignUpActivity
@@ -20,6 +21,7 @@ interface AppComponent {
     fun inject(activity: RetrievePasswordActivity)
     fun inject(activity: SignUpActivity)
     fun inject(mainActivity: MainActivity)
+    fun inject(activity: AddRemarkActivity)
 
     //Repositories
     fun inject(repository: AuthenticationRepositoryImpl)
