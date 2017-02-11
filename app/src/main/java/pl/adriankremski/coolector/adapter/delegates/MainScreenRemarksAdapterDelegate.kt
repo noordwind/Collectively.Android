@@ -10,7 +10,11 @@ import pl.adriankremski.coolector.R
 import pl.adriankremski.coolector.model.Remark
 
 
-class MainScreenRemarksAdapterDelegate(viewType: Int): AbsAdapterDelegate<List<Any>>(viewType) {
+class MainScreenRemarksAdapterDelegate(viewType: Int, val onRemarkSelectedListener: OnRemarkSelectedListener): AbsAdapterDelegate<List<Any>>(viewType) {
+
+    interface OnRemarkSelectedListener {
+        fun onRemarkSelected(remark: Remark)
+    }
 
     override fun isForViewType(items: List<Any>, position: Int): Boolean {
         return items[position] is Remark
@@ -22,17 +26,24 @@ class MainScreenRemarksAdapterDelegate(viewType: Int): AbsAdapterDelegate<List<A
     }
 
     override fun onCreateViewHolder(parent: ViewGroup?): RecyclerView.ViewHolder {
-        return RemarkRowHolder(LayoutInflater.from(parent?.context).inflate(R.layout.view_remark_row, parent, false))
+        var view = LayoutInflater.from(parent?.context).inflate(R.layout.view_remark_row, parent, false)
+        return RemarkRowHolder(view, onRemarkSelectedListener)
     }
 
-    class RemarkRowHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    class RemarkRowHolder(itemView: View, val onRemarkSelectedListener: OnRemarkSelectedListener) : RecyclerView.ViewHolder(itemView) {
 
-        private var nameLabel: TextView = itemView.findViewById(R.id.name) as TextView
-        private var addressLabel: TextView = itemView.findViewById(R.id.address) as TextView
+        private var mNameLabel: TextView = itemView.findViewById(R.id.name) as TextView
+        private var mAddressLabel: TextView = itemView.findViewById(R.id.address) as TextView
+        private var mRemark: Remark? = null
+
+        init {
+            itemView.setOnClickListener { onRemarkSelectedListener.onRemarkSelected(mRemark!!) }
+        }
 
         fun setRemark(remark: Remark) {
-            nameLabel.text = remark.description
-            addressLabel.text = remark.location.address
+            mRemark = remark
+            mNameLabel.text = remark.description
+            mAddressLabel.text = remark.location.address
         }
     }
 

@@ -8,7 +8,8 @@ interface MainMvp {
 
     interface View {
         fun addDisposable(disposable: Disposable)
-        fun showRemarkCategories(categories: List<RemarkCategory>)
+        fun clearCategories()
+        fun showRemarkCategory(category: RemarkCategory)
         fun showRemarks(remarks: List<Remark>)
     }
 

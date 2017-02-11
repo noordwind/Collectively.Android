@@ -9,11 +9,14 @@ import android.view.View
 import android.view.ViewGroup
 import pl.adriankremski.coolector.R
 import pl.adriankremski.coolector.adapter.MainScreenRemarksListAdapter
+import pl.adriankremski.coolector.adapter.delegates.MainScreenRemarksAdapterDelegate
 import pl.adriankremski.coolector.model.Remark
 
 class NavigationViewFragment : Fragment() {
 
     private lateinit var recyclerView: RecyclerView
+
+    var onRemarkSelectedListener: MainScreenRemarksAdapterDelegate.OnRemarkSelectedListener? = null
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val layout = inflater?.inflate(R.layout.fragment_view_navigation, container, false)
@@ -22,7 +25,7 @@ class NavigationViewFragment : Fragment() {
     }
 
     fun setRemarks(remarks: List<Remark>) {
-        var adapter = MainScreenRemarksListAdapter()
+        var adapter = MainScreenRemarksListAdapter(onRemarkSelectedListener!!)
         adapter.setData(remarks)
         adapter.initDelegates()
         recyclerView.adapter = adapter

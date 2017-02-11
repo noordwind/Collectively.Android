@@ -33,11 +33,7 @@
         <activity android:name=".addremark.AddRemarkActivity">
         </activity>
 
-<<<<<<< HEAD
         <activity android:name=".authentication.retrievepassword.ResetPasswordActivity">
-=======
-        <activity android:name=".authentication.retrievepassword.RetrievePasswordActivity">
->>>>>>> WIP
         </activity>
 
         <meta-data

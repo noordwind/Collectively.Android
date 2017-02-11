@@ -40,6 +40,7 @@ import com.google.android.gms.maps.model.MarkerOptions
 import pl.adriankremski.coolector.BaseActivity
 import pl.adriankremski.coolector.R
 import pl.adriankremski.coolector.TheApp
+import pl.adriankremski.coolector.adapter.delegates.MainScreenRemarksAdapterDelegate
 import pl.adriankremski.coolector.addremark.AddRemarkActivity
 import pl.adriankremski.coolector.authentication.login.MainPresenter
 import pl.adriankremski.coolector.model.Remark
@@ -52,7 +53,7 @@ import java.util.*
 import javax.inject.Inject
 
 
-class MainActivity : BaseActivity(), MainMvp.View, OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener {
+class MainActivity : BaseActivity(), MainMvp.View, OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener, MainScreenRemarksAdapterDelegate.OnRemarkSelectedListener {
     companion object {
         fun login(context: Context) {
             val intent = Intent(context, MainActivity::class.java)
@@ -114,15 +115,16 @@ class MainActivity : BaseActivity(), MainMvp.View, OnMapReadyCallback, GoogleApi
         mMainPresenter.loadRemarkCategories()
     }
 
-    override fun showRemarkCategories(remarkCategories: List<RemarkCategory>) {
-        mFloatingActionsMenu.removeAllViews()
-        remarkCategories.forEach {
-            var remarkButton = FloatingActionButton(baseContext);
-            remarkButton.colorNormal = Color.parseColor(it.name.colorOfCategory())
-            remarkButton.title = it.name.uppercaseFirstLetter()
-            remarkButton.setOnClickListener { runOnUiThread { AddRemarkActivity.start(baseContext) } }
-            mFloatingActionsMenu.addButton(remarkButton)
-        }
+    override fun clearCategories() {
+//        mFloatingActionsMenu.removeAllViews()
+    }
+
+    override fun showRemarkCategory(remarkCategory: RemarkCategory) {
+        var remarkButton = FloatingActionButton(baseContext);
+        remarkButton.colorNormal = Color.parseColor(remarkCategory.name.colorOfCategory())
+        remarkButton.title = remarkCategory.name.uppercaseFirstLetter()
+        remarkButton.setOnClickListener { runOnUiThread { AddRemarkActivity.start(baseContext) } }
+        mFloatingActionsMenu.addButton(remarkButton)
     }
 
     override fun onMapReady(googleMap: GoogleMap) {
@@ -180,7 +182,7 @@ class MainActivity : BaseActivity(), MainMvp.View, OnMapReadyCallback, GoogleApi
 
         //move map camera
         mMap?.moveCamera(CameraUpdateFactory.newLatLng(latLng));
-        mMap?.animateCamera(CameraUpdateFactory.zoomTo(14.0f));
+        mMap?.animateCamera(CameraUpdateFactory.zoomTo(12.0f));
 
         //stop location updates
         if (mGoogleApiClient != null) {
@@ -250,8 +252,17 @@ class MainActivity : BaseActivity(), MainMvp.View, OnMapReadyCallback, GoogleApi
         }
 
         var fragment = supportFragmentManager.findFragmentById(R.id.fragment_view_navigation) as NavigationViewFragment
+        fragment.onRemarkSelectedListener = this
         fragment.setRemarks(remarks)
     }
+
+    override fun onRemarkSelected(remark: Remark) {
+        drawerLayout.closeDrawer(Gravity.RIGHT)
+        var latLng = LatLng(remark.location.coordinates[1], remark.location.coordinates[0]);
+        mMap?.moveCamera(CameraUpdateFactory.newLatLng(latLng));
+        mMap?.animateCamera(CameraUpdateFactory.zoomTo(13.0f));
+    }
+
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.main_menu, menu)

@@ -4,7 +4,7 @@ import com.hannesdorfmann.adapterdelegates.ListDelegationAdapter
 import pl.adriankremski.coolector.Constants
 import pl.adriankremski.coolector.adapter.delegates.MainScreenRemarksAdapterDelegate
 
-class MainScreenRemarksListAdapter : ListDelegationAdapter<List<Any>>(), Constants {
+class MainScreenRemarksListAdapter(val onRemarkSelectedListener: MainScreenRemarksAdapterDelegate.OnRemarkSelectedListener) : ListDelegationAdapter<List<Any>>(), Constants {
 
     fun setData(data: List<Any>): MainScreenRemarksListAdapter {
         setItems(data)
@@ -12,7 +12,7 @@ class MainScreenRemarksListAdapter : ListDelegationAdapter<List<Any>>(), Constan
     }
 
     fun initDelegates(): MainScreenRemarksListAdapter {
-        delegatesManager.addDelegate(MainScreenRemarksAdapterDelegate(0))
+        delegatesManager.addDelegate(MainScreenRemarksAdapterDelegate(0, onRemarkSelectedListener))
         return this
     }
 

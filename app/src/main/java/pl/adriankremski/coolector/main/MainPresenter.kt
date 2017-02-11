@@ -48,7 +48,8 @@ class MainPresenter(val mView: MainMvp.View, val mRemarksRepository : RemarksRep
 
             override fun onNext(categories: List<RemarkCategory>) {
                 super.onNext(categories)
-                 mView.showRemarkCategories(categories)
+                mView.clearCategories()
+                categories.forEach { mView.showRemarkCategory(it) }
             }
 
             override fun onError(e: Throwable) {
