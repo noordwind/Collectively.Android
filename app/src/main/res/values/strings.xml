@@ -25,4 +25,7 @@
     <string name="add_remark_category_hint">I would like to report a...</string>
     <string name="add_remark_tags_hint">Tags (optional)</string>
     <string name="location">Location</string>
+    <string name="list">List</string>
+    <string name="open">Open</string>
+    <string name="close">Close</string>
 </resources>

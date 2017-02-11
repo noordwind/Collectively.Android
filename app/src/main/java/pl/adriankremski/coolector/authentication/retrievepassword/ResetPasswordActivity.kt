@@ -1,0 +1,77 @@
+package pl.adriankremski.coolector.authentication.retrievepassword
+
+import android.content.Context
+import android.content.Intent
+import android.graphics.Typeface
+import android.os.Bundle
+import android.support.design.widget.Snackbar
+import android.support.v7.app.AppCompatActivity
+import android.text.Spannable
+import android.text.SpannableString
+import android.text.style.RelativeSizeSpan
+import android.text.style.StyleSpan
+import android.view.View
+import android.widget.TextView
+import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.disposables.Disposable
+import pl.adriankremski.coolector.R
+import pl.adriankremski.coolector.TheApp
+import pl.adriankremski.coolector.authentication.login.ResetPasswordMvp
+import pl.adriankremski.coolector.repository.AuthenticationRepository
+import javax.inject.Inject
+
+class ResetPasswordActivity : AppCompatActivity(), ResetPasswordMvp.View {
+
+
+    companion object {
+        fun start(context: Context) {
+            val intent = Intent(context, ResetPasswordActivity::class.java)
+            context.startActivity(intent)
+        }
+    }
+
+    private lateinit var mTitleLabel: TextView
+    private lateinit var mEmailField: TextView
+    private lateinit var mProgressView: View
+
+    @Inject
+    lateinit var mAuthenticationRepository: AuthenticationRepository
+
+    private var mCompositeDisposable: CompositeDisposable? = null
+
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        TheApp[this].appComponent?.inject(this)
+        setContentView(R.layout.activity_reset_password)
+
+        mTitleLabel = findViewById(R.id.title) as TextView
+        mEmailField = findViewById(R.id.email) as TextView
+        mProgressView = findViewById(R.id.progress)
+
+        val span = SpannableString(getString(R.string.retrieve_password_screen_title))
+        span.setSpan(RelativeSizeSpan(1.2f), 0, 1, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+        span.setSpan(StyleSpan(Typeface.BOLD), 0, 1, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+        mTitleLabel.text = span
+
+        mCompositeDisposable = CompositeDisposable();
+
+        var presenter = ResetPasswordPresenter(this, mAuthenticationRepository)
+        findViewById(R.id.reset_password).setOnClickListener { presenter.resetPassword(mEmailField.text.toString()) }
+    }
+
+    override fun registerDisposable(disposable: Disposable) { mCompositeDisposable?.add(disposable) }
+
+    override fun showLoading() { mProgressView.visibility = View.VISIBLE }
+
+    override fun hideLoading() { mProgressView.visibility = View.GONE }
+
+    override fun showNetworkError() = Snackbar.make(findViewById(android.R.id.content), getString(R.string.error_no_network), Snackbar.LENGTH_LONG).show()
+
+    override fun showResetPasswordSuccess() = Snackbar.make(findViewById(android.R.id.content), getString(R.string.error_no_network), Snackbar.LENGTH_LONG).show()
+
+    override fun onDestroy() {
+        super.onDestroy()
+        mCompositeDisposable?.clear();
+    }
+}

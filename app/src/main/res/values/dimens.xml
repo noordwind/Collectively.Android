@@ -9,7 +9,9 @@
     <dimen name="spacing_large">24dp</dimen>
     <dimen name="spacing_xl">32dp</dimen>
 
+    <dimen name="font_small">12sp</dimen>
     <dimen name="font_normal">16sp</dimen>
     <dimen name="font_medium">18sp</dimen>
     <dimen name="font_large">22sp</dimen>
+    <dimen name="font_tiny">10sp</dimen>
 </resources>

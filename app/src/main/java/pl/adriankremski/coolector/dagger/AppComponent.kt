@@ -4,7 +4,7 @@ import android.app.Application
 import dagger.Component
 import pl.adriankremski.coolector.addremark.AddRemarkActivity
 import pl.adriankremski.coolector.authentication.login.LoginActivity
-import pl.adriankremski.coolector.authentication.retrievepassword.RetrievePasswordActivity
+import pl.adriankremski.coolector.authentication.retrievepassword.ResetPasswordActivity
 import pl.adriankremski.coolector.authentication.signup.SignUpActivity
 import pl.adriankremski.coolector.main.MainActivity
 import pl.adriankremski.coolector.repository.AuthenticationRepositoryImpl
@@ -18,7 +18,7 @@ interface AppComponent {
 
     //Activites
     fun inject(activity: LoginActivity)
-    fun inject(activity: RetrievePasswordActivity)
+    fun inject(activity: ResetPasswordActivity)
     fun inject(activity: SignUpActivity)
     fun inject(mainActivity: MainActivity)
     fun inject(activity: AddRemarkActivity)

@@ -1,0 +1,45 @@
+package pl.adriankremski.coolector.authentication.retrievepassword
+
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.schedulers.Schedulers
+import pl.adriankremski.coolector.authentication.login.ResetPasswordMvp
+import pl.adriankremski.coolector.network.AppDisposableObserver
+import pl.adriankremski.coolector.repository.AuthenticationRepository
+
+class ResetPasswordPresenter(val mView: ResetPasswordMvp.View, val mRepository : AuthenticationRepository) : ResetPasswordMvp.Presenter {
+
+    override fun resetPassword(email: String) {
+        var observer = object : AppDisposableObserver<Void>() {
+
+            override fun onStart() {
+                super.onStart()
+                mView.showLoading()
+            }
+
+            override fun onNext(value: Void) {
+                super.onNext(value)
+                mView.hideLoading()
+                mView.showResetPasswordSuccess()
+            }
+
+            override fun onError(e: Throwable) {
+                super.onError(e)
+                mView.hideLoading()
+            }
+
+            override fun onNetworkError() {
+                super.onNetworkError()
+                mView.showNetworkError()
+            }
+        }
+
+        var disposable = mRepository.resetPassword(email)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeWith(observer)
+
+        mView.registerDisposable(disposable)
+    }
+
+}
+

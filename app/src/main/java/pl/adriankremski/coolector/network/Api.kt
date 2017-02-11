@@ -25,4 +25,8 @@ interface Api {
     @Headers("Accept: application/json", "Content-type: application/json")
     @GET("api/remarks/tags")
     fun remarkTags(): Observable<List<RemarkTag>>
+
+    @Headers("Accept: application/json", "Content-type: application/json")
+    @POST("api/reset-password")
+    fun resetPassword(@Body body: ResetPasswordRequest): Observable<Void>
 }

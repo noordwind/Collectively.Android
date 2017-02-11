@@ -24,4 +24,10 @@ interface Constants {
             val ACCIDENT = "accident"
         }
     }
+
+    interface RecyclerItemType {
+        companion object {
+            val REMARK = 1
+        }
+    }
 }

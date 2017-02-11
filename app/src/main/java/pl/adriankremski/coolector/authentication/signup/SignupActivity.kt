@@ -67,7 +67,7 @@ class SignUpActivity : AppCompatActivity(), SignUpMvp.View {
         mSignupPresenter = SignUpPresenter(this, mAuthenticationRepository, mSessionRepository);
         mCompositeDisposable = CompositeDisposable();
 
-        findViewById(R.id.signup).setOnClickListener { signUp() }
+        findViewById(R.id.register).setOnClickListener { signUp() }
     }
 
     fun signUp() {

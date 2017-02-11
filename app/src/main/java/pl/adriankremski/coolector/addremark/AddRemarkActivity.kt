@@ -31,7 +31,6 @@ import java.util.*
 import javax.inject.Inject
 
 
-
 class AddRemarkActivity : BaseActivity(), AddRemarkMvp.View {
 
     companion object {
@@ -98,7 +97,5 @@ class AddRemarkActivity : BaseActivity(), AddRemarkMvp.View {
 
             mTagsLayout?.addView(newView)
         }
-
-
     }
 }

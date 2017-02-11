@@ -15,7 +15,7 @@ import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 import pl.adriankremski.coolector.R
 import pl.adriankremski.coolector.TheApp
-import pl.adriankremski.coolector.authentication.retrievepassword.RetrievePasswordActivity
+import pl.adriankremski.coolector.authentication.retrievepassword.ResetPasswordActivity
 import pl.adriankremski.coolector.authentication.signup.SignUpActivity
 import pl.adriankremski.coolector.main.MainActivity
 import pl.adriankremski.coolector.repository.AuthenticationRepository
@@ -71,7 +71,7 @@ class LoginActivity : AppCompatActivity(), LoginMvp.View {
 
     fun signUp() = SignUpActivity.launch(this)
 
-    fun retrievePassword() = RetrievePasswordActivity.start(this)
+    fun retrievePassword() = ResetPasswordActivity.start(this)
 
     override fun showMainScreen() = MainActivity.login(this)
 

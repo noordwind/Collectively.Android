@@ -9,7 +9,7 @@ interface AddRemarkMvp {
     interface View {
         fun addDisposable(disposable: Disposable)
         fun showAvailableRemarkCategories(category: List<RemarkCategory>)
-        fun  showAvailableRemarkTags(categories: List<RemarkTag>)
+        fun showAvailableRemarkTags(categories: List<RemarkTag>)
     }
 
     interface Presenter {

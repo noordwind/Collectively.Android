@@ -11,10 +11,15 @@ import android.os.Build
 import android.os.Bundle
 import android.support.v4.app.ActivityCompat
 import android.support.v4.content.ContextCompat
+import android.support.v4.widget.DrawerLayout
+import android.support.v7.app.ActionBarDrawerToggle
 import android.text.Spannable
 import android.text.SpannableString
 import android.text.style.RelativeSizeSpan
 import android.text.style.StyleSpan
+import android.view.Gravity
+import android.view.Menu
+import android.view.View
 import android.widget.TextView
 import android.widget.Toast
 import com.getbase.floatingactionbutton.FloatingActionButton
@@ -58,6 +63,7 @@ class MainActivity : BaseActivity(), MainMvp.View, OnMapReadyCallback, GoogleApi
 
     private lateinit var mFloatingActionsMenu: FloatingActionsMenu
     private lateinit var mTitleLabel: TextView
+    private lateinit var mToolbarOptionLabel: TextView
     private var mMap: GoogleMap? = null
     private var mGoogleApiClient: GoogleApiClient? = null
     private var mLocationRequest: LocationRequest? = null
@@ -70,6 +76,10 @@ class MainActivity : BaseActivity(), MainMvp.View, OnMapReadyCallback, GoogleApi
     lateinit var mRemarksRepository: RemarksRepository
     lateinit var mMainPresenter: MainPresenter
 
+    private lateinit var drawerToggle: ActionBarDrawerToggle
+
+    private lateinit var drawerLayout: DrawerLayout
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         TheApp[this].appComponent?.inject(this)
@@ -80,6 +90,16 @@ class MainActivity : BaseActivity(), MainMvp.View, OnMapReadyCallback, GoogleApi
         span.setSpan(StyleSpan(Typeface.BOLD), 0, 1, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
 
         mTitleLabel = findViewById(R.id.title) as TextView
+        mToolbarOptionLabel = findViewById(R.id.option) as TextView
+        mToolbarOptionLabel.text = getString(R.string.list)
+        mToolbarOptionLabel.visibility = View.GONE
+        mToolbarOptionLabel.setOnClickListener { drawerLayout.openDrawer(Gravity.RIGHT) }
+
+        drawerLayout = findViewById(R.id.drawer_layout) as DrawerLayout
+        drawerToggle = ActionBarDrawerToggle(this, drawerLayout, R.string.open, R.string.close)
+        drawerLayout.setDrawerListener(drawerToggle)
+        drawerToggle.syncState()
+
         mTitleLabel.text = span
         mFloatingActionsMenu = findViewById(R.id.actions) as FloatingActionsMenu
 
@@ -107,7 +127,6 @@ class MainActivity : BaseActivity(), MainMvp.View, OnMapReadyCallback, GoogleApi
 
     override fun onMapReady(googleMap: GoogleMap) {
         mMainPresenter.loadRemarks()
-
         mMap = googleMap
         mMap?.mapType = GoogleMap.MAP_TYPE_NORMAL
 
@@ -219,6 +238,7 @@ class MainActivity : BaseActivity(), MainMvp.View, OnMapReadyCallback, GoogleApi
     }
 
     override fun showRemarks(remarks: List<Remark>) {
+        mToolbarOptionLabel.visibility = View.VISIBLE
         mRemarksMarkers.forEach(Marker::remove)
         remarks.forEach {
             var latLng = LatLng(it.location.coordinates[1], it.location.coordinates[0]);
@@ -228,5 +248,13 @@ class MainActivity : BaseActivity(), MainMvp.View, OnMapReadyCallback, GoogleApi
             markerOptions.icon(it.category.colorOfCategory().toBitmapDescriptor());
             mRemarksMarkers.add(mMap!!.addMarker(markerOptions))
         }
+
+        var fragment = supportFragmentManager.findFragmentById(R.id.fragment_view_navigation) as NavigationViewFragment
+        fragment.setRemarks(remarks)
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.main_menu, menu)
+        return true;
     }
 }

@@ -10,6 +10,11 @@
     <color name="white">#FFFFFF</color>
     <color name="white_pressed">#f1f1f1</color>
     <color name="half_black">#808080</color>
+<<<<<<< HEAD
     <color name="light_grey">#CCdddddd</color>
+=======
+>>>>>>> WIP
     <color name="black_semi_transparent">#B2000000</color>
+    <color name="grey">#ddd</color>
+    <color name="grey_semi_transparent">#22DDDDDD</color>
 </resources>
