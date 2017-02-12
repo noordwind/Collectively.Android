@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/black_semi_transparent"
+        android:orientation="horizontal"
+        android:padding="@dimen/spacing_normal">
+
+        <ImageView
+            android:id="@+id/ic_place"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/spacing_normal"
+            android:src="@drawable/ic_place_white_24dp" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toLeftOf="@id/navigate"
+            android:layout_toRightOf="@id/ic_place"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:fontFamily="@string/font_light"
+                android:gravity="left"
+                android:lines="1"
+                android:singleLine="true"
+                android:text="Name"
+                android:textColor="@color/grey"
+                android:textSize="@dimen/font_small"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/address"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:fontFamily="@string/font_light"
+                android:gravity="left"
+                android:lines="1"
+                android:singleLine="true"
+                android:text="Address"
+                android:textColor="@color/grey"
+                android:textSize="@dimen/font_small"
+                android:textStyle="italic" />
+
+            <TextView
+                android:id="@+id/status"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:fontFamily="@string/font_light"
+                android:gravity="left"
+                android:text="Cleaning in process"
+                android:textColor="@color/grey"
+                android:textSize="@dimen/font_tiny"
+                android:textStyle="italic" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@id/navigate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/spacing_normal"
+            android:orientation="vertical">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:src="@drawable/ic_explore_white_24dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:fontFamily="@string/font_light"
+                android:text="200m"
+                android:textColor="@color/grey"
+                android:textSize="@dimen/font_small" />
+
+        </LinearLayout>
+
+
+    </RelativeLayout>
+
+    <View
+        android:background="@color/grey_semi_transparent"
+        android:layout_width="match_parent"
+        android:layout_height="1px"/>
+</LinearLayout>

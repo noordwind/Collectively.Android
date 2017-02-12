@@ -49,11 +49,12 @@ import pl.adriankremski.coolector.repository.RemarksRepository
 import pl.adriankremski.coolector.utils.colorOfCategory
 import pl.adriankremski.coolector.utils.toBitmapDescriptor
 import pl.adriankremski.coolector.utils.uppercaseFirstLetter
+import pl.adriankremski.coolector.views.MainScreenRemarkBottomSheetDialog
 import java.util.*
 import javax.inject.Inject
 
 
-class MainActivity : BaseActivity(), MainMvp.View, OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener, MainScreenRemarksAdapterDelegate.OnRemarkSelectedListener {
+class MainActivity : BaseActivity(), MainMvp.View, OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener, MainScreenRemarksAdapterDelegate.OnRemarkSelectedListener, GoogleMap.OnMarkerClickListener {
     companion object {
         fun login(context: Context) {
             val intent = Intent(context, MainActivity::class.java)
@@ -72,6 +73,7 @@ class MainActivity : BaseActivity(), MainMvp.View, OnMapReadyCallback, GoogleApi
     private var mCurrLocationMarker: Marker? = null
     private val MY_PERMISSIONS_REQUEST_LOCATION = 99
     private val mRemarksMarkers: LinkedList<Marker> = LinkedList<Marker>()
+    private var mRemarks: List<Remark>? = null
 
     @Inject
     lateinit var mRemarksRepository: RemarksRepository
@@ -131,6 +133,7 @@ class MainActivity : BaseActivity(), MainMvp.View, OnMapReadyCallback, GoogleApi
         mMainPresenter.loadRemarks()
         mMap = googleMap
         mMap?.mapType = GoogleMap.MAP_TYPE_NORMAL
+        mMap?.setOnMarkerClickListener(this)
 
         if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
@@ -240,6 +243,7 @@ class MainActivity : BaseActivity(), MainMvp.View, OnMapReadyCallback, GoogleApi
     }
 
     override fun showRemarks(remarks: List<Remark>) {
+        mRemarks = remarks
         mToolbarOptionLabel.visibility = View.VISIBLE
         mRemarksMarkers.forEach(Marker::remove)
         remarks.forEach {
@@ -256,13 +260,18 @@ class MainActivity : BaseActivity(), MainMvp.View, OnMapReadyCallback, GoogleApi
         fragment.setRemarks(remarks)
     }
 
+    override fun onMarkerClick(marker: Marker?): Boolean {
+        mRemarks?.filter { it.description != null && it.description.equals(marker?.title) }?.forEach { MainScreenRemarkBottomSheetDialog(this, it).show() }
+        return true
+    }
+
     override fun onRemarkSelected(remark: Remark) {
         drawerLayout.closeDrawer(Gravity.RIGHT)
         var latLng = LatLng(remark.location.coordinates[1], remark.location.coordinates[0]);
         mMap?.moveCamera(CameraUpdateFactory.newLatLng(latLng));
         mMap?.animateCamera(CameraUpdateFactory.zoomTo(13.0f));
+        MainScreenRemarkBottomSheetDialog(this, remark).show()
     }
-
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.main_menu, menu)
