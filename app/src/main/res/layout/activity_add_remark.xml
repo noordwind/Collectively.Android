@@ -10,86 +10,102 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true">
 
-        <include layout="@layout/view_toolbar_with_title" />
+        <include layout="@layout/view_add_remark_toolbar" />
     </FrameLayout>
 
-    <LinearLayout
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@id/toolbar"
         android:background="@color/white"
-        android:orientation="vertical"
-        android:padding="@dimen/spacing_normal">
+        android:layout_height="match_parent"
+        android:layout_below="@id/toolbar">
 
-        <TextView
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/spacing_small"
-            android:fontFamily="@string/font_normal"
-            android:text="@string/add_remark_category_hint"
-            android:textColor="@color/red_dark_2"
-            android:textSize="@dimen/font_medium" />
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:padding="@dimen/spacing_normal">
 
-        <FrameLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/white"
-            android:padding="@dimen/spacing_small">
-
-            <Spinner
-                android:id="@+id/remark_categories"
+            <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:popupBackground="@color/white" />
-        </FrameLayout>
-
-        <android.support.design.widget.TextInputLayout
-            android:id="@+id/height_section"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/spacing_normal">
-
-            <EditText
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:fontFamily="@string/font_light"
-                android:gravity="top|left"
-                android:hint="@string/description_hint"
-                android:inputType="textMultiLine"
-                android:lineSpacingMultiplier="1.25"
-                android:lines="3"
-                android:maxLength="200"
-                android:maxLines="3"
-                android:padding="@dimen/spacing_normal"
+                android:layout_marginBottom="@dimen/spacing_small"
+                android:fontFamily="@string/font_normal"
+                android:text="@string/add_remark_category_hint"
+                android:textColor="@color/red_dark_2"
                 android:textSize="@dimen/font_medium" />
 
-        </android.support.design.widget.TextInputLayout>
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:padding="@dimen/spacing_small">
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/spacing_small"
-            android:layout_marginTop="@dimen/spacing_small"
-            android:fontFamily="@string/font_normal"
-            android:text="@string/add_remark_tags_hint"
-            android:textColor="@color/red_dark_2"
-            android:textSize="@dimen/font_medium" />
+                <Spinner
+                    android:id="@+id/remark_categories"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:popupBackground="@color/white" />
+            </FrameLayout>
 
-        <com.wefika.flowlayout.FlowLayout
-            android:id="@+id/tags_layout"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="start|top" />
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/spacing_normal">
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/spacing_small"
-            android:layout_marginTop="@dimen/spacing_small"
-            android:fontFamily="@string/font_normal"
-            android:text="@string/location"
-            android:textColor="@color/red_dark_2"
-            android:textSize="@dimen/font_medium" />
+                <EditText
+                    android:id="@+id/description"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@string/font_light"
+                    android:gravity="top|left"
+                    android:hint="@string/description_hint"
+                    android:inputType="textMultiLine"
+                    android:lineSpacingMultiplier="1.25"
+                    android:lines="3"
+                    android:maxLength="200"
+                    android:maxLines="3"
+                    android:padding="@dimen/spacing_normal"
+                    android:textSize="@dimen/font_medium" />
 
-    </LinearLayout>
+            </android.support.design.widget.TextInputLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/spacing_small"
+                android:layout_marginTop="@dimen/spacing_small"
+                android:fontFamily="@string/font_normal"
+                android:text="@string/add_remark_tags_hint"
+                android:textColor="@color/red_dark_2"
+                android:textSize="@dimen/font_medium" />
+
+            <com.wefika.flowlayout.FlowLayout
+                android:id="@+id/tags_layout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="start|top" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/spacing_small"
+                android:layout_marginTop="@dimen/spacing_small"
+                android:fontFamily="@string/font_normal"
+                android:text="@string/location"
+                android:textColor="@color/red_dark_2"
+                android:textSize="@dimen/font_medium" />
+
+            <TextView
+                android:id="@+id/address"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/spacing_small"
+                android:layout_marginTop="@dimen/spacing_small"
+                android:fontFamily="@string/font_normal"
+                android:text="@string/location"
+                android:textColor="#000"
+                android:textSize="@dimen/font_normal" />
+
+        </LinearLayout>
+    </ScrollView>
 </RelativeLayout>

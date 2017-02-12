@@ -7,11 +7,22 @@ class RemarkLocation(
 )
 
 class Remark(
-        val author: String,
+        val category: String = "",
+        val location: RemarkLocation? = null ,
+        val smallPhotoUrl: String = "",
+        val description: String = "",
+        val resolved: Boolean? = null,
+        val raiting: Int
+)
+
+class RemarkNotFromList(
+        val location: RemarkLocation? = null
+)
+
+class NewRemark(
         val category: String,
-        val location: RemarkLocation,
-        val smallPhotoUrl: String,
-        val description: String,
-        val resolved: Boolean,
-        val raiting: Integer
+        val latitude: Double,
+        val longitude: Double,
+        val address: String,
+        val description: String
 )

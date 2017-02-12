@@ -11,9 +11,10 @@ import android.text.SpannableString
 import android.text.style.RelativeSizeSpan
 import android.text.style.StyleSpan
 import android.view.View
-import android.widget.TextView
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
+import kotlinx.android.synthetic.main.activity_reset_password.*
+import kotlinx.android.synthetic.main.view_login_progress.*
 import pl.adriankremski.coolector.R
 import pl.adriankremski.coolector.TheApp
 import pl.adriankremski.coolector.authentication.login.ResetPasswordMvp
@@ -22,7 +23,6 @@ import javax.inject.Inject
 
 class ResetPasswordActivity : AppCompatActivity(), ResetPasswordMvp.View {
 
-
     companion object {
         fun start(context: Context) {
             val intent = Intent(context, ResetPasswordActivity::class.java)
@@ -30,24 +30,15 @@ class ResetPasswordActivity : AppCompatActivity(), ResetPasswordMvp.View {
         }
     }
 
-    private lateinit var mTitleLabel: TextView
-    private lateinit var mEmailField: TextView
-    private lateinit var mProgressView: View
-
     @Inject
     lateinit var mAuthenticationRepository: AuthenticationRepository
 
-    private var mCompositeDisposable: CompositeDisposable? = null
-
+    private lateinit var mCompositeDisposable: CompositeDisposable
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         TheApp[this].appComponent?.inject(this)
         setContentView(R.layout.activity_reset_password)
-
-        mTitleLabel = findViewById(R.id.title) as TextView
-        mEmailField = findViewById(R.id.email) as TextView
-        mProgressView = findViewById(R.id.progress)
 
         val span = SpannableString(getString(R.string.retrieve_password_screen_title))
         span.setSpan(RelativeSizeSpan(1.2f), 0, 1, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
@@ -57,10 +48,10 @@ class ResetPasswordActivity : AppCompatActivity(), ResetPasswordMvp.View {
         mCompositeDisposable = CompositeDisposable();
 
         var presenter = ResetPasswordPresenter(this, mAuthenticationRepository)
-        findViewById(R.id.reset_password).setOnClickListener { presenter.resetPassword(mEmailField.text.toString()) }
+        mResetPasswordButton.setOnClickListener { presenter.resetPassword(mEmailInput.text.toString()) }
     }
 
-    override fun registerDisposable(disposable: Disposable) { mCompositeDisposable?.add(disposable) }
+    override fun registerDisposable(disposable: Disposable) { mCompositeDisposable.add(disposable) }
 
     override fun showLoading() { mProgressView.visibility = View.VISIBLE }
 
@@ -72,6 +63,6 @@ class ResetPasswordActivity : AppCompatActivity(), ResetPasswordMvp.View {
 
     override fun onDestroy() {
         super.onDestroy()
-        mCompositeDisposable?.clear();
+        mCompositeDisposable.clear();
     }
 }

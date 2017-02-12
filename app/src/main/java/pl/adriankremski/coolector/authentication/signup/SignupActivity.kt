@@ -11,10 +11,10 @@ import android.text.SpannableString
 import android.text.style.RelativeSizeSpan
 import android.text.style.StyleSpan
 import android.view.View
-import android.widget.EditText
-import android.widget.TextView
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
+import kotlinx.android.synthetic.main.activity_signup.*
+import kotlinx.android.synthetic.main.view_login_progress.*
 import pl.adriankremski.coolector.R
 import pl.adriankremski.coolector.TheApp
 import pl.adriankremski.coolector.main.MainActivity
@@ -24,12 +24,6 @@ import javax.inject.Inject
 
 
 class SignUpActivity : AppCompatActivity(), SignUpMvp.View {
-
-    lateinit var mTitleLabel: TextView
-    lateinit var mUsernameLabel: EditText
-    lateinit var mEmailLabel: EditText
-    lateinit var mPasswordLabel: EditText
-    lateinit var mProgressView: View
 
     companion object {
         fun launch(context: Context) {
@@ -53,12 +47,6 @@ class SignUpActivity : AppCompatActivity(), SignUpMvp.View {
         TheApp[this].appComponent?.inject(this);
         setContentView(R.layout.activity_signup);
 
-        mTitleLabel = findViewById(R.id.title) as TextView
-        mUsernameLabel = findViewById(R.id.username) as EditText
-        mEmailLabel = findViewById(R.id.email) as EditText
-        mPasswordLabel = findViewById(R.id.password) as EditText
-        mProgressView = findViewById(R.id.progress);
-
         var span = SpannableString(getString(R.string.signup_screen_title));
         span.setSpan(RelativeSizeSpan(1.2f), 0, 1, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
         span.setSpan(StyleSpan(Typeface.BOLD), 0, 1, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
@@ -67,11 +55,11 @@ class SignUpActivity : AppCompatActivity(), SignUpMvp.View {
         mSignupPresenter = SignUpPresenter(this, mAuthenticationRepository, mSessionRepository);
         mCompositeDisposable = CompositeDisposable();
 
-        findViewById(R.id.register).setOnClickListener { signUp() }
+        mRegisterButton.setOnClickListener { signUp() }
     }
 
     fun signUp() {
-        mSignupPresenter.signUp(mUsernameLabel.text.toString(), mEmailLabel.text.toString(), mPasswordLabel.text.toString());
+        mSignupPresenter.signUp(mUsernameInput.text.toString(), mEmailInput.text.toString(), mPasswordInput.text.toString());
     }
 
     override fun showLoading() {
@@ -80,7 +68,7 @@ class SignUpActivity : AppCompatActivity(), SignUpMvp.View {
 
     override fun registerDisposable(disposable: Disposable) { mCompositeDisposable.add(disposable) }
 
-    override fun showRegisterSuccess() = MainActivity.login(getBaseContext());
+    override fun showRegisterSuccess() = MainActivity.login(baseContext);
 
     override fun hideLoading() {
         mProgressView.visibility = View.GONE;

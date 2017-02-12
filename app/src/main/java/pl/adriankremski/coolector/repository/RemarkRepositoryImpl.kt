@@ -6,9 +6,7 @@ import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import io.reactivex.Observable
 import pl.adriankremski.coolector.Constants
-import pl.adriankremski.coolector.model.Remark
-import pl.adriankremski.coolector.model.RemarkCategory
-import pl.adriankremski.coolector.model.RemarkTag
+import pl.adriankremski.coolector.model.*
 import pl.adriankremski.coolector.network.Api
 import java.util.concurrent.TimeUnit
 
@@ -37,11 +35,18 @@ class RemarkRepositoryImpl(val mSharedPreferences: SharedPreferences, val mGson:
     }
 
     override fun loadRemarks(): Observable<List<Remark>> {
-        return mApi.remarks(true)
+        return mApi.remarks(true, "createdat", "descending", 1000)
     }
 
     override fun loadRemarkTags(): Observable<List<RemarkTag>> {
         return mApi.remarkTags()
+    }
+
+    override fun saveRemark(remark: NewRemark): Observable<RemarkNotFromList> {
+        return mApi.saveRemark(remark).flatMap {
+            var operationPath = it.headers().get("X-Operation")
+            ApiUtil.pollRemark(mApi, mApi.operation(operationPath))
+        }
     }
 }
 

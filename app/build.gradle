@@ -51,6 +51,9 @@ android {
     kapt {
         generateStubs = true
     }
+    packagingOptions {
+        pickFirst  'META-INF/rxjava.properties'
+    }
 }
 
 dependencies {
@@ -105,4 +108,9 @@ dependencies {
     compile("com.wefika:flowlayout:0.4.1") {
         exclude group: 'com.intellij', module: 'annotations'
     }
+
+    compile 'pl.charmas.android:android-reactive-location:0.10@aar'
+
+    // libs like rxbinding + rxjava-math haven't been ported to RxJava 2.x yet, so this helps
+    compile "com.github.akarnokd:rxjava2-interop:0.6.1"
 }

@@ -9,7 +9,7 @@ import pl.adriankremski.coolector.utils.setBackgroundCompat
 
 class RemarkTagView(context: Context, tag: RemarkTag) : TextView(context) {
 
-    private var isSelected: Boolean? = false
+    public var isSelected: Boolean? = false
 
     init {
         setOnClickListener {

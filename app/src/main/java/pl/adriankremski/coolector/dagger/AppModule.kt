@@ -94,6 +94,12 @@ class AppModule(private val application: Application) : Constants {
         return RemarkRepositoryImpl(application.getSharedPreferences("shared_preferences", Activity.MODE_PRIVATE), Gson(), api)
     }
 
+    @Provides
+    @Singleton
+    fun provideLocationRepository(): LocationRepository {
+        return LocationRepositoryImpl(application.applicationContext)
+    }
+
     companion object {
 
         private val TAG = AppModule::class.java.name

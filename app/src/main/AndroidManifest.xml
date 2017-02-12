@@ -30,7 +30,9 @@
         <activity android:name=".main.MainActivity">
         </activity>
 
-        <activity android:name=".addremark.AddRemarkActivity">
+        <activity android:name=".addremark.AddRemarkActivity"
+            android:parentActivityName=".main.MainActivity"
+            >
         </activity>
 
         <activity android:name=".authentication.retrievepassword.ResetPasswordActivity">

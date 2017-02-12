@@ -146,6 +146,13 @@ class MainActivity : BaseActivity(), MainMvp.View, OnMapReadyCallback, GoogleApi
         }
     }
 
+    override fun onStart() {
+        super.onStart()
+        if (mMap != null) {
+            mMainPresenter.loadRemarks()
+        }
+    }
+
     fun buildGoogleApiClient() {
         mGoogleApiClient = GoogleApiClient.Builder(this)
                 .addConnectionCallbacks(this)
@@ -247,12 +254,14 @@ class MainActivity : BaseActivity(), MainMvp.View, OnMapReadyCallback, GoogleApi
         mToolbarOptionLabel.visibility = View.VISIBLE
         mRemarksMarkers.forEach(Marker::remove)
         remarks.forEach {
-            var latLng = LatLng(it.location.coordinates[1], it.location.coordinates[0]);
-            var markerOptions = MarkerOptions();
-            markerOptions.position(latLng);
-            markerOptions.title(it.description);
-            markerOptions.icon(it.category.colorOfCategory().toBitmapDescriptor());
-            mRemarksMarkers.add(mMap!!.addMarker(markerOptions))
+            if (it.location != null) {
+                var latLng = LatLng(it.location.coordinates[1], it.location.coordinates[0]);
+                var markerOptions = MarkerOptions();
+                markerOptions.position(latLng);
+                markerOptions.title(it.description);
+                markerOptions.icon(it.category.colorOfCategory().toBitmapDescriptor());
+                mRemarksMarkers.add(mMap!!.addMarker(markerOptions))
+            }
         }
 
         var fragment = supportFragmentManager.findFragmentById(R.id.fragment_view_navigation) as NavigationViewFragment
@@ -267,10 +276,13 @@ class MainActivity : BaseActivity(), MainMvp.View, OnMapReadyCallback, GoogleApi
 
     override fun onRemarkSelected(remark: Remark) {
         drawerLayout.closeDrawer(Gravity.RIGHT)
-        var latLng = LatLng(remark.location.coordinates[1], remark.location.coordinates[0]);
-        mMap?.moveCamera(CameraUpdateFactory.newLatLng(latLng));
-        mMap?.animateCamera(CameraUpdateFactory.zoomTo(13.0f));
-        MainScreenRemarkBottomSheetDialog(this, remark).show()
+
+        if (remark.location != null) {
+            var latLng = LatLng(remark.location.coordinates[1], remark.location.coordinates[0]);
+            mMap?.moveCamera(CameraUpdateFactory.newLatLng(latLng));
+            mMap?.animateCamera(CameraUpdateFactory.zoomTo(16.0f));
+            MainScreenRemarkBottomSheetDialog(this, remark).show()
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {

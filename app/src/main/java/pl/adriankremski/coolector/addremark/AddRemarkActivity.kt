@@ -10,11 +10,9 @@ import android.text.SpannableString
 import android.text.style.RelativeSizeSpan
 import android.text.style.StyleSpan
 import android.view.Gravity
+import android.view.View
 import android.view.ViewGroup
-import android.widget.ArrayAdapter
-import android.widget.EditText
-import android.widget.Spinner
-import android.widget.TextView
+import android.widget.*
 import com.wefika.flowlayout.FlowLayout
 import io.reactivex.disposables.CompositeDisposable
 import pl.adriankremski.coolector.BaseActivity
@@ -22,8 +20,11 @@ import pl.adriankremski.coolector.R
 import pl.adriankremski.coolector.TheApp
 import pl.adriankremski.coolector.authentication.login.AddRemarkPresenter
 import pl.adriankremski.coolector.model.RemarkCategory
+import pl.adriankremski.coolector.model.RemarkNotFromList
 import pl.adriankremski.coolector.model.RemarkTag
+import pl.adriankremski.coolector.repository.LocationRepository
 import pl.adriankremski.coolector.repository.RemarksRepository
+import pl.adriankremski.coolector.utils.getChildViewsWithType
 import pl.adriankremski.coolector.utils.setBackgroundCompat
 import pl.adriankremski.coolector.utils.uppercaseFirstLetter
 import pl.adriankremski.coolector.views.RemarkTagView
@@ -32,7 +33,6 @@ import javax.inject.Inject
 
 
 class AddRemarkActivity : BaseActivity(), AddRemarkMvp.View {
-
     companion object {
         fun start(context: Context) {
             val intent = Intent(context, AddRemarkActivity::class.java)
@@ -43,12 +43,17 @@ class AddRemarkActivity : BaseActivity(), AddRemarkMvp.View {
 
     @Inject
     lateinit var mRemarksRepository: RemarksRepository
+
+    @Inject
+    lateinit var mLocationRepository: LocationRepository
     lateinit var mPresenter: AddRemarkMvp.Presenter
 
     internal var mTitleLabel: TextView? = null
     lateinit var mCategoriesSpinner: Spinner
     lateinit var mDescriptionLabel: EditText
     internal var mTagsLayout: FlowLayout? = null
+    lateinit var mAddressLabel: TextView
+    lateinit var mSubmitButton: View
 
     private var mCompositeDisposable: CompositeDisposable? = null
 
@@ -66,11 +71,30 @@ class AddRemarkActivity : BaseActivity(), AddRemarkMvp.View {
 
         mCategoriesSpinner = findViewById(R.id.remark_categories) as Spinner
 
+        mAddressLabel = findViewById(R.id.address) as TextView
+
+        mDescriptionLabel = findViewById(R.id.description) as EditText
+
+        mSubmitButton = findViewById(R.id.submit) as View
+        mSubmitButton.setOnClickListener { mPresenter.saveRemark(getCategory(), getDescription(), getSelectedTags()) }
+
         mCompositeDisposable = CompositeDisposable();
 
-        mPresenter = AddRemarkPresenter(this, mRemarksRepository)
+        mPresenter = AddRemarkPresenter(this, mRemarksRepository, mLocationRepository)
         mPresenter.loadRemarkCategories()
         mPresenter.loadRemarkTags()
+        mPresenter.loadLastKnownAddress()
+    }
+
+    fun getCategory() = mCategoriesSpinner.selectedItem.toString()
+
+    fun getDescription() = mDescriptionLabel.text.toString()
+
+    fun getSelectedTags(): List<String> {
+        var tags = LinkedList<String>()
+        var tagViews = mTagsLayout!!.getChildViewsWithType(RemarkTagView::class.java)
+        tagViews.filter { it.isSelected!! }.forEach { tags.add(it.text.toString())}
+        return tags
     }
 
     override fun showAvailableRemarkCategories(categories: List<RemarkCategory>) {
@@ -97,5 +121,21 @@ class AddRemarkActivity : BaseActivity(), AddRemarkMvp.View {
 
             mTagsLayout?.addView(newView)
         }
+    }
+
+    override fun showAddress(addressPretty: String) {
+        mAddressLabel.text = addressPretty
+    }
+
+    override fun showSaveRemarkLoading() {
+    }
+
+    override fun showSaveRemarkError() {
+        Toast.makeText(this, "Remark Not ADDED", Toast.LENGTH_SHORT).show()
+    }
+
+    override fun showSaveRemarkSuccess(newRemark: RemarkNotFromList) {
+        Toast.makeText(this, "Remark Addded", Toast.LENGTH_SHORT).show()
+        finish()
     }
 }

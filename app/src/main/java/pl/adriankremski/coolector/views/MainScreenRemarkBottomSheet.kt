@@ -14,6 +14,6 @@ class MainScreenRemarkBottomSheet(context: Context?, val mRemark: Remark) : Fram
         var mNameLabel: TextView = findViewById(R.id.name) as TextView
         var mAddressLabel: TextView = findViewById(R.id.address) as TextView
         mNameLabel.text = mRemark.description
-        mAddressLabel.text = mRemark.location.address
+        mAddressLabel.text = mRemark.location?.address
     }
 }

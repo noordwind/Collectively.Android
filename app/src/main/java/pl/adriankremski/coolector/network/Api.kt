@@ -2,6 +2,7 @@ package pl.adriankremski.coolector.network
 
 import io.reactivex.Observable
 import pl.adriankremski.coolector.model.*
+import retrofit2.Response
 import retrofit2.http.*
 
 interface Api {
@@ -20,7 +21,11 @@ interface Api {
 
     @Headers("Accept: application/json", "Content-type: application/json")
     @GET("api/remarks")
-    fun remarks(@Query("latest") latest: Boolean): Observable<List<Remark>>
+    fun remarks(@Query("latest") latest: Boolean, @Query("orderBy") orderBy: String, @Query("sortorder") sortorder: String, @Query("results") results: Int): Observable<List<Remark>>
+
+    @Headers("Accept: application/json", "Content-type: application/json")
+    @POST("api/remarks")
+    fun saveRemark(@Body remark: NewRemark): Observable<Response<Void>>
 
     @Headers("Accept: application/json", "Content-type: application/json")
     @GET("api/remarks/tags")
@@ -29,4 +34,12 @@ interface Api {
     @Headers("Accept: application/json", "Content-type: application/json")
     @POST("api/reset-password")
     fun resetPassword(@Body body: ResetPasswordRequest): Observable<Void>
+
+    @Headers("Accept: application/json", "Content-type: application/json")
+    @GET("api/{path}")
+    fun createdRemark(@Path(value = "path", encoded = true) resourcePath: String): Observable<RemarkNotFromList>
+
+    @Headers("Accept: application/json", "Content-type: application/json")
+    @GET("api/{path}")
+    fun operation(@Path(value = "path", encoded = true) operationPath: String): Observable<Operation>
 }

@@ -43,7 +43,7 @@ class MainScreenRemarksAdapterDelegate(viewType: Int, val onRemarkSelectedListen
         fun setRemark(remark: Remark) {
             mRemark = remark
             mNameLabel.text = remark.description
-            mAddressLabel.text = remark.location.address
+            mAddressLabel.text = remark.location?.address
         }
     }
 
