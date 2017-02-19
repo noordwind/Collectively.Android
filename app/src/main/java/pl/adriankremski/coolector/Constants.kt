@@ -30,4 +30,16 @@ interface Constants {
             val REMARK = 1
         }
     }
+
+    interface Headers {
+        companion object {
+            val X_OPERATION = "X-Operation"
+        }
+    }
+
+    interface Operation {
+        companion object {
+            val STATE_COMPLETED = "completed"
+        }
+    }
 }

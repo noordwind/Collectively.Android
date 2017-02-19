@@ -28,13 +28,18 @@ class SignUpPresenter(val mView: SignUpMvp.View, val mAuthRepository: Authentica
                 mView.hideLoading()
             }
 
+            override fun onServerError(message: String) {
+                super.onServerError(message)
+                mView.showRegisterServerError(message)
+            }
+
             override fun onNetworkError() {
                 super.onNetworkError()
                 mView.showNetworkError()
             }
         }
 
-        var disposable = mAuthRepository.loginWithEmail(email, password)
+        var disposable = mAuthRepository.signUp(username, email, password)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeWith(observer)

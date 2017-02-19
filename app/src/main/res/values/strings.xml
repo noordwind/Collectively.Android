@@ -20,7 +20,7 @@
     <string name="login_success_message">Zostałes zalogowany</string>
     <string name="main_screen_title">Mapa</string>
     <string name="username">Nazwa użytkownika</string>
-    <string name="add_remark_screen_title">Add remark</string>
+    <string name="add_remark_screen_title">Dodaj zgłoszenie</string>
     <string name="description_hint">Description (optional)</string>
     <string name="add_remark_category_hint">I would like to report a...</string>
     <string name="add_remark_tags_hint">Tags (optional)</string>
@@ -29,4 +29,9 @@
     <string name="open">Open</string>
     <string name="close">Close</string>
     <string name="submit">Submit</string>
+    <string name="password_reset_failed">Błąd resetowania hasła</string>
+    <string name="login_error_title">Błąd logowania</string>
+    <string name="registration_error_title">Błąd rejestracji</string>
+    <string name="ok_button">Ok</string>
+    <string name="error_invalid_user_credentials">Nieprawidłowe dane użytkownika</string>
 </resources>

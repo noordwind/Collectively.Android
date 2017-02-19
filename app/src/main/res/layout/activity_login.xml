@@ -62,6 +62,7 @@
             <EditText
                 android:id="@+id/mEmailInput"
                 android:layout_width="match_parent"
+                android:textCursorDrawable="@drawable/color_cursor"
                 android:layout_height="wrap_content"
                 android:background="@color/red_dark_1"
                 android:fontFamily="@string/font_light"
@@ -73,6 +74,7 @@
             <EditText
                 android:id="@+id/mPasswordInput"
                 android:layout_width="match_parent"
+                android:textCursorDrawable="@drawable/color_cursor"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/spacing_small"
                 android:background="@color/red_dark_1"

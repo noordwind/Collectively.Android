@@ -61,27 +61,29 @@
             android:orientation="vertical">
 
             <EditText
-                android:id="@+id/mUsernameInput"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@color/red_dark_1"
-                android:fontFamily="@string/font_light"
-                android:hint="@string/username"
-                android:padding="@dimen/spacing_medium"
-                android:textColor="@color/white"
-                android:textColorHint="@color/red_light" />
-
-            <EditText
                 android:id="@+id/mEmailInput"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/spacing_small"
                 android:background="@color/red_dark_1"
                 android:fontFamily="@string/font_light"
                 android:hint="@string/email"
                 android:padding="@dimen/spacing_medium"
                 android:textColor="@color/white"
-                android:textColorHint="@color/red_light" />
+                android:textColorHint="@color/red_light"
+                android:textCursorDrawable="@drawable/color_cursor" />
+
+            <EditText
+                android:id="@+id/mUsernameInput"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/spacing_small"
+                android:background="@color/red_dark_1"
+                android:fontFamily="@string/font_light"
+                android:hint="@string/username"
+                android:padding="@dimen/spacing_medium"
+                android:textColor="@color/white"
+                android:textColorHint="@color/red_light"
+                android:textCursorDrawable="@drawable/color_cursor" />
 
             <EditText
                 android:id="@+id/mPasswordInput"
@@ -94,7 +96,8 @@
                 android:inputType="textPassword"
                 android:padding="@dimen/spacing_medium"
                 android:textColor="@color/white"
-                android:textColorHint="@color/red_light" />
+                android:textColorHint="@color/red_light"
+                android:textCursorDrawable="@drawable/color_cursor" />
 
             <android.support.v7.widget.CardView
                 android:id="@+id/mRegisterButton"

@@ -1,7 +1,9 @@
 package pl.adriankremski.coolector.network
 
-import com.jakewharton.retrofit2.adapter.rxjava2.HttpException
 import io.reactivex.observers.DisposableObserver
+import pl.adriankremski.coolector.model.OperationError
+import java.io.IOException
+import java.net.UnknownHostException
 
 open class AppDisposableObserver<T> : DisposableObserver<T>() {
     override fun onNext(value: T) {
@@ -9,9 +11,15 @@ open class AppDisposableObserver<T> : DisposableObserver<T>() {
     }
 
     override fun onError(e: Throwable) {
-        if (e is HttpException) {
+        if (e is OperationError) {
+            onServerError(e.message)
+        } else if (e is UnknownHostException || e is IOException) {
             onNetworkError()
         }
+    }
+
+    open fun onServerError(message: String) {
+
     }
 
     open fun onNetworkError() {

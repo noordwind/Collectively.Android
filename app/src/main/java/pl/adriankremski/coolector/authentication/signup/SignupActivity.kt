@@ -20,6 +20,7 @@ import pl.adriankremski.coolector.TheApp
 import pl.adriankremski.coolector.main.MainActivity
 import pl.adriankremski.coolector.repository.AuthenticationRepository
 import pl.adriankremski.coolector.repository.SessionRepository
+import pl.adriankremski.coolector.utils.showLoginErrorDialog
 import javax.inject.Inject
 
 
@@ -77,6 +78,8 @@ class SignUpActivity : AppCompatActivity(), SignUpMvp.View {
     override fun showNetworkError() {
         Snackbar.make(findViewById(android.R.id.content), getString(R.string.error_no_network), Snackbar.LENGTH_LONG).show();
     }
+
+    override fun showRegisterServerError(message: String) = showLoginErrorDialog(message)
 
     override fun onDestroy() {
         super.onDestroy()

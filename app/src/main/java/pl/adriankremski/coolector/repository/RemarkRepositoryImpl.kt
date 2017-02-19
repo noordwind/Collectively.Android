@@ -44,8 +44,13 @@ class RemarkRepositoryImpl(val mSharedPreferences: SharedPreferences, val mGson:
 
     override fun saveRemark(remark: NewRemark): Observable<RemarkNotFromList> {
         return mApi.saveRemark(remark).flatMap {
-            var operationPath = it.headers().get("X-Operation")
-            ApiUtil.pollRemark(mApi, mApi.operation(operationPath))
+            var operationPath = it.headers().get(Constants.Headers.X_OPERATION)
+
+            mApi.operation(operationPath)
+                    .repeatWhen { it.delay(500, TimeUnit.MILLISECONDS) }
+                    .takeUntil<Operation> { it.state.equals(Constants.Operation.STATE_COMPLETED) }
+                    .filter { !it.state.equals(Constants.Operation.STATE_COMPLETED) }
+                    .flatMap { mApi.createdRemark(it.resource) }
         }
     }
 }

@@ -12,6 +12,7 @@ interface LoginMvp {
         fun showLoginSuccess()
         fun showMainScreen()
         fun closeScreen()
+        fun showInvalidUserError()
     }
 
     interface Presenter{

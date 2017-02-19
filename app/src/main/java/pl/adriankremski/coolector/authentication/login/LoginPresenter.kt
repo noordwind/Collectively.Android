@@ -1,5 +1,6 @@
 package pl.adriankremski.coolector.authentication.login
 
+import com.jakewharton.retrofit2.adapter.rxjava2.HttpException
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import pl.adriankremski.coolector.network.AppDisposableObserver
@@ -33,6 +34,9 @@ class LoginPresenter(val mView: LoginMvp.View, val mRepository : AuthenticationR
 
             override fun onError(e: Throwable) {
                 super.onError(e)
+                if (e is HttpException && e.code() == 401)  {
+                    mView.showInvalidUserError();
+                }
                 mView.hideLoading()
             }
 
