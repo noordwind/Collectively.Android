@@ -100,6 +100,12 @@ class AppModule(private val application: Application) : Constants {
         return LocationRepositoryImpl(application.applicationContext)
     }
 
+    @Provides
+    @Singleton
+    fun providerOperationRepository(): OperationRepository {
+        return OperationRepositoryImpl(application.applicationContext)
+    }
+
     companion object {
 
         private val TAG = AppModule::class.java.name

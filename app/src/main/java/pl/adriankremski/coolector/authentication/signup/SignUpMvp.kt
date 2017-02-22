@@ -10,7 +10,7 @@ interface SignUpMvp {
         fun hideLoading()
         fun showNetworkError()
         fun showRegisterSuccess()
-        fun showRegisterServerError(message: String)
+        fun showRegisterServerError(message: String?)
     }
 
     interface Presenter{

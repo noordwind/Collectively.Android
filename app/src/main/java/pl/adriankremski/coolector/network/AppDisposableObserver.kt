@@ -12,13 +12,13 @@ open class AppDisposableObserver<T> : DisposableObserver<T>() {
 
     override fun onError(e: Throwable) {
         if (e is OperationError) {
-            onServerError(e.message)
+            onServerError(e.operation.message)
         } else if (e is UnknownHostException || e is IOException) {
             onNetworkError()
         }
     }
 
-    open fun onServerError(message: String) {
+    open fun onServerError(message: String?) {
 
     }
 

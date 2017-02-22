@@ -9,15 +9,15 @@ import pl.adriankremski.coolector.repository.AuthenticationRepository
 class ResetPasswordPresenter(val mView: ResetPasswordMvp.View, val mRepository : AuthenticationRepository) : ResetPasswordMvp.Presenter {
 
     override fun resetPassword(email: String) {
-        var observer = object : AppDisposableObserver<Void>() {
+        var observer = object : AppDisposableObserver<Boolean>() {
 
             override fun onStart() {
                 super.onStart()
                 mView.showLoading()
             }
 
-            override fun onNext(value: Void) {
-                super.onNext(value)
+            override fun onNext(status: Boolean) {
+                super.onNext(status)
                 mView.hideLoading()
                 mView.showResetPasswordSuccess()
             }
@@ -25,6 +25,11 @@ class ResetPasswordPresenter(val mView: ResetPasswordMvp.View, val mRepository :
             override fun onError(e: Throwable) {
                 super.onError(e)
                 mView.hideLoading()
+            }
+
+            override fun onServerError(message: String?) {
+                super.onServerError(message)
+                mView.showResetPasswordServerError(message)
             }
 
             override fun onNetworkError() {

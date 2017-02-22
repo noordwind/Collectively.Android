@@ -61,6 +61,10 @@ class ResetPasswordActivity : AppCompatActivity(), ResetPasswordMvp.View {
 
     override fun showResetPasswordSuccess() = Snackbar.make(findViewById(android.R.id.content), getString(R.string.error_no_network), Snackbar.LENGTH_LONG).show()
 
+    override fun showResetPasswordServerError(message: String?) {
+        showResetPasswordServerError(message!!)
+    }
+
     override fun onDestroy() {
         super.onDestroy()
         mCompositeDisposable.clear();

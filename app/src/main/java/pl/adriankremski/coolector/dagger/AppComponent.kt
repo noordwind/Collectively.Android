@@ -8,6 +8,7 @@ import pl.adriankremski.coolector.authentication.retrievepassword.ResetPasswordA
 import pl.adriankremski.coolector.authentication.signup.SignUpActivity
 import pl.adriankremski.coolector.main.MainActivity
 import pl.adriankremski.coolector.repository.AuthenticationRepositoryImpl
+import pl.adriankremski.coolector.repository.OperationRepositoryImpl
 import pl.adriankremski.coolector.repository.SessionRepositoryImpl
 import javax.inject.Singleton
 
@@ -26,4 +27,5 @@ interface AppComponent {
     //Repositories
     fun inject(repository: AuthenticationRepositoryImpl)
     fun inject(repository: SessionRepositoryImpl)
+    fun inject(repository: OperationRepositoryImpl)
 }

@@ -1,6 +1,6 @@
 package pl.adriankremski.coolector.model
 
-class OperationError(override val message: String) : Exception() {
+class OperationError(val operation: Operation) : Exception() {
 
 }
 

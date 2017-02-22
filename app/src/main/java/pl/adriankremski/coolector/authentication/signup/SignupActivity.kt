@@ -79,7 +79,7 @@ class SignUpActivity : AppCompatActivity(), SignUpMvp.View {
         Snackbar.make(findViewById(android.R.id.content), getString(R.string.error_no_network), Snackbar.LENGTH_LONG).show();
     }
 
-    override fun showRegisterServerError(message: String) = showLoginErrorDialog(message)
+    override fun showRegisterServerError(message: String?) = showLoginErrorDialog(message!!)
 
     override fun onDestroy() {
         super.onDestroy()

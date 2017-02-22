@@ -40,6 +40,7 @@ interface Constants {
     interface Operation {
         companion object {
             val STATE_COMPLETED = "completed"
+            val STATE_REJECTED = "rejected"
         }
     }
 }

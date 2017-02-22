@@ -10,6 +10,7 @@ interface ResetPasswordMvp {
         fun hideLoading()
         fun showNetworkError()
         fun showResetPasswordSuccess()
+        fun  showResetPasswordServerError(message: String?)
     }
 
     interface Presenter{

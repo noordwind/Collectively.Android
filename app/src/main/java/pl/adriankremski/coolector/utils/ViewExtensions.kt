@@ -62,3 +62,12 @@ fun Activity.showRegistrationErrorDialog(message: String) {
     builder.show()
 }
 
+fun Activity.showResetPasswordErrorDialog(message: String) {
+    val builder = AlertDialog.Builder(this)
+    builder
+            .setTitle(this.getString(R.string.password_reset_failed))
+            .setMessage(message)
+            .setPositiveButton(this.getString(R.string.ok_button), null)
+    builder.show()
+}
+

@@ -28,7 +28,7 @@ class SignUpPresenter(val mView: SignUpMvp.View, val mAuthRepository: Authentica
                 mView.hideLoading()
             }
 
-            override fun onServerError(message: String) {
+            override fun onServerError(message: String?) {
                 super.onServerError(message)
                 mView.showRegisterServerError(message)
             }

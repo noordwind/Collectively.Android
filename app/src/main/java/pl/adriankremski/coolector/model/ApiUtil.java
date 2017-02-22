@@ -25,12 +25,14 @@ public class ApiUtil {
             public boolean test(Operation operation) throws Exception {
                 return operation.getSuccess();
             }
-        }).filter(new Predicate<Operation>() {
+        }).filter(
+                new Predicate<Operation>() {
             @Override
             public boolean test(Operation operation) throws Exception {
                 return operation.getSuccess();
             }
-        }).flatMap(new Function<Operation, ObservableSource<RemarkNotFromList>>() {
+        }
+        ).flatMap(new Function<Operation, ObservableSource<RemarkNotFromList>>() {
             @Override
             public ObservableSource<RemarkNotFromList> apply(Operation operation) throws Exception {
                 return api.createdRemark(operation.getResource());
