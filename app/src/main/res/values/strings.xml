@@ -2,8 +2,10 @@
     <string name="app_name">Coolector</string>
     <string name="login_screen_title">Coolector - Logowanie</string>
     <string name="want_new_account">Nie posiadasz konta?</string>
-    <string name="font_normal">sans-serif</string>
-    <string name="font_light">sans-serif-light</string>
+    <string name="font_normal" translatable="false">sans-serif</string>
+    <string name="font_light" translatable="false">sans-serif-light</string>
+    <string name="font_condensed" translatable="false">sans-serif-condensed</string>
+
     <string name="sign_up">Rejestracja</string>
 
     <string name="email">Email</string>

@@ -2,7 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="300dp"
     android:layout_height="match_parent"
-    android:background="@color/white"
+    android:background="@color/main_menu_background"
     android:orientation="vertical">
 
     <LinearLayout
@@ -28,7 +28,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/spacing_medium"
             android:layout_gravity="center_vertical"
-            android:fontFamily="@string/font_normal"
+            android:fontFamily="@string/font_condensed"
             android:text="Adrian Kremski"
             android:textColor="@color/white_pressed"
             android:textSize="@dimen/font_large"
@@ -45,7 +45,7 @@
         android:orientation="vertical">
 
         <LinearLayout
-            android:id="@+id/profile"
+            android:id="@+id/mProfileOptionView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
@@ -58,7 +58,7 @@
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/settings"
+            android:id="@+id/mSettingsOptionView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
@@ -76,7 +76,7 @@
             android:background="@color/menu_delimiter" />
 
         <LinearLayout
-            android:id="@+id/fanpage"
+            android:id="@+id/mFanpageOptionView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"

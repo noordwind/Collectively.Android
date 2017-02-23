@@ -35,6 +35,7 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
+import kotlinx.android.synthetic.main.activity_main.*
 import pl.adriankremski.coolector.BaseActivity
 import pl.adriankremski.coolector.R
 import pl.adriankremski.coolector.TheApp
@@ -92,6 +93,8 @@ class MainActivity : BaseActivity(), MainMvp.View, OnMapReadyCallback, GoogleApi
 //        mToolbarOptionLabel.text = getString(R.string.list)
 //        mToolbarOptionLabel.visibility = View.GONE
 //        mToolbarOptionLabel.setOnClickListener { drawerLayout.openDrawer(Gravity.RIGHT) }
+
+        mMainMenu.setOnClickListener { drawerLayout.openDrawer(Gravity.LEFT) }
 
         drawerLayout = findViewById(R.id.drawer_layout) as DrawerLayout
         drawerToggle = ActionBarDrawerToggle(this, drawerLayout, R.string.open, R.string.close)

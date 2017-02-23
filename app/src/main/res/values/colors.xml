@@ -4,16 +4,24 @@
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
 
-    <color name="red_light">#E57373</color>
-    <color name="red_dark_1">#C62828</color>
-    <color name="red_dark_2">#B71C1C</color>
+    <color name="red_light">#0288D1</color>
+    <color name="red_dark_1">#0277BD</color>
+    <color name="red_dark_2">#01579B</color>
     <color name="white">#FFFFFF</color>
     <color name="white_pressed">#f1f1f1</color>
     <color name="half_black">#808080</color>
     <color name="light_grey">#CCdddddd</color>
     <color name="black_semi_transparent">#B2000000</color>
     <color name="black">#000000</color>
+    <color name="menu_delimiter">#d0d0d0</color>
+
+    // GREY COLORS
     <color name="grey">#ddd</color>
     <color name="grey_semi_transparent">#22DDDDDD</color>
-    <color name="menu_delimiter">#d0d0d0</color>
+    <color name="bg_gray">#ebebeb</color>
+    <color name="bg_dark_gray">#575757</color>
+    <color name="bg_mid_gray">#bebebe</color>
+    <color name="bg_light_gray">#f2f2f2</color>
+
+    <color name="main_menu_background">@color/bg_light_gray</color>
 </resources>
