@@ -3,7 +3,7 @@
     <string name="login_screen_title">Coolector - Logowanie</string>
     <string name="want_new_account">Nie posiadasz konta?</string>
     <string name="font_normal">sans-serif</string>
-    <string name="font_light">sans-serif_light</string>
+    <string name="font_light">sans-serif-light</string>
     <string name="sign_up">Rejestracja</string>
 
     <string name="email">Email</string>
@@ -34,4 +34,7 @@
     <string name="registration_error_title">Błąd rejestracji</string>
     <string name="ok_button">Ok</string>
     <string name="error_invalid_user_credentials">Nieprawidłowe dane użytkownika</string>
+    <string name="profile">Profile</string>
+    <string name="settings">Settings</string>
+    <string name="fanpage">Fanpage</string>
 </resources>

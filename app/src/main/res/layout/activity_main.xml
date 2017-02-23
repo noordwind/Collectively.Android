@@ -13,21 +13,11 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <FrameLayout
-            android:id="@+id/toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentTop="true">
-
-            <include layout="@layout/view_toolbar_with_title" />
-        </FrameLayout>
-
         <fragment
             android:id="@+id/map"
             android:name="com.google.android.gms.maps.SupportMapFragment"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_below="@id/toolbar" />
+            android:layout_height="match_parent"/>
 
         <com.getbase.floatingactionbutton.FloatingActionsMenu
             android:id="@+id/actions"
@@ -49,7 +39,15 @@
     </RelativeLayout>
 
     <android.support.design.widget.NavigationView
-        android:id="@+id/navigation_view"
+        android:id="@+id/left_navigation_view"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_gravity="left"
+        android:background="@color/white"
+        app:headerLayout="@layout/main_navigation" />
+
+    <android.support.design.widget.NavigationView
+        android:id="@+id/right_navigation_view"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="right"

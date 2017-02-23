@@ -14,4 +14,5 @@
     <dimen name="font_medium">18sp</dimen>
     <dimen name="font_large">22sp</dimen>
     <dimen name="font_tiny">10sp</dimen>
+    <dimen name="menu_delimiter">1px</dimen>
 </resources>

@@ -12,6 +12,8 @@
     <color name="half_black">#808080</color>
     <color name="light_grey">#CCdddddd</color>
     <color name="black_semi_transparent">#B2000000</color>
+    <color name="black">#000000</color>
     <color name="grey">#ddd</color>
     <color name="grey_semi_transparent">#22DDDDDD</color>
+    <color name="menu_delimiter">#d0d0d0</color>
 </resources>

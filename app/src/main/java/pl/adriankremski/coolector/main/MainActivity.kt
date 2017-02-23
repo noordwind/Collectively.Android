@@ -19,8 +19,6 @@ import android.text.style.RelativeSizeSpan
 import android.text.style.StyleSpan
 import android.view.Gravity
 import android.view.Menu
-import android.view.View
-import android.widget.TextView
 import android.widget.Toast
 import com.getbase.floatingactionbutton.FloatingActionButton
 import com.getbase.floatingactionbutton.FloatingActionsMenu
@@ -64,8 +62,6 @@ class MainActivity : BaseActivity(), MainMvp.View, OnMapReadyCallback, GoogleApi
     }
 
     private lateinit var mFloatingActionsMenu: FloatingActionsMenu
-    private lateinit var mTitleLabel: TextView
-    private lateinit var mToolbarOptionLabel: TextView
     private var mMap: GoogleMap? = null
     private var mGoogleApiClient: GoogleApiClient? = null
     private var mLocationRequest: LocationRequest? = null
@@ -92,18 +88,16 @@ class MainActivity : BaseActivity(), MainMvp.View, OnMapReadyCallback, GoogleApi
         span.setSpan(RelativeSizeSpan(1.2f), 0, 1, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
         span.setSpan(StyleSpan(Typeface.BOLD), 0, 1, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
 
-        mTitleLabel = findViewById(R.id.title) as TextView
-        mToolbarOptionLabel = findViewById(R.id.option) as TextView
-        mToolbarOptionLabel.text = getString(R.string.list)
-        mToolbarOptionLabel.visibility = View.GONE
-        mToolbarOptionLabel.setOnClickListener { drawerLayout.openDrawer(Gravity.RIGHT) }
+//        mToolbarOptionLabel = findViewById(R.id.option) as TextView
+//        mToolbarOptionLabel.text = getString(R.string.list)
+//        mToolbarOptionLabel.visibility = View.GONE
+//        mToolbarOptionLabel.setOnClickListener { drawerLayout.openDrawer(Gravity.RIGHT) }
 
         drawerLayout = findViewById(R.id.drawer_layout) as DrawerLayout
         drawerToggle = ActionBarDrawerToggle(this, drawerLayout, R.string.open, R.string.close)
         drawerLayout.setDrawerListener(drawerToggle)
         drawerToggle.syncState()
 
-        mTitleLabel.text = span
         mFloatingActionsMenu = findViewById(R.id.actions) as FloatingActionsMenu
 
         if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -251,7 +245,6 @@ class MainActivity : BaseActivity(), MainMvp.View, OnMapReadyCallback, GoogleApi
 
     override fun showRemarks(remarks: List<Remark>) {
         mRemarks = remarks
-        mToolbarOptionLabel.visibility = View.VISIBLE
         mRemarksMarkers.forEach(Marker::remove)
         remarks.forEach {
             if (it.location != null) {
