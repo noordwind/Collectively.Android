@@ -58,6 +58,19 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/mStatisticsOptionView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingLeft="@dimen/spacing_medium">
+
+            <TextView
+                style="@style/MenuOption"
+                android:paddingLeft="0dp"
+                android:text="@string/statistics" />
+        </LinearLayout>
+
+        <LinearLayout
             android:id="@+id/mSettingsOptionView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

@@ -20,12 +20,17 @@ class MainNavigationFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         mProfileOptionView.setOnClickListener { openProfile() }
+        mStatisticsOptionView.setOnClickListener { openStatistics() }
         mSettingsOptionView.setOnClickListener { openSettings() }
         mFanpageOptionView.setOnClickListener { openFanPage() }
     }
 
     fun openProfile() {
         Snackbar.make(activity.findViewById(android.R.id.content), "Profile", Snackbar.LENGTH_SHORT).show();
+    }
+
+    fun openStatistics() {
+        Snackbar.make(activity.findViewById(android.R.id.content), "Statistics", Snackbar.LENGTH_SHORT).show();
     }
 
     fun openSettings() {
