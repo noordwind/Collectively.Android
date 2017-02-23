@@ -1,23 +1,23 @@
-package pl.adriankremski.coolector.statistics
+package pl.adriankremski.coolector.profile
 
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
-import pl.adriankremski.coolector.model.Statistics
+import pl.adriankremski.coolector.model.Profile
 import pl.adriankremski.coolector.network.AppDisposableObserver
-import pl.adriankremski.coolector.repository.StatisticsRepository
+import pl.adriankremski.coolector.repository.ProfileRepository
 
-class StatisticsPresenter(val mView: StatisticsMvp.View, val mStatisticsRepository : StatisticsRepository) : StatisticsMvp.Presenter {
-    override fun loadStatistics() {
-        var observer = object : AppDisposableObserver<Statistics>() {
+class ProfilePresenter(val mView: ProfileMvp.View, val mProfileRepository : ProfileRepository) : ProfileMvp.Presenter {
+    override fun loadProfile() {
+        var observer = object : AppDisposableObserver<Profile>() {
 
             override fun onStart() {
                 super.onStart()
                 mView.showLoading()
             }
 
-            override fun onNext(statistics: Statistics) {
-                super.onNext(statistics)
-                mView.showStatistics()
+            override fun onNext(profile: Profile) {
+                super.onNext(profile)
+                mView.showProfile(profile)
             }
 
             override fun onError(e: Throwable) {
@@ -26,16 +26,16 @@ class StatisticsPresenter(val mView: StatisticsMvp.View, val mStatisticsReposito
 
             override fun onServerError(message: String?) {
                 super.onServerError(message)
-                mView.showLoadStatisticsError(message)
+                mView.showLoadProfileError(message)
             }
 
             override fun onNetworkError() {
                 super.onNetworkError()
-                mView.showLoadStatisticsNetworkError()
+                mView.showLoadProfileNetworkError()
             }
         }
 
-        var disposable = mStatisticsRepository.loadStatistics()
+        var disposable = mProfileRepository.loadProfile()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeWith(observer)

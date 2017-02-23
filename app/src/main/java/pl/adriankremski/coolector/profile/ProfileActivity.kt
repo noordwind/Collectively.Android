@@ -1,4 +1,4 @@
-package pl.adriankremski.coolector.statistics
+package pl.adriankremski.coolector.profile
 
 import android.content.Context
 import android.content.Intent
@@ -14,24 +14,25 @@ import io.reactivex.disposables.CompositeDisposable
 import pl.adriankremski.coolector.BaseActivity
 import pl.adriankremski.coolector.R
 import pl.adriankremski.coolector.TheApp
-import pl.adriankremski.coolector.repository.StatisticsRepository
+import pl.adriankremski.coolector.model.Profile
+import pl.adriankremski.coolector.repository.ProfileRepository
 import javax.inject.Inject
 
 
-class StatisticsActivity : BaseActivity(), StatisticsMvp.View {
+class ProfileActivity : BaseActivity(), ProfileMvp.View {
 
     companion object {
         fun start(context: Context) {
-            val intent = Intent(context, StatisticsActivity::class.java)
+            val intent = Intent(context, ProfileActivity::class.java)
             intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
             context.startActivity(intent)
         }
     }
 
     @Inject
-    lateinit var mStatisticsRepository: StatisticsRepository
+    lateinit var mProfileRepository: ProfileRepository
 
-    lateinit var mPresenter: StatisticsMvp.Presenter
+    lateinit var mPresenter: ProfileMvp.Presenter
 
     internal var mTitleLabel: TextView? = null
 
@@ -40,31 +41,31 @@ class StatisticsActivity : BaseActivity(), StatisticsMvp.View {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         TheApp[this].appComponent?.inject(this)
-        setContentView(R.layout.activity_statistics);
-        var span = SpannableString(getString(R.string.statistics_screen_title))
+        setContentView(R.layout.activity_profile);
+        var span = SpannableString(getString(R.string.profile_screen_title))
         span.setSpan(RelativeSizeSpan(1.2f), 0, 1, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
         span.setSpan(StyleSpan(Typeface.BOLD), 0, 1, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
         mTitleLabel = findViewById(R.id.title) as TextView
         mTitleLabel?.text = span;
         mCompositeDisposable = CompositeDisposable();
 
-        mPresenter = StatisticsPresenter(this, mStatisticsRepository)
-        mPresenter.loadStatistics()
+        mPresenter = ProfilePresenter(this, mProfileRepository)
+        mPresenter.loadProfile()
     }
 
     override fun showLoading() {
         Toast.makeText(this, "Loading", Toast.LENGTH_SHORT).show()
     }
 
-    override fun showLoadStatisticsError(message: String?) {
+    override fun showLoadProfileError(message: String?) {
         Toast.makeText(this, "Loading error", Toast.LENGTH_SHORT).show()
     }
 
-    override fun showStatistics() {
-        Toast.makeText(this, "Statistics loaded", Toast.LENGTH_SHORT).show()
+    override fun showProfile(profile: Profile) {
+        Toast.makeText(this, "Profile loaded", Toast.LENGTH_SHORT).show()
     }
 
-    override fun showLoadStatisticsNetworkError() {
+    override fun showLoadProfileNetworkError() {
         Toast.makeText(this, "Network error", Toast.LENGTH_SHORT).show()
     }
 }

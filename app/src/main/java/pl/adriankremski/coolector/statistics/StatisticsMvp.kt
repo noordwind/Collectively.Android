@@ -1,4 +1,4 @@
-package pl.adriankremski.coolector.addremark
+package pl.adriankremski.coolector.statistics
 
 import io.reactivex.disposables.Disposable
 

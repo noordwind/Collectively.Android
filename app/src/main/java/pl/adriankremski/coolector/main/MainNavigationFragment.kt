@@ -8,7 +8,8 @@ import android.view.View
 import android.view.ViewGroup
 import kotlinx.android.synthetic.main.fragment_main_navigation.*
 import pl.adriankremski.coolector.R
-import pl.adriankremski.coolector.addremark.StatisticsActivity
+import pl.adriankremski.coolector.profile.ProfileActivity
+import pl.adriankremski.coolector.statistics.StatisticsActivity
 
 class MainNavigationFragment : Fragment() {
 
@@ -27,7 +28,7 @@ class MainNavigationFragment : Fragment() {
     }
 
     fun openProfile() {
-        Snackbar.make(activity.findViewById(android.R.id.content), "Profile", Snackbar.LENGTH_SHORT).show();
+        ProfileActivity.start(context)
     }
 
     fun openStatistics() {

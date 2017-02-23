@@ -18,7 +18,6 @@ import io.reactivex.disposables.CompositeDisposable
 import pl.adriankremski.coolector.BaseActivity
 import pl.adriankremski.coolector.R
 import pl.adriankremski.coolector.TheApp
-import pl.adriankremski.coolector.authentication.login.AddRemarkPresenter
 import pl.adriankremski.coolector.model.RemarkCategory
 import pl.adriankremski.coolector.model.RemarkNotFromList
 import pl.adriankremski.coolector.model.RemarkTag

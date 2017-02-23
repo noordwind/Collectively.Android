@@ -9,9 +9,9 @@
         android:id="@+id/photo_section"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingTop="@dimen/spacing_large"
+        android:paddingTop="@dimen/spacing_xl"
         android:paddingLeft="@dimen/spacing_medium"
-        android:paddingBottom="@dimen/spacing_large"
+        android:paddingBottom="@dimen/spacing_xl"
         android:background="@color/red_dark_2"
         android:orientation="horizontal">
 

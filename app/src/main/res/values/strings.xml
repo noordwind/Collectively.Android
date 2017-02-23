@@ -41,4 +41,5 @@
     <string name="fanpage">Fanpage</string>
     <string name="statistics">Statistics</string>
     <string name="statistics_screen_title">Statistics</string>
+    <string name="profile_screen_title">Profile</string>
 </resources>

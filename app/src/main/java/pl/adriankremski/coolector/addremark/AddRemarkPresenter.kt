@@ -1,10 +1,9 @@
-package pl.adriankremski.coolector.authentication.login
+package pl.adriankremski.coolector.addremark
 
 import android.location.Address
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.observers.DisposableObserver
 import io.reactivex.schedulers.Schedulers
-import pl.adriankremski.coolector.addremark.AddRemarkMvp
 import pl.adriankremski.coolector.model.NewRemark
 import pl.adriankremski.coolector.model.RemarkCategory
 import pl.adriankremski.coolector.model.RemarkNotFromList

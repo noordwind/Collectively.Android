@@ -1,4 +1,4 @@
-package pl.adriankremski.coolector.authentication.login
+package pl.adriankremski.coolector.authentication.retrievepassword
 
 import io.reactivex.disposables.Disposable
 

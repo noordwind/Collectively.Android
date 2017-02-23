@@ -1,8 +1,7 @@
-package pl.adriankremski.coolector.authentication.login
+package pl.adriankremski.coolector.main
 
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
-import pl.adriankremski.coolector.main.MainMvp
 import pl.adriankremski.coolector.model.Remark
 import pl.adriankremski.coolector.model.RemarkCategory
 import pl.adriankremski.coolector.network.AppDisposableObserver

@@ -112,6 +112,12 @@ class AppModule(private val application: Application) : Constants {
         return StatisticsRepositoryImpl(application.applicationContext)
     }
 
+    @Provides
+    @Singleton
+    fun provideProfileRepository(): ProfileRepository {
+        return ProfileRepositoryImpl(application.applicationContext)
+    }
+
     companion object {
 
         private val TAG = AppModule::class.java.name

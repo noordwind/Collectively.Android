@@ -17,7 +17,6 @@ import kotlinx.android.synthetic.main.activity_reset_password.*
 import kotlinx.android.synthetic.main.view_login_progress.*
 import pl.adriankremski.coolector.R
 import pl.adriankremski.coolector.TheApp
-import pl.adriankremski.coolector.authentication.login.ResetPasswordMvp
 import pl.adriankremski.coolector.repository.AuthenticationRepository
 import javax.inject.Inject
 

@@ -41,7 +41,6 @@ import pl.adriankremski.coolector.R
 import pl.adriankremski.coolector.TheApp
 import pl.adriankremski.coolector.adapter.delegates.MainScreenRemarksAdapterDelegate
 import pl.adriankremski.coolector.addremark.AddRemarkActivity
-import pl.adriankremski.coolector.authentication.login.MainPresenter
 import pl.adriankremski.coolector.model.Remark
 import pl.adriankremski.coolector.model.RemarkCategory
 import pl.adriankremski.coolector.repository.RemarksRepository

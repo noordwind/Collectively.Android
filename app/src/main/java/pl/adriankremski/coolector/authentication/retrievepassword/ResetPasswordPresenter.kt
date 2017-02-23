@@ -2,7 +2,6 @@ package pl.adriankremski.coolector.authentication.retrievepassword
 
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
-import pl.adriankremski.coolector.authentication.login.ResetPasswordMvp
 import pl.adriankremski.coolector.network.AppDisposableObserver
 import pl.adriankremski.coolector.repository.AuthenticationRepository
 
