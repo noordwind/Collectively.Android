@@ -13,8 +13,12 @@ open class BaseActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         mCompositeDisposable = CompositeDisposable()
+    }
 
-        var toolbar = findViewById(R.id.toolbar) as Toolbar
+    override fun setContentView(layoutResID: Int) {
+        super.setContentView(layoutResID)
+
+        var toolbar = findViewById(R.id.toolbar) as Toolbar?
         if (toolbar != null) {
             setSupportActionBar(toolbar)
             val actionBar = supportActionBar
@@ -31,6 +35,6 @@ open class BaseActivity : AppCompatActivity() {
 
     override fun onDestroy() {
         super.onDestroy()
-        mCompositeDisposable?.clear();
+        mCompositeDisposable.clear();
     }
 }
