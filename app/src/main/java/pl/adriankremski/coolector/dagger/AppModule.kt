@@ -102,8 +102,14 @@ class AppModule(private val application: Application) : Constants {
 
     @Provides
     @Singleton
-    fun providerOperationRepository(): OperationRepository {
+    fun provideOperationRepository(): OperationRepository {
         return OperationRepositoryImpl(application.applicationContext)
+    }
+
+    @Provides
+    @Singleton
+    fun provideStatisticsRepository(): StatisticsRepository {
+        return StatisticsRepositoryImpl(application.applicationContext)
     }
 
     companion object {

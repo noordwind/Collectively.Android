@@ -2,6 +2,7 @@ package pl.adriankremski.coolector
 
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
+import android.support.v7.widget.Toolbar
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 
@@ -12,6 +13,16 @@ open class BaseActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         mCompositeDisposable = CompositeDisposable()
+
+        var toolbar = findViewById(R.id.toolbar) as Toolbar
+        if (toolbar != null) {
+            setSupportActionBar(toolbar)
+            val actionBar = supportActionBar
+            if (actionBar != null) {
+                actionBar.setDisplayHomeAsUpEnabled(true)
+                actionBar.setDisplayShowTitleEnabled(false)
+            }
+        }
     }
 
     fun addDisposable(disposable: Disposable) {

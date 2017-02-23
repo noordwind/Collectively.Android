@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import kotlinx.android.synthetic.main.fragment_main_navigation.*
 import pl.adriankremski.coolector.R
+import pl.adriankremski.coolector.addremark.StatisticsActivity
 
 class MainNavigationFragment : Fragment() {
 
@@ -30,7 +31,7 @@ class MainNavigationFragment : Fragment() {
     }
 
     fun openStatistics() {
-        Snackbar.make(activity.findViewById(android.R.id.content), "Statistics", Snackbar.LENGTH_SHORT).show();
+        StatisticsActivity.start(context)
     }
 
     fun openSettings() {

@@ -28,6 +28,10 @@ interface Api {
     @GET("api/{path}")
     fun operation(@Path(value = "path", encoded = true) operationPath: String): Observable<Operation>
 
+    @Headers("Accept: application/json", "Content-type: application/json")
+    @GET("api/{path}")
+    fun loadStatistics(): Observable<Statistics>
+
     // POST
     @Headers("Accept: application/json", "Content-type: application/json")
     @POST("api/sign-in")
