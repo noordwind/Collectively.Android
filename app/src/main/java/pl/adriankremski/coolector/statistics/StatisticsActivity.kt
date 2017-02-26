@@ -11,8 +11,8 @@ import android.text.Spannable
 import android.text.SpannableString
 import android.text.style.RelativeSizeSpan
 import android.text.style.StyleSpan
+import android.view.View
 import android.widget.TextView
-import android.widget.Toast
 import com.github.mikephil.charting.animation.Easing
 import com.github.mikephil.charting.components.AxisBase
 import com.github.mikephil.charting.components.Description
@@ -25,6 +25,8 @@ import com.github.mikephil.charting.interfaces.datasets.IBarDataSet
 import com.github.mikephil.charting.utils.ViewPortHandler
 import io.reactivex.disposables.CompositeDisposable
 import kotlinx.android.synthetic.main.activity_statistics.*
+import kotlinx.android.synthetic.main.view_error.*
+import kotlinx.android.synthetic.main.view_progress.*
 import pl.adriankremski.coolector.BaseActivity
 import pl.adriankremski.coolector.R
 import pl.adriankremski.coolector.TheApp
@@ -32,6 +34,8 @@ import pl.adriankremski.coolector.model.StatisticEntry
 import pl.adriankremski.coolector.model.Statistics
 import pl.adriankremski.coolector.repository.StatisticsRepository
 import pl.adriankremski.coolector.utils.MaterialColorsTemplate
+import pl.adriankremski.coolector.utils.RequestErrorDecorator
+import pl.adriankremski.coolector.utils.Switcher
 import pl.adriankremski.coolector.utils.uppercaseFirstLetter
 import java.util.*
 import javax.inject.Inject
@@ -58,6 +62,10 @@ class StatisticsActivity : BaseActivity(), StatisticsMvp.View {
 
     private var colorTemplate = MaterialColorsTemplate()
 
+    private lateinit var switcher: Switcher
+
+    private lateinit var errorDecorator: RequestErrorDecorator
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         TheApp[this].appComponent?.inject(this)
@@ -68,19 +76,40 @@ class StatisticsActivity : BaseActivity(), StatisticsMvp.View {
         mTitleLabel = findViewById(R.id.title) as TextView
         mTitleLabel?.text = span;
         mCompositeDisposable = CompositeDisposable();
-
+        setupSwitcher()
         mPresenter = StatisticsPresenter(this, mStatisticsRepository)
         mPresenter.loadStatistics()
+
+        errorDecorator = RequestErrorDecorator(mSwitcherErrorImage, mSwitcherErrorTitle, mSwitcherErrorFooter)
+        mSwitcherErrorButton.setOnClickListener { mPresenter.loadStatistics() }
+    }
+
+    private fun setupSwitcher() {
+        val contentViews = LinkedList<View>()
+        contentViews.add(mContent)
+        switcher = Switcher.Builder()
+                .withContentViews(contentViews)
+                .withErrorViews(listOf<View>(mSwitcherError))
+                .withProgressViews(listOf<View>(mSwitcherProgress))
+                .build(this)
     }
 
     override fun showLoading() {
+        switcher.showProgressViewsImmediately()
     }
 
     override fun showLoadStatisticsError(message: String?) {
-        Toast.makeText(this, "Loading error", Toast.LENGTH_SHORT).show()
+        errorDecorator.onServerError(message)
+        switcher.showErrorViewsImmediately()
+    }
+
+    override fun showLoadStatisticsNetworkError() {
+        errorDecorator.onNetworkError(getString(R.string.error_statistics_no_network))
+        switcher.showErrorViewsImmediately()
     }
 
     override fun showStatistics(statistics: Statistics) {
+        switcher.showContentViewsImmediately()
         showRemarksByStatusChart(statistics.categoryStatistics)
         showRemarksByCategoryChart(statistics.categoryStatistics)
         showRemarksByTagChart(statistics.tagStatistics)
@@ -257,10 +286,6 @@ class StatisticsActivity : BaseActivity(), StatisticsMvp.View {
 
         mRemarksByTagChart.data = data;
         mRemarksByTagChart.animateY(1400, Easing.EasingOption.EaseInOutQuad)
-    }
-
-    override fun showLoadStatisticsNetworkError() {
-        Toast.makeText(this, "Network error", Toast.LENGTH_SHORT).show()
     }
 
     class RemarksStatusChartFormatter : IValueFormatter, IAxisValueFormatter {

@@ -17,7 +17,6 @@
     <string name="password_confirmation">Potwierdź hasło</string>
     <string name="retrieve_password_screen_title">Odzyskaj hasło</string>
     <string name="reset_password">Zresetuj hasło</string>
-    <string name="error_no_network">Brak internetu</string>
     <string name="login_in_progress_message">Logowanie</string>
     <string name="login_success_message">Zostałes zalogowany</string>
     <string name="main_screen_title">Mapa</string>
@@ -47,4 +46,10 @@
     <string name="statistics_remarks_by_tag">Remarks by tag</string>
     <string name="statistics_resolved_label">Resolved</string>
     <string name="statistics_unresolved_label">Unresolved</string>
+
+    <string name="retry">Retry</string>
+    <string name="something_went_wrong">Oops, something went wrong!</string>
+    <string name="error_no_network">No internet connection</string>
+    <string name="error_view_footer">An error occurred while performing a request</string>
+    <string name="error_statistics_no_network">Connect to internet to check the statistics</string>
 </resources>
