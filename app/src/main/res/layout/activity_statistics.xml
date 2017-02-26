@@ -56,7 +56,7 @@
                     android:textColor="@color/font_dark"
                     android:textSize="@dimen/font_normal" />
 
-                <com.github.mikephil.charting.charts.PieChart
+                <pl.adriankremski.coolector.views.chart.RemarksByStatusChart
                     android:id="@+id/mRemarksByStatusChart"
                     android:layout_width="160dp"
                     android:layout_height="160dp"
@@ -73,7 +73,7 @@
                     android:textSize="@dimen/font_medium"
                     android:textStyle="bold" />
 
-                <com.github.mikephil.charting.charts.BarChart
+                <pl.adriankremski.coolector.views.chart.RemarksByCategoryChart
                     android:id="@+id/mRemarksByCategoryChart"
                     android:layout_width="match_parent"
                     android:layout_height="160dp" />
@@ -89,7 +89,7 @@
                     android:textSize="@dimen/font_medium"
                     android:textStyle="bold" />
 
-                <com.github.mikephil.charting.charts.BarChart
+                <pl.adriankremski.coolector.views.chart.RemarksByTagChart
                     android:id="@+id/mRemarksByTagChart"
                     android:layout_width="match_parent"
                     android:layout_height="160dp" />

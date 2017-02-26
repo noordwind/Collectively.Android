@@ -8,9 +8,9 @@ import android.text.Spannable
 import android.text.SpannableString
 import android.text.style.RelativeSizeSpan
 import android.text.style.StyleSpan
-import android.widget.TextView
 import android.widget.Toast
 import io.reactivex.disposables.CompositeDisposable
+import kotlinx.android.synthetic.main.view_toolbar_with_title.*
 import pl.adriankremski.coolector.BaseActivity
 import pl.adriankremski.coolector.R
 import pl.adriankremski.coolector.TheApp
@@ -34,8 +34,6 @@ class ProfileActivity : BaseActivity(), ProfileMvp.View {
 
     lateinit var mPresenter: ProfileMvp.Presenter
 
-    internal var mTitleLabel: TextView? = null
-
     private var mCompositeDisposable: CompositeDisposable? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -45,8 +43,7 @@ class ProfileActivity : BaseActivity(), ProfileMvp.View {
         var span = SpannableString(getString(R.string.profile_screen_title))
         span.setSpan(RelativeSizeSpan(1.2f), 0, 1, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
         span.setSpan(StyleSpan(Typeface.BOLD), 0, 1, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
-        mTitleLabel = findViewById(R.id.title) as TextView
-        mTitleLabel?.text = span;
+        mToolbarTitleLabel.text = span;
         mCompositeDisposable = CompositeDisposable();
 
         mPresenter = ProfilePresenter(this, mProfileRepository)
