@@ -24,4 +24,10 @@
     <color name="bg_light_gray">#f2f2f2</color>
 
     <color name="main_menu_background">@color/bg_light_gray</color>
+    <color name="unresolved_remark_color">#D32F2F</color>
+    <color name="resolved_remark_color">@color/red_dark_2</color>
+
+    <color name="font_dark">#191919</color>
+    <color name="font_dark_secondary">#5f5f5f</color>
+    <color name="font_dark_hint">#888</color>
 </resources>

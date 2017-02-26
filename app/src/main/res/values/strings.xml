@@ -42,4 +42,9 @@
     <string name="statistics">Statistics</string>
     <string name="statistics_screen_title">Statistics</string>
     <string name="profile_screen_title">Profile</string>
+    <string name="statistics_remarks_by_status">Remarks by status</string>
+    <string name="statistics_remarks_by_category">Remarks by category</string>
+    <string name="statistics_remarks_by_tag">Remarks by tag</string>
+    <string name="statistics_resolved_label">Resolved</string>
+    <string name="statistics_unresolved_label">Unresolved</string>
 </resources>

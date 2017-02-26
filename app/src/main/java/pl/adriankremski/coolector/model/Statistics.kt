@@ -1,6 +1,5 @@
 package pl.adriankremski.coolector.model
 
-class Statistics {
-
+class Statistics(val categoryStatistics: List<StatisticEntry>, val tagStatistics: List<StatisticEntry>) {
 }
 

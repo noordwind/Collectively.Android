@@ -17,7 +17,7 @@ class StatisticsPresenter(val mView: StatisticsMvp.View, val mStatisticsReposito
 
             override fun onNext(statistics: Statistics) {
                 super.onNext(statistics)
-                mView.showStatistics()
+                mView.showStatistics(statistics)
             }
 
             override fun onError(e: Throwable) {

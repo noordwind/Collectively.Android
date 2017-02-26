@@ -5,6 +5,7 @@
     android:layout_height="match_parent">
 
     <FrameLayout
+        android:id="@+id/toolbar_wrapper"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true">
@@ -12,5 +13,79 @@
         <include layout="@layout/view_toolbar_with_title" />
     </FrameLayout>
 
+    <ScrollView
+        android:layout_below="@id/toolbar_wrapper"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/white"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@string/font_condensed"
+                android:padding="@dimen/spacing_normal"
+                android:text="@string/statistics_remarks_by_status"
+                android:textColor="@color/red_dark_2"
+                android:textSize="@dimen/font_large"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/mRemarksByStatusLabel"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="left"
+                android:fontFamily="@string/font_light"
+                android:paddingLeft="@dimen/spacing_normal"
+                android:layout_marginBottom="@dimen/spacing_normal"
+                android:gravity="left"
+                android:inputType="textNoSuggestions"
+                android:textColor="@color/font_dark"
+                android:textSize="@dimen/font_normal" />
+
+            <com.github.mikephil.charting.charts.PieChart
+                android:id="@+id/mRemarksByStatusChart"
+                android:layout_width="180dp"
+                android:layout_height="180dp"
+                android:layout_gravity="center_horizontal" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@string/font_condensed"
+                android:padding="@dimen/spacing_normal"
+                android:layout_marginTop="@dimen/spacing_normal"
+                android:text="@string/statistics_remarks_by_category"
+                android:textColor="@color/red_dark_2"
+                android:textSize="@dimen/font_large"
+                android:textStyle="bold" />
+
+            <com.github.mikephil.charting.charts.BarChart
+                android:id="@+id/mRemarksByCategoryChart"
+                android:layout_width="match_parent"
+                android:layout_height="180dp"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/spacing_normal"
+                android:fontFamily="@string/font_condensed"
+                android:padding="@dimen/spacing_normal"
+                android:text="@string/statistics_remarks_by_tag"
+                android:textColor="@color/red_dark_2"
+                android:textSize="@dimen/font_large"
+                android:textStyle="bold" />
+
+            <com.github.mikephil.charting.charts.BarChart
+                android:id="@+id/mRemarksByTagChart"
+                android:layout_width="match_parent"
+                android:layout_height="180dp"/>
+
+        </LinearLayout>
+    </ScrollView>
 
 </RelativeLayout>

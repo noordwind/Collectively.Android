@@ -115,4 +115,10 @@ dependencies {
 
     // libs like rxbinding + rxjava-math haven't been ported to RxJava 2.x yet, so this helps
     compile "com.github.akarnokd:rxjava2-interop:0.6.1"
+
+    compile 'com.github.PhilJay:MPAndroidChart:v3.0.1'
+
+    compile('com.github.jkwiecien:CountingTextView:1.0.10') {
+        exclude module: 'appcompat-v7'
+    }
 }
