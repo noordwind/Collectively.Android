@@ -1,6 +1,6 @@
 package pl.adriankremski.coolector.model
 
-class Profile {
+class Profile(val name: String) {
 
 }
 

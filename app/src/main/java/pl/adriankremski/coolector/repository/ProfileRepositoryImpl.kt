@@ -15,6 +15,6 @@ class ProfileRepositoryImpl(context: Context) : ProfileRepository {
         TheApp[context].appComponent?.inject(this)
     }
 
-    override fun loadProfile(): Observable<Profile> = Observable.just(Profile())
+    override fun loadProfile(): Observable<Profile> = mApi.loadProfile()
 }
 

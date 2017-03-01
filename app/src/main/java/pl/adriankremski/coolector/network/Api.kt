@@ -40,6 +40,10 @@ interface Api {
     @GET("api/statistics/tags")
     fun loadTagStatistics(): Observable<List<StatisticEntry>>
 
+    @Headers("Accept: application/json", "Content-type: application/json")
+    @GET("api/account")
+    fun loadProfile(): Observable<Profile>
+
     // POST
     @Headers("Accept: application/json", "Content-type: application/json")
     @POST("api/sign-in")

@@ -7,10 +7,10 @@
         android:id="@+id/action_settings"
         android:orderInCategory="100"
         app:showAsAction="never"
-        android:title="Settings" />
+        android:title="@string/settings" />
 
-    <item android:id="@+id/menu_share"
-        android:icon="@drawable/ic_lock_open_white_24dp"
+    <item android:id="@+id/menu_change_photo"
+        android:icon="@drawable/ic_photo_camera_white_24dp"
         app:showAsAction="always"
-        android:title="Favorite" />
+        android:title="Change photo" />
 </menu>

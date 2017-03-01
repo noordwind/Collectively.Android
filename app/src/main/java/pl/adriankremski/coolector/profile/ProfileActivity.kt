@@ -5,14 +5,17 @@ import android.content.Intent
 import android.graphics.Typeface
 import android.os.Bundle
 import android.support.design.widget.AppBarLayout
+import android.support.design.widget.Snackbar
 import android.text.Spannable
 import android.text.SpannableString
 import android.text.style.RelativeSizeSpan
 import android.text.style.StyleSpan
 import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import android.view.animation.AlphaAnimation
 import android.widget.Toast
+import com.bumptech.glide.Glide
 import io.reactivex.disposables.CompositeDisposable
 import kotlinx.android.synthetic.main.activity_profile.*
 import kotlinx.android.synthetic.main.view_error.*
@@ -60,10 +63,6 @@ class ProfileActivity : BaseActivity(), ProfileMvp.View, AppBarLayout.OnOffsetCh
         super.onCreate(savedInstanceState)
         TheApp[this].appComponent?.inject(this)
         setContentView(R.layout.activity_profile);
-        var span = SpannableString(getString(R.string.profile_screen_title))
-        span.setSpan(RelativeSizeSpan(1.2f), 0, 1, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
-        span.setSpan(StyleSpan(Typeface.BOLD), 0, 1, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
-        mToolbarTitleLabel.text = span;
         mCompositeDisposable = CompositeDisposable();
 
         mAppBar.addOnOffsetChangedListener(this);
@@ -88,7 +87,14 @@ class ProfileActivity : BaseActivity(), ProfileMvp.View, AppBarLayout.OnOffsetCh
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.menu_main, menu)
-        return true
+        return false
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+        if (item?.itemId == R.id.menu_change_photo) {
+            Snackbar.make(findViewById(android.R.id.content), "Feature not implemented", Toast.LENGTH_SHORT).show();
+        }
+        return super.onOptionsItemSelected(item)
     }
 
     override fun showLoading() {
@@ -101,7 +107,14 @@ class ProfileActivity : BaseActivity(), ProfileMvp.View, AppBarLayout.OnOffsetCh
 
     override fun showProfile(profile: Profile) {
         mSwitcher.showContentViewsImmediately()
-        Toast.makeText(this, "Profile loaded", Toast.LENGTH_SHORT).show()
+        mTitle.text = profile.name
+
+        var span = SpannableString(profile.name)
+        span.setSpan(RelativeSizeSpan(1.2f), 0, 1, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+        span.setSpan(StyleSpan(Typeface.BOLD), 0, 1, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+        mToolbarTitleLabel.text = span
+
+        Glide.with(this).load("https://scontent-amt2-1.xx.fbcdn.net/v/t1.0-9/13707543_1113779778680046_7388140466043605584_n.jpg?oh=326bdcc822649966bde07ca7262a90e2&oe=5937B8E7").into(mProfileImage);
     }
 
     override fun showLoadProfileNetworkError() {
