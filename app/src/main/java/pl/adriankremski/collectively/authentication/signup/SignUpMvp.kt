@@ -1,0 +1,19 @@
+package pl.adriankremski.collectively.authentication.signup
+
+import io.reactivex.disposables.Disposable
+
+interface SignUpMvp {
+
+    interface View {
+        fun registerDisposable(disposable: Disposable)
+        fun showLoading()
+        fun hideLoading()
+        fun showNetworkError()
+        fun showRegisterSuccess()
+        fun showRegisterServerError(message: String?)
+    }
+
+    interface Presenter{
+        fun signUp(username: String, email: String, password: String)
+    }
+}

@@ -1,6 +1,6 @@
 <resources>
-    <string name="app_name">Coolector</string>
-    <string name="login_screen_title">Coolector - Logowanie</string>
+    <string name="app_name">Collectively</string>
+    <string name="login_screen_title">Collectively - Logowanie</string>
     <string name="want_new_account">Nie posiadasz konta?</string>
     <string name="font_normal" translatable="false">sans-serif</string>
     <string name="font_light" translatable="false">sans-serif-light</string>

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <fragment xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/fragment_view_navigation"
-    class="pl.adriankremski.coolector.main.NavigationViewFragment"
+    class="pl.adriankremski.collectively.main.NavigationViewFragment"
     android:layout_width="wrap_content"
     android:layout_height="match_parent" />

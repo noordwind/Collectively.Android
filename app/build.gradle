@@ -9,7 +9,7 @@ android {
     buildToolsVersion rootProject.ext.buildToolsVersion
 
     defaultConfig {
-        applicationId "pl.adriankremski.coolector"
+        applicationId "pl.adriankremski.collectively"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
@@ -39,11 +39,11 @@ android {
 
     productFlavors {
         prod {
-            applicationId "pl.adriankremski.coolector"
+            applicationId "pl.adriankremski.collectively"
             buildConfigField "String", "SERVER_URL", "\"https://coolector.tk/\""
         }
         dev {
-            applicationId "pl.adriankremski.coolector.dev"
+            applicationId "pl.adriankremski.collectively.dev"
             minSdkVersion 21
             buildConfigField "String", "SERVER_URL", "\"https://coolector-dev.tk/\""
         }

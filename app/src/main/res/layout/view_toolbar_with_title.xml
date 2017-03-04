@@ -28,7 +28,6 @@
             android:ellipsize="end"
             android:fontFamily="@string/font_normal"
             android:textColor="@color/white"
-            tools:text="Coolector"
             android:textSize="@dimen/font_medium"/>
 
         <TextView
