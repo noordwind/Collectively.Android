@@ -26,14 +26,14 @@ import javax.inject.Inject
 
 class LoginActivity : AppCompatActivity(), LoginMvp.View {
     @Inject
-    lateinit var mAuthenticationRepository: AuthenticationRepository
+    lateinit var authenticationRepository: AuthenticationRepository
 
     @Inject
-    lateinit var mSessionRepository: SessionRepository
+    lateinit var sessionRepository: SessionRepository
 
-    private lateinit var mLoginPresenter: LoginPresenter
+    private lateinit var loginPresenter: LoginPresenter
 
-    private lateinit var mCompositeDisposable: CompositeDisposable
+    private lateinit var compositeDisposable: CompositeDisposable
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -43,19 +43,18 @@ class LoginActivity : AppCompatActivity(), LoginMvp.View {
         var span = SpannableString(getString(R.string.app_name))
         span.setSpan(RelativeSizeSpan(1.2f), 0, 1, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
         span.setSpan(StyleSpan(Typeface.BOLD), 0, 1, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
-        mTitleLabel.text = span;
+        titleLabel.text = span;
 
         loginButton.setOnClickListener { login() }
-        mSignupButton.setOnClickListener { signUp() }
-        mRetrievePasswordButton.setOnClickListener { retrievePassword() }
+        signupButton.setOnClickListener { signUp() }
+        retrievePasswordButton.setOnClickListener { retrievePassword() }
 
-        mLoginPresenter = LoginPresenter(this, mAuthenticationRepository, mSessionRepository);
-        mLoginPresenter.onCreate();
-        mCompositeDisposable = CompositeDisposable();
-
+        loginPresenter = LoginPresenter(this, LoginUseCase(authenticationRepository, sessionRepository));
+        loginPresenter.onCreate();
+        compositeDisposable = CompositeDisposable();
     }
 
-    fun login() = mLoginPresenter.loginWithEmail(mEmailInput.textInString(), mPasswordInput.textInString());
+    fun login() = loginPresenter.loginWithEmail(emailInput.textInString(), passwordInput.textInString());
 
     fun signUp() = SignUpActivity.launch(this)
 
@@ -65,11 +64,11 @@ class LoginActivity : AppCompatActivity(), LoginMvp.View {
 
     override fun closeScreen() = finish()
 
-    override fun registerDisposable(disposable: Disposable)  { mCompositeDisposable.add(disposable) }
+    override fun registerDisposable(disposable: Disposable)  { compositeDisposable.add(disposable) }
 
-    override fun showLoading() { mProgressView.visibility = View.VISIBLE }
+    override fun showLoading() { progressView.visibility = View.VISIBLE }
 
-    override fun hideLoading() { mProgressView.visibility = View.GONE }
+    override fun hideLoading() { progressView.visibility = View.GONE }
 
     override fun showNetworkError() = Snackbar.make(findViewById(android.R.id.content), getString(R.string.error_no_network), Snackbar.LENGTH_LONG).show();
 
@@ -81,7 +80,7 @@ class LoginActivity : AppCompatActivity(), LoginMvp.View {
 
     override fun onDestroy() {
         super.onDestroy()
-        mCompositeDisposable.clear();
+        compositeDisposable.clear();
     }
 }
 

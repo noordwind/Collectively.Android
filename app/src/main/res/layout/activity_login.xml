@@ -38,7 +38,7 @@
             </FrameLayout>
 
             <TextView
-                android:id="@+id/mTitleLabel"
+                android:id="@+id/titleLabel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal|center_vertical"
@@ -60,7 +60,7 @@
             android:orientation="vertical">
 
             <EditText
-                android:id="@+id/mEmailInput"
+                android:id="@+id/emailInput"
                 android:layout_width="match_parent"
                 android:textCursorDrawable="@drawable/color_cursor"
                 android:layout_height="wrap_content"
@@ -72,7 +72,7 @@
                 android:textColorHint="@color/red_light" />
 
             <EditText
-                android:id="@+id/mPasswordInput"
+                android:id="@+id/passwordInput"
                 android:layout_width="match_parent"
                 android:textCursorDrawable="@drawable/color_cursor"
                 android:layout_height="wrap_content"
@@ -107,7 +107,7 @@
             </android.support.v7.widget.CardView>
 
             <TextView
-                android:id="@+id/mRetrievePasswordButton"
+                android:id="@+id/retrievePasswordButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:fontFamily="@string/font_normal"
@@ -142,7 +142,7 @@
                 android:textSize="@dimen/font_medium" />
 
             <android.support.v7.widget.CardView
-                android:id="@+id/mSignupButton"
+                android:id="@+id/signupButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="right|center_vertical">
@@ -173,7 +173,6 @@
     </RelativeLayout>
 
     <include layout="@layout/view_login_progress"/>
-
 
 </FrameLayout>
 
