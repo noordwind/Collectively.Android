@@ -2,22 +2,22 @@ package pl.adriankremski.coolector.statistics
 
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
+import pl.adriankremski.coolector.authentication.signup.LoadStatisticsUseCase
 import pl.adriankremski.coolector.model.Statistics
 import pl.adriankremski.coolector.network.AppDisposableObserver
-import pl.adriankremski.coolector.repository.StatisticsRepository
 
-class StatisticsPresenter(val mView: StatisticsMvp.View, val mStatisticsRepository : StatisticsRepository) : StatisticsMvp.Presenter {
+class StatisticsPresenter(val view: StatisticsMvp.View, val loadStatisticsUseCase: LoadStatisticsUseCase) : StatisticsMvp.Presenter {
     override fun loadStatistics() {
         var observer = object : AppDisposableObserver<Statistics>() {
 
             override fun onStart() {
                 super.onStart()
-                mView.showLoading()
+                view.showLoading()
             }
 
             override fun onNext(statistics: Statistics) {
                 super.onNext(statistics)
-                mView.showStatistics(statistics)
+                view.showStatistics(statistics)
             }
 
             override fun onError(e: Throwable) {
@@ -26,20 +26,20 @@ class StatisticsPresenter(val mView: StatisticsMvp.View, val mStatisticsReposito
 
             override fun onServerError(message: String?) {
                 super.onServerError(message)
-                mView.showLoadStatisticsError(message)
+                view.showLoadStatisticsError(message)
             }
 
             override fun onNetworkError() {
                 super.onNetworkError()
-                mView.showLoadStatisticsNetworkError()
+                view.showLoadStatisticsNetworkError()
             }
         }
 
-        var disposable = mStatisticsRepository.loadStatistics()
+        var disposable = loadStatisticsUseCase.loadStatistics()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeWith(observer)
 
-        mView.addDisposable(disposable)
+        view.addDisposable(disposable)
     }
 }

@@ -10,14 +10,14 @@
     <include layout="@layout/view_error" />
 
     <android.support.design.widget.CoordinatorLayout
-        android:id="@+id/mContent"
+        android:id="@+id/content"
         android:layout_width="match_parent"
         android:visibility="gone"
         android:layout_height="match_parent"
         tools:ignore="RtlHardcoded">
 
         <android.support.design.widget.AppBarLayout
-            android:id="@+id/mAppBar"
+            android:id="@+id/appBar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
@@ -49,14 +49,14 @@
                     app:layout_collapseParallaxMultiplier="0.3">
 
                     <LinearLayout
-                        android:id="@+id/mTitleContainer"
+                        android:id="@+id/titleContainer"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:orientation="vertical">
 
                         <TextView
-                            android:id="@+id/mTitle"
+                            android:id="@+id/titleLabel"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_horizontal"
@@ -107,7 +107,7 @@
         </android.support.v4.widget.NestedScrollView>
 
         <android.support.v7.widget.Toolbar
-            android:id="@+id/mToolbar"
+            android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:background="@color/red_dark_2"
@@ -125,7 +125,7 @@
                     android:layout_height="@dimen/profile_image_final_width" />
 
                 <TextView
-                    android:id="@+id/mToolbarTitleLabel"
+                    android:id="@+id/toolbarTitleLabel"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_marginLeft="8dp"
@@ -138,7 +138,7 @@
         </android.support.v7.widget.Toolbar>
 
         <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/mProfileImage"
+            android:id="@+id/profileImage"
             android:layout_width="@dimen/profile_image_width"
             android:layout_height="@dimen/profile_image_width"
             android:layout_gravity="center_horizontal"

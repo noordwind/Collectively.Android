@@ -16,13 +16,13 @@ import android.view.View
 import android.view.animation.AlphaAnimation
 import android.widget.Toast
 import com.bumptech.glide.Glide
-import io.reactivex.disposables.CompositeDisposable
 import kotlinx.android.synthetic.main.activity_profile.*
 import kotlinx.android.synthetic.main.view_error.*
 import kotlinx.android.synthetic.main.view_progress.*
 import pl.adriankremski.coolector.BaseActivity
 import pl.adriankremski.coolector.R
 import pl.adriankremski.coolector.TheApp
+import pl.adriankremski.coolector.authentication.signup.LoadProfileUseCase
 import pl.adriankremski.coolector.model.Profile
 import pl.adriankremski.coolector.repository.ProfileRepository
 import pl.adriankremski.coolector.utils.RequestErrorDecorator
@@ -42,46 +42,42 @@ class ProfileActivity : BaseActivity(), ProfileMvp.View, AppBarLayout.OnOffsetCh
     }
 
     @Inject
-    lateinit var mProfileRepository: ProfileRepository
+    lateinit var profileRepository: ProfileRepository
 
-    lateinit var mPresenter: ProfileMvp.Presenter
-
-    private var mCompositeDisposable: CompositeDisposable? = null
-
+    lateinit var presenter: ProfileMvp.Presenter
 
     private val PERCENTAGE_TO_SHOW_TITLE_AT_TOOLBAR = 0.9f
     private val PERCENTAGE_TO_HIDE_TITLE_DETAILS = 0.3f
     private val ALPHA_ANIMATIONS_DURATION = 200L
 
-    private var mIsTheTitleVisible = false
-    private var mIsTheTitleContainerVisible = true
+    private var isTheTitleVisible = false
+    private var isTheTitleContainerVisible = true
 
-    private lateinit var mSwitcher: Switcher
-    private lateinit var mErrorDecorator: RequestErrorDecorator
+    private lateinit var switcher: Switcher
+    private lateinit var errorDecorator: RequestErrorDecorator
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         TheApp[this].appComponent?.inject(this)
         setContentView(R.layout.activity_profile);
-        mCompositeDisposable = CompositeDisposable();
 
-        mAppBar.addOnOffsetChangedListener(this);
-        mToolbar.inflateMenu(R.menu.menu_main);
-        startAlphaAnimation(mToolbarTitleLabel, 0, View.INVISIBLE);
-        mErrorDecorator = RequestErrorDecorator(mSwitcherErrorImage, mSwitcherErrorTitle, mSwitcherErrorFooter)
+        appBar.addOnOffsetChangedListener(this);
+        toolbar.inflateMenu(R.menu.menu_main);
+        startAlphaAnimation(toolbarTitleLabel, 0, View.INVISIBLE);
+        errorDecorator = RequestErrorDecorator(switcherErrorImage, switcherErrorTitle, switcherErrorFooter)
         setupSwitcher()
 
-        mPresenter = ProfilePresenter(this, mProfileRepository)
-        mPresenter.loadProfile()
+        presenter = ProfilePresenter(this, LoadProfileUseCase(profileRepository))
+        presenter.loadProfile()
     }
 
     private fun setupSwitcher() {
         val contentViews = LinkedList<View>()
-        contentViews.add(mContent)
-        mSwitcher = Switcher.Builder()
+        contentViews.add(content)
+        switcher = Switcher.Builder()
                 .withContentViews(contentViews)
-                .withErrorViews(listOf<View>(mSwitcherError))
-                .withProgressViews(listOf<View>(mSwitcherProgress))
+                .withErrorViews(listOf<View>(switcherError))
+                .withProgressViews(listOf<View>(switcherProgress))
                 .build(this)
     }
 
@@ -98,27 +94,27 @@ class ProfileActivity : BaseActivity(), ProfileMvp.View, AppBarLayout.OnOffsetCh
     }
 
     override fun showLoading() {
-        mSwitcher.showProgressViewsImmediately()
+        switcher.showProgressViewsImmediately()
     }
 
     override fun showLoadProfileError(message: String?) {
-        mSwitcher.showErrorViewsImmediately()
+        switcher.showErrorViewsImmediately()
     }
 
     override fun showProfile(profile: Profile) {
-        mSwitcher.showContentViewsImmediately()
-        mTitle.text = profile.name
+        switcher.showContentViewsImmediately()
+        titleLabel.text = profile.name
 
         var span = SpannableString(profile.name)
         span.setSpan(RelativeSizeSpan(1.2f), 0, 1, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
         span.setSpan(StyleSpan(Typeface.BOLD), 0, 1, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
-        mToolbarTitleLabel.text = span
+        toolbarTitleLabel.text = span
 
-        Glide.with(this).load("https://scontent-amt2-1.xx.fbcdn.net/v/t1.0-9/13707543_1113779778680046_7388140466043605584_n.jpg?oh=326bdcc822649966bde07ca7262a90e2&oe=5937B8E7").into(mProfileImage);
+        Glide.with(this).load("https://scontent-amt2-1.xx.fbcdn.net/v/t1.0-9/13707543_1113779778680046_7388140466043605584_n.jpg?oh=326bdcc822649966bde07ca7262a90e2&oe=5937B8E7").into(profileImage);
     }
 
     override fun showLoadProfileNetworkError() {
-        mSwitcher.showErrorViewsImmediately()
+        switcher.showErrorViewsImmediately()
     }
 
     override fun onOffsetChanged(appBarLayout: AppBarLayout, offset: Int) {
@@ -132,32 +128,32 @@ class ProfileActivity : BaseActivity(), ProfileMvp.View, AppBarLayout.OnOffsetCh
     private fun handleToolbarTitleVisibility(percentage: Float) {
         if (percentage >= PERCENTAGE_TO_SHOW_TITLE_AT_TOOLBAR) {
 
-            if (!mIsTheTitleVisible) {
-                startAlphaAnimation(mToolbarTitleLabel, ALPHA_ANIMATIONS_DURATION, View.VISIBLE)
-                mIsTheTitleVisible = true
+            if (!isTheTitleVisible) {
+                startAlphaAnimation(toolbarTitleLabel, ALPHA_ANIMATIONS_DURATION, View.VISIBLE)
+                isTheTitleVisible = true
             }
 
         } else {
 
-            if (mIsTheTitleVisible) {
-                startAlphaAnimation(mToolbarTitleLabel, ALPHA_ANIMATIONS_DURATION, View.INVISIBLE)
-                mIsTheTitleVisible = false
+            if (isTheTitleVisible) {
+                startAlphaAnimation(toolbarTitleLabel, ALPHA_ANIMATIONS_DURATION, View.INVISIBLE)
+                isTheTitleVisible = false
             }
         }
     }
 
     private fun handleAlphaOnTitle(percentage: Float) {
         if (percentage >= PERCENTAGE_TO_HIDE_TITLE_DETAILS) {
-            if (mIsTheTitleContainerVisible) {
-                startAlphaAnimation(mTitleContainer, ALPHA_ANIMATIONS_DURATION, View.INVISIBLE)
-                mIsTheTitleContainerVisible = false
+            if (isTheTitleContainerVisible) {
+                startAlphaAnimation(titleContainer, ALPHA_ANIMATIONS_DURATION, View.INVISIBLE)
+                isTheTitleContainerVisible = false
             }
 
         } else {
 
-            if (!mIsTheTitleContainerVisible) {
-                startAlphaAnimation(mTitleContainer, ALPHA_ANIMATIONS_DURATION, View.VISIBLE)
-                mIsTheTitleContainerVisible = true
+            if (!isTheTitleContainerVisible) {
+                startAlphaAnimation(titleContainer, ALPHA_ANIMATIONS_DURATION, View.VISIBLE)
+                isTheTitleContainerVisible = true
             }
         }
     }

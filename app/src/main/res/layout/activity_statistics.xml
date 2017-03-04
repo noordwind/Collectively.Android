@@ -23,7 +23,7 @@
         <include layout="@layout/view_error" />
 
         <ScrollView
-            android:id="@+id/mContent"
+            android:id="@+id/content"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
@@ -44,7 +44,7 @@
                     android:textStyle="bold" />
 
                 <TextView
-                    android:id="@+id/mRemarksByStatusLabel"
+                    android:id="@+id/remarksByStatusLabel"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="left"
@@ -57,7 +57,7 @@
                     android:textSize="@dimen/font_normal" />
 
                 <pl.adriankremski.coolector.views.chart.RemarksByStatusChart
-                    android:id="@+id/mRemarksByStatusChart"
+                    android:id="@+id/remarksByStatusChart"
                     android:layout_width="160dp"
                     android:layout_height="160dp"
                     android:layout_gravity="center_horizontal" />
@@ -74,7 +74,7 @@
                     android:textStyle="bold" />
 
                 <pl.adriankremski.coolector.views.chart.RemarksByCategoryChart
-                    android:id="@+id/mRemarksByCategoryChart"
+                    android:id="@+id/remarksByCategoryChart"
                     android:layout_width="match_parent"
                     android:layout_height="160dp" />
 
@@ -90,7 +90,7 @@
                     android:textStyle="bold" />
 
                 <pl.adriankremski.coolector.views.chart.RemarksByTagChart
-                    android:id="@+id/mRemarksByTagChart"
+                    android:id="@+id/remarksByTagChart"
                     android:layout_width="match_parent"
                     android:layout_height="160dp" />
 

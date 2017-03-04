@@ -10,12 +10,6 @@ import android.text.SpannableString
 import android.text.style.RelativeSizeSpan
 import android.text.style.StyleSpan
 import android.view.View
-import com.github.mikephil.charting.components.AxisBase
-import com.github.mikephil.charting.data.Entry
-import com.github.mikephil.charting.formatter.IAxisValueFormatter
-import com.github.mikephil.charting.formatter.IValueFormatter
-import com.github.mikephil.charting.utils.ViewPortHandler
-import io.reactivex.disposables.CompositeDisposable
 import kotlinx.android.synthetic.main.activity_statistics.*
 import kotlinx.android.synthetic.main.view_error.*
 import kotlinx.android.synthetic.main.view_progress.*
@@ -23,6 +17,7 @@ import kotlinx.android.synthetic.main.view_toolbar_with_title.*
 import pl.adriankremski.coolector.BaseActivity
 import pl.adriankremski.coolector.R
 import pl.adriankremski.coolector.TheApp
+import pl.adriankremski.coolector.authentication.signup.LoadStatisticsUseCase
 import pl.adriankremski.coolector.model.StatisticEntry
 import pl.adriankremski.coolector.model.Statistics
 import pl.adriankremski.coolector.repository.StatisticsRepository
@@ -42,11 +37,10 @@ class StatisticsActivity : BaseActivity(), StatisticsMvp.View {
     }
 
     @Inject
-    lateinit var mStatisticsRepository: StatisticsRepository
+    lateinit var statisticsRepository: StatisticsRepository
 
-    private lateinit var mPresenter: StatisticsMvp.Presenter
+    private lateinit var presenter: StatisticsMvp.Presenter
 
-    private var mCompositeDisposable: CompositeDisposable? = null
     private lateinit var switcher: Switcher
 
     private lateinit var errorDecorator: RequestErrorDecorator
@@ -59,24 +53,24 @@ class StatisticsActivity : BaseActivity(), StatisticsMvp.View {
         span.setSpan(RelativeSizeSpan(1.2f), 0, 1, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
         span.setSpan(StyleSpan(Typeface.BOLD), 0, 1, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
 
-        mToolbarTitleLabel.text = span;
+        toolbarTitleLabel.text = span;
 
-        mCompositeDisposable = CompositeDisposable();
         setupSwitcher()
-        mPresenter = StatisticsPresenter(this, mStatisticsRepository)
-        mPresenter.loadStatistics()
 
-        errorDecorator = RequestErrorDecorator(mSwitcherErrorImage, mSwitcherErrorTitle, mSwitcherErrorFooter)
-        mSwitcherErrorButton.setOnClickListener { mPresenter.loadStatistics() }
+        presenter = StatisticsPresenter(this, LoadStatisticsUseCase(statisticsRepository))
+        presenter.loadStatistics()
+
+        errorDecorator = RequestErrorDecorator(switcherErrorImage, switcherErrorTitle, switcherErrorFooter)
+        switcherErrorButton.setOnClickListener { presenter.loadStatistics() }
     }
 
     private fun setupSwitcher() {
         val contentViews = LinkedList<View>()
-        contentViews.add(mContent)
+        contentViews.add(content)
         switcher = Switcher.Builder()
                 .withContentViews(contentViews)
-                .withErrorViews(listOf<View>(mSwitcherError))
-                .withProgressViews(listOf<View>(mSwitcherProgress))
+                .withErrorViews(listOf<View>(switcherError))
+                .withProgressViews(listOf<View>(switcherProgress))
                 .build(this)
     }
 
@@ -96,10 +90,10 @@ class StatisticsActivity : BaseActivity(), StatisticsMvp.View {
 
     override fun showStatistics(statistics: Statistics) {
         switcher.showContentViewsImmediately()
-        mRemarksByStatusChart.setStatistics(statistics.categoryStatistics)
+        remarksByStatusChart.setStatistics(statistics.categoryStatistics)
         showRemarksByStatusLabel(statistics.categoryStatistics)
-        mRemarksByCategoryChart.setStatistics(statistics.categoryStatistics)
-        mRemarksByTagChart.setStatistics(statistics.tagStatistics)
+        remarksByCategoryChart.setStatistics(statistics.categoryStatistics)
+        remarksByTagChart.setStatistics(statistics.tagStatistics)
     }
 
     fun showRemarksByStatusLabel(categoryStatistics: List<StatisticEntry>) {
@@ -112,7 +106,7 @@ class StatisticsActivity : BaseActivity(), StatisticsMvp.View {
         }
 
         var statusLabelText = String.format("There are <b>%d</b> resolved remarks out of <b>%d</b>", resolvedStatisticsCount, reportedStatisticsCount)
-        mRemarksByStatusLabel.text = Html.fromHtml(statusLabelText)
+        remarksByStatusLabel.text = Html.fromHtml(statusLabelText)
     }
 
 }
