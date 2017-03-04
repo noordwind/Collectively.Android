@@ -38,7 +38,7 @@
             </FrameLayout>
 
             <TextView
-                android:id="@+id/mTitleLabel"
+                android:id="@+id/titleLabel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal|center_vertical"
@@ -61,7 +61,7 @@
             android:orientation="vertical">
 
             <EditText
-                android:id="@+id/mEmailInput"
+                android:id="@+id/emailInput"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/red_dark_1"
@@ -73,7 +73,7 @@
                 android:textCursorDrawable="@drawable/color_cursor" />
 
             <EditText
-                android:id="@+id/mUsernameInput"
+                android:id="@+id/usernameInput"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/spacing_small"
@@ -86,7 +86,7 @@
                 android:textCursorDrawable="@drawable/color_cursor" />
 
             <EditText
-                android:id="@+id/mPasswordInput"
+                android:id="@+id/passwordInput"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/spacing_small"
@@ -100,7 +100,7 @@
                 android:textCursorDrawable="@drawable/color_cursor" />
 
             <android.support.v7.widget.CardView
-                android:id="@+id/mRegisterButton"
+                android:id="@+id/registerButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="right|center_vertical"

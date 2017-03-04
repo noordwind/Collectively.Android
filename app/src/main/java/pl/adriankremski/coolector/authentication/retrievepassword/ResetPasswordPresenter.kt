@@ -3,46 +3,45 @@ package pl.adriankremski.coolector.authentication.retrievepassword
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import pl.adriankremski.coolector.network.AppDisposableObserver
-import pl.adriankremski.coolector.repository.AuthenticationRepository
 
-class ResetPasswordPresenter(val mView: ResetPasswordMvp.View, val mRepository : AuthenticationRepository) : ResetPasswordMvp.Presenter {
+class ResetPasswordPresenter(val view: ResetPasswordMvp.View, val useCase: RetrievePasswordUseCase ) : ResetPasswordMvp.Presenter {
 
     override fun resetPassword(email: String) {
         var observer = object : AppDisposableObserver<Boolean>() {
 
             override fun onStart() {
                 super.onStart()
-                mView.showLoading()
+                view.showLoading()
             }
 
             override fun onNext(status: Boolean) {
                 super.onNext(status)
-                mView.hideLoading()
-                mView.showResetPasswordSuccess()
+                view.hideLoading()
+                view.showResetPasswordSuccess()
             }
 
             override fun onError(e: Throwable) {
                 super.onError(e)
-                mView.hideLoading()
+                view.hideLoading()
             }
 
             override fun onServerError(message: String?) {
                 super.onServerError(message)
-                mView.showResetPasswordServerError(message)
+                view.showResetPasswordServerError(message)
             }
 
             override fun onNetworkError() {
                 super.onNetworkError()
-                mView.showNetworkError()
+                view.showNetworkError()
             }
         }
 
-        var disposable = mRepository.resetPassword(email)
+        var disposable = useCase.resetPassword(email)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeWith(observer)
 
-        mView.registerDisposable(disposable)
+        view.registerDisposable(disposable)
     }
 
 }

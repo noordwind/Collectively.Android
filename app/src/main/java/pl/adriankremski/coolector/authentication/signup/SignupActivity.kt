@@ -23,7 +23,6 @@ import pl.adriankremski.coolector.repository.SessionRepository
 import pl.adriankremski.coolector.utils.showLoginErrorDialog
 import javax.inject.Inject
 
-
 class SignUpActivity : AppCompatActivity(), SignUpMvp.View {
 
     companion object {
@@ -34,13 +33,13 @@ class SignUpActivity : AppCompatActivity(), SignUpMvp.View {
     }
 
     @Inject
-    lateinit var mAuthenticationRepository: AuthenticationRepository
+    lateinit var authenticationRepository: AuthenticationRepository
 
     @Inject
-    lateinit var mSessionRepository: SessionRepository
+    lateinit var sessionRepository: SessionRepository
 
-    lateinit var mSignupPresenter: SignUpMvp.Presenter
-    lateinit var mCompositeDisposable: CompositeDisposable
+    lateinit var presenter: SignUpMvp.Presenter
+    lateinit var compositeDisposable: CompositeDisposable
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -51,28 +50,28 @@ class SignUpActivity : AppCompatActivity(), SignUpMvp.View {
         var span = SpannableString(getString(R.string.signup_screen_title));
         span.setSpan(RelativeSizeSpan(1.2f), 0, 1, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
         span.setSpan(StyleSpan(Typeface.BOLD), 0, 1, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-        mTitleLabel.text = span
+        titleLabel.text = span
 
-        mSignupPresenter = SignUpPresenter(this, mAuthenticationRepository, mSessionRepository);
-        mCompositeDisposable = CompositeDisposable();
+        presenter = SignUpPresenter(this, SignUpUseCase(authenticationRepository, sessionRepository));
+        compositeDisposable = CompositeDisposable();
 
-        mRegisterButton.setOnClickListener { signUp() }
+        registerButton.setOnClickListener { signUp() }
     }
 
     fun signUp() {
-        mSignupPresenter.signUp(mUsernameInput.text.toString(), mEmailInput.text.toString(), mPasswordInput.text.toString());
+        presenter.signUp(usernameInput.text.toString(), emailInput.text.toString(), passwordInput.text.toString());
     }
 
     override fun showLoading() {
-        mProgressView.visibility = View.VISIBLE
+        progressView.visibility = View.VISIBLE
     }
 
-    override fun registerDisposable(disposable: Disposable) { mCompositeDisposable.add(disposable) }
+    override fun registerDisposable(disposable: Disposable) { compositeDisposable.add(disposable) }
 
     override fun showRegisterSuccess() = MainActivity.login(baseContext);
 
     override fun hideLoading() {
-        mProgressView.visibility = View.GONE;
+        progressView.visibility = View.GONE;
     }
 
     override fun showNetworkError() {
@@ -83,7 +82,7 @@ class SignUpActivity : AppCompatActivity(), SignUpMvp.View {
 
     override fun onDestroy() {
         super.onDestroy()
-        mCompositeDisposable.clear();
+        compositeDisposable.clear();
     }
 }
 

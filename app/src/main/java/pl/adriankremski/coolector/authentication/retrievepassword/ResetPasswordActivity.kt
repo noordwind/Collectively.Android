@@ -30,9 +30,9 @@ class ResetPasswordActivity : AppCompatActivity(), ResetPasswordMvp.View {
     }
 
     @Inject
-    lateinit var mAuthenticationRepository: AuthenticationRepository
+    lateinit var authenticationRepository: AuthenticationRepository
 
-    private lateinit var mCompositeDisposable: CompositeDisposable
+    private lateinit var compositeDisposable: CompositeDisposable
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -42,19 +42,19 @@ class ResetPasswordActivity : AppCompatActivity(), ResetPasswordMvp.View {
         val span = SpannableString(getString(R.string.retrieve_password_screen_title))
         span.setSpan(RelativeSizeSpan(1.2f), 0, 1, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
         span.setSpan(StyleSpan(Typeface.BOLD), 0, 1, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
-        mTitleLabel.text = span
+        titleLabel.text = span
 
-        mCompositeDisposable = CompositeDisposable();
+        compositeDisposable = CompositeDisposable();
 
-        var presenter = ResetPasswordPresenter(this, mAuthenticationRepository)
-        mResetPasswordButton.setOnClickListener { presenter.resetPassword(mEmailInput.text.toString()) }
+        var presenter = ResetPasswordPresenter(this, RetrievePasswordUseCase(authenticationRepository))
+        mResetPasswordButton.setOnClickListener { presenter.resetPassword(emailInput.text.toString()) }
     }
 
-    override fun registerDisposable(disposable: Disposable) { mCompositeDisposable.add(disposable) }
+    override fun registerDisposable(disposable: Disposable) { compositeDisposable.add(disposable) }
 
-    override fun showLoading() { mProgressView.visibility = View.VISIBLE }
+    override fun showLoading() { progressView.visibility = View.VISIBLE }
 
-    override fun hideLoading() { mProgressView.visibility = View.GONE }
+    override fun hideLoading() { progressView.visibility = View.GONE }
 
     override fun showNetworkError() = Snackbar.make(findViewById(android.R.id.content), getString(R.string.error_no_network), Snackbar.LENGTH_LONG).show()
 
@@ -66,6 +66,6 @@ class ResetPasswordActivity : AppCompatActivity(), ResetPasswordMvp.View {
 
     override fun onDestroy() {
         super.onDestroy()
-        mCompositeDisposable.clear();
+        compositeDisposable.clear();
     }
 }
