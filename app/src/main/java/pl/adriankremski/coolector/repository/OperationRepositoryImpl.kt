@@ -15,7 +15,7 @@ import javax.inject.Inject
 class OperationRepositoryImpl(context: Context) : OperationRepository {
 
     @Inject
-    lateinit var mApi: Api
+    lateinit var api: Api
 
     private var RETRY_DELAY_IN_MS = 500L
 
@@ -27,7 +27,7 @@ class OperationRepositoryImpl(context: Context) : OperationRepository {
         return sourceObservable.flatMap({
             var operationPath = it.headers().get(Constants.Headers.X_OPERATION)
 
-            mApi.operation(operationPath)
+            api.operation(operationPath)
                     .repeatWhen { it.delay(RETRY_DELAY_IN_MS, TimeUnit.MILLISECONDS) }
                     .takeUntil(TakeUntilPredicate())
                     .filter { it.isFinished() }

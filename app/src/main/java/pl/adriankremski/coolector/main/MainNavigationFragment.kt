@@ -25,6 +25,7 @@ class MainNavigationFragment : Fragment() {
         mStatisticsOptionView.setOnClickListener { openStatistics() }
         mSettingsOptionView.setOnClickListener { openSettings() }
         mFanpageOptionView.setOnClickListener { openFanPage() }
+        mShowRemark.setOnClickListener { openShowRemarkPage() }
     }
 
     fun openProfile() {
@@ -37,6 +38,9 @@ class MainNavigationFragment : Fragment() {
 
     fun openSettings() {
         Snackbar.make(activity.findViewById(android.R.id.content), "Settings", Snackbar.LENGTH_SHORT).show();
+    }
+
+    fun openShowRemarkPage() {
     }
 
     fun openFanPage() {

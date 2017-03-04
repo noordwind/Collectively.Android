@@ -10,48 +10,52 @@ import pl.adriankremski.coolector.model.*
 import pl.adriankremski.coolector.network.Api
 import java.util.concurrent.TimeUnit
 
-class RemarkRepositoryImpl(val mSharedPreferences: SharedPreferences, val mGson: Gson, val mApi: Api) : RemarksRepository {
+class RemarkRepositoryImpl(val sharedPreferences: SharedPreferences, val gson: Gson, val api: Api) : RemarksRepository {
 
     private val CACHE_EXPIRATION_TIME = TimeUnit.DAYS.toMillis(7)
-    private val mTypeToken = object : TypeToken<List<RemarkCategory>>() {}.type
+    private val typeToken = object : TypeToken<List<RemarkCategory>>() {}.type
 
     override fun loadRemarkCategories(): Observable<List<RemarkCategory>> {
-        var remarksJson = mSharedPreferences.getString(Constants.PreferencesKey.REMARK_CATEGORIES, "")
-        var cacheTime = mSharedPreferences.getLong(Constants.PreferencesKey.REMARK_CATEGORIES_CACHE_TIME, 0)
+        var remarksJson = sharedPreferences.getString(Constants.PreferencesKey.REMARK_CATEGORIES, "")
+        var cacheTime = sharedPreferences.getLong(Constants.PreferencesKey.REMARK_CATEGORIES_CACHE_TIME, 0)
         var currentTime = System.currentTimeMillis()
 
         if (TextUtils.isEmpty(remarksJson) || currentTime - CACHE_EXPIRATION_TIME >= cacheTime) {
             // cache is expired
-            return mApi.remarkCategories().doOnNext { saveRemarksToCache(it) }
+            return api.remarkCategories().doOnNext { saveRemarksToCache(it) }
         } else {
-            return Observable.just(mGson.fromJson(remarksJson, mTypeToken))
+            return Observable.just(gson.fromJson(remarksJson, typeToken))
         }
     }
 
     fun saveRemarksToCache(remarkCategories: List<RemarkCategory>) {
-        val remarksInJson = mGson.toJson(remarkCategories, mTypeToken)
-        mSharedPreferences.edit().putString(Constants.PreferencesKey.REMARK_CATEGORIES, remarksInJson)
-        mSharedPreferences.edit().putLong(Constants.PreferencesKey.REMARK_CATEGORIES_CACHE_TIME, System.currentTimeMillis())
+        val remarksInJson = gson.toJson(remarkCategories, typeToken)
+        sharedPreferences.edit().putString(Constants.PreferencesKey.REMARK_CATEGORIES, remarksInJson)
+        sharedPreferences.edit().putLong(Constants.PreferencesKey.REMARK_CATEGORIES_CACHE_TIME, System.currentTimeMillis())
     }
 
     override fun loadRemarks(): Observable<List<Remark>> {
-        return mApi.remarks(true, "createdat", "descending", 1000)
+        return api.remarks(true, "createdat", "descending", 1000)
     }
 
     override fun loadRemarkTags(): Observable<List<RemarkTag>> {
-        return mApi.remarkTags()
+        return api.remarkTags()
     }
 
     override fun saveRemark(remark: NewRemark): Observable<RemarkNotFromList> {
-        return mApi.saveRemark(remark).flatMap {
+        return api.saveRemark(remark).flatMap {
             var operationPath = it.headers().get(Constants.Headers.X_OPERATION)
 
-            mApi.operation(operationPath)
+            api.operation(operationPath)
                     .repeatWhen { it.delay(500, TimeUnit.MILLISECONDS) }
                     .takeUntil<Operation> { it.state.equals(Constants.Operation.STATE_COMPLETED) }
                     .filter { !it.state.equals(Constants.Operation.STATE_COMPLETED) }
-                    .flatMap { mApi.createdRemark(it.resource) }
+                    .flatMap { api.createdRemark(it.resource) }
         }
+    }
+
+    override fun loadRemark(id: String): Observable<Remark> {
+        return Observable.just(Remark("", null, "", "", false, 10))
     }
 }
 

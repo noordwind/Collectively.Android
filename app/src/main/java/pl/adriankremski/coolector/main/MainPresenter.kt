@@ -5,10 +5,11 @@ import io.reactivex.schedulers.Schedulers
 import pl.adriankremski.coolector.model.Remark
 import pl.adriankremski.coolector.model.RemarkCategory
 import pl.adriankremski.coolector.network.AppDisposableObserver
-import pl.adriankremski.coolector.repository.RemarksRepository
+import pl.adriankremski.coolector.usecases.LoadRemarkCategoriesUseCase
+import pl.adriankremski.coolector.usecases.LoadRemarksUseCase
 
 
-class MainPresenter(val mView: MainMvp.View, val mRemarksRepository : RemarksRepository) : MainMvp.Presenter {
+class MainPresenter(val view: MainMvp.View, val loadRemarksUseCase: LoadRemarksUseCase, val loadRemarkCategoriesUseCase: LoadRemarkCategoriesUseCase) : MainMvp.Presenter {
     override fun loadRemarks() {
         var observer = object : AppDisposableObserver<List<Remark>>() {
 
@@ -18,7 +19,7 @@ class MainPresenter(val mView: MainMvp.View, val mRemarksRepository : RemarksRep
 
             override fun onNext(remarks: List<Remark>) {
                 super.onNext(remarks)
-                mView.showRemarks(remarks)
+                view.showRemarks(remarks)
             }
 
             override fun onError(e: Throwable) {
@@ -30,12 +31,12 @@ class MainPresenter(val mView: MainMvp.View, val mRemarksRepository : RemarksRep
             }
         }
 
-        var disposable = mRemarksRepository?.loadRemarks()
+        var disposable = loadRemarksUseCase.loadRemarks()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeWith(observer)
 
-        mView.addDisposable(disposable)
+        view.addDisposable(disposable)
     }
 
     override fun loadRemarkCategories() {
@@ -47,8 +48,8 @@ class MainPresenter(val mView: MainMvp.View, val mRemarksRepository : RemarksRep
 
             override fun onNext(categories: List<RemarkCategory>) {
                 super.onNext(categories)
-                mView.clearCategories()
-                categories.forEach { mView.showRemarkCategory(it) }
+                view.clearCategories()
+                categories.forEach { view.showRemarkCategory(it) }
             }
 
             override fun onError(e: Throwable) {
@@ -60,11 +61,11 @@ class MainPresenter(val mView: MainMvp.View, val mRemarksRepository : RemarksRep
             }
         }
 
-        var disposable = mRemarksRepository?.loadRemarkCategories()
+        var disposable = loadRemarkCategoriesUseCase.loadRemarkCategories()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeWith(observer)
 
-        mView.addDisposable(disposable)
+        view.addDisposable(disposable)
     }
 }

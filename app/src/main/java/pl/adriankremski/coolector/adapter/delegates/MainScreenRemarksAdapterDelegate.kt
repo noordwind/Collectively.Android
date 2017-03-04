@@ -32,18 +32,18 @@ class MainScreenRemarksAdapterDelegate(viewType: Int, val onRemarkSelectedListen
 
     class RemarkRowHolder(itemView: View, val onRemarkSelectedListener: OnRemarkSelectedListener) : RecyclerView.ViewHolder(itemView) {
 
-        private var mNameLabel: TextView = itemView.findViewById(R.id.name) as TextView
-        private var mAddressLabel: TextView = itemView.findViewById(R.id.address) as TextView
-        private var mRemark: Remark? = null
+        private var nameLabel: TextView = itemView.findViewById(R.id.name) as TextView
+        private var addressLabel: TextView = itemView.findViewById(R.id.address) as TextView
+        private var remark: Remark? = null
 
         init {
-            itemView.setOnClickListener { onRemarkSelectedListener.onRemarkSelected(mRemark!!) }
+            itemView.setOnClickListener { onRemarkSelectedListener.onRemarkSelected(remark!!) }
         }
 
         fun setRemark(remark: Remark) {
-            mRemark = remark
-            mNameLabel.text = remark.description
-            mAddressLabel.text = remark.location?.address
+            this.remark = remark
+            nameLabel.text = remark.description
+            addressLabel.text = remark.location?.address
         }
     }
 

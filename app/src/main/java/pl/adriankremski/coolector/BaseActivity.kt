@@ -8,11 +8,11 @@ import io.reactivex.disposables.Disposable
 
 open class BaseActivity : AppCompatActivity() {
 
-    private lateinit var mCompositeDisposable: CompositeDisposable
+    private lateinit var compositeDisposable: CompositeDisposable
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        mCompositeDisposable = CompositeDisposable()
+        compositeDisposable = CompositeDisposable()
     }
 
     override fun setContentView(layoutResID: Int) {
@@ -30,11 +30,11 @@ open class BaseActivity : AppCompatActivity() {
     }
 
     fun addDisposable(disposable: Disposable) {
-        mCompositeDisposable.add(disposable)
+        compositeDisposable.add(disposable)
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        mCompositeDisposable.clear();
+        compositeDisposable.clear();
     }
 }

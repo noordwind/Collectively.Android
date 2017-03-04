@@ -23,6 +23,9 @@ import pl.adriankremski.coolector.model.RemarkNotFromList
 import pl.adriankremski.coolector.model.RemarkTag
 import pl.adriankremski.coolector.repository.LocationRepository
 import pl.adriankremski.coolector.repository.RemarksRepository
+import pl.adriankremski.coolector.usecases.LoadLastKnownLocationUseCase
+import pl.adriankremski.coolector.usecases.LoadRemarkTagsUseCase
+import pl.adriankremski.coolector.usecases.SaveRemarkUseCase
 import pl.adriankremski.coolector.utils.getChildViewsWithType
 import pl.adriankremski.coolector.utils.setBackgroundCompat
 import pl.adriankremski.coolector.utils.uppercaseFirstLetter
@@ -41,20 +44,20 @@ class AddRemarkActivity : BaseActivity(), AddRemarkMvp.View {
     }
 
     @Inject
-    lateinit var mRemarksRepository: RemarksRepository
+    lateinit var remarksRepository: RemarksRepository
 
     @Inject
-    lateinit var mLocationRepository: LocationRepository
-    lateinit var mPresenter: AddRemarkMvp.Presenter
+    lateinit var locationRepository: LocationRepository
+    lateinit var presenter: AddRemarkMvp.Presenter
 
-    internal var mTitleLabel: TextView? = null
-    lateinit var mCategoriesSpinner: Spinner
-    lateinit var mDescriptionLabel: EditText
-    internal var mTagsLayout: FlowLayout? = null
-    lateinit var mAddressLabel: TextView
-    lateinit var mSubmitButton: View
+    internal var titleLabel: TextView? = null
+    lateinit var categoriesSpinner: Spinner
+    lateinit var descriptionLabel: EditText
+    internal var tagsLayout: FlowLayout? = null
+    lateinit var addressLabel: TextView
+    lateinit var submitButton: View
 
-    private var mCompositeDisposable: CompositeDisposable? = null
+    private var compositeDisposable: CompositeDisposable? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -63,35 +66,36 @@ class AddRemarkActivity : BaseActivity(), AddRemarkMvp.View {
         var span = SpannableString(getString(R.string.add_remark_screen_title))
         span.setSpan(RelativeSizeSpan(1.2f), 0, 1, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
         span.setSpan(StyleSpan(Typeface.BOLD), 0, 1, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
-        mTitleLabel = findViewById(R.id.title) as TextView
-        mTitleLabel?.text = span;
+        titleLabel = findViewById(R.id.title) as TextView
+        titleLabel?.text = span;
 
-        mTagsLayout = findViewById(R.id.tags_layout) as FlowLayout
+        tagsLayout = findViewById(R.id.tags_layout) as FlowLayout
 
-        mCategoriesSpinner = findViewById(R.id.remark_categories) as Spinner
+        categoriesSpinner = findViewById(R.id.remark_categories) as Spinner
 
-        mAddressLabel = findViewById(R.id.address) as TextView
+        addressLabel = findViewById(R.id.address) as TextView
 
-        mDescriptionLabel = findViewById(R.id.description) as EditText
+        descriptionLabel = findViewById(R.id.description) as EditText
 
-        mSubmitButton = findViewById(R.id.submit) as View
-        mSubmitButton.setOnClickListener { mPresenter.saveRemark(getCategory(), getDescription(), getSelectedTags()) }
+        submitButton = findViewById(R.id.submit) as View
+        submitButton.setOnClickListener { presenter.saveRemark(getCategory(), getDescription(), getSelectedTags()) }
 
-        mCompositeDisposable = CompositeDisposable();
+        compositeDisposable = CompositeDisposable();
 
-        mPresenter = AddRemarkPresenter(this, mRemarksRepository, mLocationRepository)
-        mPresenter.loadRemarkCategories()
-        mPresenter.loadRemarkTags()
-        mPresenter.loadLastKnownAddress()
+        presenter = AddRemarkPresenter(this, SaveRemarkUseCase(remarksRepository), LoadRemarkTagsUseCase(remarksRepository),
+                LoadRemarkCategoriesUseCase(remarksRepository), LoadLastKnownLocationUseCase(locationRepository))
+        presenter.loadRemarkCategories()
+        presenter.loadRemarkTags()
+        presenter.loadLastKnownAddress()
     }
 
-    fun getCategory() = mCategoriesSpinner.selectedItem.toString()
+    fun getCategory() = categoriesSpinner.selectedItem.toString()
 
-    fun getDescription() = mDescriptionLabel.text.toString()
+    fun getDescription() = descriptionLabel.text.toString()
 
     fun getSelectedTags(): List<String> {
         var tags = LinkedList<String>()
-        var tagViews = mTagsLayout!!.getChildViewsWithType(RemarkTagView::class.java)
+        var tagViews = tagsLayout!!.getChildViewsWithType(RemarkTagView::class.java)
         tagViews.filter { it.isSelected!! }.forEach { tags.add(it.text.toString())}
         return tags
     }
@@ -101,7 +105,7 @@ class AddRemarkActivity : BaseActivity(), AddRemarkMvp.View {
         categories.forEach { categoryNames.add(it.name.uppercaseFirstLetter()) }
         val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, categoryNames)
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        mCategoriesSpinner.adapter = adapter
+        categoriesSpinner.adapter = adapter
     }
 
     override fun showAvailableRemarkTags(categories: List<RemarkTag>) {
@@ -118,12 +122,12 @@ class AddRemarkActivity : BaseActivity(), AddRemarkMvp.View {
             params.bottomMargin = 10
             newView.layoutParams = params
 
-            mTagsLayout?.addView(newView)
+            tagsLayout?.addView(newView)
         }
     }
 
     override fun showAddress(addressPretty: String) {
-        mAddressLabel.text = addressPretty
+        addressLabel.text = addressPretty
     }
 
     override fun showSaveRemarkLoading() {

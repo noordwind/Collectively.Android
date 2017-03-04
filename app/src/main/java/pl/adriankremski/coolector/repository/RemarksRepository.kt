@@ -5,10 +5,11 @@ import pl.adriankremski.coolector.model.*
 
 
 interface RemarksRepository {
-    fun loadRemarkCategories() : Observable<List<RemarkCategory>>
-    fun loadRemarks() : Observable<List<Remark>>
-    fun loadRemarkTags() : Observable<List<RemarkTag>>
-    fun saveRemark(remark: NewRemark) : Observable<RemarkNotFromList>
+    fun loadRemarkCategories(): Observable<List<RemarkCategory>>
+    fun loadRemarks(): Observable<List<Remark>>
+    fun loadRemarkTags(): Observable<List<RemarkTag>>
+    fun saveRemark(remark: NewRemark): Observable<RemarkNotFromList>
+    fun loadRemark(id: String): Observable<Remark>
 }
 
 

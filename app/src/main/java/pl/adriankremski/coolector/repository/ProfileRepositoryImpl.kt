@@ -9,12 +9,12 @@ import javax.inject.Inject
 
 class ProfileRepositoryImpl(context: Context) : ProfileRepository {
     @Inject
-    lateinit var mApi: Api
+    lateinit var api: Api
 
     init {
         TheApp[context].appComponent?.inject(this)
     }
 
-    override fun loadProfile(): Observable<Profile> = mApi.loadProfile()
+    override fun loadProfile(): Observable<Profile> = api.loadProfile()
 }
 

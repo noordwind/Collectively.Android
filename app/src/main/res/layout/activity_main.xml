@@ -37,7 +37,7 @@
         </com.getbase.floatingactionbutton.FloatingActionsMenu>
 
         <ImageView
-            android:id="@+id/mMainMenu"
+            android:id="@+id/mainMenu"
             android:padding="@dimen/spacing_medium"
             android:layout_alignParentLeft="true"
             android:layout_alignParentTop="true"

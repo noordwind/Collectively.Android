@@ -9,15 +9,20 @@ import pl.adriankremski.coolector.model.RemarkCategory
 import pl.adriankremski.coolector.model.RemarkNotFromList
 import pl.adriankremski.coolector.model.RemarkTag
 import pl.adriankremski.coolector.network.AppDisposableObserver
-import pl.adriankremski.coolector.repository.LocationRepository
-import pl.adriankremski.coolector.repository.RemarksRepository
+import pl.adriankremski.coolector.usecases.LoadLastKnownLocationUseCase
+import pl.adriankremski.coolector.usecases.LoadRemarkCategoriesUseCase
+import pl.adriankremski.coolector.usecases.LoadRemarkTagsUseCase
+import pl.adriankremski.coolector.usecases.SaveRemarkUseCase
 
+class AddRemarkPresenter(val view: AddRemarkMvp.View,
+                         val saveRemarkUseCase: SaveRemarkUseCase,
+                         val loadRemarkTagsUseCase: LoadRemarkTagsUseCase,
+                         val loadRemarkCategoriesUseCase: LoadRemarkCategoriesUseCase,
+                         val loadLastKnownLocationUseCase: LoadLastKnownLocationUseCase) : AddRemarkMvp.Presenter {
 
-class AddRemarkPresenter(val mView: AddRemarkMvp.View, val mRemarksRepository : RemarksRepository, val mLocationRepository: LocationRepository) : AddRemarkMvp.Presenter {
-
-    private var mLastKnownLatitude: Double? = null
-    private var mLastKnownLongitude: Double? = null
-    private var mLastKnownAddress: String? = null
+    private var lastKnownLatitude: Double? = null
+    private var lastKnownLongitude: Double? = null
+    private var lastKnownAddress: String? = null
 
     override fun loadRemarkCategories() {
         var observer = object : AppDisposableObserver<List<RemarkCategory>>() {
@@ -28,7 +33,7 @@ class AddRemarkPresenter(val mView: AddRemarkMvp.View, val mRemarksRepository : 
 
             override fun onNext(categories: List<RemarkCategory>) {
                 super.onNext(categories)
-                mView.showAvailableRemarkCategories(categories)
+                view.showAvailableRemarkCategories(categories)
             }
 
             override fun onError(e: Throwable) {
@@ -40,12 +45,12 @@ class AddRemarkPresenter(val mView: AddRemarkMvp.View, val mRemarksRepository : 
             }
         }
 
-        var disposable = mRemarksRepository?.loadRemarkCategories()
+        var disposable = loadRemarkCategoriesUseCase.loadRemarkCategories()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeWith(observer)
 
-        mView.addDisposable(disposable)
+        view.addDisposable(disposable)
     }
 
     override fun loadRemarkTags() {
@@ -57,7 +62,7 @@ class AddRemarkPresenter(val mView: AddRemarkMvp.View, val mRemarksRepository : 
 
             override fun onNext(categories: List<RemarkTag>) {
                 super.onNext(categories)
-                mView.showAvailableRemarkTags(categories)
+                view.showAvailableRemarkTags(categories)
             }
 
             override fun onError(e: Throwable) {
@@ -69,12 +74,12 @@ class AddRemarkPresenter(val mView: AddRemarkMvp.View, val mRemarksRepository : 
             }
         }
 
-        var disposable = mRemarksRepository?.loadRemarkTags()
+        var disposable = loadRemarkTagsUseCase.loadRemarkTags()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeWith(observer)
 
-        mView.addDisposable(disposable)
+        view.addDisposable(disposable)
     }
 
     override fun loadLastKnownAddress() {
@@ -96,47 +101,47 @@ class AddRemarkPresenter(val mView: AddRemarkMvp.View, val mRemarksRepository : 
                     addressPretty += addresses?.get(0)?.getAddressLine(i) + ", "
                 }
 
-                mLastKnownAddress = addressPretty
-                mLastKnownLatitude = addresses?.get(0)?.latitude
-                mLastKnownLongitude = addresses?.get(0)?.longitude
+                lastKnownAddress = addressPretty
+                lastKnownLatitude = addresses?.get(0)?.latitude
+                lastKnownLongitude = addresses?.get(0)?.longitude
 
-                mView.showAddress(addressPretty)
+                view.showAddress(addressPretty)
             }
         }
 
-        var obs = mLocationRepository.lastKnownAddress()
+        var obs = loadLastKnownLocationUseCase.lastKnownAddress()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeWith(observer)
 
-        mView.addDisposable(obs)
+        view.addDisposable(obs)
     }
 
     override fun saveRemark(category: String, description: String, selectedTags: List<String>) {
         var observer = object : AppDisposableObserver<RemarkNotFromList>() {
             override fun onStart() {
                 super.onStart()
-                mView.showSaveRemarkLoading()
+                view.showSaveRemarkLoading()
             }
 
             override fun onError(e: Throwable) {
                 super.onError(e)
-                mView.showSaveRemarkError()
+                view.showSaveRemarkError()
             }
 
             override fun onComplete() {
             }
 
             override fun onNext(newRemark: RemarkNotFromList) {
-                mView.showSaveRemarkSuccess(newRemark)
+                view.showSaveRemarkSuccess(newRemark)
             }
         }
 
-        var obs = mRemarksRepository.saveRemark(NewRemark(category.toLowerCase(), mLastKnownLatitude!!, mLastKnownLongitude!!, mLastKnownAddress!!, description))
+        var obs = saveRemarkUseCase.saveRemark(NewRemark(category.toLowerCase(), lastKnownLatitude!!, lastKnownLongitude!!, lastKnownAddress!!, description))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeWith(observer)
 
-        mView.addDisposable(obs)
+        view.addDisposable(obs)
     }
 }

@@ -6,18 +6,18 @@ import android.support.design.widget.BottomSheetDialog
 import pl.adriankremski.coolector.model.Remark
 
 class MainScreenRemarkBottomSheetDialog(context: Context, remark: Remark) {
-    private val mBottomSheetDialog: BottomSheetDialog = BottomSheetDialog(context)
-    private val mBottomSheetView: MainScreenRemarkBottomSheet = MainScreenRemarkBottomSheet(context, remark)
+    private val bottomSheetDialog: BottomSheetDialog = BottomSheetDialog(context)
+    private val bottomSheetView: MainScreenRemarkBottomSheet = MainScreenRemarkBottomSheet(context, remark)
 
     init {
-        mBottomSheetDialog.setContentView(mBottomSheetView)
+        bottomSheetDialog.setContentView(bottomSheetView)
     }
 
     fun setOnDismissListener(onDismissListener: DialogInterface.OnDismissListener) {
-        mBottomSheetDialog.setOnDismissListener(onDismissListener)
+        bottomSheetDialog.setOnDismissListener(onDismissListener)
     }
 
     fun show() {
-        mBottomSheetDialog.show()
+        bottomSheetDialog.show()
     }
 }

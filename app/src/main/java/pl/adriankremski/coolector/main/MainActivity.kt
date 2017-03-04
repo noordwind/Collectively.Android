@@ -44,6 +44,8 @@ import pl.adriankremski.coolector.addremark.AddRemarkActivity
 import pl.adriankremski.coolector.model.Remark
 import pl.adriankremski.coolector.model.RemarkCategory
 import pl.adriankremski.coolector.repository.RemarksRepository
+import pl.adriankremski.coolector.usecases.LoadRemarkCategoriesUseCase
+import pl.adriankremski.coolector.usecases.LoadRemarksUseCase
 import pl.adriankremski.coolector.utils.colorOfCategory
 import pl.adriankremski.coolector.utils.toBitmapDescriptor
 import pl.adriankremski.coolector.utils.uppercaseFirstLetter
@@ -61,19 +63,19 @@ class MainActivity : BaseActivity(), MainMvp.View, OnMapReadyCallback, GoogleApi
         }
     }
 
-    private lateinit var mFloatingActionsMenu: FloatingActionsMenu
-    private var mMap: GoogleMap? = null
-    private var mGoogleApiClient: GoogleApiClient? = null
-    private var mLocationRequest: LocationRequest? = null
-    private var mLastLocation: Location? = null
-    private var mCurrLocationMarker: Marker? = null
+    private lateinit var floatingActionsMenu: FloatingActionsMenu
+    private var map: GoogleMap? = null
+    private var googleApiClient: GoogleApiClient? = null
+    private var locationRequest: LocationRequest? = null
+    private var lastLocation: Location? = null
+    private var currLocationMarker: Marker? = null
     private val MY_PERMISSIONS_REQUEST_LOCATION = 99
-    private val mRemarksMarkers: LinkedList<Marker> = LinkedList<Marker>()
-    private var mRemarks: List<Remark>? = null
+    private val remarksMarkers: LinkedList<Marker> = LinkedList<Marker>()
+    private var remarks: List<Remark>? = null
 
     @Inject
-    lateinit var mRemarksRepository: RemarksRepository
-    lateinit var mMainPresenter: MainPresenter
+    lateinit var remarksRepository: RemarksRepository
+    lateinit var mainPresenter: MainPresenter
 
     private lateinit var drawerToggle: ActionBarDrawerToggle
 
@@ -93,14 +95,14 @@ class MainActivity : BaseActivity(), MainMvp.View, OnMapReadyCallback, GoogleApi
 //        mToolbarOptionLabel.visibility = View.GONE
 //        mToolbarOptionLabel.setOnClickListener { drawerLayout.openDrawer(Gravity.RIGHT) }
 
-        mMainMenu.setOnClickListener { drawerLayout.openDrawer(Gravity.LEFT) }
+        mainMenu.setOnClickListener { drawerLayout.openDrawer(Gravity.LEFT) }
 
         drawerLayout = findViewById(R.id.drawer_layout) as DrawerLayout
         drawerToggle = ActionBarDrawerToggle(this, drawerLayout, R.string.open, R.string.close)
         drawerLayout.setDrawerListener(drawerToggle)
         drawerToggle.syncState()
 
-        mFloatingActionsMenu = findViewById(R.id.actions) as FloatingActionsMenu
+        floatingActionsMenu = findViewById(R.id.actions) as FloatingActionsMenu
 
         if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             checkLocationPermission();
@@ -109,12 +111,12 @@ class MainActivity : BaseActivity(), MainMvp.View, OnMapReadyCallback, GoogleApi
         val mapFragment = supportFragmentManager.findFragmentById(R.id.map) as SupportMapFragment
         mapFragment.getMapAsync(this)
 
-        mMainPresenter = MainPresenter(this, mRemarksRepository)
-        mMainPresenter.loadRemarkCategories()
+        mainPresenter = MainPresenter(this, LoadRemarksUseCase(remarksRepository), LoadRemarkCategoriesUseCase(remarksRepository))
+        mainPresenter.loadRemarkCategories()
     }
 
     override fun clearCategories() {
-//        mFloatingActionsMenu.removeAllViews()
+//        floatingActionsMenu.removeAllViews()
     }
 
     override fun showRemarkCategory(remarkCategory: RemarkCategory) {
@@ -122,58 +124,58 @@ class MainActivity : BaseActivity(), MainMvp.View, OnMapReadyCallback, GoogleApi
         remarkButton.colorNormal = Color.parseColor(remarkCategory.name.colorOfCategory())
         remarkButton.title = remarkCategory.name.uppercaseFirstLetter()
         remarkButton.setOnClickListener { runOnUiThread { AddRemarkActivity.start(baseContext) } }
-        mFloatingActionsMenu.addButton(remarkButton)
+        floatingActionsMenu.addButton(remarkButton)
     }
 
     override fun onMapReady(googleMap: GoogleMap) {
-        mMainPresenter.loadRemarks()
-        mMap = googleMap
-        mMap?.mapType = GoogleMap.MAP_TYPE_NORMAL
-        mMap?.setOnMarkerClickListener(this)
+        mainPresenter.loadRemarks()
+        map = googleMap
+        map?.mapType = GoogleMap.MAP_TYPE_NORMAL
+        map?.setOnMarkerClickListener(this)
 
         if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
                 buildGoogleApiClient();
-                mMap?.isMyLocationEnabled = true;
+                map?.isMyLocationEnabled = true;
             }
         } else {
             buildGoogleApiClient();
-            mMap?.isMyLocationEnabled = true;
+            map?.isMyLocationEnabled = true;
         }
     }
 
     override fun onStart() {
         super.onStart()
-        if (mMap != null) {
-            mMainPresenter.loadRemarks()
+        if (map != null) {
+            mainPresenter.loadRemarks()
         }
     }
 
     fun buildGoogleApiClient() {
-        mGoogleApiClient = GoogleApiClient.Builder(this)
+        googleApiClient = GoogleApiClient.Builder(this)
                 .addConnectionCallbacks(this)
                 .addOnConnectionFailedListener(this)
                 .addApi(LocationServices.API)
                 .build()
-        mGoogleApiClient?.connect()
+        googleApiClient?.connect()
     }
 
     override fun onConnected(p0: Bundle?) {
-        mLocationRequest = LocationRequest();
-        mLocationRequest?.interval = 1000;
-        mLocationRequest?.fastestInterval = 1000;
-        mLocationRequest?.priority = LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY;
+        locationRequest = LocationRequest();
+        locationRequest?.interval = 1000;
+        locationRequest?.fastestInterval = 1000;
+        locationRequest?.priority = LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY;
 
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-            LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, this);
+            LocationServices.FusedLocationApi.requestLocationUpdates(googleApiClient, locationRequest, this);
         }
     }
 
     override fun onLocationChanged(location: Location?) {
-        mLastLocation = location;
+        lastLocation = location;
 
-        if (mCurrLocationMarker != null) {
-            mCurrLocationMarker?.remove();
+        if (currLocationMarker != null) {
+            currLocationMarker?.remove();
         }
 
         //Place current location marker
@@ -184,15 +186,15 @@ class MainActivity : BaseActivity(), MainMvp.View, OnMapReadyCallback, GoogleApi
         markerOptions.title("Current Position");
         markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE));
 
-        mCurrLocationMarker = mMap?.addMarker(markerOptions);
+        currLocationMarker = map?.addMarker(markerOptions);
 
         //move map camera
-        mMap?.moveCamera(CameraUpdateFactory.newLatLng(latLng));
-        mMap?.animateCamera(CameraUpdateFactory.zoomTo(12.0f));
+        map?.moveCamera(CameraUpdateFactory.newLatLng(latLng));
+        map?.animateCamera(CameraUpdateFactory.zoomTo(12.0f));
 
         //stop location updates
-        if (mGoogleApiClient != null) {
-            LocationServices.FusedLocationApi.removeLocationUpdates(mGoogleApiClient, this);
+        if (googleApiClient != null) {
+            LocationServices.FusedLocationApi.removeLocationUpdates(googleApiClient, this);
         }
     }
 
@@ -230,10 +232,10 @@ class MainActivity : BaseActivity(), MainMvp.View, OnMapReadyCallback, GoogleApi
 
                 // Permission was granted.
                 if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-                    if (mGoogleApiClient == null) {
+                    if (googleApiClient == null) {
                         buildGoogleApiClient();
                     }
-                    mMap?.isMyLocationEnabled = true;
+                    map?.isMyLocationEnabled = true;
                 }
 
             } else {
@@ -246,8 +248,8 @@ class MainActivity : BaseActivity(), MainMvp.View, OnMapReadyCallback, GoogleApi
     }
 
     override fun showRemarks(remarks: List<Remark>) {
-        mRemarks = remarks
-        mRemarksMarkers.forEach(Marker::remove)
+        this.remarks = remarks
+        remarksMarkers.forEach(Marker::remove)
         remarks.forEach {
             if (it.location != null) {
                 var latLng = LatLng(it.location.coordinates[1], it.location.coordinates[0]);
@@ -255,7 +257,7 @@ class MainActivity : BaseActivity(), MainMvp.View, OnMapReadyCallback, GoogleApi
                 markerOptions.position(latLng);
                 markerOptions.title(it.description);
                 markerOptions.icon(it.category.colorOfCategory().toBitmapDescriptor());
-                mRemarksMarkers.add(mMap!!.addMarker(markerOptions))
+                remarksMarkers.add(map!!.addMarker(markerOptions))
             }
         }
 
@@ -265,7 +267,7 @@ class MainActivity : BaseActivity(), MainMvp.View, OnMapReadyCallback, GoogleApi
     }
 
     override fun onMarkerClick(marker: Marker?): Boolean {
-        mRemarks?.filter { it.description != null && it.description.equals(marker?.title) }?.forEach { MainScreenRemarkBottomSheetDialog(this, it).show() }
+        remarks?.filter { it.description != null && it.description.equals(marker?.title) }?.forEach { MainScreenRemarkBottomSheetDialog(this, it).show() }
         return true
     }
 
@@ -274,8 +276,8 @@ class MainActivity : BaseActivity(), MainMvp.View, OnMapReadyCallback, GoogleApi
 
         if (remark.location != null) {
             var latLng = LatLng(remark.location.coordinates[1], remark.location.coordinates[0]);
-            mMap?.moveCamera(CameraUpdateFactory.newLatLng(latLng));
-            mMap?.animateCamera(CameraUpdateFactory.zoomTo(16.0f));
+            map?.moveCamera(CameraUpdateFactory.newLatLng(latLng));
+            map?.animateCamera(CameraUpdateFactory.zoomTo(16.0f));
             MainScreenRemarkBottomSheetDialog(this, remark).show()
         }
     }

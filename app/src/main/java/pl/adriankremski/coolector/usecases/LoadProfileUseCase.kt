@@ -1,4 +1,4 @@
-package pl.adriankremski.coolector.authentication.signup
+package pl.adriankremski.coolector.profile
 
 import io.reactivex.Observable
 import pl.adriankremski.coolector.model.Profile
