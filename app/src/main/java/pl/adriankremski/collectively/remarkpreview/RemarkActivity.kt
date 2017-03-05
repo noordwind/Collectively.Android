@@ -6,7 +6,7 @@ import android.os.Bundle
 import pl.adriankremski.collectively.BaseActivity
 import pl.adriankremski.collectively.R
 import pl.adriankremski.collectively.TheApp
-import pl.adriankremski.collectively.model.Remark
+import pl.adriankremski.collectively.model.RemarkPreview
 import pl.adriankremski.collectively.repository.RemarksRepository
 import pl.adriankremski.collectively.usecases.LoadRemarkUseCase
 import javax.inject.Inject
@@ -33,7 +33,7 @@ class RemarkActivity : BaseActivity(), RemarkPreviewMvp.View {
         setContentView(R.layout.activity_remark_preview);
 
         presenter = RemarkPresenter(this, LoadRemarkUseCase(remarksRepository))
-        presenter.loadRemark("")
+        presenter.loadRemark("4cb5918d-35c2-4024-a278-e596d15e4844")
     }
 
     override fun showRemarkLoading() {
@@ -45,6 +45,6 @@ class RemarkActivity : BaseActivity(), RemarkPreviewMvp.View {
     override fun showRemarkLoadingError(message: String) {
     }
 
-    override fun showLoadedRemark(remark: Remark) {
+    override fun showLoadedRemark(remark: RemarkPreview) {
     }
 }

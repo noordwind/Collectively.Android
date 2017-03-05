@@ -2,8 +2,7 @@ package pl.adriankremski.collectively.model
 
 class RemarkLocation(
         val address: String,
-        val coordinates: Array<Double>,
-        val type: String
+        val coordinates: Array<Double>
 )
 
 class Remark(

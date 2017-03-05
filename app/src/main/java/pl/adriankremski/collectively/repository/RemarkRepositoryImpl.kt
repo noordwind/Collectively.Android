@@ -54,8 +54,8 @@ class RemarkRepositoryImpl(val sharedPreferences: SharedPreferences, val gson: G
         }
     }
 
-    override fun loadRemark(id: String): Observable<Remark> {
-        return Observable.just(Remark("", null, "", "", false, 10))
+    override fun loadRemark(id: String): Observable<RemarkPreview> {
+        return api.remarkPreview(id)
     }
 }
 

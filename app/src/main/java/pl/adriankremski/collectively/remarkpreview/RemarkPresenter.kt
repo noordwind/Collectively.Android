@@ -2,7 +2,7 @@ package pl.adriankremski.collectively.remarkpreview
 
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
-import pl.adriankremski.collectively.model.Remark
+import pl.adriankremski.collectively.model.RemarkPreview
 import pl.adriankremski.collectively.network.AppDisposableObserver
 import pl.adriankremski.collectively.usecases.LoadRemarkUseCase
 
@@ -10,14 +10,14 @@ import pl.adriankremski.collectively.usecases.LoadRemarkUseCase
 class RemarkPresenter(val view: RemarkPreviewMvp.View, val loadRemarkUseCase: LoadRemarkUseCase) : RemarkPreviewMvp.Presenter {
 
     override fun loadRemark(id: String) {
-        var observer = object : AppDisposableObserver<Remark>() {
+        var observer = object : AppDisposableObserver<RemarkPreview>() {
 
             override fun onStart() {
                 super.onStart()
                 view.showRemarkLoading()
             }
 
-            override fun onNext(remark: Remark) {
+            override fun onNext(remark: RemarkPreview) {
                 super.onNext(remark)
                 view.showLoadedRemark(remark)
             }

@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import kotlinx.android.synthetic.main.fragment_main_navigation.*
 import pl.adriankremski.collectively.R
 import pl.adriankremski.collectively.profile.ProfileActivity
+import pl.adriankremski.collectively.remarkpreview.RemarkActivity
 import pl.adriankremski.collectively.statistics.StatisticsActivity
 
 class MainNavigationFragment : Fragment() {
@@ -41,6 +42,7 @@ class MainNavigationFragment : Fragment() {
     }
 
     fun openShowRemarkPage() {
+        RemarkActivity.start(context)
     }
 
     fun openFanPage() {

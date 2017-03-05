@@ -44,6 +44,10 @@ interface Api {
     @GET("api/account")
     fun loadProfile(): Observable<Profile>
 
+    @Headers("Accept: application/json", "Content-type: application/json")
+    @GET("api/remarks/{id}")
+    fun remarkPreview(@Path("id") remarkId: String): Observable<RemarkPreview>
+
     // POST
     @Headers("Accept: application/json", "Content-type: application/json")
     @POST("api/sign-in")

@@ -9,7 +9,7 @@ interface RemarksRepository {
     fun loadRemarks(): Observable<List<Remark>>
     fun loadRemarkTags(): Observable<List<RemarkTag>>
     fun saveRemark(remark: NewRemark): Observable<RemarkNotFromList>
-    fun loadRemark(id: String): Observable<Remark>
+    fun loadRemark(id: String): Observable<RemarkPreview>
 }
 
 
