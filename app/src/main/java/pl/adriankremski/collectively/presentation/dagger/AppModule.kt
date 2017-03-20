@@ -63,9 +63,7 @@ class AppModule(private val application: Application) : Constants {
 
     @Provides
     @Singleton
-    fun provideApplication(): Application {
-        return application
-    }
+    fun provideApplication(): Application = application
 
     @Provides
     @Singleton
@@ -94,9 +92,7 @@ class AppModule(private val application: Application) : Constants {
 
     @Provides
     @Singleton
-    fun provideSession(): Session {
-        return Session(application.baseContext)
-    }
+    fun provideSession(): Session = Session(application.baseContext)
 
     @Provides
     @Singleton
@@ -104,45 +100,32 @@ class AppModule(private val application: Application) : Constants {
 
     @Provides
     @Singleton
-    fun provideRemarkCategoriesCache(): RemarkCategoriesCache {
-        return RemarkCategoriesCache(application.getSharedPreferences("shared_preferences", Activity.MODE_PRIVATE), Gson())
-    }
+    fun provideRemarkCategoriesCache(): RemarkCategoriesCache = RemarkCategoriesCache(application.getSharedPreferences("shared_preferences", Activity.MODE_PRIVATE), Gson())
 
     @Provides
     @Singleton
-    fun provideRemarksDataSource(api: Api): RemarksDataSource {
-        return RemarksDataSourceImpl(api)
-    }
+    fun provideRemarksDataSource(api: Api): RemarksDataSource = RemarksDataSourceImpl(api)
 
     @Provides
     @Singleton
-    fun provideRemarkCategoriesRepository(remarkCategoriesCache: RemarkCategoriesCache, remarksDataSource: RemarksDataSource, operationRepository: OperationRepository): RemarksRepository {
-        return RemarkRepositoryImpl(remarkCategoriesCache, remarksDataSource, operationRepository)
-    }
+    fun provideRemarkCategoriesRepository(remarkCategoriesCache: RemarkCategoriesCache, remarksDataSource: RemarksDataSource, operationRepository: OperationRepository): RemarksRepository
+            = RemarkRepositoryImpl(remarkCategoriesCache, remarksDataSource, operationRepository)
 
     @Provides
     @Singleton
-    fun provideReactiveLocationProvider(): ReactiveLocationProvider {
-        return ReactiveLocationProvider(application.applicationContext)
-    }
+    fun provideReactiveLocationProvider(): ReactiveLocationProvider = ReactiveLocationProvider(application.applicationContext)
 
     @Provides
     @Singleton
-    fun provideLocationRepository(reactiveLocationProvider: ReactiveLocationProvider): LocationRepository {
-        return LocationRepositoryImpl(reactiveLocationProvider)
-    }
+    fun provideLocationRepository(reactiveLocationProvider: ReactiveLocationProvider): LocationRepository = LocationRepositoryImpl(reactiveLocationProvider)
 
     @Provides
     @Singleton
-    fun provideOperationDataSource(api: Api): OperationDataSource {
-        return OperationDataSourceImpl(api)
-    }
+    fun provideOperationDataSource(api: Api): OperationDataSource = OperationDataSourceImpl(api)
 
     @Provides
     @Singleton
-    fun provideOperationRepository(operationDataSource: OperationDataSource): OperationRepository {
-        return OperationRepositoryImpl(operationDataSource)
-    }
+    fun provideOperationRepository(operationDataSource: OperationDataSource): OperationRepository = OperationRepositoryImpl(operationDataSource)
 
     @Provides
     @Singleton

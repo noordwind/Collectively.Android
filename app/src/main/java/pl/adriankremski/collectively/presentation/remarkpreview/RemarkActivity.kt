@@ -21,12 +21,14 @@ import com.wefika.flowlayout.FlowLayout
 import kotlinx.android.synthetic.main.activity_remark_preview.*
 import kotlinx.android.synthetic.main.view_error.*
 import kotlinx.android.synthetic.main.view_progress.*
+import pl.adriankremski.collectively.data.model.RemarkTag
 import pl.adriankremski.collectively.data.repository.ProfileRepository
 import pl.adriankremski.collectively.presentation.extension.uppercaseFirstLetter
 import pl.adriankremski.collectively.presentation.util.RequestErrorDecorator
 import pl.adriankremski.collectively.presentation.util.Switcher
 import pl.adriankremski.collectively.presentation.views.RemarkTagView
-import pl.adriankremski.collectively.usecases.LoadUserIdUseCase
+import pl.adriankremski.collectively.domain.interactor.LoadUserIdUseCase
+import pl.adriankremski.collectively.presentation.extension.setBackgroundCompat
 import java.util.*
 import javax.inject.Inject
 

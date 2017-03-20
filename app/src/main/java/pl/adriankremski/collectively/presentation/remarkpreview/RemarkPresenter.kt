@@ -3,7 +3,7 @@ package pl.adriankremski.collectively.presentation.remarkpreview
 import pl.adriankremski.collectively.data.model.RemarkPreview
 import pl.adriankremski.collectively.presentation.rxjava.AppDisposableObserver
 import pl.adriankremski.collectively.usecases.LoadRemarkUseCase
-import pl.adriankremski.collectively.usecases.LoadUserIdUseCase
+import pl.adriankremski.collectively.domain.interactor.LoadUserIdUseCase
 
 
 class RemarkPresenter(val view: RemarkPreviewMvp.View, val loadRemarkUseCase: LoadRemarkUseCase, val loadUserIdUseCase: LoadUserIdUseCase) : RemarkPreviewMvp.Presenter {
