@@ -2,9 +2,9 @@ package pl.adriankremski.collectively
 
 import android.content.Context
 import android.support.multidex.MultiDexApplication
-import pl.adriankremski.collectively.dagger.AppComponent
-import pl.adriankremski.collectively.dagger.AppModule
-import pl.adriankremski.collectively.dagger.DaggerAppComponent
+import pl.adriankremski.collectively.presentation.dagger.AppComponent
+import pl.adriankremski.collectively.presentation.dagger.AppModule
+import pl.adriankremski.collectively.presentation.dagger.DaggerAppComponent
 
 class TheApp : MultiDexApplication() {
 

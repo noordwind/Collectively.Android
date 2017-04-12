@@ -9,7 +9,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/red_light"
-        tools:context="pl.adriankremski.collectively.authentication.login.LoginActivity">
+        tools:context=".presentation.authentication.login.LoginActivity">
 
         <FrameLayout
             android:id="@+id/header"

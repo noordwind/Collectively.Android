@@ -56,7 +56,7 @@
                     android:textColor="@color/font_dark"
                     android:textSize="@dimen/font_normal" />
 
-                <pl.adriankremski.collectively.views.chart.RemarksByStatusChart
+                <pl.adriankremski.collectively.presentation.views.chart.RemarksByStatusChart
                     android:id="@+id/remarksByStatusChart"
                     android:layout_width="160dp"
                     android:layout_height="160dp"
@@ -73,7 +73,7 @@
                     android:textSize="@dimen/font_medium"
                     android:textStyle="bold" />
 
-                <pl.adriankremski.collectively.views.chart.RemarksByCategoryChart
+                <pl.adriankremski.collectively.presentation.views.chart.RemarksByCategoryChart
                     android:id="@+id/remarksByCategoryChart"
                     android:layout_width="match_parent"
                     android:layout_height="160dp" />
@@ -89,7 +89,7 @@
                     android:textSize="@dimen/font_medium"
                     android:textStyle="bold" />
 
-                <pl.adriankremski.collectively.views.chart.RemarksByTagChart
+                <pl.adriankremski.collectively.presentation.views.chart.RemarksByTagChart
                     android:id="@+id/remarksByTagChart"
                     android:layout_width="match_parent"
                     android:layout_height="160dp" />

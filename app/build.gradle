@@ -40,12 +40,12 @@ android {
     productFlavors {
         prod {
             applicationId "pl.adriankremski.collectively"
-            buildConfigField "String", "SERVER_URL", "\"https://coolector.tk/\""
+            buildConfigField "String", "SERVER_URL", "\"https://api.becollective.ly/\""
         }
         dev {
             applicationId "pl.adriankremski.collectively.dev"
             minSdkVersion 21
-            buildConfigField "String", "SERVER_URL", "\"https://coolector-dev.tk/\""
+            buildConfigField "String", "SERVER_URL", "\"https://api-dev.becollective.ly/\""
         }
     }
     kapt {
@@ -117,4 +117,5 @@ dependencies {
     compile 'de.hdodenhof:circleimageview:2.1.0'
     compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     compile 'com.getbase:floatingactionbutton:1.10.1'
+    compile 'com.github.jd-alexander:LikeButton:0.2.0'
 }

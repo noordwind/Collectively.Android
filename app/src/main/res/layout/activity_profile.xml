@@ -146,7 +146,7 @@
             android:background="@drawable/circle_shape"
             app:finalHeight="@dimen/profile_image_final_width"
             app:finalYPosition="2dp"
-            app:layout_behavior="pl.adriankremski.collectively.views.behavior.ProfileAvatarImageBehavior"
+            app:layout_behavior="pl.adriankremski.collectively.presentation.views.behavior.ProfileAvatarImageBehavior"
             app:startHeight="2dp"
             app:startToolbarPosition="2dp"
             app:startXPosition="2dp" />

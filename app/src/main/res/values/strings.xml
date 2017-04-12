@@ -53,4 +53,9 @@
     <string name="error_view_footer">An error occurred while performing a request</string>
     <string name="error_statistics_no_network">Connect to internet to check the statistics</string>
     <string name="remark_preview">Remark preview</string>
+    <string name="remark_preview_photo_title" formatted="false"><![CDATA[<b>%1$s</b> added by <font color=\'#0288D1\'><b>%2$s</b></font>]]></string>
+    <string name="activity_remark_preview_tags_label">Tags</string>
+    <string name="activity_remark_preview_location_label">Location</string>
+    <string name="description">Description</string>
+    <string name="error_loading_remark_no_network">Connect to internet to check the remark</string>
 </resources>

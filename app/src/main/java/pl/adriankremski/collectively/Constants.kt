@@ -13,7 +13,7 @@ interface Constants {
     interface AuthProvider {
         companion object {
             val FACEBOOK = "facebook"
-            val COOLECTOR = "coolector"
+            val COOLECTOR = "collectively"
         }
     }
 
@@ -41,6 +41,13 @@ interface Constants {
         companion object {
             val STATE_COMPLETED = "completed"
             val STATE_REJECTED = "rejected"
+        }
+    }
+
+    interface ApiHeader {
+        companion object {
+            const val ACCEPT_HEADER = "Accept: application/json"
+            const val CONTENT_TYPE_HEADER = "Content-type: application/json"
         }
     }
 }

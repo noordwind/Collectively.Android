@@ -17,40 +17,40 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
-        <activity android:name="pl.adriankremski.collectively.authentication.login.LoginActivity">
+        <activity android:name=".presentation.authentication.login.LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
 
-        <activity android:name="pl.adriankremski.collectively.authentication.signup.SignUpActivity">
+        <activity android:name=".presentation.authentication.signup.SignUpActivity">
         </activity>
 
-        <activity android:name="pl.adriankremski.collectively.main.MainActivity">
+        <activity android:name=".presentation.main.MainActivity">
         </activity>
 
-        <activity android:name="pl.adriankremski.collectively.addremark.AddRemarkActivity"
-            android:parentActivityName="pl.adriankremski.collectively.main.MainActivity"
+        <activity android:name=".presentation.addremark.AddRemarkActivity"
+            android:parentActivityName=".presentation.main.MainActivity"
             >
         </activity>
 
-        <activity android:name="pl.adriankremski.collectively.remarkpreview.RemarkActivity"
-            android:parentActivityName="pl.adriankremski.collectively.main.MainActivity"
+        <activity android:name=".presentation.remarkpreview.RemarkActivity"
+            android:parentActivityName=".presentation.main.MainActivity"
             >
         </activity>
 
-        <activity android:name="pl.adriankremski.collectively.statistics.StatisticsActivity"
-            android:parentActivityName="pl.adriankremski.collectively.main.MainActivity"
+        <activity android:name=".presentation.statistics.StatisticsActivity"
+            android:parentActivityName=".presentation.main.MainActivity"
             >
         </activity>
 
-        <activity android:name="pl.adriankremski.collectively.profile.ProfileActivity"
-            android:parentActivityName="pl.adriankremski.collectively.main.MainActivity"
+        <activity android:name=".presentation.profile.ProfileActivity"
+            android:parentActivityName=".presentation.main.MainActivity"
             >
         </activity>
 
-        <activity android:name="pl.adriankremski.collectively.authentication.retrievepassword.ResetPasswordActivity">
+        <activity android:name=".presentation.authentication.retrievepassword.ResetPasswordActivity">
         </activity>
 
         <meta-data
