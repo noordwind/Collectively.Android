@@ -37,3 +37,6 @@ captures/
 #Crachlytics
 crashlytics-build.properties
 com_crashlytics_export_strings.xml
+
+# Farbic
+app/fabric.properties
