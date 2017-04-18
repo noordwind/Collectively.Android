@@ -30,14 +30,6 @@ interface Api {
     fun operation(@Path(value = "path", encoded = true) operationPath: String): Observable<Operation>
 
     @Headers(Constants.ApiHeader.ACCEPT_HEADER, Constants.ApiHeader.CONTENT_TYPE_HEADER)
-    @GET("development/operation")
-    fun testOperation(): Observable<Operation>
-
-    @Headers(Constants.ApiHeader.ACCEPT_HEADER, Constants.ApiHeader.CONTENT_TYPE_HEADER)
-    @GET("{path}")
-    fun loadStatistics(): Observable<Statistics>
-
-    @Headers(Constants.ApiHeader.ACCEPT_HEADER, Constants.ApiHeader.CONTENT_TYPE_HEADER)
     @GET("statistics/categories")
     fun loadCategoriesStatistics(): Observable<List<StatisticEntry>>
 
