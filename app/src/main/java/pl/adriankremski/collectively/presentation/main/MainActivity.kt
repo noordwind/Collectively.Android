@@ -47,6 +47,7 @@ import pl.adriankremski.collectively.presentation.BaseActivity
 import pl.adriankremski.collectively.presentation.adapter.delegates.MainScreenRemarksAdapterDelegate
 import pl.adriankremski.collectively.presentation.addremark.AddRemarkActivity
 import pl.adriankremski.collectively.presentation.extension.colorOfCategory
+import pl.adriankremski.collectively.presentation.extension.iconOfCategory
 import pl.adriankremski.collectively.presentation.extension.toBitmapDescriptor
 import pl.adriankremski.collectively.presentation.extension.uppercaseFirstLetter
 import pl.adriankremski.collectively.presentation.views.MainScreenRemarkBottomSheetDialog
@@ -133,7 +134,7 @@ class MainActivity : BaseActivity(), MainMvp.View, OnMapReadyCallback, GoogleApi
         var remarkButton = FloatingActionButton(baseContext);
         remarkButton.colorNormal = Color.parseColor(remarkCategory.name.colorOfCategory())
         remarkButton.title = remarkCategory.name.uppercaseFirstLetter()
-        remarkButton.setIcon(R.drawable.ic_facebook_icon)
+        remarkButton.setIcon(remarkCategory.name.iconOfCategory())
         remarkButton.setOnClickListener { runOnUiThread { AddRemarkActivity.start(baseContext, remarkCategory.name.toLowerCase()) } }
         floatingActionsMenu.addButton(remarkButton)
     }

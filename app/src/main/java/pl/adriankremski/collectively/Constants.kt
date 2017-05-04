@@ -19,9 +19,10 @@ interface Constants {
 
     interface RemarkCategories {
         companion object {
-            val LITTTER = "litter"
-            val DAMAGE = "damage"
-            val ACCIDENT = "accident"
+            val DEFECT = "defect"
+            val ISSUE = "issue"
+            val SUGGESTION = "suggestion"
+            val PRAISE = "praise"
         }
     }
 

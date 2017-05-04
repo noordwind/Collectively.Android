@@ -4,6 +4,7 @@ import android.graphics.Color
 import com.google.android.gms.maps.model.BitmapDescriptor
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import pl.adriankremski.collectively.Constants
+import pl.adriankremski.collectively.R
 
 
 fun String.uppercaseFirstLetter(): String {
@@ -15,18 +16,25 @@ fun String.uppercaseFirstLetter(): String {
 }
 
 fun String.colorOfCategory(): String {
+    return "#2C74DA"
+}
+
+fun String.iconOfCategory(): Int {
     when (this) {
-        Constants.RemarkCategories.ACCIDENT -> {
-            return "#DD2C00"
+        Constants.RemarkCategories.DEFECT -> {
+            return R.drawable.defect_icon
         }
-        Constants.RemarkCategories.DAMAGE -> {
-            return "#37474F"
+        Constants.RemarkCategories.ISSUE -> {
+            return R.drawable.issue_icon
         }
-        Constants.RemarkCategories.LITTTER -> {
-            return "#795548"
+        Constants.RemarkCategories.SUGGESTION -> {
+            return R.drawable.suggestion_icon
+        }
+        Constants.RemarkCategories.PRAISE -> {
+            return R.drawable.praise_icon
         }
         else -> {
-            return "#2C74DA"
+            return R.drawable.issue_icon
         }
     }
 }
