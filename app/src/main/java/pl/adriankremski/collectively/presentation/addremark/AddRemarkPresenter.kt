@@ -6,12 +6,12 @@ import pl.adriankremski.collectively.data.model.NewRemark
 import pl.adriankremski.collectively.data.model.RemarkCategory
 import pl.adriankremski.collectively.data.model.RemarkNotFromList
 import pl.adriankremski.collectively.data.model.RemarkTag
+import pl.adriankremski.collectively.presentation.mvp.BasePresenter
 import pl.adriankremski.collectively.presentation.rxjava.AppDisposableObserver
 import pl.adriankremski.collectively.usecases.LoadLastKnownLocationUseCase
 import pl.adriankremski.collectively.usecases.LoadRemarkCategoriesUseCase
 import pl.adriankremski.collectively.usecases.LoadRemarkTagsUseCase
 import pl.adriankremski.collectively.usecases.SaveRemarkUseCase
-import pl.adriankremski.collectively.presentation.mvp.BasePresenter
 
 class AddRemarkPresenter(val view: AddRemarkMvp.View,
                          val saveRemarkUseCase: SaveRemarkUseCase,
@@ -78,6 +78,11 @@ class AddRemarkPresenter(val view: AddRemarkMvp.View,
             }
 
             override fun onError(e: Throwable?) {
+                lastKnownAddress = "Reymonta 20, 30-059 Kraków, Polska"
+                lastKnownLongitude = 19.908943
+                lastKnownLatitude = 50.065689
+
+                view.showAddress(lastKnownAddress!!)
             }
 
             override fun onComplete() {

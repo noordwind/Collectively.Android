@@ -26,7 +26,7 @@ fun String.colorOfCategory(): String {
             return "#795548"
         }
         else -> {
-            return "#EF6C00"
+            return "#2C74DA"
         }
     }
 }

@@ -36,22 +36,22 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
 import kotlinx.android.synthetic.main.activity_main.*
-import pl.adriankremski.collectively.presentation.BaseActivity
 import pl.adriankremski.collectively.R
 import pl.adriankremski.collectively.TheApp
-import pl.adriankremski.collectively.presentation.adapter.delegates.MainScreenRemarksAdapterDelegate
+import pl.adriankremski.collectively.data.model.Remark
+import pl.adriankremski.collectively.data.model.RemarkCategory
+import pl.adriankremski.collectively.data.repository.RemarksRepository
 import pl.adriankremski.collectively.domain.thread.PostExecutionThread
 import pl.adriankremski.collectively.domain.thread.UseCaseThread
-import pl.adriankremski.collectively.data.repository.RemarksRepository
-import pl.adriankremski.collectively.usecases.LoadRemarkCategoriesUseCase
-import pl.adriankremski.collectively.usecases.LoadRemarksUseCase
+import pl.adriankremski.collectively.presentation.BaseActivity
+import pl.adriankremski.collectively.presentation.adapter.delegates.MainScreenRemarksAdapterDelegate
+import pl.adriankremski.collectively.presentation.addremark.AddRemarkActivity
 import pl.adriankremski.collectively.presentation.extension.colorOfCategory
 import pl.adriankremski.collectively.presentation.extension.toBitmapDescriptor
 import pl.adriankremski.collectively.presentation.extension.uppercaseFirstLetter
 import pl.adriankremski.collectively.presentation.views.MainScreenRemarkBottomSheetDialog
-import pl.adriankremski.collectively.presentation.addremark.AddRemarkActivity
-import pl.adriankremski.collectively.data.model.Remark
-import pl.adriankremski.collectively.data.model.RemarkCategory
+import pl.adriankremski.collectively.usecases.LoadRemarkCategoriesUseCase
+import pl.adriankremski.collectively.usecases.LoadRemarksUseCase
 import java.util.*
 import javax.inject.Inject
 
@@ -133,7 +133,8 @@ class MainActivity : BaseActivity(), MainMvp.View, OnMapReadyCallback, GoogleApi
         var remarkButton = FloatingActionButton(baseContext);
         remarkButton.colorNormal = Color.parseColor(remarkCategory.name.colorOfCategory())
         remarkButton.title = remarkCategory.name.uppercaseFirstLetter()
-        remarkButton.setOnClickListener { runOnUiThread { AddRemarkActivity.start(baseContext) } }
+        remarkButton.setIcon(R.drawable.ic_facebook_icon)
+        remarkButton.setOnClickListener { runOnUiThread { AddRemarkActivity.start(baseContext, remarkCategory.name.toLowerCase()) } }
         floatingActionsMenu.addButton(remarkButton)
     }
 

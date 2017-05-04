@@ -14,34 +14,34 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import com.wefika.flowlayout.FlowLayout
-import pl.adriankremski.collectively.presentation.BaseActivity
+import pl.adriankremski.collectively.Constants
 import pl.adriankremski.collectively.R
 import pl.adriankremski.collectively.TheApp
+import pl.adriankremski.collectively.data.model.RemarkCategory
+import pl.adriankremski.collectively.data.model.RemarkNotFromList
+import pl.adriankremski.collectively.data.model.RemarkTag
+import pl.adriankremski.collectively.data.repository.RemarksRepository
+import pl.adriankremski.collectively.data.repository.util.LocationRepository
 import pl.adriankremski.collectively.domain.thread.PostExecutionThread
 import pl.adriankremski.collectively.domain.thread.UseCaseThread
-import pl.adriankremski.collectively.data.repository.util.LocationRepository
-import pl.adriankremski.collectively.data.repository.RemarksRepository
-import pl.adriankremski.collectively.usecases.LoadLastKnownLocationUseCase
-import pl.adriankremski.collectively.usecases.LoadRemarkCategoriesUseCase
-import pl.adriankremski.collectively.usecases.LoadRemarkTagsUseCase
-import pl.adriankremski.collectively.usecases.SaveRemarkUseCase
+import pl.adriankremski.collectively.presentation.BaseActivity
 import pl.adriankremski.collectively.presentation.extension.getChildViewsWithType
 import pl.adriankremski.collectively.presentation.extension.setBackgroundCompat
 import pl.adriankremski.collectively.presentation.extension.uppercaseFirstLetter
 import pl.adriankremski.collectively.presentation.views.RemarkTagView
-import pl.adriankremski.collectively.presentation.IOThread
-import pl.adriankremski.collectively.presentation.UIThread
-import pl.adriankremski.collectively.data.model.RemarkCategory
-import pl.adriankremski.collectively.data.model.RemarkNotFromList
-import pl.adriankremski.collectively.data.model.RemarkTag
+import pl.adriankremski.collectively.usecases.LoadLastKnownLocationUseCase
+import pl.adriankremski.collectively.usecases.LoadRemarkCategoriesUseCase
+import pl.adriankremski.collectively.usecases.LoadRemarkTagsUseCase
+import pl.adriankremski.collectively.usecases.SaveRemarkUseCase
 import java.util.*
 import javax.inject.Inject
 
 
 class AddRemarkActivity : BaseActivity(), AddRemarkMvp.View {
     companion object {
-        fun start(context: Context) {
+        fun start(context: Context, category: String) {
             val intent = Intent(context, AddRemarkActivity::class.java)
+            intent.putExtra(Constants.BundleKey.CATEGORY, category)
             intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
             context.startActivity(intent)
         }
@@ -67,6 +67,7 @@ class AddRemarkActivity : BaseActivity(), AddRemarkMvp.View {
     internal var tagsLayout: FlowLayout? = null
     lateinit var addressLabel: TextView
     lateinit var submitButton: View
+    lateinit var selectedCategory: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -80,6 +81,7 @@ class AddRemarkActivity : BaseActivity(), AddRemarkMvp.View {
 
         tagsLayout = findViewById(R.id.tags_layout) as FlowLayout
 
+        selectedCategory = intent.getStringExtra(Constants.BundleKey.CATEGORY)
         categoriesSpinner = findViewById(R.id.remark_categories) as Spinner
 
         addressLabel = findViewById(R.id.address) as TextView
@@ -106,22 +108,31 @@ class AddRemarkActivity : BaseActivity(), AddRemarkMvp.View {
     fun getSelectedTags(): List<String> {
         var tags = LinkedList<String>()
         var tagViews = tagsLayout!!.getChildViewsWithType(RemarkTagView::class.java)
-        tagViews.filter { it.isSelected!! }.forEach { tags.add(it.text.toString())}
+        tagViews.filter { it.isSelected!! }.forEach { tags.add(it.text.toString()) }
         return tags
     }
 
     override fun showAvailableRemarkCategories(categories: List<RemarkCategory>) {
         val categoryNames = LinkedList<String>()
-        categories.forEach { categoryNames.add(it.name.uppercaseFirstLetter()) }
+        var initialSelection = 0
+
+        categories.forEachIndexed { i, remarkCategory ->
+            if (remarkCategory.name.toLowerCase().equals(selectedCategory.toLowerCase())) {
+                initialSelection = i
+            }
+            categoryNames.add(remarkCategory.name.uppercaseFirstLetter())
+        }
+
         val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, categoryNames)
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         categoriesSpinner.adapter = adapter
+        categoriesSpinner.setSelection(initialSelection)
     }
 
     override fun showAvailableRemarkTags(categories: List<RemarkTag>) {
         categories.forEach {
 
-            val newView = RemarkTagView(this, it)
+            val newView = RemarkTagView(this, it, true)
             newView.setBackgroundCompat(R.drawable.remark_tag_unselected_background)
             newView.text = it.name
             newView.gravity = Gravity.CENTER

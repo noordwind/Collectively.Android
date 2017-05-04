@@ -50,4 +50,10 @@ interface Constants {
             const val CONTENT_TYPE_HEADER = "Content-type: application/json"
         }
     }
+
+    interface BundleKey {
+        companion object {
+            const val CATEGORY = "category"
+        }
+    }
 }
