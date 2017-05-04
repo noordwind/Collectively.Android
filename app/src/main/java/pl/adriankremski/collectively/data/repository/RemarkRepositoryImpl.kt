@@ -9,7 +9,6 @@ import pl.adriankremski.collectively.data.repository.util.OperationRepository
 class RemarkRepositoryImpl(val remarkCategoriesCache: RemarkCategoriesCache,
                            val remarksDataSource: RemarksDataSource,
                            val operationRepository: OperationRepository) : RemarksRepository {
-
     override fun loadRemarkCategories(): Observable<List<RemarkCategory>> {
         if (remarkCategoriesCache.isExpired()) {
             return remarksDataSource.loadRemarkCategories().doOnNext { remarkCategoriesCache.putData(it) }
@@ -26,6 +25,16 @@ class RemarkRepositoryImpl(val remarkCategoriesCache: RemarkCategoriesCache,
             operationRepository.pollOperation(remarksDataSource.saveRemark(remark)).flatMap { remarksDataSource.loadSavedRemark(it.resource) }
 
     override fun loadRemarkTags(): Observable<List<RemarkTag>> = remarksDataSource.loadRemarkTags()
+
+    override fun submitRemarkVote(remarkId: String, remarkVote: RemarkVote): Observable<RemarkPreview> {
+        return operationRepository.pollOperation(remarksDataSource.submitRemarkVote(remarkId, remarkVote))
+                .flatMap { remarksDataSource.loadRemarkPreview(remarkId) }
+    }
+
+    override fun deleteRemarkVote(remarkId: String): Observable<RemarkPreview> {
+        return operationRepository.pollOperation(remarksDataSource.deleteRemarkVote(remarkId))
+                .flatMap { remarksDataSource.loadRemarkPreview(remarkId) }
+    }
 }
 
 

@@ -1,8 +1,8 @@
 package pl.adriankremski.collectively.data.datasource
 
 import io.reactivex.Observable
-import pl.adriankremski.collectively.data.net.Api
 import pl.adriankremski.collectively.data.model.*
+import pl.adriankremski.collectively.data.net.Api
 import retrofit2.Response
 
 class RemarksDataSourceImpl(val api: Api) : RemarksDataSource {
@@ -18,5 +18,9 @@ class RemarksDataSourceImpl(val api: Api) : RemarksDataSource {
     override fun loadRemarkTags(): Observable<List<RemarkTag>> = api.remarkTags()
 
     override fun loadRemarkCategories(): Observable<List<RemarkCategory>>  = api.remarkCategories()
+
+    override fun deleteRemarkVote(remarkId: String): Observable<Response<Void>> = api.deleteRemarkVote(remarkId)
+
+    override fun submitRemarkVote(remarkId: String, remarkVote: RemarkVote): Observable<Response<Void>> = api.submitRemarkVote(remarkId, remarkVote)
 }
 

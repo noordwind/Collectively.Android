@@ -3,32 +3,36 @@ package pl.adriankremski.collectively.presentation.remarkpreview
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import pl.adriankremski.collectively.presentation.BaseActivity
-import pl.adriankremski.collectively.R
-import pl.adriankremski.collectively.TheApp
-import pl.adriankremski.collectively.domain.thread.PostExecutionThread
-import pl.adriankremski.collectively.domain.thread.UseCaseThread
-import pl.adriankremski.collectively.data.repository.RemarksRepository
-import pl.adriankremski.collectively.usecases.LoadRemarkUseCase
-import pl.adriankremski.collectively.data.model.RemarkPreview
 import android.support.v4.content.ContextCompat
 import android.text.Html
 import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
 import com.bumptech.glide.Glide
+import com.like.LikeButton
+import com.like.OnLikeListener
 import com.wefika.flowlayout.FlowLayout
 import kotlinx.android.synthetic.main.activity_remark_preview.*
 import kotlinx.android.synthetic.main.view_error.*
 import kotlinx.android.synthetic.main.view_progress.*
+import pl.adriankremski.collectively.R
+import pl.adriankremski.collectively.TheApp
+import pl.adriankremski.collectively.data.model.RemarkPreview
 import pl.adriankremski.collectively.data.model.RemarkTag
 import pl.adriankremski.collectively.data.repository.ProfileRepository
+import pl.adriankremski.collectively.data.repository.RemarksRepository
+import pl.adriankremski.collectively.domain.interactor.LoadRemarkViewDataUseCase
+import pl.adriankremski.collectively.domain.thread.PostExecutionThread
+import pl.adriankremski.collectively.domain.thread.UseCaseThread
+import pl.adriankremski.collectively.presentation.BaseActivity
+import pl.adriankremski.collectively.presentation.extension.setBackgroundCompat
+import pl.adriankremski.collectively.presentation.extension.textInInt
 import pl.adriankremski.collectively.presentation.extension.uppercaseFirstLetter
+import pl.adriankremski.collectively.presentation.statistics.DeleteRemarkVoteUseCase
+import pl.adriankremski.collectively.presentation.statistics.SubmitRemarkVoteUseCase
 import pl.adriankremski.collectively.presentation.util.RequestErrorDecorator
 import pl.adriankremski.collectively.presentation.util.Switcher
 import pl.adriankremski.collectively.presentation.views.RemarkTagView
-import pl.adriankremski.collectively.domain.interactor.LoadUserIdUseCase
-import pl.adriankremski.collectively.presentation.extension.setBackgroundCompat
 import java.util.*
 import javax.inject.Inject
 
@@ -58,26 +62,20 @@ class RemarkActivity : BaseActivity(), RemarkPreviewMvp.View {
 
     private lateinit var switcher: Switcher
     private lateinit var errorDecorator: RequestErrorDecorator
+    private var votedUp: Boolean = false
+    private var votedDown: Boolean = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         TheApp[this].appComponent?.inject(this)
         setContentView(R.layout.activity_remark_preview);
 
-        presenter = RemarkPresenter(this, LoadRemarkUseCase(remarksRepository, ioThread, uiThread), LoadUserIdUseCase(profileRepository, ioThread, uiThread))
-        presenter.loadRemark("4cb5918d-35c2-4024-a278-e596d15e4844")
+        presenter = RemarkPresenter(this,
+                LoadRemarkViewDataUseCase(profileRepository, remarksRepository, ioThread, uiThread),
+                SubmitRemarkVoteUseCase(remarksRepository, profileRepository, ioThread, uiThread),
+                DeleteRemarkVoteUseCase(remarksRepository, profileRepository, ioThread, uiThread))
+
         errorDecorator = RequestErrorDecorator(switcherErrorImage, switcherErrorTitle, switcherErrorFooter)
-        setupSwitcher()
-        loadRemark()
-
-        switcherErrorButton.setOnClickListener { loadRemark() }
-    }
-
-    private fun loadRemark() {
-        presenter.loadRemark("da5938dc-bdae-4b57-9eac-0e3c0b12eb9f")
-    }
-
-    private fun setupSwitcher() {
         val contentViews = LinkedList<View>()
         contentViews.add(contentLayout)
         switcher = Switcher.Builder()
@@ -85,6 +83,91 @@ class RemarkActivity : BaseActivity(), RemarkPreviewMvp.View {
                 .withErrorViews(listOf<View>(switcherError))
                 .withProgressViews(listOf<View>(switcherProgress))
                 .build(this)
+
+        loadRemark()
+
+        switcherErrorButton.setOnClickListener { loadRemark() }
+
+        var voteUpButtonLikeListener = object : OnLikeListener {
+            override fun liked(p0: LikeButton?) {
+                voteUpLiked()
+                presenter.submitPositiveVote()
+            }
+
+            override fun unLiked(p0: LikeButton?) {
+                voteUpUnliked()
+                presenter.deletePositiveVote()
+            }
+        }
+        voteUpButton.setOnLikeListener(voteUpButtonLikeListener)
+
+        var voteDownButtonLikeListener = object : OnLikeListener {
+            override fun liked(p0: LikeButton?) {
+                voteDownLiked()
+                presenter.submitNegativeVote()
+            }
+
+            override fun unLiked(p0: LikeButton?) {
+                voteDownUnliked()
+                presenter.deleteNegativeVote()
+            }
+        }
+        voteDownButton.setOnLikeListener(voteDownButtonLikeListener)
+    }
+
+    fun voteUpLiked() {
+        var votesCount = positiveVotesCountLabel.textInInt()
+        positiveVotesCountLabel.text = Integer.toString(votesCount+1)
+
+        positiveVotesCountLabel.setTextColor(ContextCompat.getColor(baseContext, R.color.vote_up_remark_color))
+        negativeVotesCountLabel.setTextColor(ContextCompat.getColor(baseContext, R.color.font_dark_hint))
+
+        if (votedDown) {
+            voteDownUnliked()
+            voteDownButton.setLiked(false)
+        }
+
+        votedUp = true
+        votedDown = false
+    }
+
+    fun voteUpUnliked() {
+        var votesCount = positiveVotesCountLabel.textInInt()
+        positiveVotesCountLabel.text = Integer.toString(votesCount-1)
+
+        positiveVotesCountLabel.setTextColor(ContextCompat.getColor(baseContext, R.color.font_dark_hint))
+
+        votedUp = false
+    }
+
+    fun voteDownLiked() {
+        var votesCount = negativeVotesCountLabel.textInInt()
+        negativeVotesCountLabel.text = Integer.toString(votesCount+1)
+
+        positiveVotesCountLabel.setTextColor(ContextCompat.getColor(baseContext, R.color.font_dark_hint))
+        negativeVotesCountLabel.setTextColor(ContextCompat.getColor(baseContext, R.color.vote_down_remark_color))
+
+        if (votedUp) {
+            voteUpUnliked()
+            voteUpButton.setLiked(false)
+        }
+
+        votedDown = true
+        votedUp = false
+    }
+
+    fun voteDownUnliked() {
+        var votesCount = negativeVotesCountLabel.textInInt()
+        negativeVotesCountLabel.text = Integer.toString(votesCount-1)
+
+        negativeVotesCountLabel.setTextColor(ContextCompat.getColor(baseContext, R.color.font_dark_hint))
+
+        votedDown = false
+    }
+
+
+    private fun loadRemark() {
+        presenter.loadRemark("efeea880-eb31-495b-8d82-13239271bd2b")
     }
 
     override fun showRemarkLoading() {
@@ -138,6 +221,9 @@ class RemarkActivity : BaseActivity(), RemarkPreviewMvp.View {
     }
 
     override fun showUserVotedPositively() {
+        votedUp = true
+        votedDown = false
+
         voteUpButton.setLiked(true)
         positiveVotesCountLabel.setTextColor(ContextCompat.getColor(baseContext, R.color.vote_up_remark_color))
 
@@ -146,6 +232,9 @@ class RemarkActivity : BaseActivity(), RemarkPreviewMvp.View {
     }
 
     override fun showUserVotedNegatively() {
+        votedDown = true
+        votedUp = false
+
         voteDownButton.setLiked(true)
         negativeVotesCountLabel.setTextColor(ContextCompat.getColor(baseContext, R.color.vote_down_remark_color))
 

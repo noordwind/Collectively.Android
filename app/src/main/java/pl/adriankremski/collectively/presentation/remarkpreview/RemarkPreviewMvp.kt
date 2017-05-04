@@ -20,5 +20,9 @@ interface RemarkPreviewMvp {
 
     interface Presenter : BasePresenter{
         fun loadRemark(id: String)
+        fun submitPositiveVote()
+        fun deletePositiveVote()
+        fun submitNegativeVote()
+        fun deleteNegativeVote()
     }
 }

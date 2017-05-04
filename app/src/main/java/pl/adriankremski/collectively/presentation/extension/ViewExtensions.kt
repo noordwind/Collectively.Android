@@ -9,6 +9,9 @@ import android.widget.TextView
 import pl.adriankremski.collectively.R
 import java.util.*
 
+
+fun TextView.textInInt() : Int = text.toString().toInt()
+
 fun View.setVisible() {
     visibility = View.VISIBLE
 }

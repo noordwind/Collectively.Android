@@ -2,12 +2,11 @@ package pl.adriankremski.collectively.data.repository
 
 import io.reactivex.Observable
 import pl.adriankremski.collectively.Constants
-import pl.adriankremski.collectively.data.repository.SessionRepository
 import pl.adriankremski.collectively.data.datasource.AuthDataSource
-import pl.adriankremski.collectively.data.repository.util.OperationRepository
 import pl.adriankremski.collectively.data.model.AuthRequest
 import pl.adriankremski.collectively.data.model.ResetPasswordRequest
 import pl.adriankremski.collectively.data.model.SignUpRequest
+import pl.adriankremski.collectively.data.repository.util.OperationRepository
 
 class AuthenticationRepositoryImpl(val authDataSource: AuthDataSource,
                                    val operationRepository: OperationRepository,
@@ -23,10 +22,7 @@ class AuthenticationRepositoryImpl(val authDataSource: AuthDataSource,
 
     override fun signUp(username: String, email: String, password: String): Observable<String> {
         return operationRepository.pollOperation(authDataSource.signUp(SignUpRequest(username, email, password)))
-                .flatMap {
-                    val authRequest = AuthRequest(email, password, Constants.AuthProvider.COOLECTOR)
-                    authDataSource.login(authRequest).flatMap { authResponse -> Observable.just(authResponse.token) }
-                }
+                .flatMap { loginWithEmail(email, password) }
     }
 
     override fun resetPassword(email: String): Observable<Boolean> {

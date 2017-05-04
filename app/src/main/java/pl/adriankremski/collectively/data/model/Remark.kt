@@ -25,3 +25,4 @@ class NewRemark(
         val address: String,
         val description: String
 )
+
