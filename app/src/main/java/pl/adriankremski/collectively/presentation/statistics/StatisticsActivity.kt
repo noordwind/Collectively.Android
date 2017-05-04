@@ -9,21 +9,22 @@ import android.text.Spannable
 import android.text.SpannableString
 import android.text.style.RelativeSizeSpan
 import android.text.style.StyleSpan
+import android.view.MenuItem
 import android.view.View
 import kotlinx.android.synthetic.main.activity_statistics.*
 import kotlinx.android.synthetic.main.view_error.*
 import kotlinx.android.synthetic.main.view_progress.*
 import kotlinx.android.synthetic.main.view_toolbar_with_title.*
-import pl.adriankremski.collectively.presentation.BaseActivity
 import pl.adriankremski.collectively.R
 import pl.adriankremski.collectively.TheApp
-import pl.adriankremski.collectively.domain.thread.PostExecutionThread
-import pl.adriankremski.collectively.domain.thread.UseCaseThread
-import pl.adriankremski.collectively.data.repository.StatisticsRepository
-import pl.adriankremski.collectively.presentation.util.RequestErrorDecorator
-import pl.adriankremski.collectively.presentation.util.Switcher
 import pl.adriankremski.collectively.data.model.StatisticEntry
 import pl.adriankremski.collectively.data.model.Statistics
+import pl.adriankremski.collectively.data.repository.StatisticsRepository
+import pl.adriankremski.collectively.domain.thread.PostExecutionThread
+import pl.adriankremski.collectively.domain.thread.UseCaseThread
+import pl.adriankremski.collectively.presentation.BaseActivity
+import pl.adriankremski.collectively.presentation.util.RequestErrorDecorator
+import pl.adriankremski.collectively.presentation.util.Switcher
 import java.util.*
 import javax.inject.Inject
 
@@ -108,12 +109,23 @@ class StatisticsActivity : BaseActivity(), StatisticsMvp.View {
         var reportedStatisticsCount : Long = 0
 
         for (catStat in categoryStatistics) {
-            resolvedStatisticsCount += catStat.resolvedCount
-            reportedStatisticsCount += catStat.reportedCount
+            resolvedStatisticsCount += catStat.resolvedCount()
+            reportedStatisticsCount += catStat.reportedCount()
         }
 
         var statusLabelText = String.format("There are <b>%d</b> resolved remarks out of <b>%d</b>", resolvedStatisticsCount, reportedStatisticsCount)
         remarksByStatusLabel.text = Html.fromHtml(statusLabelText)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+        when(item?.itemId) {
+            android.R.id.home -> {
+                onBackPressed()
+                return true;
+            }
+        }
+
+        return super.onOptionsItemSelected(item)
     }
 
     override fun onDestroy() {

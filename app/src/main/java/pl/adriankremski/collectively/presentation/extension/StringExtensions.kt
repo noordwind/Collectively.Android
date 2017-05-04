@@ -1,6 +1,5 @@
 package pl.adriankremski.collectively.presentation.extension
 
-import android.graphics.Color
 import com.google.android.gms.maps.model.BitmapDescriptor
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import pl.adriankremski.collectively.Constants
@@ -16,7 +15,23 @@ fun String.uppercaseFirstLetter(): String {
 }
 
 fun String.colorOfCategory(): String {
-    return "#2C74DA"
+    when (this) {
+        Constants.RemarkCategories.DEFECT -> {
+            return "#37474F"
+        }
+        Constants.RemarkCategories.ISSUE -> {
+            return "#DD2C00"
+        }
+        Constants.RemarkCategories.SUGGESTION -> {
+            return "#FDD835"
+        }
+        Constants.RemarkCategories.PRAISE -> {
+            return "#66BB6A"
+        }
+        else -> {
+            return "#2C74DA"
+        }
+    }
 }
 
 fun String.iconOfCategory(): Int {
@@ -39,8 +54,22 @@ fun String.iconOfCategory(): Int {
     }
 }
 
-fun String.toBitmapDescriptor(): BitmapDescriptor {
-    val hsv = FloatArray(3)
-    Color.colorToHSV(Color.parseColor(this), hsv)
-    return BitmapDescriptorFactory.defaultMarker(hsv[0])
+fun String.markerBitmapOfCategory(): BitmapDescriptor {
+    when (this) {
+        Constants.RemarkCategories.DEFECT -> {
+            return BitmapDescriptorFactory.fromResource(R.drawable.defect_marker)
+        }
+        Constants.RemarkCategories.ISSUE -> {
+            return BitmapDescriptorFactory.fromResource(R.drawable.issue_marker)
+        }
+        Constants.RemarkCategories.SUGGESTION -> {
+            return BitmapDescriptorFactory.fromResource(R.drawable.suggestion_marker)
+        }
+        Constants.RemarkCategories.PRAISE -> {
+            return BitmapDescriptorFactory.fromResource(R.drawable.praise_marker)
+        }
+        else -> {
+            return BitmapDescriptorFactory.fromResource(R.drawable.praise_marker)
+        }
+    }
 }

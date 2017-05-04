@@ -83,19 +83,6 @@
                 android:text="@string/settings" />
         </LinearLayout>
 
-        <LinearLayout
-            android:id="@+id/mShowRemark"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:paddingLeft="@dimen/spacing_medium">
-
-            <TextView
-                style="@style/MenuOption"
-                android:paddingLeft="0dp"
-                android:text="@string/remark_preview" />
-        </LinearLayout>
-
         <View
             android:layout_width="match_parent"
             android:layout_height="@dimen/menu_delimiter"

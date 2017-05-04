@@ -31,7 +31,6 @@ import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
-import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
@@ -48,7 +47,7 @@ import pl.adriankremski.collectively.presentation.adapter.delegates.MainScreenRe
 import pl.adriankremski.collectively.presentation.addremark.AddRemarkActivity
 import pl.adriankremski.collectively.presentation.extension.colorOfCategory
 import pl.adriankremski.collectively.presentation.extension.iconOfCategory
-import pl.adriankremski.collectively.presentation.extension.toBitmapDescriptor
+import pl.adriankremski.collectively.presentation.extension.markerBitmapOfCategory
 import pl.adriankremski.collectively.presentation.extension.uppercaseFirstLetter
 import pl.adriankremski.collectively.presentation.views.MainScreenRemarkBottomSheetDialog
 import pl.adriankremski.collectively.usecases.LoadRemarkCategoriesUseCase
@@ -71,7 +70,6 @@ class MainActivity : BaseActivity(), MainMvp.View, OnMapReadyCallback, GoogleApi
     private var googleApiClient: GoogleApiClient? = null
     private var locationRequest: LocationRequest? = null
     private var lastLocation: Location? = null
-    private var currLocationMarker: Marker? = null
     private val MY_PERMISSIONS_REQUEST_LOCATION = 99
     private val remarksMarkers: LinkedList<Marker> = LinkedList<Marker>()
     private var remarks: List<Remark>? = null
@@ -186,23 +184,13 @@ class MainActivity : BaseActivity(), MainMvp.View, OnMapReadyCallback, GoogleApi
     override fun onLocationChanged(location: Location?) {
         lastLocation = location;
 
-        if (currLocationMarker != null) {
-            currLocationMarker?.remove();
-        }
 
         //Place current location marker
         var latLng = LatLng(location?.latitude!!, location?.longitude!!);
 
-        var markerOptions = MarkerOptions();
-        markerOptions.position(latLng);
-        markerOptions.title("Current Position");
-        markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE));
-
-        currLocationMarker = map?.addMarker(markerOptions);
-
         //move map camera
         map?.moveCamera(CameraUpdateFactory.newLatLng(latLng));
-        map?.animateCamera(CameraUpdateFactory.zoomTo(12.0f));
+        map?.animateCamera(CameraUpdateFactory.zoomTo(14.0f));
 
         //stop location updates
         if (googleApiClient != null) {
@@ -267,8 +255,9 @@ class MainActivity : BaseActivity(), MainMvp.View, OnMapReadyCallback, GoogleApi
                 var latLng = LatLng(it.location.coordinates[1], it.location.coordinates[0]);
                 var markerOptions = MarkerOptions();
                 markerOptions.position(latLng);
+                markerOptions.snippet(it.id)
                 markerOptions.title(it.description);
-                markerOptions.icon(it.category.colorOfCategory().toBitmapDescriptor());
+                markerOptions.icon(it.category?.name?.markerBitmapOfCategory());
                 remarksMarkers.add(map!!.addMarker(markerOptions))
             }
         }
@@ -279,7 +268,15 @@ class MainActivity : BaseActivity(), MainMvp.View, OnMapReadyCallback, GoogleApi
     }
 
     override fun onMarkerClick(marker: Marker?): Boolean {
-        remarks?.filter { it.description != null && it.description.equals(marker?.title) }?.forEach { MainScreenRemarkBottomSheetDialog(this, it).show() }
+        remarks?.filter { it.id != null && it.id.equals(marker?.snippet) }?.forEach {
+            //Place current location marker
+            var latLng = LatLng(it.location!!.coordinates[1], it.location!!.coordinates[0]);
+
+            //move map camera
+            map?.moveCamera(CameraUpdateFactory.newLatLng(latLng));
+            map?.animateCamera(CameraUpdateFactory.zoomTo(14.0f));
+            MainScreenRemarkBottomSheetDialog(this, it).show()
+        }
         return true
     }
 
@@ -289,7 +286,7 @@ class MainActivity : BaseActivity(), MainMvp.View, OnMapReadyCallback, GoogleApi
         if (remark.location != null) {
             var latLng = LatLng(remark.location.coordinates[1], remark.location.coordinates[0]);
             map?.moveCamera(CameraUpdateFactory.newLatLng(latLng));
-            map?.animateCamera(CameraUpdateFactory.zoomTo(16.0f));
+            map?.animateCamera(CameraUpdateFactory.zoomTo(20.0f));
             MainScreenRemarkBottomSheetDialog(this, remark).show()
         }
     }

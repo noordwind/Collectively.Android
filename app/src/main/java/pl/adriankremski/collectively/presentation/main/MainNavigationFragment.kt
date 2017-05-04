@@ -9,7 +9,6 @@ import android.view.ViewGroup
 import kotlinx.android.synthetic.main.fragment_main_navigation.*
 import pl.adriankremski.collectively.R
 import pl.adriankremski.collectively.presentation.profile.ProfileActivity
-import pl.adriankremski.collectively.presentation.remarkpreview.RemarkActivity
 import pl.adriankremski.collectively.presentation.statistics.StatisticsActivity
 
 class MainNavigationFragment : Fragment() {
@@ -26,7 +25,6 @@ class MainNavigationFragment : Fragment() {
         mStatisticsOptionView.setOnClickListener { openStatistics() }
         mSettingsOptionView.setOnClickListener { openSettings() }
         mFanpageOptionView.setOnClickListener { openFanPage() }
-        mShowRemark.setOnClickListener { openShowRemarkPage() }
     }
 
     fun openProfile() {
@@ -40,11 +38,6 @@ class MainNavigationFragment : Fragment() {
     fun openSettings() {
         Snackbar.make(activity.findViewById(android.R.id.content), "Settings", Snackbar.LENGTH_SHORT).show();
     }
-
-    fun openShowRemarkPage() {
-        RemarkActivity.start(context)
-    }
-
     fun openFanPage() {
         Snackbar.make(activity.findViewById(android.R.id.content), "Fanpage", Snackbar.LENGTH_SHORT).show();
     }

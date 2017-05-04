@@ -12,6 +12,7 @@ import com.github.mikephil.charting.data.BarDataSet
 import com.github.mikephil.charting.data.BarEntry
 import com.github.mikephil.charting.interfaces.datasets.IBarDataSet
 import pl.adriankremski.collectively.data.model.StatisticEntry
+import pl.adriankremski.collectively.presentation.extension.colorOfCategory
 import pl.adriankremski.collectively.presentation.extension.uppercaseFirstLetter
 
 class RemarksByCategoryChart : BarChart {
@@ -66,9 +67,9 @@ class RemarksByCategoryChart : BarChart {
 
         for ((valuePosition, catStatistics) in categoryStatistics.withIndex()) {
             var values = mutableListOf<BarEntry>()
-            values.add(BarEntry(valuePosition.toFloat(), catStatistics.reportedCount.toFloat()))
+            values.add(BarEntry(valuePosition.toFloat(), catStatistics.reportedCount().toFloat()))
             var set = BarDataSet(values, catStatistics.name.uppercaseFirstLetter())
-            set.color = getCategoryColor(catStatistics.name)
+            set.color = Color.parseColor(catStatistics.name.colorOfCategory())
             dataSets.add(set);
         }
 
@@ -79,15 +80,6 @@ class RemarksByCategoryChart : BarChart {
 
         this.data = data;
         animateY(1400, Easing.EasingOption.EaseInOutQuad)
-    }
-
-    fun  getCategoryColor(name: String): Int {
-        return when(name.toLowerCase()) {
-            "litter" -> Color.parseColor("#E65100")
-            "damages" -> Color.parseColor("#E53935")
-            "accidents" -> Color.parseColor("#757575")
-            else -> Color.parseColor("#0288D1")
-        }
     }
 }
 

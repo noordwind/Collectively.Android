@@ -12,8 +12,6 @@ import com.github.mikephil.charting.data.PieDataSet
 import com.github.mikephil.charting.data.PieEntry
 import pl.adriankremski.collectively.R
 import pl.adriankremski.collectively.data.model.StatisticEntry
-import pl.adriankremski.collectively.presentation.views.chart.RemarksChartValueFormatter
-import pl.adriankremski.collectively.presentation.statistics.StatisticsActivity
 import java.util.*
 
 
@@ -53,8 +51,8 @@ class RemarksByStatusChart : PieChart {
         var reportedStatisticsCount : Long = 0
 
         for (catStat in categoryStatistics) {
-            resolvedStatisticsCount += catStat.resolvedCount
-            reportedStatisticsCount += catStat.reportedCount
+            resolvedStatisticsCount += catStat.resolvedCount()
+            reportedStatisticsCount += catStat.reportedCount()
         }
 
         val entries = ArrayList<PieEntry>()

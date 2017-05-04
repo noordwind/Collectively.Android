@@ -10,6 +10,7 @@ import android.text.SpannableString
 import android.text.style.RelativeSizeSpan
 import android.text.style.StyleSpan
 import android.view.Gravity
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
@@ -161,6 +162,17 @@ class AddRemarkActivity : BaseActivity(), AddRemarkMvp.View {
     override fun showSaveRemarkSuccess(newRemark: RemarkNotFromList) {
         Toast.makeText(this, "Remark Addded", Toast.LENGTH_SHORT).show()
         finish()
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+        when(item?.itemId) {
+            android.R.id.home -> {
+                onBackPressed()
+                return true;
+            }
+        }
+
+        return super.onOptionsItemSelected(item)
     }
 
     override fun onDestroy() {

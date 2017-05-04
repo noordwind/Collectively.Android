@@ -55,6 +55,7 @@ interface Constants {
     interface BundleKey {
         companion object {
             const val CATEGORY = "category"
+            const val ID = "id"
         }
     }
 }

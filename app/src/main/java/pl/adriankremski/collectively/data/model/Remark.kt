@@ -6,12 +6,13 @@ class RemarkLocation(
 )
 
 class Remark(
-        val category: String = "",
+        val id: String,
+        val category: RemarkCategory? = null,
         val location: RemarkLocation? = null ,
         val smallPhotoUrl: String = "",
         val description: String = "",
         val resolved: Boolean? = null,
-        val raiting: Int
+        val rating: Int
 )
 
 class RemarkNotFromList(

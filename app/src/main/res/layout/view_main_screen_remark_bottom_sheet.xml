@@ -7,7 +7,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/black_semi_transparent"
+        android:background="#2374da"
         android:orientation="horizontal"
         android:padding="@dimen/spacing_normal">
 
@@ -36,9 +36,8 @@
                 android:gravity="left"
                 android:lines="1"
                 android:singleLine="true"
-                android:text="Name"
-                android:textColor="@color/grey"
-                android:textSize="@dimen/font_small"
+                android:textColor="@color/white"
+                android:textSize="@dimen/font_normal"
                 android:textStyle="bold" />
 
             <TextView
@@ -51,9 +50,9 @@
                 android:lines="1"
                 android:singleLine="true"
                 android:text="Address"
-                android:textColor="@color/grey"
+                android:textColor="@color/white"
                 android:textSize="@dimen/font_small"
-                android:textStyle="italic" />
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/status"
@@ -63,7 +62,7 @@
                 android:fontFamily="@string/font_light"
                 android:gravity="left"
                 android:text="Cleaning in process"
-                android:textColor="@color/grey"
+                android:textColor="@color/white"
                 android:textSize="@dimen/font_tiny"
                 android:textStyle="italic" />
         </LinearLayout>

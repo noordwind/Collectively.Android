@@ -11,8 +11,8 @@ import com.github.mikephil.charting.data.BarDataSet
 import com.github.mikephil.charting.data.BarEntry
 import com.github.mikephil.charting.interfaces.datasets.IBarDataSet
 import pl.adriankremski.collectively.data.model.StatisticEntry
-import pl.adriankremski.collectively.presentation.util.MaterialColorsTemplate
 import pl.adriankremski.collectively.presentation.extension.uppercaseFirstLetter
+import pl.adriankremski.collectively.presentation.util.MaterialColorsTemplate
 
 class RemarksByTagChart : BarChart {
 
@@ -65,7 +65,7 @@ class RemarksByTagChart : BarChart {
 
         for ((valuePosition, tagStatistic) in tagStatistics.withIndex()) {
             var values = mutableListOf<BarEntry>()
-            values.add(BarEntry(valuePosition.toFloat(), tagStatistic.reportedCount.toFloat()))
+            values.add(BarEntry(valuePosition.toFloat(), tagStatistic.reportedCount().toFloat()))
             var set = BarDataSet(values, tagStatistic.name.uppercaseFirstLetter())
             set.color = colorTemplate.nextColor()
             dataSets.add(set);

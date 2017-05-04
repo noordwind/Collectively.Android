@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.support.v4.content.ContextCompat
 import android.text.Html
 import android.view.Gravity
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import com.bumptech.glide.Glide
@@ -15,6 +16,7 @@ import com.wefika.flowlayout.FlowLayout
 import kotlinx.android.synthetic.main.activity_remark_preview.*
 import kotlinx.android.synthetic.main.view_error.*
 import kotlinx.android.synthetic.main.view_progress.*
+import pl.adriankremski.collectively.Constants
 import pl.adriankremski.collectively.R
 import pl.adriankremski.collectively.TheApp
 import pl.adriankremski.collectively.data.model.RemarkPreview
@@ -39,8 +41,9 @@ import javax.inject.Inject
 class RemarkActivity : BaseActivity(), RemarkPreviewMvp.View {
 
     companion object {
-        fun start(context: Context) {
+        fun start(context: Context, id: String) {
             val intent = Intent(context, RemarkActivity::class.java)
+            intent.putExtra(Constants.BundleKey.ID, id)
             intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
             context.startActivity(intent)
         }
@@ -167,7 +170,7 @@ class RemarkActivity : BaseActivity(), RemarkPreviewMvp.View {
 
 
     private fun loadRemark() {
-        presenter.loadRemark("efeea880-eb31-495b-8d82-13239271bd2b")
+        presenter.loadRemark(intent.getStringExtra(Constants.BundleKey.ID))
     }
 
     override fun showRemarkLoading() {
@@ -240,6 +243,17 @@ class RemarkActivity : BaseActivity(), RemarkPreviewMvp.View {
 
         voteUpButton.setLiked(false)
         positiveVotesCountLabel.setTextColor(ContextCompat.getColor(baseContext, R.color.font_dark_hint))
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+        when(item?.itemId) {
+            android.R.id.home -> {
+                onBackPressed()
+                return true;
+            }
+        }
+
+        return super.onOptionsItemSelected(item)
     }
 
     override fun onDestroy() {

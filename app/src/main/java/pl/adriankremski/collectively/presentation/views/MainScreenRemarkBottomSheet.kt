@@ -6,6 +6,7 @@ import android.widget.FrameLayout
 import android.widget.TextView
 import pl.adriankremski.collectively.R
 import pl.adriankremski.collectively.data.model.Remark
+import pl.adriankremski.collectively.presentation.remarkpreview.RemarkActivity
 
 class MainScreenRemarkBottomSheet(context: Context?, remark: Remark) : FrameLayout(context) {
 
@@ -15,5 +16,6 @@ class MainScreenRemarkBottomSheet(context: Context?, remark: Remark) : FrameLayo
         var addressLabel: TextView = findViewById(R.id.address) as TextView
         nameLabel.text = remark.description
         addressLabel.text = remark.location?.address
+        setOnClickListener { RemarkActivity.start(context!!, remark.id) }
     }
 }

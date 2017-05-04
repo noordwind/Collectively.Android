@@ -7,14 +7,14 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/black_semi_transparent"
+        android:background="#2374da"
         android:orientation="horizontal"
         android:padding="@dimen/spacing_normal">
 
         <ImageView
-            android:id="@+id/ic_place"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:id="@+id/category_icon"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
             android:layout_centerVertical="true"
             android:layout_marginRight="@dimen/spacing_normal"
             android:src="@drawable/ic_place_white_24dp" />
@@ -24,7 +24,7 @@
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_toLeftOf="@id/navigate"
-            android:layout_toRightOf="@id/ic_place"
+            android:layout_toRightOf="@id/category_icon"
             android:orientation="vertical">
 
             <TextView
@@ -37,8 +37,8 @@
                 android:lines="1"
                 android:singleLine="true"
                 android:text="Name"
-                android:textColor="@color/grey"
-                android:textSize="@dimen/font_small"
+                android:textColor="@color/white"
+                android:textSize="@dimen/font_normal"
                 android:textStyle="bold" />
 
             <TextView
@@ -50,10 +50,9 @@
                 android:gravity="left"
                 android:lines="1"
                 android:singleLine="true"
-                android:text="Address"
-                android:textColor="@color/grey"
+                android:textColor="@color/white"
                 android:textSize="@dimen/font_small"
-                android:textStyle="italic" />
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/status"
@@ -63,7 +62,7 @@
                 android:fontFamily="@string/font_light"
                 android:gravity="left"
                 android:text="Cleaning in process"
-                android:textColor="@color/grey"
+                android:textColor="@color/white"
                 android:textSize="@dimen/font_tiny"
                 android:textStyle="italic" />
         </LinearLayout>
@@ -98,7 +97,7 @@
     </RelativeLayout>
 
     <View
-        android:background="@color/grey_semi_transparent"
+        android:background="@color/white"
         android:layout_width="match_parent"
         android:layout_height="1px"/>
 </LinearLayout>

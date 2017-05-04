@@ -19,15 +19,15 @@ import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.activity_profile.*
 import kotlinx.android.synthetic.main.view_error.*
 import kotlinx.android.synthetic.main.view_progress.*
-import pl.adriankremski.collectively.presentation.BaseActivity
 import pl.adriankremski.collectively.R
 import pl.adriankremski.collectively.TheApp
+import pl.adriankremski.collectively.data.model.Profile
+import pl.adriankremski.collectively.data.repository.ProfileRepository
 import pl.adriankremski.collectively.domain.thread.PostExecutionThread
 import pl.adriankremski.collectively.domain.thread.UseCaseThread
-import pl.adriankremski.collectively.data.repository.ProfileRepository
+import pl.adriankremski.collectively.presentation.BaseActivity
 import pl.adriankremski.collectively.presentation.util.RequestErrorDecorator
 import pl.adriankremski.collectively.presentation.util.Switcher
-import pl.adriankremski.collectively.data.model.Profile
 import java.util.*
 import javax.inject.Inject
 
@@ -91,13 +91,6 @@ class ProfileActivity : BaseActivity(), ProfileMvp.View, AppBarLayout.OnOffsetCh
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.menu_main, menu)
         return false
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
-        if (item?.itemId == R.id.menu_change_photo) {
-            Snackbar.make(findViewById(android.R.id.content), "Feature not implemented", Toast.LENGTH_SHORT).show();
-        }
-        return super.onOptionsItemSelected(item)
     }
 
     override fun showLoading() {
@@ -174,6 +167,21 @@ class ProfileActivity : BaseActivity(), ProfileMvp.View, AppBarLayout.OnOffsetCh
         alphaAnimation.duration = duration
         alphaAnimation.fillAfter = true
         v.startAnimation(alphaAnimation)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+        when (item?.itemId) {
+            android.R.id.home -> {
+                onBackPressed()
+                return true;
+            }
+            R.id.menu_change_photo -> {
+                Snackbar.make(findViewById(android.R.id.content), "Feature not implemented", Toast.LENGTH_SHORT).show();
+                return true
+            }
+        }
+
+        return super.onOptionsItemSelected(item)
     }
 
     override fun onDestroy() {
