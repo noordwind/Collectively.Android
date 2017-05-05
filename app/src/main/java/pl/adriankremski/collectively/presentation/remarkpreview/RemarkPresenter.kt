@@ -77,6 +77,8 @@ class RemarkPresenter(val view: RemarkPreviewMvp.View, val loadRemarkUseCase: Lo
     }
 
     override fun destroy() {
+        submitRemarkVoteUseCase.dispose()
+        deleteRemarkVoteUseCase.dispose()
         loadRemarkUseCase.dispose()
     }
 

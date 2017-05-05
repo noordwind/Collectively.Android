@@ -55,6 +55,11 @@
             >
         </activity>
 
+        <activity android:name=".presentation.remarkpreview.comments.RemarkCommentsActivity"
+            android:parentActivityName=".presentation.main.MainActivity"
+            >
+        </activity>
+
         <activity android:name=".presentation.authentication.retrievepassword.ResetPasswordActivity">
         </activity>
 
