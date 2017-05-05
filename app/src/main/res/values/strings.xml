@@ -58,4 +58,7 @@
     <string name="activity_remark_preview_location_label">Location</string>
     <string name="description">Description</string>
     <string name="error_loading_remark_no_network">Connect to internet to check the remark</string>
+    <string name="settings_screen_title">Settings</string>
+    <string name="logout">Logout</string>
+    <string name="comments">Comments</string>
 </resources>

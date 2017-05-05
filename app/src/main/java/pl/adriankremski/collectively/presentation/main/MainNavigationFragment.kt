@@ -1,7 +1,6 @@
 package pl.adriankremski.collectively.presentation.main
 
 import android.os.Bundle
-import android.support.design.widget.Snackbar
 import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -9,7 +8,9 @@ import android.view.ViewGroup
 import kotlinx.android.synthetic.main.fragment_main_navigation.*
 import pl.adriankremski.collectively.R
 import pl.adriankremski.collectively.presentation.profile.ProfileActivity
+import pl.adriankremski.collectively.presentation.settings.SettingsActivity
 import pl.adriankremski.collectively.presentation.statistics.StatisticsActivity
+import pl.adriankremski.collectively.presentation.util.FacebookUtils
 
 class MainNavigationFragment : Fragment() {
 
@@ -36,9 +37,10 @@ class MainNavigationFragment : Fragment() {
     }
 
     fun openSettings() {
-        Snackbar.make(activity.findViewById(android.R.id.content), "Settings", Snackbar.LENGTH_SHORT).show();
+        SettingsActivity.start(context)
     }
+
     fun openFanPage() {
-        Snackbar.make(activity.findViewById(android.R.id.content), "Fanpage", Snackbar.LENGTH_SHORT).show();
+        activity.startActivity(FacebookUtils.newFacebookIntent(activity.packageManager, "https://www.facebook.com/becollectively/"))
     }
 }

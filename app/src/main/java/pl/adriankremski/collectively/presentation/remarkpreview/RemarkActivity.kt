@@ -19,6 +19,7 @@ import kotlinx.android.synthetic.main.view_progress.*
 import pl.adriankremski.collectively.Constants
 import pl.adriankremski.collectively.R
 import pl.adriankremski.collectively.TheApp
+import pl.adriankremski.collectively.data.model.RemarkComment
 import pl.adriankremski.collectively.data.model.RemarkPreview
 import pl.adriankremski.collectively.data.model.RemarkTag
 import pl.adriankremski.collectively.data.repository.ProfileRepository
@@ -34,6 +35,7 @@ import pl.adriankremski.collectively.presentation.statistics.DeleteRemarkVoteUse
 import pl.adriankremski.collectively.presentation.statistics.SubmitRemarkVoteUseCase
 import pl.adriankremski.collectively.presentation.util.RequestErrorDecorator
 import pl.adriankremski.collectively.presentation.util.Switcher
+import pl.adriankremski.collectively.presentation.views.RemarkCommentView
 import pl.adriankremski.collectively.presentation.views.RemarkTagView
 import java.util.*
 import javax.inject.Inject
@@ -208,12 +210,20 @@ class RemarkActivity : BaseActivity(), RemarkPreviewMvp.View {
             params.bottomMargin = 10
             newView.layoutParams = params
 
-            tagsLayout?.addView(newView)
+//            tagsLayout?.addView(newView)
         }
 
         descriptionLabel.text = remark.description
     }
 
+    override fun showEmptyComments() {
+    }
+
+    override fun showComments(comments: List<RemarkComment>) {
+        comments.forEach {
+            commentsLayout.addView(RemarkCommentView(baseContext, it), commentsLayout.childCount)
+        }
+    }
 
     override fun showPositiveVotes(positiveVotesCount: Int) {
         positiveVotesCountLabel.text = positiveVotesCount.toString()

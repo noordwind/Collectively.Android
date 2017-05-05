@@ -29,7 +29,7 @@
             android:layout_marginLeft="@dimen/spacing_medium"
             android:layout_gravity="center_vertical"
             android:fontFamily="@string/font_condensed"
-            android:text="Adrian Kremski"
+            android:text="Test user"
             android:textColor="@color/white_pressed"
             android:textSize="@dimen/font_large"
 

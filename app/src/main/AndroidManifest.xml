@@ -50,6 +50,11 @@
             >
         </activity>
 
+        <activity android:name=".presentation.settings.SettingsActivity"
+            android:parentActivityName=".presentation.main.MainActivity"
+            >
+        </activity>
+
         <activity android:name=".presentation.authentication.retrievepassword.ResetPasswordActivity">
         </activity>
 

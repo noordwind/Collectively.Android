@@ -5,10 +5,16 @@ import pl.adriankremski.collectively.data.cache.RemarkCategoriesCache
 import pl.adriankremski.collectively.data.datasource.RemarksDataSource
 import pl.adriankremski.collectively.data.model.*
 import pl.adriankremski.collectively.data.repository.util.OperationRepository
+import java.util.*
 
 class RemarkRepositoryImpl(val remarkCategoriesCache: RemarkCategoriesCache,
                            val remarksDataSource: RemarksDataSource,
                            val operationRepository: OperationRepository) : RemarksRepository {
+
+    override fun loadRemarkComments(id: String): Observable<List<RemarkComment>> {
+        return remarksDataSource.loadRemarkPreview(id).flatMap { Observable.just(it.comments) }
+    }
+
     override fun loadRemarkCategories(): Observable<List<RemarkCategory>> {
         if (remarkCategoriesCache.isExpired()) {
             return remarksDataSource.loadRemarkCategories().doOnNext { remarkCategoriesCache.putData(it) }

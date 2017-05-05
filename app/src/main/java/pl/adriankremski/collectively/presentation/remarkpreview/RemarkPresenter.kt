@@ -32,6 +32,12 @@ class RemarkPresenter(val view: RemarkPreviewMvp.View, val loadRemarkUseCase: Lo
                 } else if (remarkViewData.remarkPreview.userVotedNegatively(remarkViewData.userId)) {
                     view.showUserVotedNegatively()
                 }
+
+                if (remarkViewData.comments.size > 0) {
+                    view.showComments(remarkViewData.comments)
+                } else {
+                    view.showEmptyComments()
+                }
             }
 
             override fun onError(e: Throwable) {

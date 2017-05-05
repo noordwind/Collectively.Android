@@ -8,7 +8,8 @@ class RemarkPreview(
         val location: Location,
         val tags: Array<String>,
         val photos: Array<RemarkPhoto>,
-        val votes: Array<RemarkVote>
+        val votes: Array<RemarkVote>,
+        val comments: List<RemarkComment>
 ) {
     fun getFirstBigPhoto(): RemarkPhoto? {
         var bigPhotos = photos.filter { it.size.equals("big", true) }

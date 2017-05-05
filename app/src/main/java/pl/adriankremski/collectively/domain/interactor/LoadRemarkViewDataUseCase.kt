@@ -1,8 +1,7 @@
 package pl.adriankremski.collectively.domain.interactor
 
 import io.reactivex.Observable
-import io.reactivex.functions.BiFunction
-import pl.adriankremski.collectively.data.model.RemarkPreview
+import io.reactivex.functions.Function3
 import pl.adriankremski.collectively.data.repository.ProfileRepository
 import pl.adriankremski.collectively.data.repository.RemarksRepository
 import pl.adriankremski.collectively.domain.model.RemarkViewData
@@ -17,10 +16,10 @@ class LoadRemarkViewDataUseCase(
 
     override fun buildUseCaseObservable(id: String?): Observable<RemarkViewData> {
         val remarkObs = remarksRepository.loadRemark(id!!)
+        val remarkCommentsObs = remarksRepository.loadRemarkComments(id!!)
         val userIdObs = profileRepository.loadProfile().flatMap { Observable.just(it.userId) }
 
-         return Observable.zip(remarkObs, userIdObs,
-                BiFunction<RemarkPreview, String, RemarkViewData>(::RemarkViewData))
+        return Observable.zip(remarkObs, userIdObs, remarkCommentsObs, Function3(::RemarkViewData))
     }
 }
 

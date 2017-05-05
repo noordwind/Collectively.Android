@@ -9,6 +9,7 @@ import pl.adriankremski.collectively.presentation.authentication.signup.SignUpAc
 import pl.adriankremski.collectively.presentation.main.MainActivity
 import pl.adriankremski.collectively.presentation.profile.ProfileActivity
 import pl.adriankremski.collectively.presentation.remarkpreview.RemarkActivity
+import pl.adriankremski.collectively.presentation.settings.SettingsActivity
 import pl.adriankremski.collectively.presentation.statistics.StatisticsActivity
 import javax.inject.Singleton
 
@@ -26,4 +27,5 @@ interface AppComponent {
     fun inject(activity: StatisticsActivity)
     fun inject(activity: ProfileActivity)
     fun inject(activity: RemarkActivity)
+    fun inject(activity: SettingsActivity)
 }

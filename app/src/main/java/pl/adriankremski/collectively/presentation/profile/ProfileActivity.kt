@@ -110,7 +110,7 @@ class ProfileActivity : BaseActivity(), ProfileMvp.View, AppBarLayout.OnOffsetCh
         span.setSpan(StyleSpan(Typeface.BOLD), 0, 1, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
         toolbarTitleLabel.text = span
 
-        Glide.with(this).load("https://scontent-amt2-1.xx.fbcdn.net/v/t1.0-9/13707543_1113779778680046_7388140466043605584_n.jpg?oh=326bdcc822649966bde07ca7262a90e2&oe=5937B8E7").into(profileImage);
+        Glide.with(this).load("https://scontent-waw1-1.xx.fbcdn.net/v/t31.0-8/13490617_1226192834059525_8782483978247105632_o.jpg?oh=aacc436d1bfa1e6ee649775348c79e69&oe=5974DF30").into(profileImage);
     }
 
     override fun showLoadProfileNetworkError() {
