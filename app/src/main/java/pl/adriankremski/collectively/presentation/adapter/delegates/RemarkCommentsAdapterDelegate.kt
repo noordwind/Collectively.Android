@@ -8,6 +8,7 @@ import android.widget.TextView
 import com.hannesdorfmann.adapterdelegates.AbsAdapterDelegate
 import pl.adriankremski.collectively.R
 import pl.adriankremski.collectively.data.model.RemarkComment
+import java.text.SimpleDateFormat
 
 
 class RemarkCommentsAdapterDelegate(viewType: Int): AbsAdapterDelegate<List<Any>>(viewType) {
@@ -30,17 +31,17 @@ class RemarkCommentsAdapterDelegate(viewType: Int): AbsAdapterDelegate<List<Any>
 
         private var authorLabel: TextView = itemView.findViewById(R.id.authorLabel) as TextView
         private var commentLabel: TextView = itemView.findViewById(R.id.commentLabel) as TextView
+        private var dateLabel: TextView = itemView.findViewById(R.id.dateLabel) as TextView
+
+        private var dateFormat = SimpleDateFormat("HH:mm, dd MMM")
 
         init {
         }
 
         fun setRemarkComment(remarkComment: RemarkComment) {
-            authorLabel.text = remarkComment.user.name
+            authorLabel.text = remarkComment.user?.name
             commentLabel.text = remarkComment.text
-//            this.remark = remark
-//            categoryIcon.setImageDrawable(ContextCompat.getDrawable(itemView.context, remark.category?.name?.iconOfCategory()!!))
-//            nameLabel.text = remark.description
-//            addressLabel.text = remark.location?.address
+            dateLabel.text = dateFormat.format(remarkComment.creationDate())
         }
     }
 

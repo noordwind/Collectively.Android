@@ -14,9 +14,15 @@ interface RemarkCommentsMvp {
         fun showEmptyScreen()
         fun showLoadedComments(comments: List<RemarkComment>)
         fun showCommentsLoadingError()
+        fun showSubmittedComment(remarkComment: RemarkComment)
+        fun showSubmitRemarkCommentProgress()
+        fun hideSubmitRemarkCommentProgress()
+        fun  showSubmitRemarkCommentServerError(message: String?)
+        fun showSubmitRemarkCommentNetworkError()
     }
 
     interface Presenter : BasePresenter{
         fun loadComments(id: String)
+        fun submitRemarkComment(text: String)
     }
 }

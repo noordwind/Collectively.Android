@@ -63,6 +63,11 @@ interface Api {
     fun saveRemark(@Body remark: NewRemark): Observable<Response<Void>>
 
     @Headers(Constants.ApiHeader.ACCEPT_HEADER, Constants.ApiHeader.CONTENT_TYPE_HEADER)
+    @POST("remarks/{id}/comments")
+    fun submitRemarkComment(@Path("id") remarkId: String, @Body remarkComment: RemarkComment): Observable<Response<Void>>
+
+    //PUT
+    @Headers(Constants.ApiHeader.ACCEPT_HEADER, Constants.ApiHeader.CONTENT_TYPE_HEADER)
     @PUT("remarks/{id}/votes")
     fun submitRemarkVote(@Path("id") remarkId: String, @Body remarkVote: RemarkVote): Observable<Response<Void>>
 

@@ -48,7 +48,6 @@
                 android:fontFamily="@string/font_condensed"
                 android:textColor="@color/font_dark_hint"
                 android:textSize="@dimen/font_small"
-                android:text="10:50, 24.07.2017"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
         </RelativeLayout>

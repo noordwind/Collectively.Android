@@ -13,6 +13,7 @@ interface RemarksRepository {
     fun loadRemarkComments(id: String): Observable<List<RemarkComment>>
     fun submitRemarkVote(remarkId: String, remarkVote: RemarkVote) : Observable<RemarkPreview>
     fun deleteRemarkVote(remarkId: String) : Observable<RemarkPreview>
+    fun submitRemarkComment(remarkId: String, remarkComment: RemarkComment) : Observable<RemarkComment>
 }
 
 

@@ -108,8 +108,8 @@ class AppModule(private val application: Application) : Constants {
 
     @Provides
     @Singleton
-    fun provideRemarkCategoriesRepository(remarkCategoriesCache: RemarkCategoriesCache, remarksDataSource: RemarksDataSource, operationRepository: OperationRepository): RemarksRepository
-            = RemarkRepositoryImpl(remarkCategoriesCache, remarksDataSource, operationRepository)
+    fun provideRemarkCategoriesRepository(remarkCategoriesCache: RemarkCategoriesCache, remarksDataSource: RemarksDataSource, profileRepository: ProfileRepository, operationRepository: OperationRepository): RemarksRepository
+            = RemarkRepositoryImpl(remarkCategoriesCache, remarksDataSource, profileRepository, operationRepository)
 
     @Provides
     @Singleton

@@ -5,6 +5,7 @@ import android.content.Intent
 import android.graphics.Typeface
 import android.os.Bundle
 import android.support.design.widget.BottomSheetBehavior
+import android.support.design.widget.Snackbar
 import android.support.v7.widget.LinearLayoutManager
 import android.text.Spannable
 import android.text.SpannableString
@@ -30,6 +31,7 @@ import pl.adriankremski.collectively.presentation.adapter.delegates.RemarkCommen
 import pl.adriankremski.collectively.presentation.extension.dpToPx
 import pl.adriankremski.collectively.presentation.remarkpreview.RemarkCommentsMvp
 import pl.adriankremski.collectively.presentation.remarkpreview.RemarkCommentsPresenter
+import pl.adriankremski.collectively.presentation.statistics.SubmitRemarkCommentUseCase
 import pl.adriankremski.collectively.presentation.util.RequestErrorDecorator
 import pl.adriankremski.collectively.presentation.util.Switcher
 import pl.adriankremski.collectively.usecases.LoadRemarkCommentsUseCase
@@ -37,7 +39,6 @@ import java.util.*
 import javax.inject.Inject
 
 class RemarkCommentsActivity : BaseActivity(), RemarkCommentsMvp.View {
-
     companion object {
         fun start(context: Context, id: String) {
             val intent = Intent(context, RemarkCommentsActivity::class.java)
@@ -62,6 +63,7 @@ class RemarkCommentsActivity : BaseActivity(), RemarkCommentsMvp.View {
     private lateinit var errorDecorator: RequestErrorDecorator
     private lateinit var bottomSheetBehavior: BottomSheetBehavior<View>
     private lateinit var remarkCommentsAdapter: RemarkCommentsAdapter
+    private var submitRemarkProgress: RemarkCommentsLoaderAdapterDelegate.Progress = RemarkCommentsLoaderAdapterDelegate.Progress()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -73,7 +75,8 @@ class RemarkCommentsActivity : BaseActivity(), RemarkCommentsMvp.View {
         span.setSpan(StyleSpan(Typeface.BOLD), 0, 1, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
         toolbarTitleLabel?.text = span;
 
-        presenter = RemarkCommentsPresenter(this, LoadRemarkCommentsUseCase(remarksRepository, ioThread, uiThread))
+        presenter = RemarkCommentsPresenter(this, LoadRemarkCommentsUseCase(remarksRepository, ioThread, uiThread),
+                SubmitRemarkCommentUseCase(remarksRepository, ioThread, uiThread))
 
         errorDecorator = RequestErrorDecorator(switcherErrorImage, switcherErrorTitle, switcherErrorFooter)
         val contentViews = LinkedList<View>()
@@ -100,13 +103,11 @@ class RemarkCommentsActivity : BaseActivity(), RemarkCommentsMvp.View {
         }
 
         commentButton.setOnClickListener {
+            commentButton.isEnabled = false
             bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
-            var list = LinkedList<Any>(remarkCommentsAdapter.items)
-            list.add(0, RemarkCommentsLoaderAdapterDelegate.Progress())
-            remarkCommentsAdapter.setData(list)
-            remarkCommentsAdapter.notifyItemInserted(0)
+            (remarkCommentsRecycler.layoutManager as LinearLayoutManager).scrollToPositionWithOffset(0, 0)
+            presenter.submitRemarkComment(commentInput.text.toString())
         }
-
     }
 
     private fun loadComments() {
@@ -146,6 +147,39 @@ class RemarkCommentsActivity : BaseActivity(), RemarkCommentsMvp.View {
 
     override fun showCommentsLoadingError() {
         switcher.showErrorViews()
+    }
+
+    override fun showSubmitRemarkCommentProgress() {
+        var list = LinkedList<Any>(remarkCommentsAdapter.items)
+        list.add(0, submitRemarkProgress)
+        remarkCommentsAdapter.setData(list)
+        remarkCommentsAdapter.notifyItemInserted(0)
+    }
+
+    override fun hideSubmitRemarkCommentProgress() {
+        var list = LinkedList<Any>(remarkCommentsAdapter.items)
+        list.remove(submitRemarkProgress)
+        remarkCommentsAdapter.setData(list)
+        remarkCommentsAdapter.notifyItemRemoved(0)
+    }
+
+    override fun showSubmitRemarkCommentNetworkError() {
+        commentButton.isEnabled = true
+        Snackbar.make(findViewById(android.R.id.content), getString(R.string.error_submit_comment_no_network), Snackbar.LENGTH_LONG).show()
+    }
+
+    override fun showSubmitRemarkCommentServerError(message: String?) {
+        commentButton.isEnabled = true
+        Snackbar.make(findViewById(android.R.id.content), message!!, Snackbar.LENGTH_LONG).show()
+    }
+
+    override fun showSubmittedComment(remarkComment: RemarkComment) {
+        commentButton.isEnabled = true
+        var list = LinkedList<Any>(remarkCommentsAdapter.items)
+        list.add(0, remarkComment)
+        remarkCommentsAdapter.setData(list)
+        remarkCommentsAdapter.notifyItemInserted(0)
+        (remarkCommentsRecycler.layoutManager as LinearLayoutManager).scrollToPositionWithOffset(0, 0)
     }
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {

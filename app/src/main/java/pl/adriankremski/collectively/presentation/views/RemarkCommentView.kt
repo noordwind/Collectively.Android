@@ -13,7 +13,7 @@ class RemarkCommentView(context: Context, comment: RemarkComment) : LinearLayout
     init {
         View.inflate(getContext(), R.layout.view_remark_comment, this)
 
-        authorLabel.text = comment.user.name
+        authorLabel.text = comment.user?.name
         commentLabel.text = comment.text
     }
 }
