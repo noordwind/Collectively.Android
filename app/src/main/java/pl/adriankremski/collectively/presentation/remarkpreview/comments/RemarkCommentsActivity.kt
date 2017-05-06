@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.Typeface
 import android.os.Bundle
+import android.support.design.widget.BottomSheetBehavior
 import android.support.v7.widget.LinearLayoutManager
 import android.text.Spannable
 import android.text.SpannableString
@@ -25,6 +26,8 @@ import pl.adriankremski.collectively.domain.thread.PostExecutionThread
 import pl.adriankremski.collectively.domain.thread.UseCaseThread
 import pl.adriankremski.collectively.presentation.BaseActivity
 import pl.adriankremski.collectively.presentation.adapter.RemarkCommentsAdapter
+import pl.adriankremski.collectively.presentation.adapter.delegates.RemarkCommentsLoaderAdapterDelegate
+import pl.adriankremski.collectively.presentation.extension.dpToPx
 import pl.adriankremski.collectively.presentation.remarkpreview.RemarkCommentsMvp
 import pl.adriankremski.collectively.presentation.remarkpreview.RemarkCommentsPresenter
 import pl.adriankremski.collectively.presentation.util.RequestErrorDecorator
@@ -57,6 +60,8 @@ class RemarkCommentsActivity : BaseActivity(), RemarkCommentsMvp.View {
 
     private lateinit var switcher: Switcher
     private lateinit var errorDecorator: RequestErrorDecorator
+    private lateinit var bottomSheetBehavior: BottomSheetBehavior<View>
+    private lateinit var remarkCommentsAdapter: RemarkCommentsAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -82,7 +87,26 @@ class RemarkCommentsActivity : BaseActivity(), RemarkCommentsMvp.View {
 
         switcherErrorButton.setOnClickListener { loadComments() }
 
+        bottomSheetBehavior = BottomSheetBehavior.from(bottomSheet);
+        bottomSheetBehavior.peekHeight = 48f.dpToPx()
+        bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED;
+
         loadComments()
+
+        commentInput.setOnClickListener {
+            if (bottomSheetBehavior.state == BottomSheetBehavior.STATE_COLLAPSED) {
+                bottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
+            }
+        }
+
+        commentButton.setOnClickListener {
+            bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
+            var list = LinkedList<Any>(remarkCommentsAdapter.items)
+            list.add(0, RemarkCommentsLoaderAdapterDelegate.Progress())
+            remarkCommentsAdapter.setData(list)
+            remarkCommentsAdapter.notifyItemInserted(0)
+        }
+
     }
 
     private fun loadComments() {
@@ -94,26 +118,30 @@ class RemarkCommentsActivity : BaseActivity(), RemarkCommentsMvp.View {
     }
 
     override fun showCommentsLoadingServerError(error: String) {
+        bottomSheet.visibility = View.GONE
         errorDecorator.onServerError(error)
         switcher.showErrorViewsImmediately()
     }
 
     override fun showCommentsLoadingNetworkError() {
+        bottomSheet.visibility = View.GONE
         errorDecorator.onNetworkError(getString(R.string.error_loading_remark_comments_no_network))
         switcher.showErrorViewsImmediately()
     }
 
     override fun showEmptyScreen() {
+        bottomSheet.visibility = View.VISIBLE
         switcher.showEmptyViews()
     }
 
     override fun showLoadedComments(comments: List<RemarkComment>) {
+        bottomSheet.visibility = View.VISIBLE
         switcher.showContentViewsImmediately()
 
-        var adapter = RemarkCommentsAdapter().setData(comments).initDelegates()
-        remarkCommentsRecycler.adapter = adapter
+        remarkCommentsAdapter = RemarkCommentsAdapter().setData(comments).initDelegates()
+        remarkCommentsRecycler.adapter = remarkCommentsAdapter
         remarkCommentsRecycler.layoutManager = LinearLayoutManager(baseContext)
-        adapter.notifyDataSetChanged()
+        remarkCommentsAdapter.notifyDataSetChanged()
     }
 
     override fun showCommentsLoadingError() {

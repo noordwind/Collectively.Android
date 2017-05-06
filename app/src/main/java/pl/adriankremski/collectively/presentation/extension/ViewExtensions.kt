@@ -1,13 +1,18 @@
 package pl.adriankremski.collectively.presentation.extension
 
 import android.app.Activity
+import android.content.res.Resources
 import android.support.v4.content.ContextCompat
 import android.support.v7.app.AlertDialog
+import android.util.DisplayMetrics
+import android.util.TypedValue
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import pl.adriankremski.collectively.R
 import java.util.*
+
+
 
 
 fun TextView.textInInt() : Int = text.toString().toInt()
@@ -86,3 +91,14 @@ fun Activity.showResetPasswordErrorDialog(message: String) {
     builder.show()
 }
 
+
+fun Float.dpToPx(): Int {
+    var densityDpi = DisplayMetrics.DENSITY_DEFAULT
+
+    val metrics = Resources.getSystem().displayMetrics
+    densityDpi = metrics.densityDpi
+
+    return (this * (densityDpi / 160f)).toInt()
+}
+
+fun Float.spToPx(): Int = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, this, Resources.getSystem().displayMetrics).toInt()

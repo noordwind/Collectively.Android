@@ -37,4 +37,5 @@
     <color name="font_dark_secondary">#5f5f5f</color>
     <color name="font_dark_hint">#888</color>
     <color name="font_light">#FFF</color>
+    <color name="background_light">@color/background_material_light</color>
 </resources>
