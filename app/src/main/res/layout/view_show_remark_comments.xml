@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/showComments"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:id="@+id/titleLabel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="@string/font_condensed"
+        android:gravity="center"
+        android:padding="@dimen/spacing_normal"
+        android:text="@string/login"
+        android:textColor="@color/red_dark_2"
+        android:textSize="@dimen/font_normal"/>
+
+</FrameLayout>

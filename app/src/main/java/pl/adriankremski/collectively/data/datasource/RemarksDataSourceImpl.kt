@@ -6,6 +6,7 @@ import pl.adriankremski.collectively.data.net.Api
 import retrofit2.Response
 
 class RemarksDataSourceImpl(val api: Api) : RemarksDataSource {
+
     override fun loadSavedRemark(remarkResourcePath: String): Observable<RemarkNotFromList> = api.createdRemark(remarkResourcePath)
 
     override fun loadRemarkPreview(id: String): Observable<RemarkPreview> = api.remarkPreview(id)
@@ -22,6 +23,10 @@ class RemarksDataSourceImpl(val api: Api) : RemarksDataSource {
 
     override fun submitRemarkVote(remarkId: String, remarkVote: RemarkVote): Observable<Response<Void>> = api.submitRemarkVote(remarkId, remarkVote)
 
-    override fun submitRemarkComment(remarkId: String, remarkComment: RemarkComment): Observable<Response<Void>> = api.submitRemarkComment(remarkId, remarkComment)
+    override fun submitRemarkComment(remarkId: String, remarkComment: RemarkComment): Observable<Response<Void>> = api.submitRemarkComment(remarkId, RemarkCommentPostRequest(remarkComment.text))
+
+    override fun submitRemarkCommentVote(remarkId: String, commentId: String, remarkVote: RemarkVote): Observable<Response<Void>> = api.submitRemarkCommentVote(remarkId, commentId, remarkVote)
+
+    override fun deleteRemarkCommentVote(remarkId: String, commentId: String): Observable<Response<Void>> = api.deleteRemarkCommentVote(remarkId, commentId)
 }
 

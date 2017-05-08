@@ -1,4 +1,4 @@
-package pl.adriankremski.collectively.usecases
+package pl.adriankremski.collectively.domain.interactor.remark
 
 import io.reactivex.Observable
 import pl.adriankremski.collectively.domain.thread.PostExecutionThread

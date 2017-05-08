@@ -1,7 +1,7 @@
 package pl.adriankremski.collectively.presentation.authentication.signup
 
 import pl.adriankremski.collectively.domain.model.SignUpCredentials
-import pl.adriankremski.collectively.domain.interactor.SignUpUseCase
+import pl.adriankremski.collectively.domain.interactor.authentication.SignUpUseCase
 import pl.adriankremski.collectively.presentation.rxjava.AppDisposableObserver
 import pl.adriankremski.collectively.data.repository.util.ConnectivityRepository
 

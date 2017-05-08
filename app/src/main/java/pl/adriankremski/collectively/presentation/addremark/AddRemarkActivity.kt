@@ -31,9 +31,9 @@ import pl.adriankremski.collectively.presentation.extension.setBackgroundCompat
 import pl.adriankremski.collectively.presentation.extension.uppercaseFirstLetter
 import pl.adriankremski.collectively.presentation.views.RemarkTagView
 import pl.adriankremski.collectively.usecases.LoadLastKnownLocationUseCase
-import pl.adriankremski.collectively.usecases.LoadRemarkCategoriesUseCase
-import pl.adriankremski.collectively.usecases.LoadRemarkTagsUseCase
-import pl.adriankremski.collectively.usecases.SaveRemarkUseCase
+import pl.adriankremski.collectively.domain.interactor.remark.LoadRemarkCategoriesUseCase
+import pl.adriankremski.collectively.domain.interactor.remark.LoadRemarkTagsUseCase
+import pl.adriankremski.collectively.domain.interactor.remark.SaveRemarkUseCase
 import java.util.*
 import javax.inject.Inject
 

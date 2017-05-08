@@ -1,8 +1,9 @@
-package pl.adriankremski.collectively.domain.interactor
+package pl.adriankremski.collectively.domain.interactor.authentication
 
 import io.reactivex.Observable
 import pl.adriankremski.collectively.data.repository.SessionRepository
 import pl.adriankremski.collectively.data.repository.AuthenticationRepository
+import pl.adriankremski.collectively.domain.interactor.UseCase
 import pl.adriankremski.collectively.domain.model.SignUpCredentials
 import pl.adriankremski.collectively.domain.thread.PostExecutionThread
 import pl.adriankremski.collectively.domain.thread.UseCaseThread

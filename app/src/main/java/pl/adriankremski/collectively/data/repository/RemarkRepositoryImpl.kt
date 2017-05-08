@@ -46,6 +46,14 @@ class RemarkRepositoryImpl(val remarkCategoriesCache: RemarkCategoriesCache,
                 .flatMap { remarksDataSource.loadRemarkPreview(remarkId) }
     }
 
+    override fun submitRemarkCommentVote(remarkId: String, commentId: String, remarkVote: RemarkVote): Observable<Boolean> {
+        return operationRepository.pollOperation(remarksDataSource.submitRemarkCommentVote(remarkId, commentId, remarkVote)).flatMap { Observable.just(true) }
+    }
+
+    override fun deleteRemarkCommentVote(remarkId: String, commentId: String): Observable<Boolean> {
+        return operationRepository.pollOperation(remarksDataSource.deleteRemarkCommentVote(remarkId, commentId)).flatMap { Observable.just(true) }
+    }
+
     override fun submitRemarkComment(remarkId: String, remarkComment: RemarkComment): Observable<RemarkComment> {
         var remarkWithUpdatedCommentsObs = operationRepository.pollOperation(remarksDataSource.submitRemarkComment(remarkId, remarkComment))
                 .flatMap { remarksDataSource.loadRemarkPreview(remarkId) }

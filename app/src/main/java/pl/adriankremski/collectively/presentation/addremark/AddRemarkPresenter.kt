@@ -9,9 +9,9 @@ import pl.adriankremski.collectively.data.model.RemarkTag
 import pl.adriankremski.collectively.presentation.mvp.BasePresenter
 import pl.adriankremski.collectively.presentation.rxjava.AppDisposableObserver
 import pl.adriankremski.collectively.usecases.LoadLastKnownLocationUseCase
-import pl.adriankremski.collectively.usecases.LoadRemarkCategoriesUseCase
-import pl.adriankremski.collectively.usecases.LoadRemarkTagsUseCase
-import pl.adriankremski.collectively.usecases.SaveRemarkUseCase
+import pl.adriankremski.collectively.domain.interactor.remark.LoadRemarkCategoriesUseCase
+import pl.adriankremski.collectively.domain.interactor.remark.LoadRemarkTagsUseCase
+import pl.adriankremski.collectively.domain.interactor.remark.SaveRemarkUseCase
 
 class AddRemarkPresenter(val view: AddRemarkMvp.View,
                          val saveRemarkUseCase: SaveRemarkUseCase,

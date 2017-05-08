@@ -12,6 +12,7 @@ import pl.adriankremski.collectively.presentation.remarkpreview.RemarkActivity
 import pl.adriankremski.collectively.presentation.remarkpreview.comments.RemarkCommentsActivity
 import pl.adriankremski.collectively.presentation.settings.SettingsActivity
 import pl.adriankremski.collectively.presentation.statistics.StatisticsActivity
+import pl.adriankremski.collectively.presentation.views.remark.comment.RemarkCommentRowHolder
 import javax.inject.Singleton
 
 @Singleton
@@ -30,4 +31,7 @@ interface AppComponent {
     fun inject(activity: RemarkActivity)
     fun inject(activity: SettingsActivity)
     fun inject(activity: RemarkCommentsActivity)
+
+    //Views
+    fun inject(remarkCommentRowHolder: RemarkCommentRowHolder)
 }

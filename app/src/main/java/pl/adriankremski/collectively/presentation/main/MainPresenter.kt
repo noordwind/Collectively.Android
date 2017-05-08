@@ -3,8 +3,8 @@ package pl.adriankremski.collectively.presentation.main
 import pl.adriankremski.collectively.data.model.Remark
 import pl.adriankremski.collectively.data.model.RemarkCategory
 import pl.adriankremski.collectively.presentation.rxjava.AppDisposableObserver
-import pl.adriankremski.collectively.usecases.LoadRemarkCategoriesUseCase
-import pl.adriankremski.collectively.usecases.LoadRemarksUseCase
+import pl.adriankremski.collectively.domain.interactor.remark.LoadRemarkCategoriesUseCase
+import pl.adriankremski.collectively.domain.interactor.remark.LoadRemarksUseCase
 
 
 class MainPresenter(val view: MainMvp.View, val loadRemarksUseCase: LoadRemarksUseCase, val loadRemarkCategoriesUseCase: LoadRemarkCategoriesUseCase) : MainMvp.Presenter {

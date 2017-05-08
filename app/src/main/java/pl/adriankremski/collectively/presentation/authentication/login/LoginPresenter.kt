@@ -2,7 +2,7 @@ package pl.adriankremski.collectively.presentation.authentication.login
 
 import com.jakewharton.retrofit2.adapter.rxjava2.HttpException
 import pl.adriankremski.collectively.domain.model.LoginCredentials
-import pl.adriankremski.collectively.domain.interactor.LoginUseCase
+import pl.adriankremski.collectively.domain.interactor.authentication.LoginUseCase
 import pl.adriankremski.collectively.presentation.rxjava.AppDisposableObserver
 import pl.adriankremski.collectively.data.repository.util.ConnectivityRepository
 

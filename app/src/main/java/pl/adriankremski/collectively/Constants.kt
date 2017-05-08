@@ -56,6 +56,15 @@ interface Constants {
         companion object {
             const val CATEGORY = "category"
             const val ID = "id"
+            const val USER_ID = "user_id"
+        }
+    }
+
+    interface UseCaseKeys {
+        companion object {
+            const val REMARK_ID = "remark_id"
+            const val COMMENT_ID = "comment_id"
+            const val VOTE = "vote"
         }
     }
 }

@@ -69,4 +69,6 @@
     <string name="add_comment">Add comment</string>
     <string name="comment">Comment</string>
     <string name="error_submit_comment_no_network">Connect to internet to submit new comment</string>
+    <string name="show_comments">Show comments</string>
+    <string name="show_more_comments">More comments</string>
 </resources>

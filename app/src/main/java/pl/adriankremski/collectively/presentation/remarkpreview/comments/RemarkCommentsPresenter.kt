@@ -1,9 +1,9 @@
 package pl.adriankremski.collectively.presentation.remarkpreview
 
 import pl.adriankremski.collectively.data.model.RemarkComment
+import pl.adriankremski.collectively.domain.interactor.remark.LoadRemarkCommentsUseCase
+import pl.adriankremski.collectively.domain.interactor.remark.SubmitRemarkCommentUseCase
 import pl.adriankremski.collectively.presentation.rxjava.AppDisposableObserver
-import pl.adriankremski.collectively.presentation.statistics.SubmitRemarkCommentUseCase
-import pl.adriankremski.collectively.usecases.LoadRemarkCommentsUseCase
 
 
 class RemarkCommentsPresenter(
@@ -26,8 +26,10 @@ class RemarkCommentsPresenter(
             override fun onNext(comments: List<RemarkComment>) {
                 super.onNext(comments)
 
+                comments.forEach { it.remarkId = remarkId }
+
                 if (comments.size > 0) {
-                    view.showLoadedComments(comments)
+                    view.showLoadedComments(comments.filter { !it.removed })
                 } else {
                     view.showEmptyScreen()
                 }
@@ -65,6 +67,7 @@ class RemarkCommentsPresenter(
             override fun onNext(comment: RemarkComment) {
                 super.onNext(comment)
                 view.hideSubmitRemarkCommentProgress()
+                comment.remarkId = remarkId
                 view.showSubmittedComment(comment)
             }
 
@@ -84,8 +87,7 @@ class RemarkCommentsPresenter(
             }
         }
 
-        submitRemarkCommentUseCase.execute(observer, Pair<String, RemarkComment>(remarkId, RemarkComment(null, text, null)))
-
+        submitRemarkCommentUseCase.execute(observer, Pair<String, RemarkComment>(remarkId, RemarkComment(text)))
     }
 
     override fun destroy() {

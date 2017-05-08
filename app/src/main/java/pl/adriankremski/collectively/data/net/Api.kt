@@ -64,15 +64,23 @@ interface Api {
 
     @Headers(Constants.ApiHeader.ACCEPT_HEADER, Constants.ApiHeader.CONTENT_TYPE_HEADER)
     @POST("remarks/{id}/comments")
-    fun submitRemarkComment(@Path("id") remarkId: String, @Body remarkComment: RemarkComment): Observable<Response<Void>>
+    fun submitRemarkComment(@Path("id") remarkId: String, @Body remarkComment: RemarkCommentPostRequest): Observable<Response<Void>>
 
     //PUT
     @Headers(Constants.ApiHeader.ACCEPT_HEADER, Constants.ApiHeader.CONTENT_TYPE_HEADER)
     @PUT("remarks/{id}/votes")
     fun submitRemarkVote(@Path("id") remarkId: String, @Body remarkVote: RemarkVote): Observable<Response<Void>>
 
+    @Headers(Constants.ApiHeader.ACCEPT_HEADER, Constants.ApiHeader.CONTENT_TYPE_HEADER)
+    @PUT("remarks/{remarkId}/comments/{commentId}/votes")
+    fun submitRemarkCommentVote(@Path("remarkId") remarkId: String, @Path("commentId") commentId: String, @Body remarkVote: RemarkVote): Observable<Response<Void>>
+
     //DELETE
     @Headers(Constants.ApiHeader.ACCEPT_HEADER)
     @DELETE("remarks/{id}/votes")
     fun deleteRemarkVote(@Path("id") remarkId: String): Observable<Response<Void>>
+
+    @Headers(Constants.ApiHeader.ACCEPT_HEADER)
+    @DELETE("remarks/{remarkId}/comments/{commentId}/votes")
+    fun deleteRemarkCommentVote(@Path("remarkId") remarkId: String, @Path("commentId") commentId: String): Observable<Response<Void>>
 }

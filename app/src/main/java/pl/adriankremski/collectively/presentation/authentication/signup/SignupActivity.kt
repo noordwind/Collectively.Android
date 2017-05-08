@@ -16,7 +16,7 @@ import pl.adriankremski.collectively.R
 import pl.adriankremski.collectively.TheApp
 import pl.adriankremski.collectively.domain.thread.PostExecutionThread
 import pl.adriankremski.collectively.domain.thread.UseCaseThread
-import pl.adriankremski.collectively.domain.interactor.SignUpUseCase
+import pl.adriankremski.collectively.domain.interactor.authentication.SignUpUseCase
 import pl.adriankremski.collectively.data.repository.AuthenticationRepository
 import pl.adriankremski.collectively.data.repository.util.ConnectivityRepository
 import pl.adriankremski.collectively.data.repository.SessionRepository

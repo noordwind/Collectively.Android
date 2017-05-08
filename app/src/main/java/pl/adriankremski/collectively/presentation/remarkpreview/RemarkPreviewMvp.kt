@@ -17,15 +17,19 @@ interface RemarkPreviewMvp {
         fun showNegativeVotes(negativeVotesCount: Int)
         fun showUserVotedPositively()
         fun showUserVotedNegatively()
-        fun  showComments(comments: List<RemarkComment>)
+        fun showComments(comments: List<RemarkComment>)
         fun showEmptyComments()
+        fun showShowMoreCommentsButton()
+        fun showShowCommentsButton()
     }
 
-    interface Presenter : BasePresenter{
+    interface Presenter : BasePresenter {
         fun loadRemark(id: String)
         fun submitPositiveVote()
         fun deletePositiveVote()
         fun submitNegativeVote()
         fun deleteNegativeVote()
+        fun userId(): String
+        fun remarkId(): String
     }
 }

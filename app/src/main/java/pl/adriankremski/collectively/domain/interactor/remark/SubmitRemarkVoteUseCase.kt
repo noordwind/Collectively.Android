@@ -1,8 +1,9 @@
-package pl.adriankremski.collectively.presentation.statistics
+package pl.adriankremski.collectively.domain.interactor.remark
 
 import io.reactivex.Observable
 import io.reactivex.functions.Function3
 import pl.adriankremski.collectively.data.model.RemarkComment
+import pl.adriankremski.collectively.data.model.RemarkVote
 import pl.adriankremski.collectively.data.repository.ProfileRepository
 import pl.adriankremski.collectively.data.repository.RemarksRepository
 import pl.adriankremski.collectively.domain.interactor.UseCase
@@ -11,13 +12,13 @@ import pl.adriankremski.collectively.domain.thread.PostExecutionThread
 import pl.adriankremski.collectively.domain.thread.UseCaseThread
 import java.util.*
 
-class DeleteRemarkVoteUseCase(val remarksRepository: RemarksRepository,
+class SubmitRemarkVoteUseCase(val remarksRepository: RemarksRepository,
                               val profileRepository: ProfileRepository,
                               useCaseThread: UseCaseThread,
-                              postExecutionThread: PostExecutionThread) : UseCase<RemarkViewData, String>(useCaseThread, postExecutionThread) {
+                              postExecutionThread: PostExecutionThread) : UseCase<RemarkViewData, Pair<String, RemarkVote>>(useCaseThread, postExecutionThread) {
 
-    override fun buildUseCaseObservable(remarkId: String?): Observable<RemarkViewData> {
-        val remarkObs = remarksRepository.deleteRemarkVote(remarkId!!)
+    override fun buildUseCaseObservable(params: Pair<String, RemarkVote>?): Observable<RemarkViewData> {
+        val remarkObs = remarksRepository.submitRemarkVote(params!!.first, params!!.second)
         val userIdObs = profileRepository.loadProfile().flatMap { Observable.just(it.userId) }
 
         return Observable.zip(remarkObs, userIdObs, Observable.just(LinkedList<RemarkComment>()), Function3(::RemarkViewData))

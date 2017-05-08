@@ -11,7 +11,11 @@ interface RemarksDataSource {
     fun loadSavedRemark(remarkResourcePath: String): Observable<RemarkNotFromList>
     fun loadRemarkPreview(id: String): Observable<RemarkPreview>
     fun saveRemark(remark: NewRemark): Observable<Response<Void>>
+    fun submitRemarkComment(remarkId: String, remarkComment: RemarkComment) : Observable<Response<Void>>
+
     fun submitRemarkVote(remarkId: String, remarkVote: RemarkVote) : Observable<Response<Void>>
     fun deleteRemarkVote(remarkId: String) : Observable<Response<Void>>
-    fun submitRemarkComment(remarkId: String, remarkComment: RemarkComment) : Observable<Response<Void>>
+
+    fun submitRemarkCommentVote(remarkId: String, commentId: String, remarkVote: RemarkVote) : Observable<Response<Void>>
+    fun deleteRemarkCommentVote(remarkId: String, commentId: String) : Observable<Response<Void>>
 }

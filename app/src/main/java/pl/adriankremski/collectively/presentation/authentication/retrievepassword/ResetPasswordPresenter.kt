@@ -1,6 +1,6 @@
 package pl.adriankremski.collectively.presentation.authentication.retrievepassword
 
-import pl.adriankremski.collectively.domain.interactor.RetrievePasswordUseCase
+import pl.adriankremski.collectively.domain.interactor.authentication.RetrievePasswordUseCase
 import pl.adriankremski.collectively.presentation.rxjava.AppDisposableObserver
 import pl.adriankremski.collectively.data.repository.util.ConnectivityRepository
 

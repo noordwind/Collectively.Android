@@ -50,8 +50,8 @@ import pl.adriankremski.collectively.presentation.extension.iconOfCategory
 import pl.adriankremski.collectively.presentation.extension.markerBitmapOfCategory
 import pl.adriankremski.collectively.presentation.extension.uppercaseFirstLetter
 import pl.adriankremski.collectively.presentation.views.MainScreenRemarkBottomSheetDialog
-import pl.adriankremski.collectively.usecases.LoadRemarkCategoriesUseCase
-import pl.adriankremski.collectively.usecases.LoadRemarksUseCase
+import pl.adriankremski.collectively.domain.interactor.remark.LoadRemarkCategoriesUseCase
+import pl.adriankremski.collectively.domain.interactor.remark.LoadRemarksUseCase
 import java.util.*
 import javax.inject.Inject
 

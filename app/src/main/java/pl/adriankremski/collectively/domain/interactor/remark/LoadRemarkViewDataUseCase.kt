@@ -1,9 +1,10 @@
-package pl.adriankremski.collectively.domain.interactor
+package pl.adriankremski.collectively.domain.interactor.remark
 
 import io.reactivex.Observable
 import io.reactivex.functions.Function3
 import pl.adriankremski.collectively.data.repository.ProfileRepository
 import pl.adriankremski.collectively.data.repository.RemarksRepository
+import pl.adriankremski.collectively.domain.interactor.UseCase
 import pl.adriankremski.collectively.domain.model.RemarkViewData
 import pl.adriankremski.collectively.domain.thread.PostExecutionThread
 import pl.adriankremski.collectively.domain.thread.UseCaseThread

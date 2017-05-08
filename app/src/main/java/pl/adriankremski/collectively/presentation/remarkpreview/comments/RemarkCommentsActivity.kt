@@ -23,6 +23,8 @@ import pl.adriankremski.collectively.R
 import pl.adriankremski.collectively.TheApp
 import pl.adriankremski.collectively.data.model.RemarkComment
 import pl.adriankremski.collectively.data.repository.RemarksRepository
+import pl.adriankremski.collectively.domain.interactor.remark.LoadRemarkCommentsUseCase
+import pl.adriankremski.collectively.domain.interactor.remark.SubmitRemarkCommentUseCase
 import pl.adriankremski.collectively.domain.thread.PostExecutionThread
 import pl.adriankremski.collectively.domain.thread.UseCaseThread
 import pl.adriankremski.collectively.presentation.BaseActivity
@@ -31,18 +33,17 @@ import pl.adriankremski.collectively.presentation.adapter.delegates.RemarkCommen
 import pl.adriankremski.collectively.presentation.extension.dpToPx
 import pl.adriankremski.collectively.presentation.remarkpreview.RemarkCommentsMvp
 import pl.adriankremski.collectively.presentation.remarkpreview.RemarkCommentsPresenter
-import pl.adriankremski.collectively.presentation.statistics.SubmitRemarkCommentUseCase
 import pl.adriankremski.collectively.presentation.util.RequestErrorDecorator
 import pl.adriankremski.collectively.presentation.util.Switcher
-import pl.adriankremski.collectively.usecases.LoadRemarkCommentsUseCase
 import java.util.*
 import javax.inject.Inject
 
 class RemarkCommentsActivity : BaseActivity(), RemarkCommentsMvp.View {
     companion object {
-        fun start(context: Context, id: String) {
+        fun start(context: Context, id: String, userId: String) {
             val intent = Intent(context, RemarkCommentsActivity::class.java)
             intent.putExtra(Constants.BundleKey.ID, id)
+            intent.putExtra(Constants.BundleKey.USER_ID, userId)
             intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
             context.startActivity(intent)
         }
@@ -63,6 +64,7 @@ class RemarkCommentsActivity : BaseActivity(), RemarkCommentsMvp.View {
     private lateinit var errorDecorator: RequestErrorDecorator
     private lateinit var bottomSheetBehavior: BottomSheetBehavior<View>
     private lateinit var remarkCommentsAdapter: RemarkCommentsAdapter
+    private lateinit var userId: String
     private var submitRemarkProgress: RemarkCommentsLoaderAdapterDelegate.Progress = RemarkCommentsLoaderAdapterDelegate.Progress()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -80,6 +82,7 @@ class RemarkCommentsActivity : BaseActivity(), RemarkCommentsMvp.View {
 
         errorDecorator = RequestErrorDecorator(switcherErrorImage, switcherErrorTitle, switcherErrorFooter)
         val contentViews = LinkedList<View>()
+        contentViews.add(content)
         contentViews.add(remarkCommentsRecycler)
         switcher = Switcher.Builder()
                 .withContentViews(contentViews)
@@ -91,7 +94,7 @@ class RemarkCommentsActivity : BaseActivity(), RemarkCommentsMvp.View {
         switcherErrorButton.setOnClickListener { loadComments() }
 
         bottomSheetBehavior = BottomSheetBehavior.from(bottomSheet);
-        bottomSheetBehavior.peekHeight = 48f.dpToPx()
+        bottomSheetBehavior.peekHeight = 64f.dpToPx()
         bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED;
 
         loadComments()
@@ -108,6 +111,8 @@ class RemarkCommentsActivity : BaseActivity(), RemarkCommentsMvp.View {
             (remarkCommentsRecycler.layoutManager as LinearLayoutManager).scrollToPositionWithOffset(0, 0)
             presenter.submitRemarkComment(commentInput.text.toString())
         }
+
+        userId = intent.getStringExtra(Constants.BundleKey.USER_ID)
     }
 
     private fun loadComments() {
@@ -137,9 +142,9 @@ class RemarkCommentsActivity : BaseActivity(), RemarkCommentsMvp.View {
 
     override fun showLoadedComments(comments: List<RemarkComment>) {
         bottomSheet.visibility = View.VISIBLE
-        switcher.showContentViewsImmediately()
+        switcher.showContentViews()
 
-        remarkCommentsAdapter = RemarkCommentsAdapter().setData(comments).initDelegates()
+        remarkCommentsAdapter = RemarkCommentsAdapter(userId).setData(comments).addSpacing().initDelegates()
         remarkCommentsRecycler.adapter = remarkCommentsAdapter
         remarkCommentsRecycler.layoutManager = LinearLayoutManager(baseContext)
         remarkCommentsAdapter.notifyDataSetChanged()
