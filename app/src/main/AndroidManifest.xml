@@ -56,6 +56,7 @@
         </activity>
 
         <activity android:name=".presentation.remarkpreview.comments.RemarkCommentsActivity"
+            android:windowSoftInputMode="adjustResize"
             android:parentActivityName=".presentation.main.MainActivity"
             >
         </activity>

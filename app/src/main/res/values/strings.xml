@@ -63,7 +63,7 @@
     <string name="logout">Logout</string>
     <string name="comments">Comments</string>
     <string name="remark_comments_screen_title">Comments</string>
-    <string name="empty_screen_no_comments_footer">There are no comments yet. Click to add one</string>
+    <string name="empty_screen_no_comments_footer">There are no comments yet.</string>
     <string name="empty_screen_no_comments_button">Add comment</string>
     <string name="send">Send</string>
     <string name="add_comment">Add comment</string>

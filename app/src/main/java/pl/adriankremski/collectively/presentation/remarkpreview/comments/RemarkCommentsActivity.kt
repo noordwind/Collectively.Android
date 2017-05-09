@@ -113,6 +113,8 @@ class RemarkCommentsActivity : BaseActivity(), RemarkCommentsMvp.View {
         }
 
         userId = intent.getStringExtra(Constants.BundleKey.USER_ID)
+
+        emptyButton.visibility = View.GONE
     }
 
     private fun loadComments() {
