@@ -1,7 +1,7 @@
 package pl.adriankremski.collectively.domain.interactor.remark
 
 import io.reactivex.Observable
-import io.reactivex.functions.Function3
+import io.reactivex.functions.Function4
 import pl.adriankremski.collectively.data.repository.ProfileRepository
 import pl.adriankremski.collectively.data.repository.RemarksRepository
 import pl.adriankremski.collectively.domain.interactor.UseCase
@@ -18,9 +18,10 @@ class LoadRemarkViewDataUseCase(
     override fun buildUseCaseObservable(id: String?): Observable<RemarkViewData> {
         val remarkObs = remarksRepository.loadRemark(id!!)
         val remarkCommentsObs = remarksRepository.loadRemarkComments(id!!)
+        val remarkStatesObs = remarksRepository.loadRemarkStates(id!!)
         val userIdObs = profileRepository.loadProfile().flatMap { Observable.just(it.userId) }
 
-        return Observable.zip(remarkObs, userIdObs, remarkCommentsObs, Function3(::RemarkViewData))
+        return Observable.zip(remarkObs, userIdObs, remarkCommentsObs, remarkStatesObs, Function4(::RemarkViewData))
     }
 }
 

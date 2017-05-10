@@ -17,7 +17,7 @@ interface RemarkCommentsMvp {
         fun showSubmittedComment(remarkComment: RemarkComment)
         fun showSubmitRemarkCommentProgress()
         fun hideSubmitRemarkCommentProgress()
-        fun  showSubmitRemarkCommentServerError(message: String?)
+        fun showSubmitRemarkCommentServerError(message: String?)
         fun showSubmitRemarkCommentNetworkError()
     }
 

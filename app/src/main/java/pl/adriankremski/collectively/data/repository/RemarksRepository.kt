@@ -11,6 +11,7 @@ interface RemarksRepository {
     fun saveRemark(remark: NewRemark): Observable<RemarkNotFromList>
     fun loadRemark(id: String): Observable<RemarkPreview>
     fun loadRemarkComments(id: String): Observable<List<RemarkComment>>
+    fun loadRemarkStates(remarkId: String): Observable<List<RemarkState>>
     fun submitRemarkComment(remarkId: String, remarkComment: RemarkComment) : Observable<RemarkComment>
 
     fun submitRemarkVote(remarkId: String, remarkVote: RemarkVote) : Observable<RemarkPreview>

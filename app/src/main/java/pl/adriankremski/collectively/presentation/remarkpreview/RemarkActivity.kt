@@ -21,23 +21,23 @@ import pl.adriankremski.collectively.R
 import pl.adriankremski.collectively.TheApp
 import pl.adriankremski.collectively.data.model.RemarkComment
 import pl.adriankremski.collectively.data.model.RemarkPreview
+import pl.adriankremski.collectively.data.model.RemarkState
 import pl.adriankremski.collectively.data.model.RemarkTag
 import pl.adriankremski.collectively.data.repository.ProfileRepository
 import pl.adriankremski.collectively.data.repository.RemarksRepository
+import pl.adriankremski.collectively.domain.interactor.remark.votes.DeleteRemarkVoteUseCase
 import pl.adriankremski.collectively.domain.interactor.remark.LoadRemarkViewDataUseCase
+import pl.adriankremski.collectively.domain.interactor.remark.votes.SubmitRemarkVoteUseCase
 import pl.adriankremski.collectively.domain.thread.PostExecutionThread
 import pl.adriankremski.collectively.domain.thread.UseCaseThread
 import pl.adriankremski.collectively.presentation.BaseActivity
 import pl.adriankremski.collectively.presentation.extension.setBackgroundCompat
 import pl.adriankremski.collectively.presentation.extension.textInInt
 import pl.adriankremski.collectively.presentation.extension.uppercaseFirstLetter
-import pl.adriankremski.collectively.domain.interactor.remark.DeleteRemarkVoteUseCase
-import pl.adriankremski.collectively.domain.interactor.remark.SubmitRemarkVoteUseCase
 import pl.adriankremski.collectively.presentation.util.RequestErrorDecorator
 import pl.adriankremski.collectively.presentation.util.Switcher
-import pl.adriankremski.collectively.presentation.views.RemarkCommentView
-import pl.adriankremski.collectively.presentation.views.RemarkTagView
-import pl.adriankremski.collectively.presentation.views.ShowRemarkCommentsButton
+import pl.adriankremski.collectively.presentation.views.*
+import pl.adriankremski.collectively.presentation.views.remark.ShowRemarkCommentsButton
 import java.util.*
 import javax.inject.Inject
 
@@ -235,6 +235,15 @@ class RemarkActivity : BaseActivity(), RemarkPreviewMvp.View {
     override fun showShowMoreCommentsButton() {
         commentsLayout.addView(ShowRemarkCommentsButton(baseContext, getString(R.string.show_more_comments), presenter.userId(), presenter.remarkId()), commentsLayout.childCount)
     }
+
+    override fun showStates(states: List<RemarkState>) {
+        activityLayout.removeAllViews()
+        states.forEach {
+            activityLayout.addView(RemarkStateView(baseContext, it), activityLayout.childCount)
+        }
+        activityLayout.addView(ShowRemarkStatesButton(baseContext, getString(R.string.show_activity), presenter.userId(), presenter.remarkId()), activityLayout.childCount)
+    }
+
 
     override fun showPositiveVotes(positiveVotesCount: Int) {
         positiveVotesCountLabel.text = positiveVotesCount.toString()

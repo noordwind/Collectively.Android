@@ -1,4 +1,4 @@
-package pl.adriankremski.collectively.domain.interactor.remark
+package pl.adriankremski.collectively.domain.interactor.remark.comments
 
 import io.reactivex.Observable
 import pl.adriankremski.collectively.data.model.RemarkComment

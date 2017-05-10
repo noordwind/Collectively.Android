@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<app:android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_margin="@dimen/spacing_small"
+    app:cardElevation="1dp"
+    app:contentPadding="4dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="@dimen/spacing_normal">
+
+        <RelativeLayout
+            android:id="@+id/imageSection"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:orientation="vertical">
+
+            <ImageView
+                android:id="@+id/userImage"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:layout_alignParentTop="true"
+                android:src="@drawable/ic_build_black_24dp" />
+
+            <TextView
+                android:layout_marginLeft="@dimen/spacing_small"
+                android:id="@+id/authorLabel"
+                android:layout_toRightOf="@+id/userImage"
+                android:layout_centerVertical="true"
+                android:textColor="@color/red_dark_2"
+                android:textSize="@dimen/font_small"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:id="@+id/dateLabel"
+                android:layout_centerVertical="true"
+                android:layout_alignParentRight="true"
+                android:fontFamily="@string/font_condensed"
+                android:textColor="@color/font_dark_hint"
+                android:textSize="@dimen/font_small"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/descriptionLabel"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+            android:fontFamily="@string/font_light"
+            android:textColor="@color/font_dark"
+            android:textSize="@dimen/font_normal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
+</app:android.support.v7.widget.CardView>

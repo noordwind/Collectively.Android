@@ -3,6 +3,7 @@ package pl.adriankremski.collectively.presentation.remarkpreview
 import io.reactivex.disposables.Disposable
 import pl.adriankremski.collectively.data.model.RemarkComment
 import pl.adriankremski.collectively.data.model.RemarkPreview
+import pl.adriankremski.collectively.data.model.RemarkState
 import pl.adriankremski.collectively.presentation.mvp.BasePresenter
 
 interface RemarkPreviewMvp {
@@ -21,6 +22,8 @@ interface RemarkPreviewMvp {
         fun showEmptyComments()
         fun showShowMoreCommentsButton()
         fun showShowCommentsButton()
+
+        fun showStates(subList: List<RemarkState>)
     }
 
     interface Presenter : BasePresenter {

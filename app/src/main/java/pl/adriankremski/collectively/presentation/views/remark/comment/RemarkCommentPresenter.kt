@@ -2,8 +2,8 @@ package pl.adriankremski.collectively.presentation.views.remark.comment
 
 import pl.adriankremski.collectively.Constants
 import pl.adriankremski.collectively.data.model.RemarkVote
-import pl.adriankremski.collectively.domain.interactor.remark.DeleteRemarkCommentVoteUseCase
-import pl.adriankremski.collectively.domain.interactor.remark.SubmitRemarkCommentVoteUseCase
+import pl.adriankremski.collectively.domain.interactor.remark.comments.DeleteRemarkCommentVoteUseCase
+import pl.adriankremski.collectively.domain.interactor.remark.comments.SubmitRemarkCommentVoteUseCase
 import pl.adriankremski.collectively.presentation.rxjava.AppDisposableObserver
 import pl.adriankremski.collectively.presentation.util.CollectionUtils
 

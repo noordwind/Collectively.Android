@@ -1,8 +1,8 @@
 package pl.adriankremski.collectively.presentation.remarkpreview
 
 import pl.adriankremski.collectively.data.model.RemarkComment
-import pl.adriankremski.collectively.domain.interactor.remark.LoadRemarkCommentsUseCase
-import pl.adriankremski.collectively.domain.interactor.remark.SubmitRemarkCommentUseCase
+import pl.adriankremski.collectively.domain.interactor.remark.comments.LoadRemarkCommentsUseCase
+import pl.adriankremski.collectively.domain.interactor.remark.comments.SubmitRemarkCommentUseCase
 import pl.adriankremski.collectively.presentation.rxjava.AppDisposableObserver
 
 

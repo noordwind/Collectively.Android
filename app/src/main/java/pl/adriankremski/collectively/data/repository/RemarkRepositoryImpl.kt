@@ -19,6 +19,14 @@ class RemarkRepositoryImpl(val remarkCategoriesCache: RemarkCategoriesCache,
                 }
     }
 
+    override fun loadRemarkStates(id: String): Observable<List<RemarkState>> {
+        return remarksDataSource.loadRemarkPreview(id)
+                .flatMap {
+                    var states = it.states.sortedByDescending { it.creationDate() }
+                    Observable.just(states)
+                }
+    }
+
     override fun loadRemarkCategories(): Observable<List<RemarkCategory>> {
         if (remarkCategoriesCache.isExpired()) {
             return remarksDataSource.loadRemarkCategories().doOnNext { remarkCategoriesCache.putData(it) }

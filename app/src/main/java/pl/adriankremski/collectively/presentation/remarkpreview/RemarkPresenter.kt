@@ -1,9 +1,9 @@
 package pl.adriankremski.collectively.presentation.remarkpreview
 
 import pl.adriankremski.collectively.data.model.RemarkVote
-import pl.adriankremski.collectively.domain.interactor.remark.DeleteRemarkVoteUseCase
+import pl.adriankremski.collectively.domain.interactor.remark.votes.DeleteRemarkVoteUseCase
 import pl.adriankremski.collectively.domain.interactor.remark.LoadRemarkViewDataUseCase
-import pl.adriankremski.collectively.domain.interactor.remark.SubmitRemarkVoteUseCase
+import pl.adriankremski.collectively.domain.interactor.remark.votes.SubmitRemarkVoteUseCase
 import pl.adriankremski.collectively.domain.model.RemarkViewData
 import pl.adriankremski.collectively.presentation.rxjava.AppDisposableObserver
 
@@ -50,6 +50,14 @@ class RemarkPresenter(val view: RemarkPreviewMvp.View, val loadRemarkUseCase: Lo
                     }
                 } else {
                     view.showEmptyComments()
+                }
+
+                var states = remarkViewData.states.filter { !it.removed }
+
+                if (states.size > 3) {
+                    view.showStates(states.subList(0, 3))
+                } else {
+                    view.showStates(states)
                 }
             }
 

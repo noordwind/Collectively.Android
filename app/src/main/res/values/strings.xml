@@ -59,16 +59,25 @@
     <string name="description">Description</string>
     <string name="error_loading_remark_no_network">Connect to internet to check the remark</string>
     <string name="error_loading_remark_comments_no_network">Connect to internet to read the comments</string>
+    <string name="error_loading_remark_states_no_network">Connect to internet to see activity with the remark</string>
     <string name="settings_screen_title">Settings</string>
     <string name="logout">Logout</string>
     <string name="comments">Comments</string>
     <string name="remark_comments_screen_title">Comments</string>
+    <string name="remark_states_screen_title">Remark activity</string>
     <string name="empty_screen_no_comments_footer">There are no comments yet.</string>
     <string name="empty_screen_no_comments_button">Add comment</string>
     <string name="send">Send</string>
-    <string name="add_comment">Add comment</string>
     <string name="comment">Comment</string>
     <string name="error_submit_comment_no_network">Connect to internet to submit new comment</string>
+
+    <string name="add_comment">Add comment</string>
     <string name="show_comments">Show comments</string>
     <string name="show_more_comments">More comments</string>
+    <string name="show_activity">Act!</string>
+    <string name="activity_with_remark">Activity</string>
+    <string name="resolve">Resolve</string>
+    <string name="delete">Delete</string>
+    <string name="act">Act!</string>
+    <string name="your_activity">Your activity</string>
 </resources>

@@ -12,8 +12,8 @@ import pl.adriankremski.collectively.R
 import pl.adriankremski.collectively.TheApp
 import pl.adriankremski.collectively.data.model.RemarkComment
 import pl.adriankremski.collectively.data.repository.RemarksRepository
-import pl.adriankremski.collectively.domain.interactor.remark.DeleteRemarkCommentVoteUseCase
-import pl.adriankremski.collectively.domain.interactor.remark.SubmitRemarkCommentVoteUseCase
+import pl.adriankremski.collectively.domain.interactor.remark.comments.DeleteRemarkCommentVoteUseCase
+import pl.adriankremski.collectively.domain.interactor.remark.comments.SubmitRemarkCommentVoteUseCase
 import pl.adriankremski.collectively.domain.thread.PostExecutionThread
 import pl.adriankremski.collectively.domain.thread.UseCaseThread
 import pl.adriankremski.collectively.presentation.extension.textInInt
