@@ -83,4 +83,8 @@
     <string name="remarks">Remarks</string>
     <string name="top_reportes">Top reporters</string>
     <string name="top_resolvers">Top resolvers</string>
+    <string name="profile_resolved_remarks">Resolved remarks</string>
+    <string name="profile_reported_remarks">Reported remarks</string>
+    <string name="your_remarks">Your remarks</string>
+    <string name="favorite_remarks">Favorite remarks</string>
 </resources>
