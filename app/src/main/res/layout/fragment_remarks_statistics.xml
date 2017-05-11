@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/content"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@string/font_condensed"
+            android:padding="@dimen/spacing_normal"
+            android:text="@string/statistics_remarks_by_status"
+            android:textColor="@color/red_dark_2"
+            android:textSize="@dimen/font_medium"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/remarksByStatusLabel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="left"
+            android:layout_marginBottom="@dimen/spacing_normal"
+            android:fontFamily="@string/font_light"
+            android:gravity="left"
+            android:inputType="textNoSuggestions"
+            android:paddingLeft="@dimen/spacing_normal"
+            android:textColor="@color/font_dark"
+            android:textSize="@dimen/font_normal" />
+
+        <pl.adriankremski.collectively.presentation.views.chart.RemarksByStatusChart
+            android:id="@+id/remarksByStatusChart"
+            android:layout_width="160dp"
+            android:layout_height="160dp"
+            android:layout_gravity="center_horizontal" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_normal"
+            android:fontFamily="@string/font_condensed"
+            android:padding="@dimen/spacing_normal"
+            android:text="@string/statistics_remarks_by_category"
+            android:textColor="@color/red_dark_2"
+            android:textSize="@dimen/font_medium"
+            android:textStyle="bold" />
+
+        <pl.adriankremski.collectively.presentation.views.chart.RemarksByCategoryChart
+            android:id="@+id/remarksByCategoryChart"
+            android:layout_width="match_parent"
+            android:layout_height="160dp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_normal"
+            android:fontFamily="@string/font_condensed"
+            android:padding="@dimen/spacing_normal"
+            android:text="@string/statistics_remarks_by_tag"
+            android:textColor="@color/red_dark_2"
+            android:textSize="@dimen/font_medium"
+            android:textStyle="bold" />
+
+        <pl.adriankremski.collectively.presentation.views.chart.RemarksByTagChart
+            android:id="@+id/remarksByTagChart"
+            android:layout_marginBottom="70dp"
+            android:layout_width="match_parent"
+            android:layout_height="160dp" />
+
+    </LinearLayout>
+</ScrollView>

@@ -1,9 +1,8 @@
 package pl.adriankremski.collectively.data.repository
 
 import io.reactivex.Observable
-import io.reactivex.functions.BiFunction
+import io.reactivex.functions.Function3
 import pl.adriankremski.collectively.data.datasource.StatisticsDataSource
-import pl.adriankremski.collectively.data.model.StatisticEntry
 import pl.adriankremski.collectively.data.model.Statistics
 
 class StatisticsRepositoryImpl(val statisticsDataSource: StatisticsDataSource) : StatisticsRepository {
@@ -11,8 +10,8 @@ class StatisticsRepositoryImpl(val statisticsDataSource: StatisticsDataSource) :
     override fun loadStatistics(): Observable<Statistics> {
         val catStatisticsObs = statisticsDataSource.categoryStatistics()
         val tagStatisticsObs = statisticsDataSource.tagStatistics()
-        return Observable.zip(catStatisticsObs, tagStatisticsObs,
-                BiFunction<List<StatisticEntry>, List<StatisticEntry>, Statistics>(::Statistics))
+        val userStatisticsObs = statisticsDataSource.userStatistics()
+        return Observable.zip(catStatisticsObs, tagStatisticsObs, userStatisticsObs, Function3(::Statistics))
     }
 }
 

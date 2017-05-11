@@ -38,6 +38,10 @@ interface Api {
     fun loadTagStatistics(): Observable<List<StatisticEntry>>
 
     @Headers(Constants.ApiHeader.ACCEPT_HEADER, Constants.ApiHeader.CONTENT_TYPE_HEADER)
+    @GET("statistics/users")
+    fun loadUsersStatistics(): Observable<List<UserStatisticsEntry>>
+
+    @Headers(Constants.ApiHeader.ACCEPT_HEADER, Constants.ApiHeader.CONTENT_TYPE_HEADER)
     @GET("account")
     fun loadProfile(): Observable<Profile>
 

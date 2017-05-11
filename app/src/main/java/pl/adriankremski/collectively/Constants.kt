@@ -57,6 +57,7 @@ interface Constants {
             const val CATEGORY = "category"
             const val ID = "id"
             const val USER_ID = "user_id"
+            const val STATISTICS = "statistics"
         }
     }
 

@@ -1,5 +1,8 @@
 package pl.adriankremski.collectively.data.model
 
-class Statistics(val categoryStatistics: List<StatisticEntry>, val tagStatistics: List<StatisticEntry>) {
-}
+import java.io.Serializable
+
+class Statistics(val categoryStatistics: List<StatisticEntry>,
+                 val tagStatistics: List<StatisticEntry>,
+                 val usersStatistics: List<UserStatisticsEntry>) : Serializable
 

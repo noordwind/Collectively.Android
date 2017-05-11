@@ -48,6 +48,23 @@
         <item name="android:textSize">@dimen/font_large</item>
     </style>
 
+    <style name="AppTabLayout" parent="Widget.Design.TabLayout">
+        <item name="android:background">@color/red_dark_2</item>
+        <item name="tabIndicatorColor">#FFF</item>
+        <item name="tabIndicatorHeight">4dp</item>
+        <item name="tabTextAppearance">@style/AppTabTextAppearance</item>
+        <item name="tabPaddingStart">12dp</item>
+        <item name="tabPaddingEnd">12dp</item>
+        <item name="tabSelectedTextColor">@color/font_light</item>
+    </style>
+
+    <style name="AppTabTextAppearance" parent="TextAppearance.Design.Tab">
+        <item name="android:textSize">@dimen/font_small</item>
+        <item name="android:fontFamily">@string/font_normal</item>
+        <item name="android:textColor">@drawable/selector_material_tab</item>
+        <item name="textAllCaps">true</item>
+    </style>
+
     <!--<style name="MainButton" parent="Widget.AppCompat.Button">-->
         <!--<item name="android:background">@drawable/button_selector</item>-->
         <!--<item name="android:textColor">@color/button_font</item>-->

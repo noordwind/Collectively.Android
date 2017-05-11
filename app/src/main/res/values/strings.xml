@@ -80,4 +80,7 @@
     <string name="delete">Delete</string>
     <string name="act">Act!</string>
     <string name="your_activity">Your activity</string>
+    <string name="remarks">Remarks</string>
+    <string name="top_reportes">Top reporters</string>
+    <string name="top_resolvers">Top resolvers</string>
 </resources>

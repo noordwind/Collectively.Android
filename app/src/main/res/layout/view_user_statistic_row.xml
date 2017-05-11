@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_margin="@dimen/spacing_small"
+    app:cardElevation="1dp"
+    app:contentPadding="4dp">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:orientation="horizontal"
+        android:padding="@dimen/spacing_normal">
+
+        <RelativeLayout
+            android:id="@+id/imageSection"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:orientation="vertical">
+
+            <ImageView
+                android:id="@+id/userImage"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:layout_alignParentTop="true"
+                android:background="@drawable/circle_shape"
+                android:src="@drawable/ic_person_grey_48dp" />
+
+            <TextView
+                android:layout_marginLeft="@dimen/spacing_small"
+                android:id="@+id/authorLabel"
+                android:layout_toRightOf="@+id/userImage"
+                android:layout_centerVertical="true"
+                android:textColor="@color/red_dark_2"
+                android:textSize="@dimen/font_medium"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/statisticLabel"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/spacing_normal"
+            android:layout_alignParentRight="true"
+            android:fontFamily="@string/font_normal"
+            android:textColor="@color/red_dark_2"
+            android:textStyle="bold"
+            android:gravity="center"
+            android:textSize="@dimen/font_large"
+            android:text="10"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent" />
+
+    </RelativeLayout>
+</LinearLayout>
