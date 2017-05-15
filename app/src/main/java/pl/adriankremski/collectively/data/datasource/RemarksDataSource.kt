@@ -18,4 +18,6 @@ interface RemarksDataSource {
 
     fun submitRemarkCommentVote(remarkId: String, commentId: String, remarkVote: RemarkVote) : Observable<Response<Void>>
     fun deleteRemarkCommentVote(remarkId: String, commentId: String) : Observable<Response<Void>>
+    fun loadUserRemarks(userId: String): Observable<List<Remark>>
+    fun loadUserFavoriteRemarks(userName: String): Observable<List<Remark>>
 }

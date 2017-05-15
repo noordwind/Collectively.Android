@@ -6,6 +6,9 @@ import pl.adriankremski.collectively.data.net.Api
 import retrofit2.Response
 
 class RemarksDataSourceImpl(val api: Api) : RemarksDataSource {
+    override fun loadUserRemarks(userId: String): Observable<List<Remark>> = api.userRemarks(userId, 1000)
+
+    override fun loadUserFavoriteRemarks(userName: String): Observable<List<Remark>> = api.userFavoriteRemarks(userName, 1000)
 
     override fun loadSavedRemark(remarkResourcePath: String): Observable<RemarkNotFromList> = api.createdRemark(remarkResourcePath)
 

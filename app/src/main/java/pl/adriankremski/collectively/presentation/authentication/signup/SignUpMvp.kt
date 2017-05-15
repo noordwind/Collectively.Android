@@ -10,6 +10,9 @@ interface SignUpMvp {
         fun showNetworkError()
         fun showRegisterSuccess()
         fun showRegisterServerError(message: String?)
+        fun showInvalidPasswordError()
+        fun showInvalidEmailError()
+        fun showInvalidNameError()
     }
 
     interface Presenter : BasePresenter{

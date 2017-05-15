@@ -11,6 +11,14 @@ class RemarkRepositoryImpl(val remarkCategoriesCache: RemarkCategoriesCache,
                            val remarksDataSource: RemarksDataSource,
                            val profileRepository: ProfileRepository,
                            val operationRepository: OperationRepository) : RemarksRepository {
+    override fun loadUserRemarks(): Observable<List<Remark>> {
+        return profileRepository.loadProfile().flatMap { remarksDataSource.loadUserRemarks(it.userId) }
+    }
+
+    override fun loadUserFavoriteRemarks(): Observable<List<Remark>>  {
+        return profileRepository.loadProfile().flatMap { remarksDataSource.loadUserFavoriteRemarks(it.userId) }
+    }
+
     override fun loadRemarkComments(id: String): Observable<List<RemarkComment>> {
         return remarksDataSource.loadRemarkPreview(id)
                 .flatMap {

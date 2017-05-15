@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">Collectively</string>
     <string name="login_screen_title">Collectively - Logowanie</string>
-    <string name="want_new_account">Nie posiadasz konta?</string>
+    <string name="want_new_account">Nowy użytkownik?</string>
     <string name="font_normal" translatable="false">sans-serif</string>
     <string name="font_light" translatable="false">sans-serif-light</string>
     <string name="font_condensed" translatable="false">sans-serif-condensed</string>
@@ -60,6 +60,7 @@
     <string name="error_loading_remark_no_network">Connect to internet to check the remark</string>
     <string name="error_loading_remark_comments_no_network">Connect to internet to read the comments</string>
     <string name="error_loading_remark_states_no_network">Connect to internet to see activity with the remark</string>
+    <string name="error_loading_user_remarks_no_network">Connect to internet to check your remarks</string>
     <string name="settings_screen_title">Settings</string>
     <string name="logout">Logout</string>
     <string name="comments">Comments</string>
@@ -87,4 +88,13 @@
     <string name="profile_reported_remarks">Reported remarks</string>
     <string name="your_remarks">Your remarks</string>
     <string name="favorite_remarks">Favorite remarks</string>
+    <string name="user_created_remarks_screen_title">Your remarks</string>
+    <string name="user_favorite_remarks_screen_title">Favorite remarks</string>
+    <string name="facebook_login">Facebook</string>
+    <string name="facebook_app_id">1827531987461765</string>
+    <string name="error_login_general">Could not login. Please try again</string>
+    <string name="error_invalid_email">Invalid email</string>
+    <string name="error_invalid_password">Password must have at least 4 characters</string>
+    <string name="error_invalid_username">Username can not be empty</string>
+    <string name="password_reset_success">Check your email for link reseting your password</string>
 </resources>

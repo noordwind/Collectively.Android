@@ -1,12 +1,21 @@
 package pl.adriankremski.collectively.presentation.authentication.login
 
 import com.jakewharton.retrofit2.adapter.rxjava2.HttpException
-import pl.adriankremski.collectively.domain.model.LoginCredentials
-import pl.adriankremski.collectively.domain.interactor.authentication.LoginUseCase
-import pl.adriankremski.collectively.presentation.rxjava.AppDisposableObserver
+import pl.adriankremski.collectively.data.model.Optional
 import pl.adriankremski.collectively.data.repository.util.ConnectivityRepository
+import pl.adriankremski.collectively.domain.interactor.GetFacebookTokenUseCase
+import pl.adriankremski.collectively.domain.interactor.authentication.FacebookLoginUseCase
+import pl.adriankremski.collectively.domain.interactor.authentication.LoginUseCase
+import pl.adriankremski.collectively.domain.model.LoginCredentials
+import pl.adriankremski.collectively.presentation.extension.isValidEmail
+import pl.adriankremski.collectively.presentation.extension.isValidPassword
+import pl.adriankremski.collectively.presentation.rxjava.AppDisposableObserver
 
-class LoginPresenter(val view: LoginMvp.View, val loginUseCase: LoginUseCase, val connectivityRepository: ConnectivityRepository) : LoginMvp.Presenter {
+class LoginPresenter(val view: LoginMvp.View,
+                     val loginUseCase: LoginUseCase,
+                     val loginWithFacebookUseCase: FacebookLoginUseCase,
+                     val getFacebookTokenUseCase: GetFacebookTokenUseCase,
+                     val connectivityRepository: ConnectivityRepository) : LoginMvp.Presenter {
 
     override fun onCreate() {
         if (loginUseCase.isLoggedIn()) {
@@ -15,7 +24,60 @@ class LoginPresenter(val view: LoginMvp.View, val loginUseCase: LoginUseCase, va
         }
     }
 
+    override fun facebookLoginClicked() {
+        var observer = object : AppDisposableObserver<Optional<String>>() {
+
+            override fun onNext(token: Optional<String>) {
+                super.onNext(token)
+
+                if (token.isPresent) {
+                    facebookLogin(token.get()!!)
+                } else {
+                    view.loginWithFacebookNoToken()
+                }
+            }
+        }
+
+        getFacebookTokenUseCase.execute(observer)
+    }
+
+    override fun facebookLogin(token: String) {
+        view.showLoading()
+
+        var observer = object : AppDisposableObserver<String>(connectivityRepository) {
+
+            override fun onNext(token: String) {
+                super.onNext(token)
+                view.hideLoading()
+                view.showLoginSuccess()
+            }
+
+            override fun onError(e: Throwable) {
+                super.onError(e)
+                view.showLoginError()
+                view.hideLoading()
+            }
+
+            override fun onNetworkError() {
+                super.onNetworkError()
+                view.showNetworkError()
+            }
+        }
+
+        loginWithFacebookUseCase.execute(observer, token)
+    }
+
     override fun loginWithEmail(email: String, password: String) {
+        if (!email.isValidEmail()) {
+            view.showInvalidEmailError()
+            return
+        }
+
+        if (!password.isValidPassword()) {
+            view.showInvalidPasswordError()
+            return
+        }
+
         view.showLoading()
 
         var observer = object : AppDisposableObserver<String>(connectivityRepository) {
@@ -45,5 +107,7 @@ class LoginPresenter(val view: LoginMvp.View, val loginUseCase: LoginUseCase, va
 
     override fun destroy() {
         loginUseCase.dispose()
+        getFacebookTokenUseCase.dispose()
+        loginWithFacebookUseCase.dispose()
     }
 }

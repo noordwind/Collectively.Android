@@ -14,11 +14,11 @@ import kotlinx.android.synthetic.main.activity_reset_password.*
 import kotlinx.android.synthetic.main.view_login_progress.*
 import pl.adriankremski.collectively.R
 import pl.adriankremski.collectively.TheApp
-import pl.adriankremski.collectively.domain.thread.PostExecutionThread
-import pl.adriankremski.collectively.domain.thread.UseCaseThread
-import pl.adriankremski.collectively.domain.interactor.authentication.RetrievePasswordUseCase
 import pl.adriankremski.collectively.data.repository.AuthenticationRepository
 import pl.adriankremski.collectively.data.repository.util.ConnectivityRepository
+import pl.adriankremski.collectively.domain.interactor.authentication.RetrievePasswordUseCase
+import pl.adriankremski.collectively.domain.thread.PostExecutionThread
+import pl.adriankremski.collectively.domain.thread.UseCaseThread
 import pl.adriankremski.collectively.presentation.extension.setGone
 import pl.adriankremski.collectively.presentation.extension.setVisible
 import javax.inject.Inject
@@ -63,6 +63,8 @@ class ResetPasswordActivity : AppCompatActivity(), ResetPasswordMvp.View {
         mResetPasswordButton.setOnClickListener { presenter.resetPassword(emailInput.text.toString()) }
     }
 
+    override fun showInvalidEmailError() = Snackbar.make(findViewById(android.R.id.content), getString(R.string.error_invalid_email), Snackbar.LENGTH_LONG).show();
+
     override fun showLoading() {
         progressView.setVisible()
     }
@@ -73,7 +75,7 @@ class ResetPasswordActivity : AppCompatActivity(), ResetPasswordMvp.View {
 
     override fun showNetworkError() = Snackbar.make(findViewById(android.R.id.content), getString(R.string.error_no_network), Snackbar.LENGTH_LONG).show()
 
-    override fun showResetPasswordSuccess() = Snackbar.make(findViewById(android.R.id.content), getString(R.string.error_no_network), Snackbar.LENGTH_LONG).show()
+    override fun showResetPasswordSuccess() = Snackbar.make(findViewById(android.R.id.content), getString(R.string.password_reset_success), Snackbar.LENGTH_LONG).show()
 
     override fun showResetPasswordServerError(message: String?) {
         showResetPasswordServerError(message!!)

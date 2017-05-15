@@ -8,6 +8,7 @@ import pl.adriankremski.collectively.presentation.authentication.retrievepasswor
 import pl.adriankremski.collectively.presentation.authentication.signup.SignUpActivity
 import pl.adriankremski.collectively.presentation.main.MainActivity
 import pl.adriankremski.collectively.presentation.profile.ProfileActivity
+import pl.adriankremski.collectively.presentation.profile.remarks.user.UserRemarksActivity
 import pl.adriankremski.collectively.presentation.remarkpreview.RemarkActivity
 import pl.adriankremski.collectively.presentation.remarkpreview.activity.RemarkStatesActivity
 import pl.adriankremski.collectively.presentation.remarkpreview.comments.RemarkCommentsActivity
@@ -33,6 +34,7 @@ interface AppComponent {
     fun inject(activity: SettingsActivity)
     fun inject(activity: RemarkCommentsActivity)
     fun inject(activity: RemarkStatesActivity)
+    fun inject(activity: UserRemarksActivity)
 
     //Views
     fun inject(remarkCommentRowHolder: RemarkCommentRowHolder)

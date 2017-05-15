@@ -3,10 +3,16 @@ package pl.adriankremski.collectively.presentation.authentication.retrievepasswo
 import pl.adriankremski.collectively.domain.interactor.authentication.RetrievePasswordUseCase
 import pl.adriankremski.collectively.presentation.rxjava.AppDisposableObserver
 import pl.adriankremski.collectively.data.repository.util.ConnectivityRepository
+import pl.adriankremski.collectively.presentation.extension.isValidEmail
 
 class ResetPasswordPresenter(val view: ResetPasswordMvp.View, val useCase: RetrievePasswordUseCase, val connectivityRepository: ConnectivityRepository) : ResetPasswordMvp.Presenter {
 
     override fun resetPassword(email: String) {
+        if (!email.isValidEmail()) {
+            view.showInvalidEmailError()
+            return
+        }
+
         view.showLoading()
 
         var observer = object : AppDisposableObserver<Boolean>(connectivityRepository) {

@@ -4,6 +4,7 @@ import io.reactivex.Observable
 import pl.adriankremski.collectively.Constants
 import pl.adriankremski.collectively.data.datasource.AuthDataSource
 import pl.adriankremski.collectively.data.model.AuthRequest
+import pl.adriankremski.collectively.data.model.FacebookAuthRequest
 import pl.adriankremski.collectively.data.model.ResetPasswordRequest
 import pl.adriankremski.collectively.data.model.SignUpRequest
 import pl.adriankremski.collectively.data.repository.util.OperationRepository
@@ -16,6 +17,14 @@ class AuthenticationRepositoryImpl(val authDataSource: AuthDataSource,
         val authRequest = AuthRequest(email, password, Constants.AuthProvider.COOLECTOR)
 
         return authDataSource.login(authRequest)
+                .flatMap { authResponse -> Observable.just(authResponse.token) }
+                .doOnNext { sessionRepository.sessionToken = it }
+    }
+
+    override fun loginWithFacebookToken(token: String): Observable<String> {
+        val authRequest = FacebookAuthRequest(token, Constants.AuthProvider.FACEBOOK)
+
+        return authDataSource.facebookLogin(authRequest)
                 .flatMap { authResponse -> Observable.just(authResponse.token) }
                 .doOnNext { sessionRepository.sessionToken = it }
     }

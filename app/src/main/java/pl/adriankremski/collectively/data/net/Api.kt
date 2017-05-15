@@ -18,6 +18,14 @@ interface Api {
     fun remarks(@Query("latest") latest: Boolean, @Query("orderBy") orderBy: String, @Query("sortorder") sortorder: String, @Query("results") results: Int): Observable<List<Remark>>
 
     @Headers(Constants.ApiHeader.ACCEPT_HEADER, Constants.ApiHeader.CONTENT_TYPE_HEADER)
+    @GET("remarks")
+    fun userRemarks(@Query("authorId") authorId: String, @Query("results") results: Int): Observable<List<Remark>>
+
+    @Headers(Constants.ApiHeader.ACCEPT_HEADER, Constants.ApiHeader.CONTENT_TYPE_HEADER)
+    @GET("remarks")
+    fun userFavoriteRemarks(@Query("userFavorites") userId: String, @Query("results") results: Int): Observable<List<Remark>>
+
+    @Headers(Constants.ApiHeader.ACCEPT_HEADER, Constants.ApiHeader.CONTENT_TYPE_HEADER)
     @GET("remarks/tags")
     fun remarkTags(): Observable<List<RemarkTag>>
 
@@ -53,6 +61,10 @@ interface Api {
     @Headers(Constants.ApiHeader.ACCEPT_HEADER, Constants.ApiHeader.CONTENT_TYPE_HEADER)
     @POST("sign-in")
     fun login(@Body authRequest: AuthRequest): Observable<AuthResponse>
+
+    @Headers(Constants.ApiHeader.ACCEPT_HEADER, Constants.ApiHeader.CONTENT_TYPE_HEADER)
+    @POST("sign-in")
+    fun facebookLogin(@Body authRequest: FacebookAuthRequest): Observable<AuthResponse>
 
     @Headers(Constants.ApiHeader.ACCEPT_HEADER, Constants.ApiHeader.CONTENT_TYPE_HEADER)
     @POST("sign-up")

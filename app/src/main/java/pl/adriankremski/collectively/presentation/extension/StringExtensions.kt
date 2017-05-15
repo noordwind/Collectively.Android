@@ -1,10 +1,18 @@
 package pl.adriankremski.collectively.presentation.extension
 
+import android.text.TextUtils
+import android.util.Patterns
 import com.google.android.gms.maps.model.BitmapDescriptor
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import pl.adriankremski.collectively.Constants
 import pl.adriankremski.collectively.R
 
+
+fun String.isValidEmail(): Boolean = !TextUtils.isEmpty(this) && Patterns.EMAIL_ADDRESS.matcher(this).matches()
+
+fun String.isValidPassword(): Boolean = !TextUtils.isEmpty(this) && this.length >= 4
+
+fun String.isValidName(): Boolean = !TextUtils.isEmpty(this)
 
 fun String.uppercaseFirstLetter(): String {
     if (this.length == 0) {

@@ -17,14 +17,16 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
-        <activity android:name=".presentation.authentication.login.LoginActivity">
+        <activity android:name=".presentation.authentication.login.LoginActivity"
+            android:theme="@style/LoginTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
 
-        <activity android:name=".presentation.authentication.signup.SignUpActivity">
+        <activity android:name=".presentation.authentication.signup.SignUpActivity"
+            android:theme="@style/LoginTheme">
         </activity>
 
         <activity android:name=".presentation.main.MainActivity">
@@ -61,6 +63,12 @@
             >
         </activity>
 
+        <activity android:name=".presentation.profile.remarks.user.UserRemarksActivity"
+            android:windowSoftInputMode="adjustResize"
+            android:parentActivityName=".presentation.profile.ProfileActivity"
+            >
+        </activity>
+
         <activity android:name=".presentation.remarkpreview.activity.RemarkStatesActivity"
             android:windowSoftInputMode="adjustResize"
             android:parentActivityName=".presentation.main.MainActivity"
@@ -69,6 +77,17 @@
 
         <activity android:name=".presentation.authentication.retrievepassword.ResetPasswordActivity">
         </activity>
+
+        <activity
+            android:name="com.facebook.FacebookActivity"
+            android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+
+        <meta-data
+            android:name="com.facebook.sdk.ApplicationId"
+            android:value="@string/facebook_app_id"></meta-data>
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"

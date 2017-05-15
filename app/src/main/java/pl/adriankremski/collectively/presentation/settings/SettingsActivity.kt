@@ -9,6 +9,7 @@ import android.text.SpannableString
 import android.text.style.RelativeSizeSpan
 import android.text.style.StyleSpan
 import android.view.MenuItem
+import com.facebook.AccessToken
 import kotlinx.android.synthetic.main.activity_settings.*
 import kotlinx.android.synthetic.main.view_toolbar_with_title.*
 import pl.adriankremski.collectively.R
@@ -43,6 +44,7 @@ class SettingsActivity : BaseActivity() {
 
         logoutButton.setOnClickListener {
             session.clear()
+            AccessToken.setCurrentAccessToken(null)
 
             val intent = Intent(baseContext, LoginActivity::class.java)
             intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK

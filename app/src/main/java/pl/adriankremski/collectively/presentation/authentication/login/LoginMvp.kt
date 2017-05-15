@@ -12,10 +12,17 @@ interface LoginMvp {
         fun showMainScreen()
         fun closeScreen()
         fun showInvalidUserError()
+        fun loginWithFacebookNoToken()
+        fun loginWithFacebookToken(token: String)
+        fun showLoginError()
+        fun showInvalidEmailError()
+        fun showInvalidPasswordError()
     }
 
     interface Presenter : BasePresenter{
         fun onCreate()
         fun loginWithEmail(email: String, password: String)
+        fun facebookLoginClicked()
+        fun facebookLogin(token: String)
     }
 }

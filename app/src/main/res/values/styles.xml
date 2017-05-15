@@ -12,6 +12,13 @@
         <item name="windowNoTitle">true</item>
     </style>
 
+    <style name="LoginTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="colorAccent">@color/red_light</item>
+        <item name="windowActionBar">false</item>
+        <item name="android:windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
     <style name="Toolbar" parent="Widget.AppCompat.Toolbar">
         <item name="android:background">@color/red_dark_2</item>
         <item name="android:textSize">24sp</item>

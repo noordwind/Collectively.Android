@@ -26,6 +26,7 @@ import pl.adriankremski.collectively.data.repository.ProfileRepository
 import pl.adriankremski.collectively.domain.thread.PostExecutionThread
 import pl.adriankremski.collectively.domain.thread.UseCaseThread
 import pl.adriankremski.collectively.presentation.BaseActivity
+import pl.adriankremski.collectively.presentation.profile.remarks.user.UserRemarksActivity
 import pl.adriankremski.collectively.presentation.util.RequestErrorDecorator
 import pl.adriankremski.collectively.presentation.util.Switcher
 import java.util.*
@@ -76,6 +77,9 @@ class ProfileActivity : BaseActivity(), ProfileMvp.View, AppBarLayout.OnOffsetCh
 
         presenter = ProfilePresenter(this, LoadProfileUseCase(profileRepository, ioThread, uiThread))
         presenter.loadProfile()
+
+        userRemarksButton.setOnClickListener { UserRemarksActivity.start(baseContext, UserRemarksActivity.CREATED_REMARKS_MODE) }
+        favoriteRemarksButton.setOnClickListener { UserRemarksActivity.start(baseContext, UserRemarksActivity.FAVORITE_REMARKS_MODE) }
     }
 
     private fun setupSwitcher() {
