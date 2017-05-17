@@ -13,6 +13,13 @@ abstract class UseCase<T, Params> internal constructor(private val useCaseThread
 
     internal abstract fun buildUseCaseObservable(params: Params?): Observable<T>
 
+    fun execute(params: Params?) {
+        val observable = this.buildUseCaseObservable(params)
+                .subscribeOn(useCaseThread.scheduler)
+                .observeOn(postExecutionThread.scheduler)
+        addDisposable(observable.subscribe())
+    }
+
     fun execute(observer: DisposableObserver<T>, params: Params?) {
         val observable = this.buildUseCaseObservable(params)
                 .subscribeOn(useCaseThread.scheduler)

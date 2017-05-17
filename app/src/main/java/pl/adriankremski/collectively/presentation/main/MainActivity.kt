@@ -2,6 +2,7 @@ package pl.adriankremski.collectively.presentation.main
 
 import android.Manifest
 import android.content.Context
+import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Color
@@ -37,9 +38,13 @@ import com.google.android.gms.maps.model.MarkerOptions
 import kotlinx.android.synthetic.main.activity_main.*
 import pl.adriankremski.collectively.R
 import pl.adriankremski.collectively.TheApp
+import pl.adriankremski.collectively.data.datasource.FiltersRepository
 import pl.adriankremski.collectively.data.model.Remark
 import pl.adriankremski.collectively.data.model.RemarkCategory
 import pl.adriankremski.collectively.data.repository.RemarksRepository
+import pl.adriankremski.collectively.domain.interactor.remark.LoadRemarkCategoriesUseCase
+import pl.adriankremski.collectively.domain.interactor.remark.LoadRemarksUseCase
+import pl.adriankremski.collectively.domain.interactor.remark.filters.LoadMapFiltersUseCase
 import pl.adriankremski.collectively.domain.thread.PostExecutionThread
 import pl.adriankremski.collectively.domain.thread.UseCaseThread
 import pl.adriankremski.collectively.presentation.BaseActivity
@@ -50,8 +55,7 @@ import pl.adriankremski.collectively.presentation.extension.iconOfCategory
 import pl.adriankremski.collectively.presentation.extension.markerBitmapOfCategory
 import pl.adriankremski.collectively.presentation.extension.uppercaseFirstLetter
 import pl.adriankremski.collectively.presentation.views.MainScreenRemarkBottomSheetDialog
-import pl.adriankremski.collectively.domain.interactor.remark.LoadRemarkCategoriesUseCase
-import pl.adriankremski.collectively.domain.interactor.remark.LoadRemarksUseCase
+import pl.adriankremski.collectively.presentation.views.dialogs.mapfilters.MapFiltersDialog
 import java.util.*
 import javax.inject.Inject
 
@@ -76,6 +80,9 @@ class MainActivity : BaseActivity(), MainMvp.View, OnMapReadyCallback, GoogleApi
 
     @Inject
     lateinit var remarksRepository: RemarksRepository
+
+    @Inject
+    lateinit var filtersRepository: FiltersRepository
 
     @Inject
     lateinit var ioThread: UseCaseThread
@@ -120,8 +127,25 @@ class MainActivity : BaseActivity(), MainMvp.View, OnMapReadyCallback, GoogleApi
         mapFragment.getMapAsync(this)
 
         mainPresenter = MainPresenter(this, LoadRemarksUseCase(remarksRepository, ioThread, uiThread),
-                LoadRemarkCategoriesUseCase(remarksRepository, ioThread, uiThread))
+                LoadRemarkCategoriesUseCase(remarksRepository, ioThread, uiThread),
+                LoadMapFiltersUseCase(filtersRepository, ioThread, uiThread))
         mainPresenter.loadRemarkCategories()
+
+        filtersButton.setOnClickListener {
+            mainPresenter.loadMapFiltersDialog()
+        }
+    }
+
+    override fun showMapFiltersDialog() {
+        var dialog = MapFiltersDialog.newInstance()
+        dialog.show(supportFragmentManager, MapFiltersDialog.javaClass.toString())
+        dialog.setOnDismissListener(DialogInterface.OnDismissListener {
+            mainPresenter.checkIfFiltersChanged()
+        })
+    }
+
+    override fun showRemarksReloadingProgress() {
+        Toast.makeText(baseContext, "Fetching new remarks", Toast.LENGTH_LONG).show()
     }
 
     override fun clearCategories() {

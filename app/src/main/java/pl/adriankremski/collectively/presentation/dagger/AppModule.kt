@@ -177,6 +177,14 @@ class AppModule(private val application: Application) : Constants {
 
     @Provides
     @Singleton
+    fun provideFiltersDataSource(): FiltersDataSource = FiltersDataSourceImpl(application.applicationContext)
+
+    @Provides
+    @Singleton
+    fun provideFiltersRepository(filtersDataSource: FiltersDataSource) : FiltersRepository = FiltersRepositoryImpl(filtersDataSource)
+
+    @Provides
+    @Singleton
     fun provideFacebookRepository(): FacebookTokenRepository = FacebookTokenRepositoryImpl()
 
     @Provides

@@ -1,0 +1,13 @@
+package pl.adriankremski.collectively.data.datasource
+
+import io.reactivex.Observable
+
+interface FiltersDataSource {
+    fun addFilter(filter: String) : Observable<Boolean>
+    fun removeFilter(filter: String) : Observable<Boolean>
+    fun allFilters(): List<String>
+    fun selectedFilters(): List<String>
+    fun selectRemarkStatus(status: String): Observable<Boolean>
+    fun getSelectRemarkStatus(): Observable<String>
+}
+

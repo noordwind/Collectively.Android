@@ -12,11 +12,15 @@ interface MainMvp {
         fun clearCategories()
         fun showRemarkCategory(category: RemarkCategory)
         fun showRemarks(remarks: List<Remark>)
+        fun showMapFiltersDialog()
+        fun showRemarksReloadingProgress()
     }
 
     interface Presenter : BasePresenter{
         fun loadRemarkCategories()
         fun loadRemarks()
+        fun loadMapFiltersDialog()
+        fun checkIfFiltersChanged()
     }
 }
 

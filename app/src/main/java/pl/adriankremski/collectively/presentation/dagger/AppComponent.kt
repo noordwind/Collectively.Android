@@ -14,6 +14,7 @@ import pl.adriankremski.collectively.presentation.remarkpreview.activity.RemarkS
 import pl.adriankremski.collectively.presentation.remarkpreview.comments.RemarkCommentsActivity
 import pl.adriankremski.collectively.presentation.settings.SettingsActivity
 import pl.adriankremski.collectively.presentation.statistics.StatisticsActivity
+import pl.adriankremski.collectively.presentation.views.dialogs.mapfilters.MapFiltersDialog
 import pl.adriankremski.collectively.presentation.views.remark.comment.RemarkCommentRowHolder
 import javax.inject.Singleton
 
@@ -38,4 +39,5 @@ interface AppComponent {
 
     //Views
     fun inject(remarkCommentRowHolder: RemarkCommentRowHolder)
+    fun inject(mapFiltersDialog: MapFiltersDialog)
 }

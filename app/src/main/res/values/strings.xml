@@ -97,4 +97,9 @@
     <string name="error_invalid_password">Password must have at least 4 characters</string>
     <string name="error_invalid_username">Username can not be empty</string>
     <string name="password_reset_success">Check your email for link reseting your password</string>
+    <string name="filter_remarks_dialog_title">Filter remarks</string>
+    <string name="filter_remarks_dialog_categories_label">Categories</string>
+    <string name="filter_remarks_dialog_other_label">Other</string>
+    <string name="resolved_filter">resolved</string>
+    <string name="unresolved_filter">unresolved</string>
 </resources>

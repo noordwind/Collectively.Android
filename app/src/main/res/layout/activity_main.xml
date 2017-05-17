@@ -24,6 +24,27 @@
             android:layout_alignParentBottom="true"
             android:layout_height="wrap_content">
 
+            <FrameLayout
+                android:id="@+id/filtersButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="left|bottom"
+                android:layout_marginBottom="8dp"
+                android:layout_marginLeft="@dimen/spacing_normal">
+
+                <ImageView
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_gravity="center"
+                    android:background="@drawable/circle_shape_light"/>
+
+                <ImageView
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_gravity="center"
+                    android:src="@drawable/ic_place_white_24dp"/>
+            </FrameLayout>
+
             <com.getbase.floatingactionbutton.FloatingActionsMenu
                 android:id="@+id/actions"
                 android:layout_width="wrap_content"

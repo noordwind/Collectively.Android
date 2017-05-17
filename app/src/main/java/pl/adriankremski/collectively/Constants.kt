@@ -6,7 +6,9 @@ interface Constants {
             val SESSION_TOKEN = "session_token"
             val SESSION_KEY = "session"
             val REMARK_CATEGORIES_CACHE_TIME = "remark_categories_cache_time"
-            val REMARK_CATEGORIES= "remark_categories"
+            val REMARK_CATEGORIES = "remark_categories"
+            val FILTERS = "filters"
+            val REMARK_STATUS = "remark_status"
         }
     }
 
