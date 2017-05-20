@@ -35,6 +35,7 @@ import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
+import com.muddzdev.styleabletoastlibrary.StyleableToast
 import kotlinx.android.synthetic.main.activity_main.*
 import pl.adriankremski.collectively.R
 import pl.adriankremski.collectively.TheApp
@@ -140,12 +141,18 @@ class MainActivity : BaseActivity(), MainMvp.View, OnMapReadyCallback, GoogleApi
         var dialog = MapFiltersDialog.newInstance()
         dialog.show(supportFragmentManager, MapFiltersDialog.javaClass.toString())
         dialog.setOnDismissListener(DialogInterface.OnDismissListener {
-            mainPresenter.checkIfFiltersChanged()
+            mainPresenter.checkIfFiltersHasChanged()
         })
     }
 
     override fun showRemarksReloadingProgress() {
-        Toast.makeText(baseContext, "Fetching new remarks", Toast.LENGTH_LONG).show()
+        val st = StyleableToast(this, "Updating remarks", Toast.LENGTH_LONG)
+        st.setBackgroundColor(Color.parseColor("#FFFFFF"))
+        st.setTextColor(Color.GRAY)
+        st.setIcon(R.drawable.ic_autorenew_24dp)
+        st.spinIcon()
+        st.setMaxAlpha()
+        st.show()
     }
 
     override fun clearCategories() {

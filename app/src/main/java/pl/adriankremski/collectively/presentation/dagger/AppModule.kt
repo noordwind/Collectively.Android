@@ -14,6 +14,7 @@ import okhttp3.*
 import okhttp3.logging.HttpLoggingInterceptor
 import pl.adriankremski.collectively.BuildConfig
 import pl.adriankremski.collectively.Constants
+import pl.adriankremski.collectively.data.cache.ProfileCache
 import pl.adriankremski.collectively.data.cache.RemarkCategoriesCache
 import pl.adriankremski.collectively.data.datasource.*
 import pl.adriankremski.collectively.data.net.Api
@@ -118,8 +119,8 @@ class AppModule(private val application: Application) : Constants {
 
     @Provides
     @Singleton
-    fun provideAuthenticationRepository(authDataSource: AuthDataSource, operationRepository: OperationRepository, sessionRepository: SessionRepository): AuthenticationRepository {
-        return AuthenticationRepositoryImpl(authDataSource, operationRepository, sessionRepository)
+    fun provideAuthenticationRepository(authDataSource: AuthDataSource, profileRepository: ProfileRepository, operationRepository: OperationRepository, sessionRepository: SessionRepository): AuthenticationRepository {
+        return AuthenticationRepositoryImpl(authDataSource, profileRepository, operationRepository, sessionRepository)
     }
 
     @Provides
@@ -132,7 +133,7 @@ class AppModule(private val application: Application) : Constants {
 
     @Provides
     @Singleton
-    fun provideRemarkCategoriesCache(): RemarkCategoriesCache = RemarkCategoriesCache(application.getSharedPreferences("shared_preferences", Activity.MODE_PRIVATE), Gson())
+    fun provideRemarkCategoriesCache(): RemarkCategoriesCache = RemarkCategoriesCache(application.getSharedPreferences("shared_preferences_remark_categories", Activity.MODE_PRIVATE), Gson())
 
     @Provides
     @Singleton
@@ -173,7 +174,11 @@ class AppModule(private val application: Application) : Constants {
 
     @Provides
     @Singleton
-    fun provideProfileRepository(profileDataSource: ProfileDataSource): ProfileRepository = ProfileRepositoryImpl(profileDataSource)
+    fun provideProfileCache(): ProfileCache = ProfileCache(application.getSharedPreferences("shared_preferences_profile", Activity.MODE_PRIVATE), Gson())
+
+    @Provides
+    @Singleton
+    fun provideProfileRepository(profileDataSource: ProfileDataSource, profileCache: ProfileCache): ProfileRepository = ProfileRepositoryImpl(profileDataSource, profileCache)
 
     @Provides
     @Singleton
@@ -185,6 +190,14 @@ class AppModule(private val application: Application) : Constants {
 
     @Provides
     @Singleton
+    fun provideSettingsDataSource(api: Api): SettingsDataSource = SettingsDataSourceImpl(api)
+
+    @Provides
+    @Singleton
+    fun provideSettingsRepository(operationRepository: OperationRepository, settingsDataSource: SettingsDataSource) : SettingsRepository = SettingsRepositoryImpl(settingsDataSource, operationRepository)
+
+    @Provides
+    @Singleton
     fun provideFacebookRepository(): FacebookTokenRepository = FacebookTokenRepositoryImpl()
 
     @Provides
@@ -192,6 +205,12 @@ class AppModule(private val application: Application) : Constants {
     fun provideConnectivityRepository(): ConnectivityRepository {
         var connectivityManager = application.applicationContext.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
         return ConnectivityRepositoryImpl(connectivityManager)
+    }
+
+    @Provides
+    @Singleton
+    fun providerNotificationOptionNameRepository(): NotificationOptionNameRepository {
+        return NotificationOptionNameRepositoryImpl(application.applicationContext)
     }
 
     @Provides

@@ -15,21 +15,22 @@
         android:background="@color/red_dark_2"
         android:orientation="horizontal">
 
-        <ImageView
-            android:id="@+id/profile_image"
-            android:src="@drawable/ic_person_grey_48dp"
-            android:background="@drawable/circle_shape"
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/profileImage"
             android:layout_width="60dp"
             android:layout_height="60dp"
-            android:layout_gravity="center_vertical"/>
+            android:layout_gravity="center_vertical"
+            android:src="@drawable/ic_person_grey_48dp"
+            android:background="@drawable/circle_shape"/>
 
         <TextView
+            android:id="@+id/userNameLabel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/spacing_medium"
             android:layout_gravity="center_vertical"
             android:fontFamily="@string/font_condensed"
-            android:text="Test user"
             android:textColor="@color/white_pressed"
             android:textSize="@dimen/font_large"
 
@@ -51,6 +52,13 @@
             android:orientation="horizontal"
             android:paddingLeft="@dimen/spacing_medium">
 
+            <ImageView
+                android:src="@drawable/ic_person_white_24dp"
+                android:layout_gravity="center_vertical"
+                android:paddingRight="@dimen/spacing_medium"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
             <TextView
                 style="@style/MenuOption"
                 android:paddingLeft="0dp"
@@ -64,6 +72,13 @@
             android:orientation="horizontal"
             android:paddingLeft="@dimen/spacing_medium">
 
+            <ImageView
+                android:src="@drawable/ic_statitstics_white_24dp"
+                android:layout_gravity="center_vertical"
+                android:paddingRight="@dimen/spacing_medium"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
             <TextView
                 style="@style/MenuOption"
                 android:paddingLeft="0dp"
@@ -76,6 +91,13 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:paddingLeft="@dimen/spacing_medium">
+
+            <ImageView
+                android:src="@drawable/ic_settings_white_24dp"
+                android:layout_gravity="center_vertical"
+                android:paddingRight="@dimen/spacing_medium"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
 
             <TextView
                 style="@style/MenuOption"
@@ -103,20 +125,8 @@
 
             <TextView
                 style="@style/MenuOption"
+                android:paddingLeft="@dimen/spacing_medium"
                 android:text="@string/fanpage" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/mShowRemark"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:paddingLeft="@dimen/spacing_medium">
-
-            <TextView
-                style="@style/MenuOption"
-                android:paddingLeft="0dp"
-                android:text="@string/remark_preview" />
         </LinearLayout>
     </LinearLayout>
 

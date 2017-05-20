@@ -12,11 +12,15 @@ class RemarkRepositoryImpl(val remarkCategoriesCache: RemarkCategoriesCache,
                            val profileRepository: ProfileRepository,
                            val operationRepository: OperationRepository) : RemarksRepository {
     override fun loadUserRemarks(): Observable<List<Remark>> {
-        return profileRepository.loadProfile().flatMap { remarksDataSource.loadUserRemarks(it.userId) }
+        return profileRepository.loadProfile(false).flatMap { remarksDataSource.loadUserRemarks(it.userId) }
+    }
+
+    override fun loadUserResolvedRemarks(): Observable<List<Remark>> {
+        return profileRepository.loadProfile(false).flatMap { remarksDataSource.loadUserResolvedRemarks(it.userId) }
     }
 
     override fun loadUserFavoriteRemarks(): Observable<List<Remark>>  {
-        return profileRepository.loadProfile().flatMap { remarksDataSource.loadUserFavoriteRemarks(it.userId) }
+        return profileRepository.loadProfile(false).flatMap { remarksDataSource.loadUserFavoriteRemarks(it.userId) }
     }
 
     override fun loadRemarkComments(id: String): Observable<List<RemarkComment>> {
@@ -74,7 +78,7 @@ class RemarkRepositoryImpl(val remarkCategoriesCache: RemarkCategoriesCache,
         var remarkWithUpdatedCommentsObs = operationRepository.pollOperation(remarksDataSource.submitRemarkComment(remarkId, remarkComment))
                 .flatMap { remarksDataSource.loadRemarkPreview(remarkId) }
 
-        var userIdObs = profileRepository.loadProfile().flatMap { Observable.just(it.userId) }
+        var userIdObs = profileRepository.loadProfile(false).flatMap { Observable.just(it.userId) }
 
         var newRemarkCommentsObs = Observable.zip<RemarkPreview, String, RemarkComment>(remarkWithUpdatedCommentsObs, userIdObs,
                 BiFunction { remarkPreview, userId -> remarkPreview.comments.findLast { it.user?.userId.equals(userId) } })

@@ -11,6 +11,7 @@ import com.hannesdorfmann.adapterdelegates.AbsAdapterDelegate
 import pl.adriankremski.collectively.R
 import pl.adriankremski.collectively.data.model.Remark
 import pl.adriankremski.collectively.presentation.extension.iconOfCategory
+import pl.adriankremski.collectively.presentation.extension.uppercaseFirstLetter
 import pl.adriankremski.collectively.presentation.remarkpreview.RemarkActivity
 
 
@@ -36,6 +37,7 @@ class UserRemarksAdapterDelegate(viewType: Int) : AbsAdapterDelegate<List<Any>>(
         private var categoryIcon: ImageView = itemView.findViewById(R.id.category_icon) as ImageView
         private var nameLabel: TextView = itemView.findViewById(R.id.name) as TextView
         private var addressLabel: TextView = itemView.findViewById(R.id.address) as TextView
+        private var statusLabel: TextView = itemView.findViewById(R.id.statusLabel) as TextView
         private var remark: Remark? = null
 
         fun setRemark(remark: Remark) {
@@ -44,6 +46,7 @@ class UserRemarksAdapterDelegate(viewType: Int) : AbsAdapterDelegate<List<Any>>(
             categoryIcon.setImageDrawable(ContextCompat.getDrawable(itemView.context, remark.category?.name?.iconOfCategory()!!))
             nameLabel.text = remark.description
             addressLabel.text = remark.location?.address
+            statusLabel.text = remark.state.state.uppercaseFirstLetter()
         }
     }
 

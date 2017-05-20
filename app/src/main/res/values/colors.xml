@@ -26,7 +26,7 @@
 
     <color name="black_light_transparent">#88000000</color>
 
-    <color name="main_menu_background">@color/bg_light_gray</color>
+    <color name="main_menu_background">#2E2E2E</color>
     <color name="unresolved_remark_color">#D32F2F</color>
     <color name="resolved_remark_color">@color/red_dark_2</color>
 

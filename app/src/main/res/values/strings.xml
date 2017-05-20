@@ -102,4 +102,33 @@
     <string name="filter_remarks_dialog_other_label">Other</string>
     <string name="resolved_filter">resolved</string>
     <string name="unresolved_filter">unresolved</string>
+    <string name="notification_settings">Notification settings</string>
+    <string name="notifications_settings_screen_title">Notifications settings</string>
+    <string name="notification_settings_email_notifications">Email notifications</string>
+    <string name="save">Save</string>
+
+    <string name="notification_option_name_remark_created">Remark created</string>
+    <string name="notification_option_name_remark_processed">Remark processed</string>
+    <string name="notification_option_name_remark_resolved">Remark resolved</string>
+    <string name="notification_option_name_remark_canceled">Remark canceled</string>
+    <string name="notification_option_name_remark_renewed">Remark renewed</string>
+    <string name="notification_option_name_new_photo_added">New photo added</string>
+    <string name="notification_option_name_new_comment_added">New comment added</string>
+
+    <string name="notification_option_description_remark_created">Notify me when new remark was added</string>
+    <string name="notification_option_description_remark_processed">When one of my favorited remarks is being processed</string>
+    <string name="notification_option_description_remark_resolved">When one of my favorited remarks was resolved</string>
+    <string name="notification_option_description_remark_canceled">When one of my favorited remarks was canceled</string>
+    <string name="notification_option_description_remark_renewed">When one of my favorited remarks was renewed</string>
+    <string name="notification_option_description_new_photo_added">When someone posted a photo to one of my favorited remarks</string>
+    <string name="notification_option_description_new_comment_added">When new comment was added to my or one of my favorited remarks</string>
+
+    <string name="error_loading_notification_settings_no_network">Connect to internet to see your notification settings</string>
+    <string name="read_more">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam</string>
+    <string name="saving_settings">Saving settings</string>
+    <string name="no_internet_connection">No internet connection</string>
+    <string name="settings_saved">Settings saved</string>
+    <string name="empty_screen_no_reported_remarks">You don\'t have any remarks yet</string>
+    <string name="empty_screen_no_favorited_remarks">You don\'t have any favorite remarks yet</string>
+    <string name="error_loading_profile_no_network">Connect to internet to check your profile</string>
 </resources>

@@ -54,6 +54,7 @@ class RemarkVote(
 )
 
 class RemarkState(
+        val state: String,
         val user: RemarkPreviewAuthor,
         val description: String,
         val createdAt: String,

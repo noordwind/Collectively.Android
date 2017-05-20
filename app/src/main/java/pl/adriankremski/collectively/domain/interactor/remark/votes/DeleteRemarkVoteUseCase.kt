@@ -19,7 +19,7 @@ class DeleteRemarkVoteUseCase(val remarksRepository: RemarksRepository,
 
     override fun buildUseCaseObservable(remarkId: String?): Observable<RemarkViewData> {
         val remarkObs = remarksRepository.deleteRemarkVote(remarkId!!)
-        val userIdObs = profileRepository.loadProfile().flatMap { Observable.just(it.userId) }
+        val userIdObs = profileRepository.loadProfile(false).flatMap { Observable.just(it.userId) }
 
         return Observable.zip(remarkObs, userIdObs, Observable.just(LinkedList<RemarkComment>()), Observable.just(LinkedList<RemarkState>()), Function4(::RemarkViewData))
     }

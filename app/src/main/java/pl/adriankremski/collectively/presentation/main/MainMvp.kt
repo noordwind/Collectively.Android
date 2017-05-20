@@ -20,7 +20,7 @@ interface MainMvp {
         fun loadRemarkCategories()
         fun loadRemarks()
         fun loadMapFiltersDialog()
-        fun checkIfFiltersChanged()
+        fun checkIfFiltersHasChanged()
     }
 }
 

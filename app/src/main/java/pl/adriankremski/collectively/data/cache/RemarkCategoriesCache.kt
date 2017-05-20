@@ -10,7 +10,6 @@ import pl.adriankremski.collectively.data.model.RemarkCategory
 import java.util.concurrent.TimeUnit
 
 class RemarkCategoriesCache(val sharedPreferences: SharedPreferences, val gson: Gson) : Cache<List<RemarkCategory>> {
-
     private val CACHE_EXPIRATION_TIME = TimeUnit.DAYS.toMillis(7)
     private val typeToken = object : TypeToken<List<RemarkCategory>>() {}.type
 
@@ -27,10 +26,16 @@ class RemarkCategoriesCache(val sharedPreferences: SharedPreferences, val gson: 
         val remarksInJson = gson.toJson(remarkCategories, typeToken)
         sharedPreferences.edit().putString(Constants.PreferencesKey.REMARK_CATEGORIES, remarksInJson)
         sharedPreferences.edit().putLong(Constants.PreferencesKey.REMARK_CATEGORIES_CACHE_TIME, System.currentTimeMillis())
+        sharedPreferences.edit().commit()
     }
 
     override fun getData(): Observable<List<RemarkCategory>> {
         return Observable.just(gson.fromJson(remarksInJson(), typeToken))
+    }
+
+    override fun clear() {
+        sharedPreferences.edit().clear()
+        sharedPreferences.edit().commit()
     }
 }
 

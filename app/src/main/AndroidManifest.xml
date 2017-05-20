@@ -69,6 +69,12 @@
             >
         </activity>
 
+        <activity android:name=".presentation.profile.notifications.NotificationsSettingsActivity"
+                  android:windowSoftInputMode="adjustResize"
+                  android:parentActivityName=".presentation.profile.ProfileActivity"
+            >
+        </activity>
+
         <activity android:name=".presentation.remarkpreview.activity.RemarkStatesActivity"
             android:windowSoftInputMode="adjustResize"
             android:parentActivityName=".presentation.main.MainActivity"

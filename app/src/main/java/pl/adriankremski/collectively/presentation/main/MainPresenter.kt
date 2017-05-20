@@ -9,11 +9,11 @@ import pl.adriankremski.collectively.domain.interactor.remark.filters.LoadMapFil
 import pl.adriankremski.collectively.domain.model.MapFilters
 import pl.adriankremski.collectively.presentation.rxjava.AppDisposableObserver
 
-
 class MainPresenter(val view: MainMvp.View,
                     val loadRemarksUseCase: LoadRemarksUseCase,
                     val loadRemarkCategoriesUseCase: LoadRemarkCategoriesUseCase,
                     val loadMapFiltersUseCase: LoadMapFiltersUseCase) : MainMvp.Presenter {
+
     var filtersKey: String = ""
 
     override fun loadRemarks() {
@@ -80,7 +80,7 @@ class MainPresenter(val view: MainMvp.View,
         loadMapFiltersUseCase.execute(filtersObserver)
     }
 
-    override fun checkIfFiltersChanged() {
+    override fun checkIfFiltersHasChanged() {
         var filtersObserver = object : DisposableObserver<MapFilters>() {
             override fun onComplete() {}
 

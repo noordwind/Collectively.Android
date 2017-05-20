@@ -65,6 +65,8 @@ class MapFiltersDialog : DialogFragment(), Constants, MapFiltersMvp.View {
         val rootView = inflater!!.inflate(R.layout.fragment_filter_remarks_dialog, container, false)
         categoriesLayout = rootView.findViewById(R.id.categoriesLayout) as ViewGroup
 
+        rootView.findViewById(R.id.background).setOnClickListener { dismiss() }
+
         resolvedFilterButton = rootView.findViewById(R.id.resolvedFilterButton) as TextView
         unresolvedFilterButton = rootView.findViewById(R.id.unresolvedFilterButton) as TextView
 
@@ -123,6 +125,7 @@ class MapFiltersDialog : DialogFragment(), Constants, MapFiltersMvp.View {
         super.onStart()
         val d = dialog
         dialog.setOnDismissListener(dismissListener)
+        dialog.setCanceledOnTouchOutside(true)
         if (d != null) {
             val width = ViewGroup.LayoutParams.MATCH_PARENT
             val height = ViewGroup.LayoutParams.WRAP_CONTENT

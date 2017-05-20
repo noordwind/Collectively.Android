@@ -2,6 +2,7 @@ package pl.adriankremski.collectively.presentation.profile
 
 import io.reactivex.disposables.Disposable
 import pl.adriankremski.collectively.data.model.Profile
+import pl.adriankremski.collectively.domain.model.UserProfileData
 import pl.adriankremski.collectively.presentation.mvp.BasePresenter
 
 interface ProfileMvp {
@@ -10,7 +11,7 @@ interface ProfileMvp {
         fun addDisposable(disposable: Disposable)
         fun showLoading()
         fun showLoadProfileError(message: String?)
-        fun showProfile(profile: Profile)
+        fun showProfile(profile: UserProfileData)
         fun showLoadProfileNetworkError()
     }
 

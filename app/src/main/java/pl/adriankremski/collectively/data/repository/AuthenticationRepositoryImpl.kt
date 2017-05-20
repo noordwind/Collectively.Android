@@ -10,6 +10,7 @@ import pl.adriankremski.collectively.data.model.SignUpRequest
 import pl.adriankremski.collectively.data.repository.util.OperationRepository
 
 class AuthenticationRepositoryImpl(val authDataSource: AuthDataSource,
+                                   val profileRepository: ProfileRepository,
                                    val operationRepository: OperationRepository,
                                    val sessionRepository: SessionRepository) : AuthenticationRepository {
 
@@ -17,8 +18,18 @@ class AuthenticationRepositoryImpl(val authDataSource: AuthDataSource,
         val authRequest = AuthRequest(email, password, Constants.AuthProvider.COOLECTOR)
 
         return authDataSource.login(authRequest)
-                .flatMap { authResponse -> Observable.just(authResponse.token) }
-                .doOnNext { sessionRepository.sessionToken = it }
+                .flatMap {
+                    authResponse -> Observable.just(authResponse.token)
+                }
+                .flatMap {
+                    authResponse -> sessionRepository.sessionToken = authResponse
+                    Observable.just(authResponse)
+                }
+                .flatMap {
+                    authResponse -> profileRepository.loadProfile(true).flatMap {
+                        Observable.just(authResponse)
+                    }
+                }
     }
 
     override fun loginWithFacebookToken(token: String): Observable<String> {

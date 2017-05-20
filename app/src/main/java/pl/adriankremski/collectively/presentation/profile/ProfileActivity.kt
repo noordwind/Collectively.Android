@@ -21,11 +21,14 @@ import kotlinx.android.synthetic.main.view_error.*
 import kotlinx.android.synthetic.main.view_progress.*
 import pl.adriankremski.collectively.R
 import pl.adriankremski.collectively.TheApp
-import pl.adriankremski.collectively.data.model.Profile
 import pl.adriankremski.collectively.data.repository.ProfileRepository
+import pl.adriankremski.collectively.data.repository.RemarksRepository
+import pl.adriankremski.collectively.domain.interactor.profile.LoadUserProfileDataUseCase
+import pl.adriankremski.collectively.domain.model.UserProfileData
 import pl.adriankremski.collectively.domain.thread.PostExecutionThread
 import pl.adriankremski.collectively.domain.thread.UseCaseThread
 import pl.adriankremski.collectively.presentation.BaseActivity
+import pl.adriankremski.collectively.presentation.profile.notifications.NotificationsSettingsActivity
 import pl.adriankremski.collectively.presentation.profile.remarks.user.UserRemarksActivity
 import pl.adriankremski.collectively.presentation.util.RequestErrorDecorator
 import pl.adriankremski.collectively.presentation.util.Switcher
@@ -45,6 +48,9 @@ class ProfileActivity : BaseActivity(), ProfileMvp.View, AppBarLayout.OnOffsetCh
 
     @Inject
     lateinit var profileRepository: ProfileRepository
+
+    @Inject
+    lateinit var remarksRepository: RemarksRepository
 
     @Inject
     lateinit var ioThread: UseCaseThread
@@ -70,16 +76,19 @@ class ProfileActivity : BaseActivity(), ProfileMvp.View, AppBarLayout.OnOffsetCh
         setContentView(R.layout.activity_profile);
 
         appBar.addOnOffsetChangedListener(this);
-        toolbar.inflateMenu(R.menu.menu_main);
+        toolbar.setNavigationOnClickListener { onBackPressed() };
         startAlphaAnimation(toolbarTitleLabel, 0, View.INVISIBLE);
         errorDecorator = RequestErrorDecorator(switcherErrorImage, switcherErrorTitle, switcherErrorFooter)
         setupSwitcher()
 
-        presenter = ProfilePresenter(this, LoadProfileUseCase(profileRepository, ioThread, uiThread))
+        presenter = ProfilePresenter(this, LoadUserProfileDataUseCase(remarksRepository, profileRepository, ioThread, uiThread))
         presenter.loadProfile()
 
         userRemarksButton.setOnClickListener { UserRemarksActivity.start(baseContext, UserRemarksActivity.CREATED_REMARKS_MODE) }
         favoriteRemarksButton.setOnClickListener { UserRemarksActivity.start(baseContext, UserRemarksActivity.FAVORITE_REMARKS_MODE) }
+        notificationsButton.setOnClickListener { NotificationsSettingsActivity.start(baseContext) }
+
+        switcherErrorButton.setOnClickListener { presenter.loadProfile() }
     }
 
     private fun setupSwitcher() {
@@ -102,10 +111,11 @@ class ProfileActivity : BaseActivity(), ProfileMvp.View, AppBarLayout.OnOffsetCh
     }
 
     override fun showLoadProfileError(message: String?) {
+        errorDecorator.onServerError(message)
         switcher.showErrorViewsImmediately()
     }
 
-    override fun showProfile(profile: Profile) {
+    override fun showProfile(profile: UserProfileData) {
         switcher.showContentViewsImmediately()
         titleLabel.text = profile.name
 
@@ -114,10 +124,16 @@ class ProfileActivity : BaseActivity(), ProfileMvp.View, AppBarLayout.OnOffsetCh
         span.setSpan(StyleSpan(Typeface.BOLD), 0, 1, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
         toolbarTitleLabel.text = span
 
-        Glide.with(this).load("https://scontent-waw1-1.xx.fbcdn.net/v/t31.0-8/13490617_1226192834059525_8782483978247105632_o.jpg?oh=aacc436d1bfa1e6ee649775348c79e69&oe=5974DF30").into(profileImage);
+        reportedRemarksCount.text = profile.reportedRemarksCount.toString()
+        resolvedRemarksCount.text = profile.resolvedRemarksCount.toString()
+
+        if (profile.avatarUrl != null) {
+            Glide.with(this).load(profile.avatarUrl).into(profileImage)
+        }
     }
 
     override fun showLoadProfileNetworkError() {
+        errorDecorator.onNetworkError(getString(R.string.error_loading_profile_no_network))
         switcher.showErrorViewsImmediately()
     }
 

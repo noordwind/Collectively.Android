@@ -12,7 +12,6 @@
     <android.support.design.widget.CoordinatorLayout
         android:id="@+id/content"
         android:layout_width="match_parent"
-        android:visibility="gone"
         android:layout_height="match_parent"
         tools:ignore="RtlHardcoded">
 
@@ -199,6 +198,21 @@
                         android:background="@color/red_dark_2"
                         android:text="@string/favorite_remarks"
                         android:textSize="@dimen/font_medium" />
+
+                    <TextView
+                        android:id="@+id/notificationsButton"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/spacing_small"
+                        android:fontFamily="@string/font_condensed"
+                        android:drawableLeft="@drawable/ic_notifications_white_24dp"
+                        android:gravity="center"
+                        android:padding="@dimen/spacing_small"
+                        android:textColor="@color/white"
+                        android:lineSpacingExtra="8dp"
+                        android:background="@color/red_dark_2"
+                        android:text="@string/notification_settings"
+                        android:textSize="@dimen/font_medium" />
                 </LinearLayout>
 
             </android.support.v7.widget.CardView>
@@ -230,7 +244,6 @@
                     android:layout_height="match_parent"
                     android:layout_marginLeft="8dp"
                     android:gravity="center_vertical"
-                    android:text="Name"
                     android:textColor="@android:color/white"
                     android:textSize="20sp" />
 

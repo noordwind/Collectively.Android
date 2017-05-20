@@ -1,18 +1,19 @@
 package pl.adriankremski.collectively.presentation.profile
 
-import pl.adriankremski.collectively.data.model.Profile
+import pl.adriankremski.collectively.domain.interactor.profile.LoadUserProfileDataUseCase
+import pl.adriankremski.collectively.domain.model.UserProfileData
 import pl.adriankremski.collectively.presentation.rxjava.AppDisposableObserver
 
-class ProfilePresenter(val view: ProfileMvp.View, val loadProfileUseCase: LoadProfileUseCase) : ProfileMvp.Presenter {
+class ProfilePresenter(val view: ProfileMvp.View, val loadProfileUseCase: LoadUserProfileDataUseCase) : ProfileMvp.Presenter {
     override fun loadProfile() {
-        var observer = object : AppDisposableObserver<Profile>() {
+        var observer = object : AppDisposableObserver<UserProfileData>() {
 
             override fun onStart() {
                 super.onStart()
                 view.showLoading()
             }
 
-            override fun onNext(profile: Profile) {
+            override fun onNext(profile: UserProfileData) {
                 super.onNext(profile)
                 view.showProfile(profile)
             }

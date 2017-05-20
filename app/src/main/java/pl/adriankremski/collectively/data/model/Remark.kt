@@ -8,6 +8,7 @@ class RemarkLocation(
 class Remark(
         val id: String,
         val category: RemarkCategory? = null,
+        val state: RemarkState,
         val location: RemarkLocation? = null ,
         val smallPhotoUrl: String = "",
         val description: String = "",

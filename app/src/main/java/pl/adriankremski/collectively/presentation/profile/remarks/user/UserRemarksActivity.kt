@@ -88,6 +88,7 @@ class UserRemarksActivity : BaseActivity(), UserRemarksMvp.View {
 
         errorDecorator = RequestErrorDecorator(switcherErrorImage, switcherErrorTitle, switcherErrorFooter)
         val contentViews = LinkedList<View>()
+        contentViews.add(content)
         contentViews.add(remarksRecycler)
         switcher = Switcher.Builder()
                 .withContentViews(contentViews)
@@ -105,8 +106,10 @@ class UserRemarksActivity : BaseActivity(), UserRemarksMvp.View {
 
     private fun loadRemarks() {
         if (intent.getStringExtra(Constants.BundleKey.MODE).equals(CREATED_REMARKS_MODE)) {
+            emptyScreenFooter.text = getString(R.string.empty_screen_no_reported_remarks)
             presenter.loadUserRemarks()
         } else {
+            emptyScreenFooter.text = getString(R.string.empty_screen_no_favorited_remarks)
             presenter.loadFavoriteRemarks()
         }
     }

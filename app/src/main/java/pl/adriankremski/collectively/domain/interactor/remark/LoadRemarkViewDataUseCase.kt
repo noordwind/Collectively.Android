@@ -19,7 +19,7 @@ class LoadRemarkViewDataUseCase(
         val remarkObs = remarksRepository.loadRemark(id!!)
         val remarkCommentsObs = remarksRepository.loadRemarkComments(id!!)
         val remarkStatesObs = remarksRepository.loadRemarkStates(id!!)
-        val userIdObs = profileRepository.loadProfile().flatMap { Observable.just(it.userId) }
+        val userIdObs = profileRepository.loadProfile(false).flatMap { Observable.just(it.userId) }
 
         return Observable.zip(remarkObs, userIdObs, remarkCommentsObs, remarkStatesObs, Function4(::RemarkViewData))
     }

@@ -14,6 +14,7 @@ import kotlinx.android.synthetic.main.activity_settings.*
 import kotlinx.android.synthetic.main.view_toolbar_with_title.*
 import pl.adriankremski.collectively.R
 import pl.adriankremski.collectively.TheApp
+import pl.adriankremski.collectively.data.cache.ProfileCache
 import pl.adriankremski.collectively.data.datasource.Session
 import pl.adriankremski.collectively.presentation.BaseActivity
 import pl.adriankremski.collectively.presentation.authentication.login.LoginActivity
@@ -32,6 +33,9 @@ class SettingsActivity : BaseActivity() {
     @Inject
     lateinit var session: Session
 
+    @Inject
+    lateinit var profileCache: ProfileCache
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         TheApp[this].appComponent?.inject(this)
@@ -44,6 +48,7 @@ class SettingsActivity : BaseActivity() {
 
         logoutButton.setOnClickListener {
             session.clear()
+            profileCache.clear()
             AccessToken.setCurrentAccessToken(null)
 
             val intent = Intent(baseContext, LoginActivity::class.java)
