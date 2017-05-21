@@ -4,9 +4,9 @@
         android:width="1dp"
         android:color="@color/light_grey" />
     <padding
-        android:bottom="10dp"
+        android:bottom="2dp"
         android:left="10dp"
         android:right="10dp"
-        android:top="10dp" />
+        android:top="2dp" />
     <corners android:radius="6dp" />
 </shape>

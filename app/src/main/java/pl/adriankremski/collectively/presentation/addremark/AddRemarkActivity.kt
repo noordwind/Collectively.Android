@@ -23,6 +23,9 @@ import pl.adriankremski.collectively.data.model.RemarkNotFromList
 import pl.adriankremski.collectively.data.model.RemarkTag
 import pl.adriankremski.collectively.data.repository.RemarksRepository
 import pl.adriankremski.collectively.data.repository.util.LocationRepository
+import pl.adriankremski.collectively.domain.interactor.remark.LoadRemarkCategoriesUseCase
+import pl.adriankremski.collectively.domain.interactor.remark.LoadRemarkTagsUseCase
+import pl.adriankremski.collectively.domain.interactor.remark.SaveRemarkUseCase
 import pl.adriankremski.collectively.domain.thread.PostExecutionThread
 import pl.adriankremski.collectively.domain.thread.UseCaseThread
 import pl.adriankremski.collectively.presentation.BaseActivity
@@ -31,9 +34,6 @@ import pl.adriankremski.collectively.presentation.extension.setBackgroundCompat
 import pl.adriankremski.collectively.presentation.extension.uppercaseFirstLetter
 import pl.adriankremski.collectively.presentation.views.RemarkTagView
 import pl.adriankremski.collectively.usecases.LoadLastKnownLocationUseCase
-import pl.adriankremski.collectively.domain.interactor.remark.LoadRemarkCategoriesUseCase
-import pl.adriankremski.collectively.domain.interactor.remark.LoadRemarkTagsUseCase
-import pl.adriankremski.collectively.domain.interactor.remark.SaveRemarkUseCase
 import java.util.*
 import javax.inject.Inject
 
@@ -138,7 +138,7 @@ class AddRemarkActivity : BaseActivity(), AddRemarkMvp.View {
             newView.text = it.name
             newView.gravity = Gravity.CENTER
             newView.setTextColor(ContextCompat.getColor(baseContext, R.color.white))
-            newView.setPadding(30, 10, 30, 10)
+            newView.setPadding(30, 5, 30, 5)
             val params = FlowLayout.LayoutParams(ViewGroup.MarginLayoutParams.WRAP_CONTENT, 150)
             params.rightMargin = 10
             params.bottomMargin = 10
