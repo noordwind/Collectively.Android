@@ -132,4 +132,6 @@
     <string name="empty_screen_no_favorited_remarks">You don\'t have any favorite remarks yet</string>
     <string name="error_loading_profile_no_network">Connect to internet to check your profile</string>
     <string name="filter_show_only_mine">Show only mine</string>
+    <string name="next">Next</string>
+    <string name="go_to_login">Join our community</string>
 </resources>

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical" android:layout_width="match_parent"
+              android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_width="wrap_content"
+        android:orientation="vertical"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:text="Page 2 title"
+            android:layout_marginTop="@dimen/spacing_normal"
+            android:textColor="@color/white"
+            android:layout_width="match_parent"
+            android:gravity="center"
+            android:textSize="@dimen/font_large"
+            android:fontFamily="@string/font_normal"
+            android:textStyle="bold"
+            android:layout_height="match_parent"/>
+
+        <TextView
+            android:text="Some bullshit with random description goes here"
+            android:layout_marginTop="@dimen/spacing_normal"
+            android:textColor="@color/white"
+            android:layout_width="match_parent"
+            android:gravity="center"
+            android:textSize="@dimen/font_medium"
+            android:fontFamily="@string/font_light"
+            android:layout_height="match_parent"/>
+
+    </LinearLayout>
+
+    <ImageView
+        android:background="@drawable/page2"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="-20dp"
+        android:layout_width="216dp"
+        android:layout_height="384dp"/>
+
+</RelativeLayout>

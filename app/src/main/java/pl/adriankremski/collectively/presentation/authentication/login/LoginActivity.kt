@@ -1,5 +1,6 @@
 package pl.adriankremski.collectively.presentation.authentication.login
 
+import android.content.Context
 import android.content.Intent
 import android.graphics.Typeface
 import android.os.Bundle
@@ -34,11 +35,21 @@ import pl.adriankremski.collectively.presentation.extension.setVisible
 import pl.adriankremski.collectively.presentation.extension.showLoginErrorDialog
 import pl.adriankremski.collectively.presentation.extension.textInString
 import pl.adriankremski.collectively.presentation.main.MainActivity
+import pl.adriankremski.collectively.presentation.walkthrough.WalkthroughActivity
 import java.lang.ref.WeakReference
 import java.util.*
 import javax.inject.Inject
 
 class LoginActivity : AppCompatActivity(), LoginMvp.View {
+
+    companion object {
+        fun login(context: Context) {
+            val intent = Intent(context, LoginActivity::class.java)
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
+            context.startActivity(intent)
+        }
+    }
+
     @Inject
     lateinit var authenticationRepository: AuthenticationRepository
 
@@ -124,6 +135,8 @@ class LoginActivity : AppCompatActivity(), LoginMvp.View {
     fun signUp() = SignUpActivity.launch(this)
 
     fun retrievePassword() = ResetPasswordActivity.start(this)
+
+    override fun showWalkthroughScreen() = WalkthroughActivity.start(this)
 
     override fun showMainScreen() = MainActivity.login(this)
 

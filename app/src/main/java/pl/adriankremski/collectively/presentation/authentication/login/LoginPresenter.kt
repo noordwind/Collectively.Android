@@ -1,6 +1,8 @@
 package pl.adriankremski.collectively.presentation.authentication.login
 
 import com.jakewharton.retrofit2.adapter.rxjava2.HttpException
+import jonathanfinerty.once.Once
+import pl.adriankremski.collectively.Constants
 import pl.adriankremski.collectively.data.model.Optional
 import pl.adriankremski.collectively.data.repository.util.ConnectivityRepository
 import pl.adriankremski.collectively.domain.interactor.GetFacebookTokenUseCase
@@ -18,7 +20,10 @@ class LoginPresenter(val view: LoginMvp.View,
                      val connectivityRepository: ConnectivityRepository) : LoginMvp.Presenter {
 
     override fun onCreate() {
-        if (loginUseCase.isLoggedIn()) {
+        if (!Once.beenDone(Once.THIS_APP_INSTALL, Constants.OnceKey.WALKTHROUGH)) {
+            view.showWalkthroughScreen()
+            view.closeScreen()
+        } else if (loginUseCase.isLoggedIn()) {
             view.showMainScreen()
             view.closeScreen()
         }

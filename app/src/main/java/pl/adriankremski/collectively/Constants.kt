@@ -15,6 +15,12 @@ interface Constants {
         }
     }
 
+    interface OnceKey {
+        companion object {
+            val WALKTHROUGH = "walkthrough"
+        }
+    }
+
     interface AuthProvider {
         companion object {
             val FACEBOOK = "facebook"

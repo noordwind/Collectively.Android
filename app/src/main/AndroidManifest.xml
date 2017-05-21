@@ -25,6 +25,9 @@
             </intent-filter>
         </activity>
 
+        <activity android:name=".presentation.walkthrough.WalkthroughActivity">
+        </activity>
+
         <activity android:name=".presentation.authentication.signup.SignUpActivity"
             android:theme="@style/LoginTheme">
         </activity>
