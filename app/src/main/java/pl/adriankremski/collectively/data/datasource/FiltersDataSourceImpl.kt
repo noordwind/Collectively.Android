@@ -45,8 +45,15 @@ class FiltersDataSourceImpl(context: Context) : FiltersDataSource, TrayPreferenc
         }.flatMap { Observable.just(true) }
     }
 
+    override fun selectShowOnlyMine(shouldShow: Boolean): Observable<Boolean> {
+        return Observable.fromCallable {
+            put(Constants.PreferencesKey.SHOW_ONLY_MINE, shouldShow)
+        }.flatMap { Observable.just(true) }
+    }
+
     override fun getSelectRemarkStatus(): Observable<String> = Observable.just(getString(Constants.PreferencesKey.REMARK_STATUS, ""))
 
+    override fun getShowOnlyMineStatus(): Observable<Boolean> = Observable.just(getBoolean(Constants.PreferencesKey.SHOW_ONLY_MINE, false))
 
     override fun onCreate(i: Int) {
 

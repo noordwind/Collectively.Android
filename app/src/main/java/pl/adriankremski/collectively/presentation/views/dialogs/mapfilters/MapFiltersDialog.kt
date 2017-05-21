@@ -9,6 +9,7 @@ import android.support.v4.content.ContextCompat
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.CheckBox
 import android.widget.TextView
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
@@ -16,10 +17,7 @@ import pl.adriankremski.collectively.Constants
 import pl.adriankremski.collectively.R
 import pl.adriankremski.collectively.TheApp
 import pl.adriankremski.collectively.data.datasource.FiltersRepository
-import pl.adriankremski.collectively.domain.interactor.remark.filters.AddFilterUseCase
-import pl.adriankremski.collectively.domain.interactor.remark.filters.LoadMapFiltersUseCase
-import pl.adriankremski.collectively.domain.interactor.remark.filters.RemoveFilterUseCase
-import pl.adriankremski.collectively.domain.interactor.remark.filters.SelectRemarkStatusUseCase
+import pl.adriankremski.collectively.domain.interactor.remark.filters.*
 import pl.adriankremski.collectively.domain.thread.PostExecutionThread
 import pl.adriankremski.collectively.domain.thread.UseCaseThread
 import pl.adriankremski.collectively.presentation.extension.dpToPx
@@ -45,6 +43,7 @@ class MapFiltersDialog : DialogFragment(), Constants, MapFiltersMvp.View {
     private lateinit var categoriesLayout: ViewGroup
     private lateinit var resolvedFilterButton: TextView
     private lateinit var unresolvedFilterButton: TextView
+    private lateinit var showOnlyMyRemarksCheckButton: CheckBox
     private lateinit var mMapFilterSelectedEventDisposable: Disposable
     private lateinit var dismissListener: DialogInterface.OnDismissListener
 
@@ -57,6 +56,7 @@ class MapFiltersDialog : DialogFragment(), Constants, MapFiltersMvp.View {
                 LoadMapFiltersUseCase(filtersRepository, ioThread, uiThread),
                 AddFilterUseCase(filtersRepository, ioThread, uiThread),
                 RemoveFilterUseCase(filtersRepository, ioThread, uiThread),
+                SelectShowOnlyMyRemarksUseCase(filtersRepository, ioThread, uiThread),
                 SelectRemarkStatusUseCase(filtersRepository, ioThread, uiThread))
     }
 
@@ -69,6 +69,7 @@ class MapFiltersDialog : DialogFragment(), Constants, MapFiltersMvp.View {
 
         resolvedFilterButton = rootView.findViewById(R.id.resolvedFilterButton) as TextView
         unresolvedFilterButton = rootView.findViewById(R.id.unresolvedFilterButton) as TextView
+        showOnlyMyRemarksCheckButton = rootView.findViewById((R.id.showOnlyMineCheckButton)) as CheckBox
 
         resolvedFilterButton.setOnClickListener {
             presenter.selectRemarkStatus(resolvedFilterButton.text.toString())
@@ -79,6 +80,9 @@ class MapFiltersDialog : DialogFragment(), Constants, MapFiltersMvp.View {
             presenter.selectRemarkStatus(unresolvedFilterButton.text.toString())
             selectUnresolvedFilterButton()
         }
+
+
+        showOnlyMyRemarksCheckButton.setOnCheckedChangeListener { button, isChecked -> presenter.toggleShouldShowOnlyMyRemarksFilter(isChecked)  }
 
         presenter.loadFilters()
         return rootView
@@ -115,6 +119,10 @@ class MapFiltersDialog : DialogFragment(), Constants, MapFiltersMvp.View {
         } else {
             selectUnresolvedFilterButton()
         }
+    }
+
+    override fun selectShowOnlyMineRemarksFilter(showOnlyMine: Boolean) {
+        showOnlyMyRemarksCheckButton.isChecked = showOnlyMine
     }
 
     fun setOnDismissListener(dismissListener: DialogInterface.OnDismissListener) {

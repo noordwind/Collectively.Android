@@ -70,7 +70,7 @@ class MainPresenter(val view: MainMvp.View,
             override fun onComplete() {}
 
             override fun onNext(filters: MapFilters) {
-                filtersKey = filters.selectedFilters.sortedBy { it }.toString() + filters.remarkStatus
+                filtersKey = filters.selectedFilters.sortedBy { it }.toString() + filters.remarkStatus + filters.showOnlyMine
                 view.showMapFiltersDialog()
             }
 
@@ -85,7 +85,7 @@ class MainPresenter(val view: MainMvp.View,
             override fun onComplete() {}
 
             override fun onNext(filters: MapFilters) {
-                var newFiltersKey = filters.selectedFilters.sortedBy { it }.toString() + filters.remarkStatus
+                var newFiltersKey = filters.selectedFilters.sortedBy { it }.toString() + filters.remarkStatus + filters.showOnlyMine
                 if (!filtersKey.equals(newFiltersKey, true)) {
                     view.showRemarksReloadingProgress()
                 }

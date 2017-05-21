@@ -24,9 +24,8 @@ class RemarkCategoriesCache(val sharedPreferences: SharedPreferences, val gson: 
 
     override fun putData(remarkCategories: List<RemarkCategory>) {
         val remarksInJson = gson.toJson(remarkCategories, typeToken)
-        sharedPreferences.edit().putString(Constants.PreferencesKey.REMARK_CATEGORIES, remarksInJson)
-        sharedPreferences.edit().putLong(Constants.PreferencesKey.REMARK_CATEGORIES_CACHE_TIME, System.currentTimeMillis())
-        sharedPreferences.edit().commit()
+        sharedPreferences.edit().putString(Constants.PreferencesKey.REMARK_CATEGORIES, remarksInJson).commit()
+        sharedPreferences.edit().putLong(Constants.PreferencesKey.REMARK_CATEGORIES_CACHE_TIME, System.currentTimeMillis()).commit()
     }
 
     override fun getData(): Observable<List<RemarkCategory>> {
@@ -34,8 +33,7 @@ class RemarkCategoriesCache(val sharedPreferences: SharedPreferences, val gson: 
     }
 
     override fun clear() {
-        sharedPreferences.edit().clear()
-        sharedPreferences.edit().commit()
+        sharedPreferences.edit().clear().commit()
     }
 }
 

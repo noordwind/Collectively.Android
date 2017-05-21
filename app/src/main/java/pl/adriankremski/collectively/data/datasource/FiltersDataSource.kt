@@ -9,5 +9,7 @@ interface FiltersDataSource {
     fun selectedFilters(): List<String>
     fun selectRemarkStatus(status: String): Observable<Boolean>
     fun getSelectRemarkStatus(): Observable<String>
+    fun getShowOnlyMineStatus(): Observable<Boolean>
+    fun selectShowOnlyMine(shouldShow: Boolean): Observable<Boolean>
 }
 

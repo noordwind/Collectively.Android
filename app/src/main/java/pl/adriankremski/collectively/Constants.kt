@@ -11,6 +11,7 @@ interface Constants {
             val PROFILE = "profile"
             val FILTERS = "filters"
             val REMARK_STATUS = "remark_status"
+            val SHOW_ONLY_MINE = "show_only_mine_remark0"
         }
     }
 

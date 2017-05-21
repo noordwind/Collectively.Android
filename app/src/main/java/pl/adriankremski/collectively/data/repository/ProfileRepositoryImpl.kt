@@ -11,7 +11,7 @@ class ProfileRepositoryImpl(val profileDataSource: ProfileDataSource, val profil
         if (forceRefresh || profileCache.isExpired()) {
             return loadProfileAndSaveToCache()
         } else {
-            return profileDataSource.profile()
+            return profileCache.getData()
         }
     }
 

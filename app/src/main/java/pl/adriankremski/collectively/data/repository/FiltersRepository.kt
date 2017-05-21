@@ -9,5 +9,7 @@ interface FiltersRepository {
     fun selectedFilters(): Observable<List<String>>
     fun selectRemarkStatus(status: String): Observable<Boolean>
     fun getSelectRemarkStatus(): Observable<String>
+    fun selectShowOnlyMineStatus(shouldShow: Boolean): Observable<Boolean>
+    fun getShowOnlyMineStatus(): Observable<Boolean>
 }
 

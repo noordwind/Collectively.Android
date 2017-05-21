@@ -1,7 +1,7 @@
 package pl.adriankremski.collectively.domain.interactor.remark.filters
 
 import io.reactivex.Observable
-import io.reactivex.functions.Function3
+import io.reactivex.functions.Function4
 import pl.adriankremski.collectively.data.datasource.FiltersRepository
 import pl.adriankremski.collectively.domain.interactor.UseCase
 import pl.adriankremski.collectively.domain.model.MapFilters
@@ -16,9 +16,10 @@ class LoadMapFiltersUseCase(val filtersRepository: FiltersRepository,
         val selectedFiltersObservable = filtersRepository.selectedFilters()
         val allFiltersObservable = filtersRepository.allFilters()
         val selectedRemarkStatusObservable = filtersRepository.getSelectRemarkStatus()
+        val showOnlyMineObservable = filtersRepository.getShowOnlyMineStatus()
 
-        return Observable.zip(selectedFiltersObservable, allFiltersObservable, selectedRemarkStatusObservable,
-                Function3 { selectedFilters, allFilters, status -> MapFilters(allFilters, selectedFilters, status) })
+        return Observable.zip(selectedFiltersObservable, allFiltersObservable, selectedRemarkStatusObservable, showOnlyMineObservable,
+                Function4 { selectedFilters, allFilters, status, showOnlyMine -> MapFilters(allFilters, selectedFilters, status, showOnlyMine) })
     }
 }
 

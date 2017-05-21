@@ -25,9 +25,8 @@ class ProfileCache(val sharedPreferences: SharedPreferences, val gson: Gson) : C
 
     override fun putData(profile: Profile) {
         val profileInJson = gson.toJson(profile, typeToken)
-        sharedPreferences.edit().putString(Constants.PreferencesKey.PROFILE, profileInJson)
-        sharedPreferences.edit().putLong(Constants.PreferencesKey.PROFILE_CACHE_TIME, System.currentTimeMillis())
-        sharedPreferences.edit().commit()
+        sharedPreferences.edit().putString(Constants.PreferencesKey.PROFILE, profileInJson).commit()
+        sharedPreferences.edit().putLong(Constants.PreferencesKey.PROFILE_CACHE_TIME, System.currentTimeMillis()).commit()
     }
 
     override fun getData(): Observable<Profile> {
@@ -35,8 +34,7 @@ class ProfileCache(val sharedPreferences: SharedPreferences, val gson: Gson) : C
     }
 
     override fun clear() {
-        sharedPreferences.edit().clear()
-        sharedPreferences.edit().commit()
+        sharedPreferences.edit().clear().commit()
     }
 }
 
