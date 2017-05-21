@@ -1,20 +1,23 @@
 package pl.adriankremski.collectively.presentation.addremark
 
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
-import android.graphics.Typeface
+import android.net.Uri
 import android.os.Bundle
 import android.support.v4.content.ContextCompat
-import android.text.Spannable
-import android.text.SpannableString
-import android.text.style.RelativeSizeSpan
-import android.text.style.StyleSpan
 import android.view.Gravity
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
+import com.bumptech.glide.Glide
+import com.theartofdev.edmodo.cropper.CropImage
+import com.theartofdev.edmodo.cropper.CropImageView
 import com.wefika.flowlayout.FlowLayout
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.Disposable
+import kotlinx.android.synthetic.main.activity_add_remark.*
 import pl.adriankremski.collectively.Constants
 import pl.adriankremski.collectively.R
 import pl.adriankremski.collectively.TheApp
@@ -29,10 +32,10 @@ import pl.adriankremski.collectively.domain.interactor.remark.SaveRemarkUseCase
 import pl.adriankremski.collectively.domain.thread.PostExecutionThread
 import pl.adriankremski.collectively.domain.thread.UseCaseThread
 import pl.adriankremski.collectively.presentation.BaseActivity
-import pl.adriankremski.collectively.presentation.extension.getChildViewsWithType
-import pl.adriankremski.collectively.presentation.extension.setBackgroundCompat
-import pl.adriankremski.collectively.presentation.extension.uppercaseFirstLetter
+import pl.adriankremski.collectively.presentation.extension.*
+import pl.adriankremski.collectively.presentation.rxjava.RxBus
 import pl.adriankremski.collectively.presentation.views.RemarkTagView
+import pl.adriankremski.collectively.presentation.views.dialogs.mapfilters.AddPhotoDialog
 import pl.adriankremski.collectively.usecases.LoadLastKnownLocationUseCase
 import java.util.*
 import javax.inject.Inject
@@ -67,18 +70,16 @@ class AddRemarkActivity : BaseActivity(), AddRemarkMvp.View {
     lateinit var descriptionLabel: EditText
     internal var tagsLayout: FlowLayout? = null
     lateinit var addressLabel: TextView
-    lateinit var submitButton: View
     lateinit var selectedCategory: String
+
+    private lateinit var galleryButtonClickEventDisposable: Disposable
+    private lateinit var cameraButtonClickEventDisposable: Disposable
+    private var capturedImageUri: Uri? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         TheApp[this].appComponent?.inject(this)
         setContentView(R.layout.activity_add_remark);
-        var span = SpannableString(getString(R.string.add_remark_screen_title))
-        span.setSpan(RelativeSizeSpan(1.2f), 0, 1, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
-        span.setSpan(StyleSpan(Typeface.BOLD), 0, 1, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
-        titleLabel = findViewById(R.id.title) as TextView
-        titleLabel?.text = span;
 
         tagsLayout = findViewById(R.id.tags_layout) as FlowLayout
 
@@ -89,7 +90,6 @@ class AddRemarkActivity : BaseActivity(), AddRemarkMvp.View {
 
         descriptionLabel = findViewById(R.id.description) as EditText
 
-        submitButton = findViewById(R.id.submit) as View
         submitButton.setOnClickListener { presenter.saveRemark(getCategory(), getDescription(), getSelectedTags()) }
 
         presenter = AddRemarkPresenter(this, SaveRemarkUseCase(remarksRepository, ioThread, uiThread),
@@ -100,6 +100,20 @@ class AddRemarkActivity : BaseActivity(), AddRemarkMvp.View {
         presenter.loadRemarkCategories()
         presenter.loadRemarkTags()
         presenter.loadLastKnownAddress()
+
+        fab.setOnClickListener { AddPhotoDialog.newInstance().show(supportFragmentManager, AddPhotoDialog::class.java.toString()) }
+
+        galleryButtonClickEventDisposable = RxBus.instance
+                .getEvents(String::class.java)
+                .filter { it.equals(Constants.RxBusEvent.GALLERY_EVENT) }
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({ capturedImageUri = openGalleryPicker() })
+
+        cameraButtonClickEventDisposable = RxBus.instance
+                .getEvents(String::class.java)
+                .filter { it.equals(Constants.RxBusEvent.CAMERA_EVENT) }
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({ capturedImageUri = openCamera() })
     }
 
     fun getCategory() = categoriesSpinner.selectedItem.toString()
@@ -153,19 +167,60 @@ class AddRemarkActivity : BaseActivity(), AddRemarkMvp.View {
     }
 
     override fun showSaveRemarkLoading() {
+        submitButton.text = getString(R.string.saving_remark)
+        submitProgress.visibility = View.VISIBLE
     }
 
     override fun showSaveRemarkError() {
+        submitButton.text = getString(R.string.submit)
+        submitProgress.visibility = View.GONE
         Toast.makeText(this, "Remark Not ADDED", Toast.LENGTH_SHORT).show()
     }
 
     override fun showSaveRemarkSuccess(newRemark: RemarkNotFromList) {
+        submitButton.text = getString(R.string.saving_photo)
+        submitProgress.visibility = View.GONE
         Toast.makeText(this, "Remark Addded", Toast.LENGTH_SHORT).show()
-        finish()
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+
+        if (resultCode == RESULT_OK) {
+            if (requestCode == Constants.RequestCodes.PICK_PICTURE_FROM_GALLERY) {
+                capturedImageUri = data?.data
+//                capturedImageUri.let { Glide.with(baseContext).load(capturedImageUri).into(remarkImage) }
+
+                CropImage.activity(capturedImageUri)
+                        .setGuidelines(CropImageView.Guidelines.ON)
+                        .setAllowRotation(true)
+                        .setAspectRatio(remarkImage.width, remarkImage.height)
+                        .start(this);
+
+            } else if (requestCode == Constants.RequestCodes.TAKE_PICTURE) {
+                CropImage.activity(capturedImageUri)
+                        .setGuidelines(CropImageView.Guidelines.ON)
+                        .setMaxCropResultSize(remarkImage.width, remarkImage.height)
+                        .start(this);
+
+            } else if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
+                var result = CropImage.getActivityResult(data) as CropImage.ActivityResult
+                if (resultCode == RESULT_OK) {
+                    var resultUri = result.uri;
+                    resultUri.let { Glide.with(baseContext).load(resultUri).into(remarkImage) }
+                } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
+                    var error = result.error;
+                }
+            }
+
+        } else if (resultCode == Activity.RESULT_CANCELED) {
+
+        }
     }
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
-        when(item?.itemId) {
+        when (item?.itemId) {
             android.R.id.home -> {
                 onBackPressed()
                 return true;
@@ -178,5 +233,7 @@ class AddRemarkActivity : BaseActivity(), AddRemarkMvp.View {
     override fun onDestroy() {
         super.onDestroy()
         presenter.destroy()
+        galleryButtonClickEventDisposable.dispose()
+        cameraButtonClickEventDisposable.dispose()
     }
 }
