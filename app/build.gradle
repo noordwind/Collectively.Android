@@ -17,6 +17,7 @@ android {
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         resValue "string", "tray__authority", "${applicationId}.tray"
         multiDexEnabled true
+	vectorDrawables.useSupportLibrary = true
     }
 
     buildTypes {
@@ -46,6 +47,7 @@ android {
             applicationId "pl.adriankremski.collectively.dev"
             minSdkVersion 21
             buildConfigField "String", "SERVER_URL", "\"https://api-dev.becollective.ly/\""
+	    resConfigs ("en", "xxhdpi")
         }
     }
     kapt {
@@ -107,7 +109,8 @@ dependencies {
     compile 'net.grandcentrix.tray:tray:0.11.0'
     compile 'com.annimon:stream:1.0.9'
 
-    //
+    //UI
+compile 'com.theartofdev.edmodo:android-image-cropper:2.4.+'
 compile 'fr.avianey.com.viewpagerindicator:library:2.4.1.1@aar'
     compile 'com.muddzdev:styleabletoast:1.0.7'  
     compile 'com.github.PhilJay:MPAndroidChart:v3.0.1'

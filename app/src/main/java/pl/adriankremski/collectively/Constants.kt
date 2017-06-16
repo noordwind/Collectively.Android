@@ -1,5 +1,7 @@
 package pl.adriankremski.collectively
 
+import android.os.Environment
+
 interface Constants {
     interface PreferencesKey {
         companion object {
@@ -12,6 +14,25 @@ interface Constants {
             val FILTERS = "filters"
             val REMARK_STATUS = "remark_status"
             val SHOW_ONLY_MINE = "show_only_mine_remark0"
+        }
+    }
+
+    interface ExternalDirs {
+        companion object {
+            val APP_DIR_NAME = "Fortitudo"
+            val PHOTOS_DIR_NAME = "Images"
+            val TEMP_DIR_NAME = "Temp"
+
+            val APP_DIR_PATH = String.format("%s/%s", Environment.getExternalStorageDirectory(), APP_DIR_NAME)
+            val APP_PHOTOS_PATH = String.format("%s/%s", APP_DIR_PATH, PHOTOS_DIR_NAME)
+            val APP_TEMP_PHOTOS_PATH = String.format("%s/%s", APP_PHOTOS_PATH, TEMP_DIR_NAME)
+        }
+    }
+
+    interface RequestCodes {
+        companion object {
+            val PICK_PICTURE_FROM_GALLERY = 1236
+            val TAKE_PICTURE = 1237
         }
     }
 
@@ -78,6 +99,13 @@ interface Constants {
             const val REMARK_ID = "remark_id"
             const val COMMENT_ID = "comment_id"
             const val VOTE = "vote"
+        }
+    }
+
+    interface RxBusEvent {
+        companion object {
+            const val GALLERY_EVENT = "gallery"
+            const val CAMERA_EVENT = "camera"
         }
     }
 }

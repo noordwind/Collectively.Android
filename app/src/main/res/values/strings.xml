@@ -134,4 +134,9 @@
     <string name="filter_show_only_mine">Show only mine</string>
     <string name="next">Next</string>
     <string name="go_to_login">Join our community</string>
+    <string name="gallery">Gallery</string>
+    <string name="camera">Camera</string>
+    <string name="add_photo">Add photo</string>
+    <string name="saving_remark">Saving remark...</string>
+    <string name="saving_photo">Saving remark photo...</string>
 </resources>
