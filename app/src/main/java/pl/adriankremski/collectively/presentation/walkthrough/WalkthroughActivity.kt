@@ -27,6 +27,8 @@ class WalkthroughActivity : BaseActivity() {
         setContentView(R.layout.activity_walkthrough);
         walkthroughPager.adapter = WalkthroughAdapter(supportFragmentManager)
 
+        nextButton.setOnClickListener { walkthroughPager.setCurrentItem(1, true) }
+
         walkthroughPager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
             override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {
 

@@ -6,7 +6,6 @@ import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Color
-import android.graphics.Typeface
 import android.location.Location
 import android.os.Build
 import android.os.Bundle
@@ -14,10 +13,6 @@ import android.support.v4.app.ActivityCompat
 import android.support.v4.content.ContextCompat
 import android.support.v4.widget.DrawerLayout
 import android.support.v7.app.ActionBarDrawerToggle
-import android.text.Spannable
-import android.text.SpannableString
-import android.text.style.RelativeSizeSpan
-import android.text.style.StyleSpan
 import android.view.Gravity
 import android.view.Menu
 import android.widget.Toast
@@ -35,7 +30,6 @@ import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
-import com.muddzdev.styleabletoastlibrary.StyleableToast
 import kotlinx.android.synthetic.main.activity_main.*
 import pl.adriankremski.collectively.R
 import pl.adriankremski.collectively.TheApp
@@ -57,6 +51,7 @@ import pl.adriankremski.collectively.presentation.extension.markerBitmapOfCatego
 import pl.adriankremski.collectively.presentation.extension.uppercaseFirstLetter
 import pl.adriankremski.collectively.presentation.views.MainScreenRemarkBottomSheetDialog
 import pl.adriankremski.collectively.presentation.views.dialogs.mapfilters.MapFiltersDialog
+import pl.adriankremski.collectively.presentation.views.toast.ToastManager
 import java.util.*
 import javax.inject.Inject
 
@@ -97,19 +92,12 @@ class MainActivity : BaseActivity(), MainMvp.View, OnMapReadyCallback, GoogleApi
 
     private lateinit var drawerLayout: DrawerLayout
 
+    private var toast: ToastManager? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         TheApp[this].appComponent?.inject(this)
         setContentView(R.layout.activity_main)
-
-        val span = SpannableString(getString(R.string.main_screen_title))
-        span.setSpan(RelativeSizeSpan(1.2f), 0, 1, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
-        span.setSpan(StyleSpan(Typeface.BOLD), 0, 1, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
-
-//        mToolbarOptionLabel = findViewById(R.id.option) as TextView
-//        mToolbarOptionLabel.text = getString(R.string.list)
-//        mToolbarOptionLabel.visibility = View.GONE
-//        mToolbarOptionLabel.setOnClickListener { drawerLayout.openDrawer(Gravity.RIGHT) }
 
         mainMenu.setOnClickListener { drawerLayout.openDrawer(Gravity.LEFT) }
 
@@ -141,18 +129,13 @@ class MainActivity : BaseActivity(), MainMvp.View, OnMapReadyCallback, GoogleApi
         var dialog = MapFiltersDialog.newInstance()
         dialog.show(supportFragmentManager, MapFiltersDialog.javaClass.toString())
         dialog.setOnDismissListener(DialogInterface.OnDismissListener {
+            dialog.dismiss()
             mainPresenter.checkIfFiltersHasChanged()
         })
     }
 
     override fun showRemarksReloadingProgress() {
-        val st = StyleableToast(this, "Updating remarks", Toast.LENGTH_LONG)
-        st.setBackgroundColor(Color.parseColor("#FFFFFF"))
-        st.setTextColor(Color.GRAY)
-        st.setIcon(R.drawable.ic_autorenew_24dp)
-        st.spinIcon()
-        st.setMaxAlpha()
-        st.show()
+        toast = ToastManager(this, getString(R.string.updating_remarks), Toast.LENGTH_LONG).progress().show()
     }
 
     override fun clearCategories() {
@@ -279,6 +262,20 @@ class MainActivity : BaseActivity(), MainMvp.View, OnMapReadyCallback, GoogleApi
     }
 
     override fun showRemarks(remarks: List<Remark>) {
+        toast?.let {
+            it.hide()
+            toast = null
+            ToastManager(this, getString(R.string.remarks_updated), Toast.LENGTH_LONG).success().show()
+        }
+
+        var fragment = supportFragmentManager.findFragmentById(R.id.fragment_view_navigation) as NavigationViewFragment
+        fragment.onRemarkSelectedListener = this
+        fragment.setRemarks(remarks)
+
+        if (map == null) {
+            return
+        }
+
         this.remarks = remarks
         remarksMarkers.forEach(Marker::remove)
         remarks.forEach {
@@ -292,10 +289,6 @@ class MainActivity : BaseActivity(), MainMvp.View, OnMapReadyCallback, GoogleApi
                 remarksMarkers.add(map!!.addMarker(markerOptions))
             }
         }
-
-        var fragment = supportFragmentManager.findFragmentById(R.id.fragment_view_navigation) as NavigationViewFragment
-        fragment.onRemarkSelectedListener = this
-        fragment.setRemarks(remarks)
     }
 
     override fun onMarkerClick(marker: Marker?): Boolean {
@@ -327,8 +320,8 @@ class MainActivity : BaseActivity(), MainMvp.View, OnMapReadyCallback, GoogleApi
         return true;
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
+    override fun onStop() {
+        super.onStop()
         mainPresenter.destroy()
     }
 }

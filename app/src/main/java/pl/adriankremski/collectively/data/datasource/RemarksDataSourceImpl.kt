@@ -18,7 +18,8 @@ class RemarksDataSourceImpl(val api: Api) : RemarksDataSource {
 
     override fun saveRemark(remark: NewRemark): Observable<Response<Void>> = api.saveRemark(remark)
 
-    override fun loadRemarks(): Observable<List<Remark>>  = api.remarks(true, "createdat", "descending", 1000)
+    override fun loadRemarks(authorId: String?, state: String, categories: List<String>): Observable<List<Remark>>
+            = api.remarks(authorId, state, categories, true, "createdat", "descending", 1000)
 
     override fun loadRemarkTags(): Observable<List<RemarkTag>> = api.remarkTags()
 

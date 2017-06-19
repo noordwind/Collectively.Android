@@ -141,8 +141,9 @@ class AppModule(private val application: Application) : Constants {
 
     @Provides
     @Singleton
-    fun provideRemarkCategoriesRepository(remarkCategoriesCache: RemarkCategoriesCache, remarksDataSource: RemarksDataSource, profileRepository: ProfileRepository, operationRepository: OperationRepository): RemarksRepository
-            = RemarkRepositoryImpl(remarkCategoriesCache, remarksDataSource, profileRepository, operationRepository)
+    fun provideRemarkCategoriesRepository(remarkCategoriesCache: RemarkCategoriesCache, remarksDataSource: RemarksDataSource, profileRepository: ProfileRepository,
+                                          filtersRepository: FiltersRepository, operationRepository: OperationRepository): RemarksRepository
+            = RemarkRepositoryImpl(remarkCategoriesCache, remarksDataSource, profileRepository, filtersRepository, operationRepository)
 
     @Provides
     @Singleton
@@ -186,7 +187,7 @@ class AppModule(private val application: Application) : Constants {
 
     @Provides
     @Singleton
-    fun provideFiltersRepository(filtersDataSource: FiltersDataSource) : FiltersRepository = FiltersRepositoryImpl(filtersDataSource)
+    fun provideFiltersRepository(filtersDataSource: FiltersDataSource): FiltersRepository = FiltersRepositoryImpl(filtersDataSource, application.applicationContext)
 
     @Provides
     @Singleton
@@ -194,7 +195,7 @@ class AppModule(private val application: Application) : Constants {
 
     @Provides
     @Singleton
-    fun provideSettingsRepository(operationRepository: OperationRepository, settingsDataSource: SettingsDataSource) : SettingsRepository = SettingsRepositoryImpl(settingsDataSource, operationRepository)
+    fun provideSettingsRepository(operationRepository: OperationRepository, settingsDataSource: SettingsDataSource): SettingsRepository = SettingsRepositoryImpl(settingsDataSource, operationRepository)
 
     @Provides
     @Singleton

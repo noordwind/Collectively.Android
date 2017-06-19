@@ -6,7 +6,7 @@ import retrofit2.Response
 
 interface RemarksDataSource {
     fun loadRemarkCategories(): Observable<List<RemarkCategory>>
-    fun loadRemarks(): Observable<List<Remark>>
+    fun loadRemarks(authorId: String?, state: String, categories: List<String>): Observable<List<Remark>>
     fun loadRemarkTags(): Observable<List<RemarkTag>>
     fun loadSavedRemark(remarkResourcePath: String): Observable<RemarkNotFromList>
     fun loadRemarkPreview(id: String): Observable<RemarkPreview>

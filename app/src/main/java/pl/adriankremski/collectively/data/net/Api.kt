@@ -12,7 +12,14 @@ interface Api {
     //REMARKS
     @Headers(Constants.ApiHeader.ACCEPT_HEADER, Constants.ApiHeader.CONTENT_TYPE_HEADER)
     @GET("remarks")
-    fun remarks(@Query("latest") latest: Boolean, @Query("orderBy") orderBy: String, @Query("sortorder") sortorder: String, @Query("results") results: Int): Observable<List<Remark>>
+    fun remarks(
+            @Query("authorId") authorId: String?,
+            @Query("states") state: String,
+            @Query("categories") categories: List<String>,
+            @Query("latest") latest: Boolean,
+            @Query("orderBy") orderBy: String,
+            @Query("sortorder") sortorder: String,
+            @Query("results") results: Int): Observable<List<Remark>>
 
     @Headers(Constants.ApiHeader.ACCEPT_HEADER, Constants.ApiHeader.CONTENT_TYPE_HEADER)
     @GET("remarks")
@@ -20,7 +27,7 @@ interface Api {
 
     @Headers(Constants.ApiHeader.ACCEPT_HEADER, Constants.ApiHeader.CONTENT_TYPE_HEADER)
     @GET("remarks")
-    fun userFavoriteRemarks(@Query("userFavorites") userId: String,@Query("authorId") authorId: String, @Query("results") results: Int): Observable<List<Remark>>
+    fun userFavoriteRemarks(@Query("userFavorites") userId: String, @Query("authorId") authorId: String, @Query("results") results: Int): Observable<List<Remark>>
 
     @Headers(Constants.ApiHeader.ACCEPT_HEADER, Constants.ApiHeader.CONTENT_TYPE_HEADER)
     @GET("remarks")
@@ -108,6 +115,10 @@ interface Api {
     @Headers(Constants.ApiHeader.ACCEPT_HEADER, Constants.ApiHeader.CONTENT_TYPE_HEADER)
     @PUT("account/settings/notifications")
     fun saveSettings(@Body settings: Settings): Observable<Response<Void>>
+
+    @Headers(Constants.ApiHeader.ACCEPT_HEADER, Constants.ApiHeader.CONTENT_TYPE_HEADER)
+    @PUT("account/password")
+    fun changePassword(@Body body: ChangePasswordRequest): Observable<Response<Void>>
 
     //DELETE
     @Headers(Constants.ApiHeader.ACCEPT_HEADER)

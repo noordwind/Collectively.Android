@@ -2,14 +2,9 @@ package pl.adriankremski.collectively.presentation.profile.remarks.user
 
 import android.content.Context
 import android.content.Intent
-import android.graphics.Typeface
 import android.os.Bundle
 import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
-import android.text.Spannable
-import android.text.SpannableString
-import android.text.style.RelativeSizeSpan
-import android.text.style.StyleSpan
 import android.view.MenuItem
 import android.view.View
 import kotlinx.android.synthetic.main.user_remarks_activity.*
@@ -71,17 +66,11 @@ class UserRemarksActivity : BaseActivity(), UserRemarksMvp.View {
         TheApp[this].appComponent?.inject(this)
         setContentView(R.layout.user_remarks_activity);
 
-        var span: SpannableString? = null
-
         if (intent.getStringExtra(Constants.BundleKey.MODE).equals(CREATED_REMARKS_MODE)) {
-            span = SpannableString(getString(R.string.user_created_remarks_screen_title))
+            toolbarTitleLabel?.text = getString(R.string.user_created_remarks_screen_title)
         } else {
-            span = SpannableString(getString(R.string.user_favorite_remarks_screen_title))
+            toolbarTitleLabel?.text = getString(R.string.user_favorite_remarks_screen_title)
         }
-
-        span.setSpan(RelativeSizeSpan(1.2f), 0, 1, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
-        span.setSpan(StyleSpan(Typeface.BOLD), 0, 1, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
-        toolbarTitleLabel?.text = span;
 
         presenter = UserRemarksPresenter(this, LoadUserRemarksUseCase(remarksRepository, ioThread, uiThread),
                 LoadUserFavoriteRemarksUseCase(remarksRepository, ioThread, uiThread))

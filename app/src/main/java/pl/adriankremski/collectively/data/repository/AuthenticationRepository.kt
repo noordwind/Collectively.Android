@@ -7,4 +7,5 @@ interface AuthenticationRepository {
     fun loginWithEmail(email: String, password: String): Observable<String>
     fun loginWithFacebookToken(token: String): Observable<String>
     fun resetPassword(email: String): Observable<Boolean>
+    fun changePassword(currentPassword: String, newPassword: String): Observable<Boolean>
 }

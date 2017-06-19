@@ -17,6 +17,8 @@ class MainPresenter(val view: MainMvp.View,
     var filtersKey: String = ""
 
     override fun loadRemarks() {
+        loadRemarksUseCase.dispose()
+
         var observer = object : AppDisposableObserver<List<Remark>>() {
 
             override fun onStart() {
@@ -87,6 +89,7 @@ class MainPresenter(val view: MainMvp.View,
             override fun onNext(filters: MapFilters) {
                 var newFiltersKey = filters.selectedFilters.sortedBy { it }.toString() + filters.remarkStatus + filters.showOnlyMine
                 if (!filtersKey.equals(newFiltersKey, true)) {
+                    loadRemarks()
                     view.showRemarksReloadingProgress()
                 }
                 filtersKey = newFiltersKey
