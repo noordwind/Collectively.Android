@@ -11,7 +11,7 @@
         android:layout_height="wrap_content">
 
         <TextView
-            android:text="Page 2 title"
+            android:text="Strona druga"
             android:layout_marginTop="@dimen/spacing_normal"
             android:textColor="@color/white"
             android:layout_width="match_parent"
@@ -22,7 +22,6 @@
             android:layout_height="match_parent"/>
 
         <TextView
-            android:text="Some bullshit with random description goes here"
             android:layout_marginTop="@dimen/spacing_normal"
             android:textColor="@color/white"
             android:layout_width="match_parent"

@@ -114,9 +114,9 @@ class MapFiltersDialog : DialogFragment(), Constants, MapFiltersMvp.View {
     }
 
     override fun selectRemarkStatusFilter(status: String) {
-        if (resolvedFilterButton.text.toString().equals(status)) {
+        if (context.getString(R.string.resolved_filter_api).equals(status)) {
             selectResolvedFilterButton()
-        } else {
+        } else if (context.getString(R.string.unresolved_filter_api).equals(status)) {
             selectUnresolvedFilterButton()
         }
     }

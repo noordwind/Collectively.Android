@@ -2,12 +2,7 @@ package pl.adriankremski.collectively.presentation.profile.notifications
 
 import android.content.Context
 import android.content.Intent
-import android.graphics.Typeface
 import android.os.Bundle
-import android.text.Spannable
-import android.text.SpannableString
-import android.text.style.RelativeSizeSpan
-import android.text.style.StyleSpan
 import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
@@ -68,11 +63,7 @@ class NotificationsSettingsActivity : BaseActivity(), NotificationsSettingsMvp.V
         TheApp[this].appComponent?.inject(this)
         setContentView(R.layout.notifications_activity);
 
-        var span: SpannableString = SpannableString(getString(R.string.notifications_settings_screen_title))
-
-        span.setSpan(RelativeSizeSpan(1.2f), 0, 1, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
-        span.setSpan(StyleSpan(Typeface.BOLD), 0, 1, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
-        toolbarTitleLabel?.text = span;
+        toolbarTitleLabel?.text = getString(R.string.notifications_settings_screen_title)
         toolbarOptionLabel.text = getString(R.string.save)
         toolbarOptionLabel.visibility = View.VISIBLE
         toolbarOptionLabel.setOnClickListener {

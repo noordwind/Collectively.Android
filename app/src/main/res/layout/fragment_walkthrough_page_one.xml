@@ -12,7 +12,7 @@
         android:layout_height="wrap_content">
 
         <TextView
-            android:text="Welcome to Collectively family!"
+            android:text="Witaj w rodzinie Collectively!"
             android:layout_marginTop="@dimen/spacing_normal"
             android:textColor="@color/white"
             android:layout_width="match_parent"
@@ -23,7 +23,6 @@
             android:layout_height="match_parent"/>
 
         <TextView
-            android:text="Some bullshit with random description goes here"
             android:layout_marginTop="@dimen/spacing_normal"
             android:textColor="@color/white"
             android:layout_width="match_parent"

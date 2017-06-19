@@ -9,11 +9,15 @@ import pl.adriankremski.collectively.domain.thread.UseCaseThread
 
 
 abstract class UseCase<T, Params> internal constructor(private val useCaseThread: UseCaseThread, private val postExecutionThread: PostExecutionThread) {
-    private val disposables: CompositeDisposable = CompositeDisposable()
+    private var disposables: CompositeDisposable = CompositeDisposable()
 
     internal abstract fun buildUseCaseObservable(params: Params?): Observable<T>
 
     fun execute(params: Params?) {
+        if (disposables.isDisposed) {
+            disposables = CompositeDisposable()
+        }
+
         val observable = this.buildUseCaseObservable(params)
                 .subscribeOn(useCaseThread.scheduler)
                 .observeOn(postExecutionThread.scheduler)
@@ -21,6 +25,10 @@ abstract class UseCase<T, Params> internal constructor(private val useCaseThread
     }
 
     fun execute(observer: DisposableObserver<T>, params: Params?) {
+        if (disposables.isDisposed) {
+            disposables = CompositeDisposable()
+        }
+
         val observable = this.buildUseCaseObservable(params)
                 .subscribeOn(useCaseThread.scheduler)
                 .observeOn(postExecutionThread.scheduler)

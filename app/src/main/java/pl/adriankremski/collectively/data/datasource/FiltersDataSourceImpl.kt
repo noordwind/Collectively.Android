@@ -6,6 +6,7 @@ import com.google.gson.reflect.TypeToken
 import io.reactivex.Observable
 import net.grandcentrix.tray.TrayPreferences
 import pl.adriankremski.collectively.Constants
+import pl.adriankremski.collectively.R
 import java.util.*
 
 class FiltersDataSourceImpl(context: Context) : FiltersDataSource, TrayPreferences(context, "FILTERS", 1), Constants {
@@ -51,7 +52,7 @@ class FiltersDataSourceImpl(context: Context) : FiltersDataSource, TrayPreferenc
         }.flatMap { Observable.just(true) }
     }
 
-    override fun getSelectRemarkStatus(): Observable<String> = Observable.just(getString(Constants.PreferencesKey.REMARK_STATUS, ""))
+    override fun getSelectRemarkStatus(): Observable<String> = Observable.just(getString(Constants.PreferencesKey.REMARK_STATUS, context.getString(R.string.unresolved_filter_api)))
 
     override fun getShowOnlyMineStatus(): Observable<Boolean> = Observable.just(getBoolean(Constants.PreferencesKey.SHOW_ONLY_MINE, false))
 

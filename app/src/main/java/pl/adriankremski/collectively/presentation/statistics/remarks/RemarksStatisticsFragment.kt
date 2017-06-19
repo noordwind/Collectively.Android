@@ -46,8 +46,8 @@ class RemarksStatisticsFragment : Fragment() {
             reportedStatisticsCount += catStat.reportedCount()
         }
 
-        var statusLabelText = String.format("There are <b>%d</b> resolved remarks out of <b>%d</b>", resolvedStatisticsCount, reportedStatisticsCount)
-        remarksByStatusLabel.text = Html.fromHtml(statusLabelText)
+        var remarkStatisticsChartLabel = getString(R.string.remark_statistics_chart_label, resolvedStatisticsCount.toString(), reportedStatisticsCount.toString())
+        remarksByStatusLabel.text = Html.fromHtml(remarkStatisticsChartLabel)
 
         remarksByCategoryChart.setStatistics(statistics.categoryStatistics)
         remarksByTagChart.setStatistics(statistics.tagStatistics)

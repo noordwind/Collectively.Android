@@ -1,0 +1,154 @@
+<resources>
+    <string name="app_name">Collectively</string>
+    <string name="login_screen_title">Collectively - Logowanie</string>
+    <string name="want_new_account">Nowy użytkownik?</string>
+    <string name="font_normal" translatable="false">sans-serif</string>
+    <string name="font_light" translatable="false">sans-serif-light</string>
+    <string name="font_condensed" translatable="false">sans-serif-condensed</string>
+
+    <string name="sign_up">Rejestracja</string>
+
+    <string name="email">Email</string>
+    <string name="password">Hasło</string>
+    <string name="login">Zaloguj</string>
+    <string name="forgot_password">Nie pamiętasz hasła?</string>
+    <string name="signup_screen_title">Rejestracja</string>
+    <string name="register">Zarejestruj</string>
+    <string name="password_confirmation">Potwierdź hasło</string>
+    <string name="retrieve_password_screen_title">Odzyskaj hasło</string>
+    <string name="reset_password">Zresetuj hasło</string>
+    <string name="login_in_progress_message">Logowanie</string>
+    <string name="login_success_message">Zostałes zalogowany</string>
+    <string name="main_screen_title">Mapa</string>
+    <string name="username">Nazwa użytkownika</string>
+    <string name="add_remark_screen_title">Dodaj zgłoszenie</string>
+    <string name="description_hint">Opis (nieobowiązkowany)</string>
+    <string name="add_remark_category_hint">Zgłaszam...</string>
+    <string name="add_remark_tags_hint">Tagi (nieobowiązkowe)</string>
+    <string name="location">Lokalizacja</string>
+    <string name="list">Lista</string>
+    <string name="open">Otwórz</string>
+    <string name="close">Zamknij</string>
+    <string name="submit">Zgłoś</string>
+    <string name="password_reset_failed">Błąd resetowania hasła</string>
+    <string name="login_error_title">Błąd logowania</string>
+    <string name="registration_error_title">Błąd rejestracji</string>
+    <string name="ok_button">Ok</string>
+    <string name="error_invalid_user_credentials">Nieprawidłowe dane użytkownika</string>
+    <string name="profile">Profil</string>
+    <string name="settings">Ustawienia</string>
+    <string name="fanpage">Fanpage</string>
+    <string name="statistics">Statystyki</string>
+    <string name="statistics_screen_title">Statystyki</string>
+    <string name="profile_screen_title">Profil</string>
+    <string name="statistics_remarks_by_status">Zgłoszenia według statusu</string>
+    <string name="statistics_remarks_by_category">Zgłoszenia według kategorii</string>
+    <string name="statistics_remarks_by_tag">Zgłoszenia według tagów</string>
+    <string name="statistics_resolved_label">Rozwiązane</string>
+    <string name="statistics_unresolved_label">Nierozwiązane</string>
+
+    <string name="retry">Spróbuj ponownie</string>
+    <string name="something_went_wrong">Przepraszamy, coś poszło nie tak!</string>
+    <string name="error_no_network">Brak internetu</string>
+    <string name="error_view_footer">Wystąpił błąd podczas wykonywania operacji</string>
+    <string name="error_statistics_no_network">Połącz się z internetem aby przeglądać statystyki</string>
+    <string name="remark_preview">Podgląd zgłoszenia</string>
+    <string name="remark_preview_photo_title" formatted="false"><![CDATA[<b>%1$s</b> zgłoszony przez <font color=\'#0288D1\'><b>%2$s</b></font>]]></string>
+    <string name="activity_remark_preview_tags_label">Tagi</string>
+    <string name="activity_remark_preview_location_label">Lokalizacja</string>
+    <string name="description">Opis</string>
+    <string name="error_loading_remark_no_network">Połącz się z internetem zobaczyć zgłoszenie</string>
+    <string name="error_loading_remark_comments_no_network">Połącz się z internetem aby przeczytać komentarze</string>
+    <string name="error_loading_remark_states_no_network">Połącz się z internetem aby sprawdzić aktywność</string>
+    <string name="error_loading_user_remarks_no_network">Połącz się z internetem aby przeglądać swoje zgłoszenia</string>
+    <string name="settings_screen_title">Ustawienia</string>
+    <string name="logout">Wyloguj</string>
+    <string name="comments">Komentarze</string>
+    <string name="remark_comments_screen_title">Komentarze</string>
+    <string name="remark_states_screen_title">Historia zgłoszenia</string>
+    <string name="empty_screen_no_comments_footer">Zgłoszenie nie ma żadnych komentarzy.</string>
+    <string name="empty_screen_no_comments_button">Dodaj komentarz</string>
+    <string name="send">Wyślij</string>
+    <string name="comment">Dodaj komentarz</string>
+    <string name="error_submit_comment_no_network">Połącz się z internetem aby dodać komentarz</string>
+
+    <string name="add_comment">Dodaj komentarz</string>
+    <string name="show_comments">Pokaż komentarze</string>
+    <string name="show_more_comments">Więcej</string>
+    <string name="show_activity">Działaj!</string>
+    <string name="activity_with_remark">Historia zgłoszenia</string>
+    <string name="resolve">Rozwiąż zgłoszenie</string>
+    <string name="delete">Usuń</string>
+    <string name="act">Działaj!</string>
+    <string name="your_activity">Twoja aktywność</string>
+    <string name="remarks">Zgłoszenia</string>
+
+    <string name="top_reportes">Najwięcej zgłoszonych</string>
+    <string name="top_resolvers">Najwięcej rozwiązanych</string>
+    <string name="profile_resolved_remarks">Rozwiązane zgłoszenia</string>
+    <string name="profile_reported_remarks">Zraportowane zgłoszenia</string>
+    <string name="your_remarks">Twoje zgłoszenia</string>
+    <string name="favorite_remarks">Śledzone zgłoszenia</string>
+    <string name="user_created_remarks_screen_title">Twoje zgłoszenia</string>
+    <string name="user_favorite_remarks_screen_title">Śledzone zgłoszenia</string>
+    <string name="facebook_login">Facebook</string>
+    <string name="facebook_app_id">1827531987461765</string>
+    <string name="error_login_general">Logowanie nie powiodło się, Spróbuj ponownie</string>
+    <string name="error_invalid_email">Nieprawidłowy adres email</string>
+    <string name="error_invalid_password">Hasło musi mieć conajmniej 4 znaki</string>
+    <string name="error_invalid_username">Nazwa użytkownika nie może być pusta</string>
+    <string name="password_reset_success">Link do zresetowania hasła został wysłany na Twój adres email</string>
+    <string name="filter_remarks_dialog_title">Filtrowanie zgłoszeń</string>
+    <string name="filter_remarks_dialog_categories_label">Kategorie</string>
+    <string name="filter_remarks_dialog_other_label">Inne</string>
+    <string name="resolved_filter">rozwiązane</string>
+    <string name="unresolved_filter">nierozwiązane</string>
+    <string name="notification_settings">Ustawienia notyfikacji</string>
+    <string name="notifications_settings_screen_title">Ustawienia notyfikacji</string>
+    <string name="notification_settings_email_notifications">Powiadomienia email</string>
+    <string name="save">Zapisz</string>
+
+    <string name="notification_option_name_remark_created">Utworzone zgłoszenia</string>
+    <string name="notification_option_name_remark_processed">Procesowane zgłoszenia</string>
+    <string name="notification_option_name_remark_resolved">Rozwiązane zgłoszenia</string>
+    <string name="notification_option_name_remark_canceled">Anulowane zgłoszenia</string>
+    <string name="notification_option_name_remark_renewed">Odnowione zgłoszenia</string>
+    <string name="notification_option_name_new_photo_added">Dodano nowe zdjęcie</string>
+    <string name="notification_option_name_new_comment_added">Dodano nowy komentarz</string>
+
+    <string name="notification_option_description_remark_created">Powiadom mnie kiedy zostało dodane nowe zgłoszenie</string>
+    <string name="notification_option_description_remark_processed">Kiedy jedno z obserwowanych zgłoszeń jest procesowane</string>
+    <string name="notification_option_description_remark_resolved">Kiedy jedno z obserwowanych zgłoszeń zostało rozwiązane</string>
+    <string name="notification_option_description_remark_canceled">Kiedy jedno z obserwowanych zgłoszeń zostało anulowane</string>
+    <string name="notification_option_description_remark_renewed">Kiedy jedno z obserwowanych zgłoszeń zostało ponownie dodane</string>
+    <string name="notification_option_description_new_photo_added">Kiedy dodano zdjęcie do obserwowanego zgłoszenia</string>
+    <string name="notification_option_description_new_comment_added">Kiedy dodano komentarz do obserwowanego zgłoszenia</string>
+
+    <string name="error_loading_notification_settings_no_network">Uruchom internet aby przeglądać ustawienia</string>
+    <string name="read_more">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam</string>
+    <string name="saving_settings">Zapisywanie ustawień</string>
+    <string name="no_internet_connection">Brak połączenia z internetem</string>
+    <string name="settings_saved">Ustawienia zapisane</string>
+    <string name="empty_screen_no_reported_remarks">Nie dodałeś jeszcze żadnego zgłoszenia</string>
+    <string name="empty_screen_no_favorited_remarks">Nie masz żadnych obserwowanych zgłoszeń</string>
+    <string name="error_loading_profile_no_network">Połącz się z internetem aby obejrzeć profil</string>
+    <string name="filter_show_only_mine">Tylko moje</string>
+    <string name="next">Dalej</string>
+    <string name="go_to_login">Dołącz do Collectively!</string>
+    <string name="gallery">Galera</string>
+    <string name="camera">Kamera</string>
+    <string name="add_photo">Dodaj zdjęcie</string>
+    <string name="saving_remark">Przesyłanie zgloszenia...</string>
+    <string name="saving_photo">Przesyłanie zdjęcia...</string>
+    <string name="updating_remarks">Aktualizuje zgłoszenia</string>
+    <string name="change_password">Zmień hasło</string>
+    <string name="change_password_screen_title">Zmiana hasła</string>
+    <string name="old_password">Obecne hasło</string>
+    <string name="new_password">Nowe hasło</string>
+    <string name="accept">Akceptuj</string>
+    <string name="changing_password">Zmieniamy hasło</string>
+    <string name="password_changed">Hasło zostało zmienione</string>
+    <string name="password_not_changed">Hasło nie zostało zmienion</string>
+
+    <string name="remark_statistics_chart_label"><![CDATA[Rozwiązano <b>%1$s</b> zgłoszeń spośród <b>%2$s</b>]]></string>
+</resources>

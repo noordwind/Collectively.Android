@@ -73,6 +73,15 @@ fun Activity.showLoginErrorDialog(message: String) {
     builder.show()
 }
 
+fun Activity.showChangePasswordErrorDialog(message: String) {
+    val builder = AlertDialog.Builder(this)
+    builder
+            .setTitle(this.getString(R.string.password_not_changed))
+            .setMessage(message)
+            .setPositiveButton(this.getString(R.string.ok_button), null)
+    builder.show()
+}
+
 fun Activity.showRegistrationErrorDialog(message: String) {
     val builder = AlertDialog.Builder(this)
     builder

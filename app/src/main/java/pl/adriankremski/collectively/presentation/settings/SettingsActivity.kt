@@ -2,12 +2,7 @@ package pl.adriankremski.collectively.presentation.settings
 
 import android.content.Context
 import android.content.Intent
-import android.graphics.Typeface
 import android.os.Bundle
-import android.text.Spannable
-import android.text.SpannableString
-import android.text.style.RelativeSizeSpan
-import android.text.style.StyleSpan
 import android.view.MenuItem
 import com.facebook.AccessToken
 import kotlinx.android.synthetic.main.activity_settings.*
@@ -18,6 +13,7 @@ import pl.adriankremski.collectively.data.cache.ProfileCache
 import pl.adriankremski.collectively.data.datasource.Session
 import pl.adriankremski.collectively.presentation.BaseActivity
 import pl.adriankremski.collectively.presentation.authentication.login.LoginActivity
+import pl.adriankremski.collectively.presentation.changepassword.ChangePasswordActivity
 import javax.inject.Inject
 
 class SettingsActivity : BaseActivity() {
@@ -41,10 +37,9 @@ class SettingsActivity : BaseActivity() {
         TheApp[this].appComponent?.inject(this)
         setContentView(R.layout.activity_settings);
 
-        var span = SpannableString(getString(R.string.settings_screen_title))
-        span.setSpan(RelativeSizeSpan(1.2f), 0, 1, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
-        span.setSpan(StyleSpan(Typeface.BOLD), 0, 1, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
-        toolbarTitleLabel?.text = span;
+        toolbarTitleLabel?.text = getString(R.string.settings_screen_title)
+
+        changePasswordButton.setOnClickListener { ChangePasswordActivity.start(baseContext) }
 
         logoutButton.setOnClickListener {
             session.clear()

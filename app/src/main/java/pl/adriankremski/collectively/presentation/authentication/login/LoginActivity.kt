@@ -2,14 +2,9 @@ package pl.adriankremski.collectively.presentation.authentication.login
 
 import android.content.Context
 import android.content.Intent
-import android.graphics.Typeface
 import android.os.Bundle
 import android.support.design.widget.Snackbar
 import android.support.v7.app.AppCompatActivity
-import android.text.Spannable
-import android.text.SpannableString
-import android.text.style.RelativeSizeSpan
-import android.text.style.StyleSpan
 import com.facebook.CallbackManager
 import com.facebook.FacebookCallback
 import com.facebook.FacebookException
@@ -76,11 +71,7 @@ class LoginActivity : AppCompatActivity(), LoginMvp.View {
         super.onCreate(savedInstanceState)
         TheApp[this].appComponent?.inject(this)
         setContentView(R.layout.activity_login);
-
-        var span = SpannableString(getString(R.string.app_name))
-        span.setSpan(RelativeSizeSpan(1.2f), 0, 1, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
-        span.setSpan(StyleSpan(Typeface.BOLD), 0, 1, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
-        titleLabel.text = span;
+        titleLabel.text = getString(R.string.app_name)
 
         loginButton.setOnClickListener { login() }
         signupButton.setOnClickListener { signUp() }

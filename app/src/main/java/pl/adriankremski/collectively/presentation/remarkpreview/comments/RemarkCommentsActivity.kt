@@ -2,15 +2,10 @@ package pl.adriankremski.collectively.presentation.remarkpreview.comments
 
 import android.content.Context
 import android.content.Intent
-import android.graphics.Typeface
 import android.os.Bundle
 import android.support.design.widget.BottomSheetBehavior
 import android.support.design.widget.Snackbar
 import android.support.v7.widget.LinearLayoutManager
-import android.text.Spannable
-import android.text.SpannableString
-import android.text.style.RelativeSizeSpan
-import android.text.style.StyleSpan
 import android.view.MenuItem
 import android.view.View
 import kotlinx.android.synthetic.main.activity_remark_comments.*
@@ -72,10 +67,7 @@ class RemarkCommentsActivity : BaseActivity(), RemarkCommentsMvp.View {
         TheApp[this].appComponent?.inject(this)
         setContentView(R.layout.activity_remark_comments);
 
-        var span = SpannableString(getString(R.string.remark_comments_screen_title))
-        span.setSpan(RelativeSizeSpan(1.2f), 0, 1, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
-        span.setSpan(StyleSpan(Typeface.BOLD), 0, 1, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
-        toolbarTitleLabel?.text = span;
+        toolbarTitleLabel?.text = getString(R.string.remark_comments_screen_title)
 
         presenter = RemarkCommentsPresenter(this, LoadRemarkCommentsUseCase(remarksRepository, ioThread, uiThread),
                 SubmitRemarkCommentUseCase(remarksRepository, ioThread, uiThread))

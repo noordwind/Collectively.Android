@@ -25,8 +25,8 @@ import pl.adriankremski.collectively.data.model.RemarkState
 import pl.adriankremski.collectively.data.model.RemarkTag
 import pl.adriankremski.collectively.data.repository.ProfileRepository
 import pl.adriankremski.collectively.data.repository.RemarksRepository
-import pl.adriankremski.collectively.domain.interactor.remark.votes.DeleteRemarkVoteUseCase
 import pl.adriankremski.collectively.domain.interactor.remark.LoadRemarkViewDataUseCase
+import pl.adriankremski.collectively.domain.interactor.remark.votes.DeleteRemarkVoteUseCase
 import pl.adriankremski.collectively.domain.interactor.remark.votes.SubmitRemarkVoteUseCase
 import pl.adriankremski.collectively.domain.thread.PostExecutionThread
 import pl.adriankremski.collectively.domain.thread.UseCaseThread
@@ -36,7 +36,10 @@ import pl.adriankremski.collectively.presentation.extension.textInInt
 import pl.adriankremski.collectively.presentation.extension.uppercaseFirstLetter
 import pl.adriankremski.collectively.presentation.util.RequestErrorDecorator
 import pl.adriankremski.collectively.presentation.util.Switcher
-import pl.adriankremski.collectively.presentation.views.*
+import pl.adriankremski.collectively.presentation.views.RemarkCommentView
+import pl.adriankremski.collectively.presentation.views.RemarkStateView
+import pl.adriankremski.collectively.presentation.views.RemarkTagView
+import pl.adriankremski.collectively.presentation.views.ShowRemarkStatesButton
 import pl.adriankremski.collectively.presentation.views.remark.ShowRemarkCommentsButton
 import java.util.*
 import javax.inject.Inject
@@ -214,6 +217,7 @@ class RemarkActivity : BaseActivity(), RemarkPreviewMvp.View {
 //            tagsLayout?.addView(newView)
         }
 
+        descriptionLabel.visibility = if (remark.description.isEmpty()) View.GONE else View.VISIBLE
         descriptionLabel.text = remark.description
     }
 

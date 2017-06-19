@@ -3,10 +3,7 @@ package pl.adriankremski.collectively.data.repository
 import io.reactivex.Observable
 import pl.adriankremski.collectively.Constants
 import pl.adriankremski.collectively.data.datasource.AuthDataSource
-import pl.adriankremski.collectively.data.model.AuthRequest
-import pl.adriankremski.collectively.data.model.FacebookAuthRequest
-import pl.adriankremski.collectively.data.model.ResetPasswordRequest
-import pl.adriankremski.collectively.data.model.SignUpRequest
+import pl.adriankremski.collectively.data.model.*
 import pl.adriankremski.collectively.data.repository.util.OperationRepository
 
 class AuthenticationRepositoryImpl(val authDataSource: AuthDataSource,
@@ -19,14 +16,17 @@ class AuthenticationRepositoryImpl(val authDataSource: AuthDataSource,
 
         return authDataSource.login(authRequest)
                 .flatMap {
-                    authResponse -> Observable.just(authResponse.token)
+                    authResponse ->
+                    Observable.just(authResponse.token)
                 }
                 .flatMap {
-                    authResponse -> sessionRepository.sessionToken = authResponse
+                    authResponse ->
+                    sessionRepository.sessionToken = authResponse
                     Observable.just(authResponse)
                 }
                 .flatMap {
-                    authResponse -> profileRepository.loadProfile(true).flatMap {
+                    authResponse ->
+                    profileRepository.loadProfile(true).flatMap {
                         Observable.just(authResponse)
                     }
                 }
@@ -47,6 +47,12 @@ class AuthenticationRepositoryImpl(val authDataSource: AuthDataSource,
 
     override fun resetPassword(email: String): Observable<Boolean> {
         return operationRepository.pollOperation(authDataSource.resetPassword(ResetPasswordRequest(email))).flatMap { Observable.just(true) }
+    }
+
+    override fun changePassword(currentPassword: String, newPassword: String): Observable<Boolean> {
+        return operationRepository.pollOperation(
+                authDataSource.chanePassword(ChangePasswordRequest(currentPassword, newPassword)))
+                .flatMap { Observable.just(true) }
     }
 }
 

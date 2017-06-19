@@ -2,14 +2,10 @@ package pl.adriankremski.collectively.presentation.profile
 
 import android.content.Context
 import android.content.Intent
-import android.graphics.Typeface
 import android.os.Bundle
 import android.support.design.widget.AppBarLayout
 import android.support.design.widget.Snackbar
-import android.text.Spannable
 import android.text.SpannableString
-import android.text.style.RelativeSizeSpan
-import android.text.style.StyleSpan
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -118,11 +114,7 @@ class ProfileActivity : BaseActivity(), ProfileMvp.View, AppBarLayout.OnOffsetCh
     override fun showProfile(profile: UserProfileData) {
         switcher.showContentViewsImmediately()
         titleLabel.text = profile.name
-
-        var span = SpannableString(profile.name)
-        span.setSpan(RelativeSizeSpan(1.2f), 0, 1, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
-        span.setSpan(StyleSpan(Typeface.BOLD), 0, 1, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
-        toolbarTitleLabel.text = span
+        toolbarTitleLabel.text = SpannableString(profile.name)
 
         reportedRemarksCount.text = profile.reportedRemarksCount.toString()
         resolvedRemarksCount.text = profile.resolvedRemarksCount.toString()

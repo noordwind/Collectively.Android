@@ -2,15 +2,21 @@ package pl.adriankremski.collectively.data.repository
 
 import io.reactivex.Observable
 import io.reactivex.functions.BiFunction
+import io.reactivex.functions.Function3
+import pl.adriankremski.collectively.Constants
 import pl.adriankremski.collectively.data.cache.RemarkCategoriesCache
+import pl.adriankremski.collectively.data.datasource.FiltersRepository
 import pl.adriankremski.collectively.data.datasource.RemarksDataSource
 import pl.adriankremski.collectively.data.model.*
 import pl.adriankremski.collectively.data.repository.util.OperationRepository
+import java.util.concurrent.TimeUnit
 
 class RemarkRepositoryImpl(val remarkCategoriesCache: RemarkCategoriesCache,
                            val remarksDataSource: RemarksDataSource,
                            val profileRepository: ProfileRepository,
-                           val operationRepository: OperationRepository) : RemarksRepository {
+                           val filtersRepository: FiltersRepository,
+                           val operationRepository: OperationRepository) : RemarksRepository, Constants {
+
     override fun loadUserRemarks(): Observable<List<Remark>> {
         return profileRepository.loadProfile(false).flatMap { remarksDataSource.loadUserRemarks(it.userId) }
     }
@@ -19,7 +25,7 @@ class RemarkRepositoryImpl(val remarkCategoriesCache: RemarkCategoriesCache,
         return profileRepository.loadProfile(false).flatMap { remarksDataSource.loadUserResolvedRemarks(it.userId) }
     }
 
-    override fun loadUserFavoriteRemarks(): Observable<List<Remark>>  {
+    override fun loadUserFavoriteRemarks(): Observable<List<Remark>> {
         return profileRepository.loadProfile(false).flatMap { remarksDataSource.loadUserFavoriteRemarks(it.userId) }
     }
 
@@ -47,7 +53,26 @@ class RemarkRepositoryImpl(val remarkCategoriesCache: RemarkCategoriesCache,
         }
     }
 
-    override fun loadRemarks(): Observable<List<Remark>> = remarksDataSource.loadRemarks()
+    override fun loadRemarks(): Observable<List<Remark>> {
+        var authorIdObservable = profileRepository.loadProfile(false).flatMap { Observable.just(it.userId) }
+
+        var showOnlyMineIdObservable: Observable<String> = filtersRepository.getShowOnlyMineStatus().flatMap {
+            if (it) authorIdObservable else Observable.just("")
+        }
+
+        return Observable.zip<String, String, List<String>, Triple<String, String, List<String>>>(
+                showOnlyMineIdObservable, filtersRepository.getSelectRemarkStatus(), filtersRepository.selectedFilters(), Function3 { onlyMine, remarkStatus, filters ->
+            Triple(onlyMine, remarkStatus, filters)
+        }).flatMap {
+            var onlyMine = if (it.first.isEmpty()) null else it.first
+            var status = it.second
+            var filters = it.third
+            remarksDataSource.loadRemarks(onlyMine, status, filters).repeatWhen {
+                objectObservable: Observable<Any> ->
+                objectObservable.delay(Constants.RetryTime.LOAD_REMARKS_RETRY_MS, TimeUnit.MILLISECONDS)
+            }
+        }
+    }
 
     override fun loadRemark(id: String): Observable<RemarkPreview> = remarksDataSource.loadRemarkPreview(id)
 
@@ -85,6 +110,8 @@ class RemarkRepositoryImpl(val remarkCategoriesCache: RemarkCategoriesCache,
 
         return newRemarkCommentsObs
     }
+
+    class RemarkFilters(showOnlyMine: Boolean, states: String, categories:List<String>)
 }
 
 

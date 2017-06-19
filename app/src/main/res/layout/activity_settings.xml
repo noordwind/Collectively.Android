@@ -21,6 +21,30 @@
         android:padding="@dimen/spacing_normal">
 
         <android.support.v7.widget.CardView
+            android:id="@+id/changePasswordButton"
+            android:layout_marginBottom="@dimen/spacing_normal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/button_selector"
+                android:fontFamily="@string/font_normal"
+                android:paddingBottom="8dp"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp"
+                android:paddingTop="8dp"
+                android:gravity="center_horizontal"
+                android:drawableLeft="@drawable/ic_lock_white_24dp"
+                android:text="@string/change_password"
+                android:textColor="@color/white"
+                android:textSize="@dimen/font_medium"
+                android:textStyle="bold" />
+
+        </android.support.v7.widget.CardView>
+
+        <android.support.v7.widget.CardView
             android:id="@+id/logoutButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">

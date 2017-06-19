@@ -58,7 +58,7 @@ class NotificationsSettingsPresenter(
 
                 notificationsOptions.add(NotificationOption(
                         name = optionNamesRepository.newPhotoAddedOptionName(),
-                        description = optionNamesRepository.newCommentAddedOptionDescription(),
+                        description = optionNamesRepository.newPhotoAddedOptionDescription(),
                         isChecked = settings.emailSettings.photosToRemarkAdded))
 
                 notificationsOptions.add(NotificationOption(

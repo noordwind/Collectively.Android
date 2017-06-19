@@ -9,4 +9,5 @@ interface AuthDataSource {
     fun facebookLogin(authRequest: FacebookAuthRequest): Observable<AuthResponse>
     fun signUp(authRequest: SignUpRequest): Observable<Response<Void>>
     fun resetPassword(body: ResetPasswordRequest): Observable<Response<Void>>
+    fun chanePassword(body: ChangePasswordRequest): Observable<Response<Void>>
 }

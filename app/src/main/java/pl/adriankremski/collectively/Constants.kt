@@ -3,6 +3,13 @@ package pl.adriankremski.collectively
 import android.os.Environment
 
 interface Constants {
+
+    interface RetryTime {
+        companion object {
+            val LOAD_REMARKS_RETRY_MS = 10000L
+        }
+    }
+
     interface PreferencesKey {
         companion object {
             val SESSION_TOKEN = "session_token"

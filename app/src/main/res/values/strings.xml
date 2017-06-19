@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">Collectively</string>
-    <string name="login_screen_title">Collectively - Logowanie</string>
-    <string name="want_new_account">Nowy użytkownik?</string>
+    <string name="login_screen_title">Collectively - Login</string>
+    <string name="want_new_account">New user?</string>
     <string name="font_normal" translatable="false">sans-serif</string>
     <string name="font_light" translatable="false">sans-serif-light</string>
     <string name="font_condensed" translatable="false">sans-serif-condensed</string>
@@ -139,4 +139,18 @@
     <string name="add_photo">Add photo</string>
     <string name="saving_remark">Saving remark...</string>
     <string name="saving_photo">Saving remark photo...</string>
+    <string name="updating_remarks">Updating remarks</string>
+    <string name="change_password">Change password</string>
+    <string name="change_password_screen_title">Change password</string>
+    <string name="old_password">Old password</string>
+    <string name="new_password">New password</string>
+    <string name="accept">Accept</string>
+    <string name="changing_password">Changing password</string>
+    <string name="password_changed">Password changed</string>
+    <string name="password_not_changed">Password not changed</string>
+    <string name="remark_statistics_chart_label"><![CDATA[There are <b>%1$s</b> resolved remarks out of <b>%2$s</b>]]></string>
+    <string name="remarks_updated">Zgłoszenia zaktualizowane</string>
+
+    <string name="resolved_filter_api" translatable="false">resolved</string>
+    <string name="unresolved_filter_api" translatable="false">new</string>
 </resources>

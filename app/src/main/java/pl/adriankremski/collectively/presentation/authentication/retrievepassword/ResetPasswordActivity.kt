@@ -2,14 +2,9 @@ package pl.adriankremski.collectively.presentation.authentication.retrievepasswo
 
 import android.content.Context
 import android.content.Intent
-import android.graphics.Typeface
 import android.os.Bundle
 import android.support.design.widget.Snackbar
 import android.support.v7.app.AppCompatActivity
-import android.text.Spannable
-import android.text.SpannableString
-import android.text.style.RelativeSizeSpan
-import android.text.style.StyleSpan
 import kotlinx.android.synthetic.main.activity_reset_password.*
 import kotlinx.android.synthetic.main.view_login_progress.*
 import pl.adriankremski.collectively.R
@@ -21,6 +16,7 @@ import pl.adriankremski.collectively.domain.thread.PostExecutionThread
 import pl.adriankremski.collectively.domain.thread.UseCaseThread
 import pl.adriankremski.collectively.presentation.extension.setGone
 import pl.adriankremski.collectively.presentation.extension.setVisible
+import pl.adriankremski.collectively.presentation.extension.showResetPasswordErrorDialog
 import javax.inject.Inject
 
 class ResetPasswordActivity : AppCompatActivity(), ResetPasswordMvp.View {
@@ -50,11 +46,7 @@ class ResetPasswordActivity : AppCompatActivity(), ResetPasswordMvp.View {
         super.onCreate(savedInstanceState)
         TheApp[this].appComponent?.inject(this)
         setContentView(R.layout.activity_reset_password)
-
-        val span = SpannableString(getString(R.string.retrieve_password_screen_title))
-        span.setSpan(RelativeSizeSpan(1.2f), 0, 1, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
-        span.setSpan(StyleSpan(Typeface.BOLD), 0, 1, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
-        titleLabel.text = span
+        titleLabel.text = getString(R.string.retrieve_password_screen_title)
 
         presenter = ResetPasswordPresenter(this,
                 RetrievePasswordUseCase(authenticationRepository, ioThread, uiThread),
@@ -78,7 +70,7 @@ class ResetPasswordActivity : AppCompatActivity(), ResetPasswordMvp.View {
     override fun showResetPasswordSuccess() = Snackbar.make(findViewById(android.R.id.content), getString(R.string.password_reset_success), Snackbar.LENGTH_LONG).show()
 
     override fun showResetPasswordServerError(message: String?) {
-        showResetPasswordServerError(message!!)
+        showResetPasswordErrorDialog(message!!)
     }
 
     override fun onDestroy() {

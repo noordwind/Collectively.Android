@@ -6,6 +6,7 @@ import pl.adriankremski.collectively.presentation.addremark.AddRemarkActivity
 import pl.adriankremski.collectively.presentation.authentication.login.LoginActivity
 import pl.adriankremski.collectively.presentation.authentication.retrievepassword.ResetPasswordActivity
 import pl.adriankremski.collectively.presentation.authentication.signup.SignUpActivity
+import pl.adriankremski.collectively.presentation.changepassword.ChangePasswordActivity
 import pl.adriankremski.collectively.presentation.main.MainActivity
 import pl.adriankremski.collectively.presentation.main.navigation.MainNavigationFragment
 import pl.adriankremski.collectively.presentation.profile.ProfileActivity
@@ -39,6 +40,7 @@ interface AppComponent {
     fun inject(activity: RemarkStatesActivity)
     fun inject(activity: UserRemarksActivity)
     fun inject(activity: NotificationsSettingsActivity)
+    fun inject(activity: ChangePasswordActivity)
 
     //Views
     fun inject(remarkCommentRowHolder: RemarkCommentRowHolder)
