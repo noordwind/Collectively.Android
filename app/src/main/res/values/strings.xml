@@ -153,4 +153,5 @@
 
     <string name="resolved_filter_api" translatable="false">resolved</string>
     <string name="unresolved_filter_api" translatable="false">new</string>
+    <string name="history">History</string>
 </resources>

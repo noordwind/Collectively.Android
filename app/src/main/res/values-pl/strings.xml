@@ -151,4 +151,5 @@
     <string name="password_not_changed">Hasło nie zostało zmienion</string>
 
     <string name="remark_statistics_chart_label"><![CDATA[Rozwiązano <b>%1$s</b> zgłoszeń spośród <b>%2$s</b>]]></string>
+    <string name="history">Historia</string>
 </resources>
