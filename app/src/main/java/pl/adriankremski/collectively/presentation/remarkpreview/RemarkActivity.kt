@@ -31,6 +31,7 @@ import pl.adriankremski.collectively.domain.interactor.remark.votes.SubmitRemark
 import pl.adriankremski.collectively.domain.thread.PostExecutionThread
 import pl.adriankremski.collectively.domain.thread.UseCaseThread
 import pl.adriankremski.collectively.presentation.BaseActivity
+import pl.adriankremski.collectively.presentation.extension.dpToPx
 import pl.adriankremski.collectively.presentation.extension.setBackgroundCompat
 import pl.adriankremski.collectively.presentation.extension.textInInt
 import pl.adriankremski.collectively.presentation.extension.uppercaseFirstLetter
@@ -213,12 +214,38 @@ class RemarkActivity : BaseActivity(), RemarkPreviewMvp.View {
             params.rightMargin = 10
             params.bottomMargin = 10
             newView.layoutParams = params
-
 //            tagsLayout?.addView(newView)
         }
 
         descriptionLabel.visibility = if (remark.description.isEmpty()) View.GONE else View.VISIBLE
         descriptionLabel.text = remark.description
+
+        historyButton.setOnClickListener { selectHistoryButton() }
+        commentsButton.setOnClickListener { selectCommentsButton() }
+    }
+
+    fun selectHistoryButton() {
+        commentsButton.setBackgroundResource(0)
+        commentsButton.setTextColor(ContextCompat.getColor(this, R.color.font_dark_hint))
+        commentsButton.setPadding(8f.dpToPx(), 8f.dpToPx(), 8f.dpToPx(), 8f.dpToPx())
+        historyButton.setTextColor(ContextCompat.getColor(this, android.R.color.white))
+        historyButton.setBackgroundResource(R.drawable.button_selected_no_corners)
+        historyButton.setPadding(8f.dpToPx(), 8f.dpToPx(), 8f.dpToPx(), 8f.dpToPx())
+
+        historyLayout.visibility = View.VISIBLE
+        commentsLayout.visibility = View.GONE
+    }
+
+    fun selectCommentsButton() {
+        historyButton.setBackgroundResource(0)
+        historyButton.setTextColor(ContextCompat.getColor(this, R.color.font_dark_hint))
+        historyButton.setPadding(8f.dpToPx(), 8f.dpToPx(), 8f.dpToPx(), 8f.dpToPx())
+        commentsButton.setTextColor(ContextCompat.getColor(this, android.R.color.white))
+        commentsButton.setBackgroundResource(R.drawable.button_selected_no_corners)
+        commentsButton.setPadding(8f.dpToPx(), 8f.dpToPx(), 8f.dpToPx(), 8f.dpToPx())
+
+        historyLayout.visibility = View.GONE
+        commentsLayout.visibility = View.VISIBLE
     }
 
     override fun showEmptyComments() {
@@ -241,11 +268,11 @@ class RemarkActivity : BaseActivity(), RemarkPreviewMvp.View {
     }
 
     override fun showStates(states: List<RemarkState>) {
-        activityLayout.removeAllViews()
+        historyLayout.removeAllViews()
         states.forEach {
-            activityLayout.addView(RemarkStateView(baseContext, it), activityLayout.childCount)
+            historyLayout.addView(RemarkStateView(baseContext, it), historyLayout.childCount)
         }
-        activityLayout.addView(ShowRemarkStatesButton(baseContext, getString(R.string.show_activity), presenter.userId(), presenter.remarkId()), activityLayout.childCount)
+        historyLayout.addView(ShowRemarkStatesButton(baseContext, getString(R.string.show_activity), presenter.userId(), presenter.remarkId()), historyLayout.childCount)
     }
 
 
