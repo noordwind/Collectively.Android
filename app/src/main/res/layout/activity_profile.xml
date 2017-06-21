@@ -255,7 +255,7 @@
             android:layout_width="@dimen/profile_image_width"
             android:layout_height="@dimen/profile_image_width"
             android:layout_gravity="center_horizontal"
-            android:src="@drawable/ic_person_grey_48dp"
+            app:srcCompat="@drawable/ic_person_grey_48dp"
             android:background="@drawable/circle_shape"
             app:finalHeight="@dimen/profile_image_final_width"
             app:finalYPosition="2dp"

@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="300dp"
-    android:layout_height="match_parent"
-    android:background="@color/main_menu_background"
-    android:orientation="vertical">
+                android:layout_width="300dp"
+                android:layout_height="match_parent"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:background="@color/main_menu_background"
+                android:orientation="vertical">
 
     <LinearLayout
         android:id="@+id/photo_section"
@@ -21,7 +22,7 @@
             android:layout_width="60dp"
             android:layout_height="60dp"
             android:layout_gravity="center_vertical"
-            android:src="@drawable/ic_person_grey_48dp"
+            app:srcCompat="@drawable/ic_person_grey_48dp"
             android:background="@drawable/circle_shape"/>
 
         <TextView
@@ -52,8 +53,8 @@
             android:orientation="horizontal"
             android:paddingLeft="@dimen/spacing_medium">
 
-            <ImageView
-                android:src="@drawable/ic_person_white_24dp"
+            <android.support.v7.widget.AppCompatImageView
+                app:srcCompat="@drawable/ic_person_white_24dp"
                 android:layout_gravity="center_vertical"
                 android:paddingRight="@dimen/spacing_medium"
                 android:layout_width="wrap_content"
@@ -72,8 +73,8 @@
             android:orientation="horizontal"
             android:paddingLeft="@dimen/spacing_medium">
 
-            <ImageView
-                android:src="@drawable/ic_statitstics_white_24dp"
+            <android.support.v7.widget.AppCompatImageView
+                app:srcCompat="@drawable/ic_statitstics_white_24dp"
                 android:layout_gravity="center_vertical"
                 android:paddingRight="@dimen/spacing_medium"
                 android:layout_width="wrap_content"
@@ -92,8 +93,8 @@
             android:orientation="horizontal"
             android:paddingLeft="@dimen/spacing_medium">
 
-            <ImageView
-                android:src="@drawable/ic_settings_white_24dp"
+            <android.support.v7.widget.AppCompatImageView
+                app:srcCompat="@drawable/ic_settings_white_24dp"
                 android:layout_gravity="center_vertical"
                 android:paddingRight="@dimen/spacing_medium"
                 android:layout_width="wrap_content"
@@ -117,11 +118,11 @@
             android:orientation="horizontal"
             android:paddingLeft="@dimen/spacing_medium">
 
-            <ImageView
+            <android.support.v7.widget.AppCompatImageView
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:layout_gravity="center_vertical"
-                android:src="@drawable/ic_facebook_icon" />
+                app:srcCompat="@drawable/ic_facebook_icon" />
 
             <TextView
                 style="@style/MenuOption"

@@ -9,7 +9,14 @@ import retrofit2.http.*
 interface Api {
 
     // GET
+
+    // USER
+    @Headers(Constants.ApiHeader.ACCEPT_HEADER, Constants.ApiHeader.CONTENT_TYPE_HEADER)
+    @GET("users/{name}")
+    fun loadUser(@Path("name") userName: String): Observable<User>
+
     //REMARKS
+
     @Headers(Constants.ApiHeader.ACCEPT_HEADER, Constants.ApiHeader.CONTENT_TYPE_HEADER)
     @GET("remarks")
     fun remarks(

@@ -17,7 +17,7 @@ android {
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         resValue "string", "tray__authority", "${applicationId}.tray"
         multiDexEnabled true
-	vectorDrawables.useSupportLibrary = true
+        vectorDrawables.useSupportLibrary = true
     }
 
     buildTypes {
@@ -128,4 +128,5 @@ compile 'fr.avianey.com.viewpagerindicator:library:2.4.1.1@aar'
     compile("com.gordonwong:material-sheet-fab:1.2") {
         exclude group: "com.nineoldandroids"
     }
+    compile "com.ms-square:expandableTextView:0.1.4"
 }

@@ -98,6 +98,9 @@ interface Constants {
             const val USER_ID = "user_id"
             const val STATISTICS = "statistics"
             const val MODE = "mode"
+            const val STATES = "states"
+            const val COMMENTS = "comments"
+            const val REMARK_ID = "remark_id"
         }
     }
 

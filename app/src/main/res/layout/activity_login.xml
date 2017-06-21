@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/activity_main"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+             xmlns:tools="http://schemas.android.com/tools"
+             xmlns:app="http://schemas.android.com/apk/res-auto"
+             android:id="@+id/activity_main"
+             android:layout_width="match_parent"
+             android:layout_height="match_parent">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -26,12 +27,12 @@
                 android:background="@color/red_dark_2"
                 android:padding="@dimen/spacing_medium">
 
-                <ImageView
+                <android.support.v7.widget.AppCompatImageView
                     android:layout_width="32dp"
                     android:layout_height="32dp"
                     android:layout_gravity="center_vertical"
                     android:fontFamily="@string/font_light"
-                    android:src="@drawable/ic_lock_open_white_24dp"
+                    app:srcCompat="@drawable/ic_lock_open_white_24dp"
                     android:text="@string/app_name"
                     android:textColor="@color/white"
                     android:textSize="@dimen/font_medium" />

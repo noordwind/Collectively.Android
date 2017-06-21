@@ -18,12 +18,7 @@ interface RemarkPreviewMvp {
         fun showNegativeVotes(negativeVotesCount: Int)
         fun showUserVotedPositively()
         fun showUserVotedNegatively()
-        fun showComments(comments: List<RemarkComment>)
-        fun showEmptyComments()
-        fun showShowMoreCommentsButton()
-        fun showShowCommentsButton()
-
-        fun showStates(subList: List<RemarkState>)
+        fun showCommentsAndStates(comments: List<RemarkComment>, states: List<RemarkState>)
     }
 
     interface Presenter : BasePresenter {
@@ -34,5 +29,7 @@ interface RemarkPreviewMvp {
         fun deleteNegativeVote()
         fun userId(): String
         fun remarkId(): String
+        fun remarkLatitude(): Double
+        fun remarkLongitude(): Double
     }
 }

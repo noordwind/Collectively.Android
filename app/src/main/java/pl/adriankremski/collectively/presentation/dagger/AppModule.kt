@@ -189,6 +189,15 @@ class AppModule(private val application: Application) : Constants {
     @Singleton
     fun provideFiltersRepository(filtersDataSource: FiltersDataSource): FiltersRepository = FiltersRepositoryImpl(filtersDataSource, application.applicationContext)
 
+
+    @Provides
+    @Singleton
+    fun provideUsersDataSource(api: Api): UserDataSource = UserDataSourceImpl(api)
+
+    @Provides
+    @Singleton
+    fun provideUsersRepository(userDataSource: UserDataSource): UsersRepository = UsersRepositoryImpl(userDataSource)
+
     @Provides
     @Singleton
     fun provideSettingsDataSource(api: Api): SettingsDataSource = SettingsDataSourceImpl(api)

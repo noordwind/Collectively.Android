@@ -2,6 +2,7 @@ package pl.adriankremski.collectively.presentation.remarkpreview
 
 import android.content.Context
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.support.v4.content.ContextCompat
 import android.text.Html
@@ -31,17 +32,14 @@ import pl.adriankremski.collectively.domain.interactor.remark.votes.SubmitRemark
 import pl.adriankremski.collectively.domain.thread.PostExecutionThread
 import pl.adriankremski.collectively.domain.thread.UseCaseThread
 import pl.adriankremski.collectively.presentation.BaseActivity
-import pl.adriankremski.collectively.presentation.extension.dpToPx
+import pl.adriankremski.collectively.presentation.adapter.RemarkPreviewTabsAdapter
+import pl.adriankremski.collectively.presentation.extension.expandTouchArea
 import pl.adriankremski.collectively.presentation.extension.setBackgroundCompat
 import pl.adriankremski.collectively.presentation.extension.textInInt
 import pl.adriankremski.collectively.presentation.extension.uppercaseFirstLetter
 import pl.adriankremski.collectively.presentation.util.RequestErrorDecorator
 import pl.adriankremski.collectively.presentation.util.Switcher
-import pl.adriankremski.collectively.presentation.views.RemarkCommentView
-import pl.adriankremski.collectively.presentation.views.RemarkStateView
 import pl.adriankremski.collectively.presentation.views.RemarkTagView
-import pl.adriankremski.collectively.presentation.views.ShowRemarkStatesButton
-import pl.adriankremski.collectively.presentation.views.remark.ShowRemarkCommentsButton
 import java.util.*
 import javax.inject.Inject
 
@@ -123,6 +121,8 @@ class RemarkActivity : BaseActivity(), RemarkPreviewMvp.View {
             }
         }
         voteDownButton.setOnLikeListener(voteDownButtonLikeListener)
+
+        navigateButton.setOnClickListener { navigate() }
     }
 
     fun voteUpLiked() {
@@ -219,62 +219,25 @@ class RemarkActivity : BaseActivity(), RemarkPreviewMvp.View {
 
         descriptionLabel.visibility = if (remark.description.isEmpty()) View.GONE else View.VISIBLE
         descriptionLabel.text = remark.description
-
-        historyButton.setOnClickListener { selectHistoryButton() }
-        commentsButton.setOnClickListener { selectCommentsButton() }
+        findViewById(R.id.expand_collapse).expandTouchArea()
     }
 
-    fun selectHistoryButton() {
-        commentsButton.setBackgroundResource(0)
-        commentsButton.setTextColor(ContextCompat.getColor(this, R.color.font_dark_hint))
-        commentsButton.setPadding(8f.dpToPx(), 8f.dpToPx(), 8f.dpToPx(), 8f.dpToPx())
-        historyButton.setTextColor(ContextCompat.getColor(this, android.R.color.white))
-        historyButton.setBackgroundResource(R.drawable.button_selected_no_corners)
-        historyButton.setPadding(8f.dpToPx(), 8f.dpToPx(), 8f.dpToPx(), 8f.dpToPx())
+    fun navigate() {
+        var latitude = presenter.remarkLatitude().toString()
+        var longitude = presenter.remarkLongitude().toString()
 
-        historyLayout.visibility = View.VISIBLE
-        commentsLayout.visibility = View.GONE
+        val gmmIntentUri = Uri.parse("google.navigation:q=$latitude,$longitude")
+        val mapIntent = Intent(Intent.ACTION_VIEW, gmmIntentUri)
+        mapIntent.`package` = "com.google.android.apps.maps"
+        startActivity(mapIntent)
     }
 
-    fun selectCommentsButton() {
-        historyButton.setBackgroundResource(0)
-        historyButton.setTextColor(ContextCompat.getColor(this, R.color.font_dark_hint))
-        historyButton.setPadding(8f.dpToPx(), 8f.dpToPx(), 8f.dpToPx(), 8f.dpToPx())
-        commentsButton.setTextColor(ContextCompat.getColor(this, android.R.color.white))
-        commentsButton.setBackgroundResource(R.drawable.button_selected_no_corners)
-        commentsButton.setPadding(8f.dpToPx(), 8f.dpToPx(), 8f.dpToPx(), 8f.dpToPx())
+    override fun showCommentsAndStates(comments: List<RemarkComment>, states: List<RemarkState>) {
+        var adapter = RemarkPreviewTabsAdapter(baseContext, supportFragmentManager, comments, states, presenter.userId(), presenter.remarkId())
 
-        historyLayout.visibility = View.GONE
-        commentsLayout.visibility = View.VISIBLE
+        contentPager.adapter = adapter
+        tabsLayout.setupWithViewPager(contentPager)
     }
-
-    override fun showEmptyComments() {
-        commentsLayout.addView(ShowRemarkCommentsButton(baseContext, getString(R.string.add_comment), presenter.userId(), presenter.remarkId()), commentsLayout.childCount)
-    }
-
-    override fun showComments(comments: List<RemarkComment>) {
-        commentsLayout.removeAllViews()
-        comments.forEach {
-            commentsLayout.addView(RemarkCommentView(baseContext, it), commentsLayout.childCount)
-        }
-    }
-
-    override fun showShowCommentsButton() {
-        commentsLayout.addView(ShowRemarkCommentsButton(baseContext, getString(R.string.show_comments), presenter.userId(), presenter.remarkId()), commentsLayout.childCount)
-    }
-
-    override fun showShowMoreCommentsButton() {
-        commentsLayout.addView(ShowRemarkCommentsButton(baseContext, getString(R.string.show_more_comments), presenter.userId(), presenter.remarkId()), commentsLayout.childCount)
-    }
-
-    override fun showStates(states: List<RemarkState>) {
-        historyLayout.removeAllViews()
-        states.forEach {
-            historyLayout.addView(RemarkStateView(baseContext, it), historyLayout.childCount)
-        }
-        historyLayout.addView(ShowRemarkStatesButton(baseContext, getString(R.string.show_activity), presenter.userId(), presenter.remarkId()), historyLayout.childCount)
-    }
-
 
     override fun showPositiveVotes(positiveVotesCount: Int) {
         positiveVotesCountLabel.text = positiveVotesCount.toString()

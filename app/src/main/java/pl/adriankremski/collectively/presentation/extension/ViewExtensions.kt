@@ -2,10 +2,12 @@ package pl.adriankremski.collectively.presentation.extension
 
 import android.app.Activity
 import android.content.res.Resources
+import android.graphics.Rect
 import android.support.v4.content.ContextCompat
 import android.support.v7.app.AlertDialog
 import android.util.DisplayMetrics
 import android.util.TypedValue
+import android.view.TouchDelegate
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
@@ -111,3 +113,42 @@ fun Float.dpToPx(): Int {
 }
 
 fun Float.spToPx(): Int = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, this, Resources.getSystem().displayMetrics).toInt()
+
+fun View.expandTouchArea(padding: Int = 20) {
+    this.post(ExpandedAreaRunnable(this, padding))
+}
+
+class ExpandedAreaRunnable : Runnable {
+
+    private var view: View? = null
+    private var padding = 20
+
+    constructor(view: View) {
+        this.view = view
+    }
+
+    constructor(view: View, padding: Int) {
+        this.view = view
+        this.padding = padding
+    }
+
+    override fun run() {
+        // Post in the parent's message queue to make sure the parent
+        // lays out its children before we call getHitRect()
+        val delegateArea = Rect()
+        val delegate = view
+        delegate!!.getHitRect(delegateArea)
+        delegateArea.top -= padding
+        delegateArea.bottom += padding
+        delegateArea.left -= padding
+        delegateArea.right += padding
+        val expandedArea = TouchDelegate(delegateArea,
+                delegate)
+        // give the delegate to an ancestor of the view we're
+        // delegating the
+        // area to
+        if (View::class.java.isInstance(delegate.parent)) {
+            (delegate.parent as View).touchDelegate = expandedArea
+        }
+    }
+}

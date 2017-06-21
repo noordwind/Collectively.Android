@@ -30,7 +30,7 @@ class ToastManager(val context: Context, message: String, duration: Int) {
     }
 
     fun show() : ToastManager {
-        toast.show()
+//        toast.show()
         return this
     }
 
@@ -44,7 +44,7 @@ class ToastManager(val context: Context, message: String, duration: Int) {
     }
 
     fun hide() {
-        toast.cancel()
+//        toast.cancel()
     }
 
 }

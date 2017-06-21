@@ -21,14 +21,14 @@
             android:layout_centerVertical="true"
             android:orientation="vertical">
 
-            <ImageView
+            <android.support.v7.widget.AppCompatImageView
                 android:id="@+id/userImage"
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:layout_alignParentLeft="true"
                 android:layout_centerVertical="true"
                 android:layout_alignParentTop="true"
-                android:src="@drawable/ic_build_black_24dp" />
+                app:srcCompat="@drawable/ic_build_black_24dp" />
 
             <TextView
                 android:layout_marginLeft="@dimen/spacing_small"

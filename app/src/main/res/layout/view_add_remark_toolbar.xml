@@ -39,11 +39,11 @@
             android:orientation="horizontal"
             android:textSize="@dimen/font_medium">
 
-            <ImageView
+            <android.support.v7.widget.AppCompatImageView
                 android:id="@+id/submit"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/ic_send_white_24dp"/>
+                app:srcCompat="@drawable/ic_send_white_24dp"/>
 
         </LinearLayout>
 

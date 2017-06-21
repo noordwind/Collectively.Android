@@ -1,5 +1,6 @@
 package pl.adriankremski.collectively.data.model
 
+import java.io.Serializable
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -41,7 +42,7 @@ class RemarkPreview(
 class RemarkPreviewAuthor(
         val userId: String,
         val name: String
-)
+) : Serializable
 
 class RemarkPhoto(
         val url: String,
@@ -59,6 +60,6 @@ class RemarkState(
         val description: String,
         val createdAt: String,
         val removed: Boolean
-) {
+) : Serializable {
     fun creationDate(): Date = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'").parse(createdAt)
 }

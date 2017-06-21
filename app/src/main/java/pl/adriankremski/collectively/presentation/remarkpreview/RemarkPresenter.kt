@@ -1,8 +1,9 @@
 package pl.adriankremski.collectively.presentation.remarkpreview
 
+import pl.adriankremski.collectively.data.model.RemarkPreview
 import pl.adriankremski.collectively.data.model.RemarkVote
-import pl.adriankremski.collectively.domain.interactor.remark.votes.DeleteRemarkVoteUseCase
 import pl.adriankremski.collectively.domain.interactor.remark.LoadRemarkViewDataUseCase
+import pl.adriankremski.collectively.domain.interactor.remark.votes.DeleteRemarkVoteUseCase
 import pl.adriankremski.collectively.domain.interactor.remark.votes.SubmitRemarkVoteUseCase
 import pl.adriankremski.collectively.domain.model.RemarkViewData
 import pl.adriankremski.collectively.presentation.rxjava.AppDisposableObserver
@@ -12,6 +13,7 @@ class RemarkPresenter(val view: RemarkPreviewMvp.View, val loadRemarkUseCase: Lo
 
     private var remarkId : String = ""
     private var userId : String = ""
+    private lateinit var remark: RemarkPreview
 
     override fun loadRemark(id: String) {
         var observer = object : AppDisposableObserver<RemarkViewData>() {
@@ -23,6 +25,9 @@ class RemarkPresenter(val view: RemarkPreviewMvp.View, val loadRemarkUseCase: Lo
 
             override fun onNext(remarkViewData: RemarkViewData) {
                 super.onNext(remarkViewData)
+
+                remark = remarkViewData.remarkPreview
+
                 remarkId = remarkViewData.remarkPreview.id
                 userId = remarkViewData.userId
 
@@ -39,26 +44,10 @@ class RemarkPresenter(val view: RemarkPreviewMvp.View, val loadRemarkUseCase: Lo
                 remarkViewData.comments.forEach { it.remarkId = remarkId }
 
                 var comments = remarkViewData.comments.filter { !it.removed }
-
-                if (comments.size > 0) {
-                    if (comments.size > 3) {
-                        view.showComments(comments.subList(0, 3))
-                        view.showShowMoreCommentsButton();
-                    } else {
-                        view.showComments(comments)
-                        view.showShowCommentsButton();
-                    }
-                } else {
-                    view.showEmptyComments()
-                }
-
                 var states = remarkViewData.states.filter { !it.removed }
+                states = if (states.size > 3) states.subList(0, 3) else states
 
-                if (states.size > 3) {
-                    view.showStates(states.subList(0, 3))
-                } else {
-                    view.showStates(states)
-                }
+                view.showCommentsAndStates(comments, states)
             }
 
             override fun onError(e: Throwable) {
@@ -80,6 +69,10 @@ class RemarkPresenter(val view: RemarkPreviewMvp.View, val loadRemarkUseCase: Lo
 
         loadRemarkUseCase.execute(observer, id)
     }
+
+    override fun remarkLatitude(): Double = remark.location.latitude
+
+    override fun remarkLongitude(): Double = remark.location.longitude
 
     override fun submitPositiveVote() {
         submitRemarkVoteUseCase.execute(VoteChangeObserver(view), Pair(remarkId, RemarkVote("", true)))

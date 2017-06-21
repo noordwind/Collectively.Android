@@ -2,6 +2,7 @@ package pl.adriankremski.collectively.presentation
 
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
+import android.support.v7.app.AppCompatDelegate
 import android.support.v7.widget.Toolbar
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
@@ -14,6 +15,7 @@ open class BaseActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         compositeDisposable = CompositeDisposable()
+        AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
     }
 
     override fun setContentView(layoutResID: Int) {

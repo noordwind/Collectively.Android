@@ -1,5 +1,6 @@
 package pl.adriankremski.collectively.data.model
 
+import java.io.Serializable
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -10,7 +11,7 @@ class RemarkComment(var id: String,
                     val removed: Boolean,
                     val text: String,
                     val createdAt: String,
-                    val votes: List<RemarkVote>?) {
+                    val votes: List<RemarkVote>?) : Serializable{
 
     constructor(text: String) : this("", "", null, false, text, "", null)
 
@@ -29,6 +30,6 @@ class RemarkComment(var id: String,
             negativeVotes().filter { it.userId.equals(userId) }.count() > 0
 }
 
-class RemarkCommentAuthor(val name: String, val userId: String)
+class RemarkCommentAuthor(val name: String, val userId: String) : Serializable
 
-class RemarkCommentPostRequest(val text: String)
+class RemarkCommentPostRequest(val text: String) : Serializable

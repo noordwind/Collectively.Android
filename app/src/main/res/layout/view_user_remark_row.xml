@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:layout_width="match_parent"
               android:layout_height="wrap_content"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
               android:orientation="vertical">
 
     <RelativeLayout
@@ -18,18 +19,18 @@
             android:layout_centerVertical="true"
             android:layout_marginRight="@dimen/spacing_normal">
 
-            <ImageView
+            <android.support.v7.widget.AppCompatImageView
                 android:layout_width="30dp"
                 android:layout_height="30dp"
                 android:layout_gravity="center"
                 android:background="@drawable/circle_shape_dark"/>
 
-            <ImageView
+            <android.support.v7.widget.AppCompatImageView
                 android:id="@+id/category_icon"
                 android:layout_width="20dp"
                 android:layout_height="20dp"
                 android:layout_gravity="center"
-                android:src="@drawable/ic_place_white_24dp"/>
+                app:srcCompat="@drawable/ic_place_white_24dp"/>
         </FrameLayout>
 
         <LinearLayout
@@ -85,11 +86,11 @@
             android:layout_marginLeft="@dimen/spacing_normal"
             android:orientation="vertical">
 
-            <ImageView
+            <android.support.v7.widget.AppCompatImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
-                android:src="@drawable/ic_explore_dark_24dp"/>
+                app:srcCompat="@drawable/ic_explore_dark_24dp"/>
 
             <TextView
                 android:layout_width="wrap_content"

@@ -32,7 +32,7 @@
 
     </LinearLayout>
 
-    <ImageView
+    <android.support.v7.widget.AppCompatImageView
         android:background="@drawable/page2"
         android:layout_centerHorizontal="true"
         android:layout_alignParentBottom="true"
