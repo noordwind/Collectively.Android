@@ -1,4 +1,4 @@
-package pl.adriankremski.collectively;
+package com.noordwind.apps.collectively;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;

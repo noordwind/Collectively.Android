@@ -9,7 +9,7 @@ android {
     buildToolsVersion rootProject.ext.buildToolsVersion
 
     defaultConfig {
-        applicationId "pl.adriankremski.collectively"
+        applicationId "com.noordwind.apps.collectively"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
@@ -17,7 +17,7 @@ android {
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         resValue "string", "tray__authority", "${applicationId}.tray"
         multiDexEnabled true
-	vectorDrawables.useSupportLibrary = true
+        vectorDrawables.useSupportLibrary = true
     }
 
     buildTypes {
@@ -40,11 +40,11 @@ android {
 
     productFlavors {
         prod {
-            applicationId "pl.adriankremski.collectively"
+            applicationId "com.noordwind.apps.collectively"
             buildConfigField "String", "SERVER_URL", "\"https://api.becollective.ly/\""
         }
         dev {
-            applicationId "pl.adriankremski.collectively.dev"
+            applicationId "com.noordwind.apps.collectively.dev"
             minSdkVersion 21
             buildConfigField "String", "SERVER_URL", "\"https://api-dev.becollective.ly/\""
 	    resConfigs ("en", "xxhdpi")
@@ -128,4 +128,5 @@ compile 'fr.avianey.com.viewpagerindicator:library:2.4.1.1@aar'
     compile("com.gordonwong:material-sheet-fab:1.2") {
         exclude group: "com.nineoldandroids"
     }
+    compile "com.ms-square:expandableTextView:0.1.4"
 }

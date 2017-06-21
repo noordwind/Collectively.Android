@@ -41,11 +41,11 @@
                     android:textColor="@color/font_light"
                     android:textSize="@dimen/font_large"/>
 
-                <ImageView
+                <android.support.v7.widget.AppCompatImageView
                     android:id="@+id/switcherErrorImage"
                     android:layout_width="64dp"
                     android:layout_height="64dp"
-                    android:src="@drawable/ic_error_no_internet_connection_white_24dp"
+                    app:srcCompat="@drawable/ic_error_no_internet_connection_white_24dp"
                     android:layout_gravity="center_horizontal"/>
 
                 <TextView

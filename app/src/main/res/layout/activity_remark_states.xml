@@ -71,12 +71,12 @@
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
 
-                    <ImageView
+                    <android.support.v7.widget.AppCompatImageView
                         android:layout_width="30dp"
                         android:layout_height="30dp"
                         android:layout_marginBottom="-13dp"
                         android:layout_gravity="center_horizontal"
-                        android:src="@drawable/ic_arrow_drop_up_black_24dp" />
+                        app:srcCompat="@drawable/ic_arrow_drop_up_black_24dp" />
 
                     <View
                         android:layout_width="match_parent"

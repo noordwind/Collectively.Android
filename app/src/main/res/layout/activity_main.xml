@@ -32,17 +32,17 @@
                 android:layout_marginBottom="8dp"
                 android:layout_marginLeft="@dimen/spacing_normal">
 
-                <ImageView
+                <android.support.v7.widget.AppCompatImageView
                     android:layout_width="50dp"
                     android:layout_height="50dp"
                     android:layout_gravity="center"
                     android:background="@drawable/circle_shape_light"/>
 
-                <ImageView
+                <android.support.v7.widget.AppCompatImageView
                     android:layout_width="30dp"
                     android:layout_height="30dp"
                     android:layout_gravity="center"
-                    android:src="@drawable/ic_place_white_24dp"/>
+                    app:srcCompat="@drawable/ic_place_white_24dp"/>
             </FrameLayout>
 
             <com.getbase.floatingactionbutton.FloatingActionsMenu
@@ -59,12 +59,12 @@
         </FrameLayout>
 
 
-        <ImageView
+        <android.support.v7.widget.AppCompatImageView
             android:id="@+id/mainMenu"
             android:padding="@dimen/spacing_medium"
             android:layout_alignParentLeft="true"
             android:layout_alignParentTop="true"
-            android:src="@drawable/ic_hamburger_black_24dp"
+            app:srcCompat="@drawable/ic_hamburger_black_24dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 

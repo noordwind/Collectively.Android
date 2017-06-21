@@ -65,6 +65,23 @@
         <item name="tabSelectedTextColor">@color/font_light</item>
     </style>
 
+    <style name="RemarkPreviewTabLayout" parent="Widget.Design.TabLayout">
+        <item name="android:background">@color/grey_semi_transparent</item>
+        <item name="tabIndicatorColor">@color/red_dark_1</item>
+        <item name="tabIndicatorHeight">4dp</item>
+        <item name="tabTextAppearance">@style/RemarkPreviewTabTextAppearance</item>
+        <item name="tabPaddingStart">12dp</item>
+        <item name="tabPaddingEnd">12dp</item>
+        <item name="tabSelectedTextColor">@color/font_dark</item>
+    </style>
+
+    <style name="RemarkPreviewTabTextAppearance" parent="TextAppearance.Design.Tab">
+        <item name="android:textSize">@dimen/font_small</item>
+        <item name="android:fontFamily">@string/font_normal</item>
+        <item name="android:textColor">@color/font_dark_hint</item>
+        <item name="textAllCaps">true</item>
+    </style>
+
     <style name="AppTabTextAppearance" parent="TextAppearance.Design.Tab">
         <item name="android:textSize">@dimen/font_small</item>
         <item name="android:fontFamily">@string/font_normal</item>
