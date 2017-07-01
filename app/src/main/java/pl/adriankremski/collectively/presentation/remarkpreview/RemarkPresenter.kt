@@ -34,6 +34,7 @@ class RemarkPresenter(val view: RemarkPreviewMvp.View, val loadRemarkUseCase: Lo
                 view.showLoadedRemark(remarkViewData.remarkPreview)
                 view.showPositiveVotes(remarkViewData.remarkPreview.positiveVotesCount())
                 view.showNegativeVotes(remarkViewData.remarkPreview.negativeVotesCount())
+                view.invalidateLikesProgress()
 
                 if (remarkViewData.remarkPreview.userVotedPositively(remarkViewData.userId)) {
                     view.showUserVotedPositively()

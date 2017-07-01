@@ -81,3 +81,4 @@ fun String.markerBitmapOfCategory(): BitmapDescriptor {
         }
     }
 }
+

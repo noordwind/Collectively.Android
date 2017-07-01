@@ -139,6 +139,7 @@ class RemarkActivity : BaseActivity(), RemarkPreviewMvp.View {
 
         votedUp = true
         votedDown = false
+        invalidateLikesProgress()
     }
 
     fun voteUpUnliked() {
@@ -148,6 +149,8 @@ class RemarkActivity : BaseActivity(), RemarkPreviewMvp.View {
         positiveVotesCountLabel.setTextColor(ContextCompat.getColor(baseContext, R.color.font_dark_hint))
 
         votedUp = false
+
+        invalidateLikesProgress()
     }
 
     fun voteDownLiked() {
@@ -164,6 +167,8 @@ class RemarkActivity : BaseActivity(), RemarkPreviewMvp.View {
 
         votedDown = true
         votedUp = false
+
+        invalidateLikesProgress()
     }
 
     fun voteDownUnliked() {
@@ -173,6 +178,7 @@ class RemarkActivity : BaseActivity(), RemarkPreviewMvp.View {
         negativeVotesCountLabel.setTextColor(ContextCompat.getColor(baseContext, R.color.font_dark_hint))
 
         votedDown = false
+        invalidateLikesProgress()
     }
 
 
@@ -245,6 +251,20 @@ class RemarkActivity : BaseActivity(), RemarkPreviewMvp.View {
 
     override fun showNegativeVotes(negativeVotesCount: Int) {
         negativeVotesCountLabel.text = negativeVotesCount.toString()
+    }
+
+    override fun invalidateLikesProgress() {
+        circularProgressBar.postDelayed(Runnable {
+            var negativeProgress = 50 // Default to half full circle
+
+            var likes = positiveVotesCountLabel.textInInt()
+            var dislikes = negativeVotesCountLabel.textInInt()
+
+            if (dislikes > 0 || likes > 0) {
+                negativeProgress = (dislikes / (likes + dislikes).toFloat() * 100).toInt()
+            }
+            circularProgressBar.setProgress(negativeProgress, true)
+        }, 500)
     }
 
     override fun showUserVotedPositively() {

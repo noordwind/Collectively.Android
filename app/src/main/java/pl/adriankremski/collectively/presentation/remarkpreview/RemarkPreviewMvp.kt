@@ -19,6 +19,7 @@ interface RemarkPreviewMvp {
         fun showUserVotedPositively()
         fun showUserVotedNegatively()
         fun showCommentsAndStates(comments: List<RemarkComment>, states: List<RemarkState>)
+        fun invalidateLikesProgress()
     }
 
     interface Presenter : BasePresenter {
