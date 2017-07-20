@@ -1,4 +1,4 @@
-package pl.adriankremski.collectively;
+package com.noordwind.apps.collectively;
 
 import org.junit.Test;
 

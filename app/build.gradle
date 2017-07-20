@@ -9,7 +9,7 @@ android {
     buildToolsVersion rootProject.ext.buildToolsVersion
 
     defaultConfig {
-        applicationId "pl.adriankremski.collectively"
+        applicationId "com.noordwind.apps.collectively"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
@@ -40,11 +40,11 @@ android {
 
     productFlavors {
         prod {
-            applicationId "pl.adriankremski.collectively"
+            applicationId "com.noordwind.apps.collectively"
             buildConfigField "String", "SERVER_URL", "\"https://api.becollective.ly/\""
         }
         dev {
-            applicationId "pl.adriankremski.collectively.dev"
+            applicationId "com.noordwind.apps.collectively.dev"
             minSdkVersion 21
             buildConfigField "String", "SERVER_URL", "\"https://api-dev.becollective.ly/\""
 	    resConfigs ("en", "xxhdpi")

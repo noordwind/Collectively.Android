@@ -210,7 +210,7 @@
 
                     </LinearLayout>
 
-                    <pl.adriankremski.collectively.presentation.views.CircularLikeProgressBar
+                    <com.noordwind.apps.collectively.presentation.views.CircularLikeProgressBar
                         android:id="@+id/circularProgressBar"
                         android:layout_height="52dp"
                         android:layout_gravity="center_vertical"

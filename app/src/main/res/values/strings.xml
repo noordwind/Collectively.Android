@@ -149,7 +149,7 @@
     <string name="password_changed">Password changed</string>
     <string name="password_not_changed">Password not changed</string>
     <string name="remark_statistics_chart_label"><![CDATA[There are <b>%1$s</b> resolved remarks out of <b>%2$s</b>]]></string>
-    <string name="remarks_updated">Zgłoszenia zaktualizowane</string>
+    <string name="remarks_updated">Remarks updated</string>
 
     <string name="resolved_filter_api" translatable="false">resolved</string>
     <string name="unresolved_filter_api" translatable="false">new</string>
