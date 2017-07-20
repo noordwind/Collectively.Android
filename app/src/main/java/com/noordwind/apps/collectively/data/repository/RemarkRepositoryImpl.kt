@@ -1,18 +1,20 @@
 package com.noordwind.apps.collectively.data.repository
 
-import io.reactivex.Observable
-import io.reactivex.functions.BiFunction
-import io.reactivex.functions.Function3
 import com.noordwind.apps.collectively.Constants
 import com.noordwind.apps.collectively.data.cache.RemarkCategoriesCache
+import com.noordwind.apps.collectively.data.datasource.FileDataSource
 import com.noordwind.apps.collectively.data.datasource.FiltersRepository
 import com.noordwind.apps.collectively.data.datasource.RemarksDataSource
 import com.noordwind.apps.collectively.data.model.*
 import com.noordwind.apps.collectively.data.repository.util.OperationRepository
+import io.reactivex.Observable
+import io.reactivex.functions.BiFunction
+import io.reactivex.functions.Function3
 import java.util.concurrent.TimeUnit
 
 class RemarkRepositoryImpl(val remarkCategoriesCache: RemarkCategoriesCache,
                            val remarksDataSource: RemarksDataSource,
+                           val fileDataSource: FileDataSource,
                            val profileRepository: ProfileRepository,
                            val filtersRepository: FiltersRepository,
                            val operationRepository: OperationRepository) : RemarksRepository, Constants {
@@ -76,8 +78,13 @@ class RemarkRepositoryImpl(val remarkCategoriesCache: RemarkCategoriesCache,
 
     override fun loadRemark(id: String): Observable<RemarkPreview> = remarksDataSource.loadRemarkPreview(id)
 
-    override fun saveRemark(remark: NewRemark): Observable<RemarkNotFromList> =
-            operationRepository.pollOperation(remarksDataSource.saveRemark(remark)).flatMap { remarksDataSource.loadSavedRemark(it.resource) }
+    override fun saveRemark(remark: NewRemark): Observable<RemarkNotFromList> {
+        if (remark.imageUri != null) {
+            return operationRepository.pollOperation(remarksDataSource.saveRemark(remark)).flatMap { remarksDataSource.loadSavedRemark(it.resource) }
+        } else {
+            return operationRepository.pollOperation(remarksDataSource.saveRemark(remark)).flatMap { remarksDataSource.loadSavedRemark(it.resource) }
+        }
+    }
 
     override fun loadRemarkTags(): Observable<List<RemarkTag>> = remarksDataSource.loadRemarkTags()
 

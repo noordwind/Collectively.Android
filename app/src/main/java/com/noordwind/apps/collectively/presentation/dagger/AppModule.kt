@@ -141,9 +141,14 @@ class AppModule(private val application: Application) : Constants {
 
     @Provides
     @Singleton
-    fun provideRemarkCategoriesRepository(remarkCategoriesCache: RemarkCategoriesCache, remarksDataSource: RemarksDataSource, profileRepository: ProfileRepository,
+    fun provideFileDataSource(): FileDataSource = FileDataSourceImpl(application.applicationContext)
+
+    @Provides
+    @Singleton
+    fun provideRemarkCategoriesRepository(remarkCategoriesCache: RemarkCategoriesCache, remarksDataSource: RemarksDataSource,
+                                          fileDataSource: FileDataSource, profileRepository: ProfileRepository,
                                           filtersRepository: FiltersRepository, operationRepository: OperationRepository): RemarksRepository
-            = RemarkRepositoryImpl(remarkCategoriesCache, remarksDataSource, profileRepository, filtersRepository, operationRepository)
+            = RemarkRepositoryImpl(remarkCategoriesCache, remarksDataSource, fileDataSource, profileRepository, filtersRepository, operationRepository)
 
     @Provides
     @Singleton
