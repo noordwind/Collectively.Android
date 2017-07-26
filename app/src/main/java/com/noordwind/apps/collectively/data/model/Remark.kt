@@ -19,6 +19,7 @@ class Remark(
 )
 
 class RemarkNotFromList(
+        val id: String,
         val location: RemarkLocation? = null
 )
 

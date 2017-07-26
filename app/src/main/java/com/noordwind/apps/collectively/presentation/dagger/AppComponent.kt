@@ -18,6 +18,7 @@ import com.noordwind.apps.collectively.presentation.settings.SettingsActivity
 import com.noordwind.apps.collectively.presentation.statistics.StatisticsActivity
 import com.noordwind.apps.collectively.presentation.views.RemarkCommentView
 import com.noordwind.apps.collectively.presentation.views.dialogs.mapfilters.MapFiltersDialog
+import com.noordwind.apps.collectively.presentation.views.dialogs.mapfilters.RemarkFiltersDialog
 import com.noordwind.apps.collectively.presentation.views.remark.RemarkStateView
 import com.noordwind.apps.collectively.presentation.views.remark.comment.RemarkCommentRowHolder
 import dagger.Component
@@ -47,6 +48,7 @@ interface AppComponent {
     //Views
     fun inject(remarkCommentRowHolder: RemarkCommentRowHolder)
     fun inject(mapFiltersDialog: MapFiltersDialog)
+    fun inject(remarkFiltersDialog: RemarkFiltersDialog)
     fun inject(mainNavigationFragment: MainNavigationFragment)
     fun inject(view: RemarkStateView)
     fun inject(view: RemarkCommentView)

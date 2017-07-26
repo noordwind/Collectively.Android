@@ -1,8 +1,9 @@
 package com.noordwind.apps.collectively.data.net
 
-import io.reactivex.Observable
 import com.noordwind.apps.collectively.Constants
 import com.noordwind.apps.collectively.data.model.*
+import io.reactivex.Observable
+import okhttp3.MultipartBody
 import retrofit2.Response
 import retrofit2.http.*
 
@@ -27,6 +28,10 @@ interface Api {
             @Query("orderBy") orderBy: String,
             @Query("sortorder") sortorder: String,
             @Query("results") results: Int): Observable<List<Remark>>
+
+    @Multipart
+    @PUT("remarks/{remarkId}/photo")
+    fun uploadRemarkPhoto(@Path("remarkId") remarkId: String, @Part photo: MultipartBody.Part): Observable<Response<Void>>
 
     @Headers(Constants.ApiHeader.ACCEPT_HEADER, Constants.ApiHeader.CONTENT_TYPE_HEADER)
     @GET("remarks")

@@ -33,13 +33,13 @@ import com.google.android.gms.maps.model.MarkerOptions
 import kotlinx.android.synthetic.main.activity_main.*
 import com.noordwind.apps.collectively.R
 import com.noordwind.apps.collectively.TheApp
-import com.noordwind.apps.collectively.data.datasource.FiltersRepository
+import com.noordwind.apps.collectively.data.datasource.MapFiltersRepository
 import com.noordwind.apps.collectively.data.model.Remark
 import com.noordwind.apps.collectively.data.model.RemarkCategory
 import com.noordwind.apps.collectively.data.repository.RemarksRepository
 import com.noordwind.apps.collectively.domain.interactor.remark.LoadRemarkCategoriesUseCase
 import com.noordwind.apps.collectively.domain.interactor.remark.LoadRemarksUseCase
-import com.noordwind.apps.collectively.domain.interactor.remark.filters.LoadMapFiltersUseCase
+import com.noordwind.apps.collectively.domain.interactor.remark.filters.map.LoadMapFiltersUseCase
 import com.noordwind.apps.collectively.domain.thread.PostExecutionThread
 import com.noordwind.apps.collectively.domain.thread.UseCaseThread
 import com.noordwind.apps.collectively.presentation.BaseActivity
@@ -78,7 +78,7 @@ class MainActivity : com.noordwind.apps.collectively.presentation.BaseActivity()
     lateinit var remarksRepository: RemarksRepository
 
     @Inject
-    lateinit var filtersRepository: FiltersRepository
+    lateinit var mapFiltersRepository: MapFiltersRepository
 
     @Inject
     lateinit var ioThread: UseCaseThread
@@ -117,7 +117,7 @@ class MainActivity : com.noordwind.apps.collectively.presentation.BaseActivity()
 
         mainPresenter = MainPresenter(this, LoadRemarksUseCase(remarksRepository, ioThread, uiThread),
                 LoadRemarkCategoriesUseCase(remarksRepository, ioThread, uiThread),
-                LoadMapFiltersUseCase(filtersRepository, ioThread, uiThread))
+                LoadMapFiltersUseCase(mapFiltersRepository, ioThread, uiThread))
         mainPresenter.loadRemarkCategories()
 
         filtersButton.setOnClickListener {

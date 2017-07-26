@@ -5,7 +5,7 @@ import com.noordwind.apps.collectively.data.model.Remark
 import com.noordwind.apps.collectively.data.model.RemarkCategory
 import com.noordwind.apps.collectively.domain.interactor.remark.LoadRemarkCategoriesUseCase
 import com.noordwind.apps.collectively.domain.interactor.remark.LoadRemarksUseCase
-import com.noordwind.apps.collectively.domain.interactor.remark.filters.LoadMapFiltersUseCase
+import com.noordwind.apps.collectively.domain.interactor.remark.filters.map.LoadMapFiltersUseCase
 import com.noordwind.apps.collectively.domain.model.MapFilters
 import com.noordwind.apps.collectively.presentation.rxjava.AppDisposableObserver
 

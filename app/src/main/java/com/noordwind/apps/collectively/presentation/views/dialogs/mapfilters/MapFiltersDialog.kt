@@ -14,12 +14,14 @@ import android.widget.TextView
 import com.noordwind.apps.collectively.Constants
 import com.noordwind.apps.collectively.R
 import com.noordwind.apps.collectively.TheApp
-import com.noordwind.apps.collectively.data.datasource.FiltersRepository
+import com.noordwind.apps.collectively.data.datasource.MapFiltersRepository
 import com.noordwind.apps.collectively.domain.interactor.remark.filters.*
+import com.noordwind.apps.collectively.domain.interactor.remark.filters.map.*
 import com.noordwind.apps.collectively.domain.thread.PostExecutionThread
 import com.noordwind.apps.collectively.domain.thread.UseCaseThread
 import com.noordwind.apps.collectively.presentation.extension.dpToPx
 import com.noordwind.apps.collectively.presentation.rxjava.RxBus
+import com.noordwind.apps.collectively.presentation.views.FilterView
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import javax.inject.Inject
@@ -30,7 +32,7 @@ class MapFiltersDialog : DialogFragment(), Constants, MapFiltersMvp.View {
     }
 
     @Inject
-    lateinit var filtersRepository: FiltersRepository
+    lateinit var mapFiltersRepository: MapFiltersRepository
 
     @Inject
     lateinit var uiThread: PostExecutionThread
@@ -52,11 +54,11 @@ class MapFiltersDialog : DialogFragment(), Constants, MapFiltersMvp.View {
         TheApp[context].appComponent?.inject(this)
 
         presenter = MapFiltersPresenter(this,
-                LoadMapFiltersUseCase(filtersRepository, ioThread, uiThread),
-                AddFilterUseCase(filtersRepository, ioThread, uiThread),
-                RemoveFilterUseCase(filtersRepository, ioThread, uiThread),
-                SelectShowOnlyMyRemarksUseCase(filtersRepository, ioThread, uiThread),
-                SelectRemarkStatusUseCase(filtersRepository, ioThread, uiThread))
+                LoadMapFiltersUseCase(mapFiltersRepository, ioThread, uiThread),
+                AddMapFilterUseCase(mapFiltersRepository, ioThread, uiThread),
+                RemoveMapFilterUseCase(mapFiltersRepository, ioThread, uiThread),
+                SelectShowOnlyMyRemarksUseCase(mapFiltersRepository, ioThread, uiThread),
+                SelectRemarkStatusUseCase(mapFiltersRepository, ioThread, uiThread))
     }
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
@@ -108,7 +110,7 @@ class MapFiltersDialog : DialogFragment(), Constants, MapFiltersMvp.View {
     override fun showFilters(selectedFilters: List<String>, allFilters: List<String>) {
         categoriesLayout.removeAllViews()
         allFilters.forEach {
-            categoriesLayout.addView(MapFilterView(context, it, selectedFilters.contains(it)), categoriesLayout.childCount)
+            categoriesLayout.addView(FilterView(context, it, selectedFilters.contains(it)), categoriesLayout.childCount)
         }
     }
 
@@ -141,7 +143,7 @@ class MapFiltersDialog : DialogFragment(), Constants, MapFiltersMvp.View {
         }
 
         mMapFilterSelectedEventDisposable = RxBus.instance
-                .getEvents(MapFilterView.MapFilterSelectionChangedEvent::class.java)
+                .getEvents(FilterView.FilterSelectionChangedEvent::class.java)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({ presenter.toggleFilter(it.filter, it.selected) })
     }

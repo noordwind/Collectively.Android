@@ -8,10 +8,6 @@ import android.os.Build
 import android.util.Log
 import com.google.gson.Gson
 import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
-import dagger.Module
-import dagger.Provides
-import okhttp3.*
-import okhttp3.logging.HttpLoggingInterceptor
 import com.noordwind.apps.collectively.BuildConfig
 import com.noordwind.apps.collectively.Constants
 import com.noordwind.apps.collectively.data.cache.ProfileCache
@@ -24,6 +20,10 @@ import com.noordwind.apps.collectively.domain.thread.PostExecutionThread
 import com.noordwind.apps.collectively.domain.thread.UseCaseThread
 import com.noordwind.apps.collectively.presentation.IOThread
 import com.noordwind.apps.collectively.presentation.UIThread
+import dagger.Module
+import dagger.Provides
+import okhttp3.*
+import okhttp3.logging.HttpLoggingInterceptor
 import pl.charmas.android.reactivelocation.ReactiveLocationProvider
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -147,8 +147,8 @@ class AppModule(private val application: Application) : Constants {
     @Singleton
     fun provideRemarkCategoriesRepository(remarkCategoriesCache: RemarkCategoriesCache, remarksDataSource: RemarksDataSource,
                                           fileDataSource: FileDataSource, profileRepository: ProfileRepository,
-                                          filtersRepository: FiltersRepository, operationRepository: OperationRepository): RemarksRepository
-            = RemarkRepositoryImpl(remarkCategoriesCache, remarksDataSource, fileDataSource, profileRepository, filtersRepository, operationRepository)
+                                          mapFiltersRepository: MapFiltersRepository, operationRepository: OperationRepository): RemarksRepository
+            = RemarkRepositoryImpl(remarkCategoriesCache, remarksDataSource, fileDataSource, profileRepository, mapFiltersRepository, operationRepository)
 
     @Provides
     @Singleton
@@ -188,12 +188,19 @@ class AppModule(private val application: Application) : Constants {
 
     @Provides
     @Singleton
-    fun provideFiltersDataSource(): FiltersDataSource = FiltersDataSourceImpl(application.applicationContext)
+    fun provideMapFiltersDataSource(): MapFiltersDataSource = MapFiltersDataSourceImpl(application.applicationContext)
 
     @Provides
     @Singleton
-    fun provideFiltersRepository(filtersDataSource: FiltersDataSource): FiltersRepository = FiltersRepositoryImpl(filtersDataSource, application.applicationContext)
+    fun provideMapFiltersRepository(filtersDataSource: MapFiltersDataSource): MapFiltersRepository = MapFiltersRepositoryImpl(filtersDataSource, application.applicationContext)
 
+    @Provides
+    @Singleton
+    fun provideRemarkFiltersDataSource(): RemarkFiltersDataSource = RemarkFiltersDataSourceImpl(application.applicationContext)
+
+    @Provides
+    @Singleton
+    fun provideRemarkFiltersRepository(filtersDataSource: RemarkFiltersDataSource): RemarkFiltersRepository = RemarkFiltersRepositoryImpl(filtersDataSource, application.applicationContext)
 
     @Provides
     @Singleton

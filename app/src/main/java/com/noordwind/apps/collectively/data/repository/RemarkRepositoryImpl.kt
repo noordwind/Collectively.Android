@@ -3,7 +3,7 @@ package com.noordwind.apps.collectively.data.repository
 import com.noordwind.apps.collectively.Constants
 import com.noordwind.apps.collectively.data.cache.RemarkCategoriesCache
 import com.noordwind.apps.collectively.data.datasource.FileDataSource
-import com.noordwind.apps.collectively.data.datasource.FiltersRepository
+import com.noordwind.apps.collectively.data.datasource.MapFiltersRepository
 import com.noordwind.apps.collectively.data.datasource.RemarksDataSource
 import com.noordwind.apps.collectively.data.model.*
 import com.noordwind.apps.collectively.data.repository.util.OperationRepository
@@ -16,7 +16,7 @@ class RemarkRepositoryImpl(val remarkCategoriesCache: RemarkCategoriesCache,
                            val remarksDataSource: RemarksDataSource,
                            val fileDataSource: FileDataSource,
                            val profileRepository: ProfileRepository,
-                           val filtersRepository: FiltersRepository,
+                           val mapFiltersRepository: MapFiltersRepository,
                            val operationRepository: OperationRepository) : RemarksRepository, Constants {
 
     override fun loadUserRemarks(): Observable<List<Remark>> {
@@ -58,12 +58,12 @@ class RemarkRepositoryImpl(val remarkCategoriesCache: RemarkCategoriesCache,
     override fun loadRemarks(): Observable<List<Remark>> {
         var authorIdObservable = profileRepository.loadProfile(false).flatMap { Observable.just(it.userId) }
 
-        var showOnlyMineIdObservable: Observable<String> = filtersRepository.getShowOnlyMineStatus().flatMap {
+        var showOnlyMineIdObservable: Observable<String> = mapFiltersRepository.getShowOnlyMineStatus().flatMap {
             if (it) authorIdObservable else Observable.just("")
         }
 
         return Observable.zip<String, String, List<String>, Triple<String, String, List<String>>>(
-                showOnlyMineIdObservable, filtersRepository.getSelectRemarkStatus(), filtersRepository.selectedFilters(), Function3 { onlyMine, remarkStatus, filters ->
+                showOnlyMineIdObservable, mapFiltersRepository.getSelectRemarkStatus(), mapFiltersRepository.selectedFilters(), Function3 { onlyMine, remarkStatus, filters ->
             Triple(onlyMine, remarkStatus, filters)
         }).flatMap {
             var onlyMine = if (it.first.isEmpty()) null else it.first
@@ -80,7 +80,10 @@ class RemarkRepositoryImpl(val remarkCategoriesCache: RemarkCategoriesCache,
 
     override fun saveRemark(remark: NewRemark): Observable<RemarkNotFromList> {
         if (remark.imageUri != null) {
-            return operationRepository.pollOperation(remarksDataSource.saveRemark(remark)).flatMap { remarksDataSource.loadSavedRemark(it.resource) }
+            return operationRepository.pollOperation(remarksDataSource.saveRemark(remark))
+                    .flatMap { remarksDataSource.loadSavedRemark(it.resource) }
+                    .flatMap { operationRepository.pollOperation(remarksDataSource.uploadRemarkPhoto(it.id, fileDataSource.fileFromUri(remark.imageUri!!)))}
+                    .flatMap { remarksDataSource.loadSavedRemark(it.resource) }
         } else {
             return operationRepository.pollOperation(remarksDataSource.saveRemark(remark)).flatMap { remarksDataSource.loadSavedRemark(it.resource) }
         }

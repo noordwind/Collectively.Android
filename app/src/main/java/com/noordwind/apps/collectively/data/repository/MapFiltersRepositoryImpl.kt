@@ -1,10 +1,10 @@
 package com.noordwind.apps.collectively.data.datasource
 
 import android.content.Context
-import io.reactivex.Observable
 import com.noordwind.apps.collectively.R
+import io.reactivex.Observable
 
-class FiltersRepositoryImpl(val filtersDataSource: FiltersDataSource, val context: Context) : FiltersRepository {
+class MapFiltersRepositoryImpl(val filtersDataSource: MapFiltersDataSource, val context: Context) : MapFiltersRepository {
     override fun addFilter(filter: String) = filtersDataSource.addFilter(filter)
     override fun removeFilter(filter: String) = filtersDataSource.removeFilter(filter)
     override fun allFilters(): Observable<List<String>> = Observable.just(filtersDataSource.allFilters())

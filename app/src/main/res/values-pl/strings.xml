@@ -2,9 +2,6 @@
     <string name="app_name">Collectively</string>
     <string name="login_screen_title">Collectively - Logowanie</string>
     <string name="want_new_account">Nowy użytkownik?</string>
-    <string name="font_normal" translatable="false">sans-serif</string>
-    <string name="font_light" translatable="false">sans-serif-light</string>
-    <string name="font_condensed" translatable="false">sans-serif-condensed</string>
 
     <string name="sign_up">Rejestracja</string>
 
@@ -100,6 +97,7 @@
     <string name="password_reset_success">Link do zresetowania hasła został wysłany na Twój adres email</string>
     <string name="filter_remarks_dialog_title">Filtrowanie zgłoszeń</string>
     <string name="filter_remarks_dialog_categories_label">Kategorie</string>
+    <string name="filter_remarks_dialog_states_label">Status</string>
     <string name="filter_remarks_dialog_other_label">Inne</string>
     <string name="resolved_filter">rozwiązane</string>
     <string name="unresolved_filter">nierozwiązane</string>
@@ -153,4 +151,6 @@
 
     <string name="remark_statistics_chart_label"><![CDATA[Rozwiązano <b>%1$s</b> zgłoszeń spośród <b>%2$s</b>]]></string>
     <string name="history">Historia</string>
+    <string name="filter">Filtruj</string>
+    <string name="filetered_remarks_message">Znaleziono %1$s zgłoszeń</string>
 </resources>

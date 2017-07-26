@@ -1,13 +1,13 @@
-package com.noordwind.apps.collectively.presentation.views.dialogs.mapfilters
+package com.noordwind.apps.collectively.presentation.views.dialogs.remarkfilters
 
 import android.content.Context
 import android.support.v4.content.ContextCompat
 import android.view.View
 import android.widget.LinearLayout
-import kotlinx.android.synthetic.main.remark_map_filter.view.*
 import com.noordwind.apps.collectively.R
 import com.noordwind.apps.collectively.presentation.extension.iconOfCategory
 import com.noordwind.apps.collectively.presentation.rxjava.RxBus
+import kotlinx.android.synthetic.main.remark_map_filter.view.*
 
 
 class MapFilterView(context: Context, filter: String, isChecked: Boolean) : LinearLayout(context) {
@@ -18,9 +18,9 @@ class MapFilterView(context: Context, filter: String, isChecked: Boolean) : Line
         filterLabel.text = filter
 
         mapFilterCheckbox.isChecked = isChecked
-        mapFilterCheckbox.setOnCheckedChangeListener { compoundButton, isSelected -> RxBus.instance.postEvent(MapFilterSelectionChangedEvent(isSelected, filter))}
+        mapFilterCheckbox.setOnCheckedChangeListener { compoundButton, isSelected -> RxBus.instance.postEvent(FilterSelectionChangedEvent(isSelected, filter))}
     }
 
-    class MapFilterSelectionChangedEvent(val selected: Boolean, val filter: String)
+    class FilterSelectionChangedEvent(val selected: Boolean, val filter: String)
 }
 

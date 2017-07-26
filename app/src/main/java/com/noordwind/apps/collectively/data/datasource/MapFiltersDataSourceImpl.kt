@@ -3,13 +3,13 @@ package com.noordwind.apps.collectively.data.datasource
 import android.content.Context
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
-import io.reactivex.Observable
-import net.grandcentrix.tray.TrayPreferences
 import com.noordwind.apps.collectively.Constants
 import com.noordwind.apps.collectively.R
+import io.reactivex.Observable
+import net.grandcentrix.tray.TrayPreferences
 import java.util.*
 
-class FiltersDataSourceImpl(context: Context) : FiltersDataSource, TrayPreferences(context, "FILTERS", 1), Constants {
+class MapFiltersDataSourceImpl(context: Context) : MapFiltersDataSource, TrayPreferences(context, "MAP_FILTERS", 1), Constants {
     private val gson = Gson()
     private val listType = object : TypeToken<LinkedList<String>>() {}.type
     private val allFilters = listOf("defect", "issue", "suggestion", "praise").sortedBy { it }
@@ -31,13 +31,13 @@ class FiltersDataSourceImpl(context: Context) : FiltersDataSource, TrayPreferenc
     override fun allFilters(): List<String> = allFilters
 
     override fun selectedFilters(): List<String> {
-        var filtersJson = getString(Constants.PreferencesKey.FILTERS, "")
+        var filtersJson = getString(Constants.PreferencesKey.MAP_FILTERS, "")
         var filters = if(filtersJson.isNullOrBlank()) LinkedList<String>() else gson.fromJson(filtersJson, listType)
         return filters
     }
 
     private fun saveFilters(filters: List<String>) {
-        put(Constants.PreferencesKey.FILTERS, gson.toJson(filters))
+        put(Constants.PreferencesKey.MAP_FILTERS, gson.toJson(filters))
     }
 
     override fun selectRemarkStatus(status: String): Observable<Boolean> {

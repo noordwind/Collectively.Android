@@ -1,0 +1,12 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".MainActivity">
+
+    <item
+        android:id="@+id/filter_remarks"
+        android:icon="@drawable/ic_filter_white_24dp"
+        android:orderInCategory="100"
+        app:showAsAction="always"
+        android:title="@string/filter_remarks" />
+</menu>

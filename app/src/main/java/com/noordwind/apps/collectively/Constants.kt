@@ -18,7 +18,9 @@ interface Constants {
             val PROFILE_CACHE_TIME = "profile_cache_time"
             val REMARK_CATEGORIES = "remark_categories"
             val PROFILE = "profile"
-            val FILTERS = "filters"
+            val MAP_FILTERS = "map_filters"
+            val REMARK_CATEGORY_FILTERS = "remark_category_filters"
+            val REMARK_STATUS_FILTERS = "remark_status_filters"
             val REMARK_STATUS = "remark_status"
             val SHOW_ONLY_MINE = "show_only_mine_remark0"
         }
