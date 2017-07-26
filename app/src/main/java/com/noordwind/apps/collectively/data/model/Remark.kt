@@ -19,10 +19,12 @@ class Remark(
 )
 
 class RemarkNotFromList(
+        val id: String,
         val location: RemarkLocation? = null
 )
 
 class NewRemark(
+        val groupId: String?,
         val category: String,
         val latitude: Double,
         val longitude: Double,

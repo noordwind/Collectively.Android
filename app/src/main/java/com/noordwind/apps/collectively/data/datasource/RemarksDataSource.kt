@@ -1,12 +1,13 @@
 package com.noordwind.apps.collectively.data.datasource
 
-import io.reactivex.Observable
 import com.noordwind.apps.collectively.data.model.*
+import io.reactivex.Observable
 import retrofit2.Response
+import java.io.File
 
 interface RemarksDataSource {
     fun loadRemarkCategories(): Observable<List<RemarkCategory>>
-    fun loadRemarks(authorId: String?, state: String, categories: List<String>): Observable<List<Remark>>
+    fun loadRemarks(authorId: String?, state: String, groupId: String?, categories: List<String>): Observable<List<Remark>>
     fun loadRemarkTags(): Observable<List<RemarkTag>>
     fun loadSavedRemark(remarkResourcePath: String): Observable<RemarkNotFromList>
     fun loadRemarkPreview(id: String): Observable<RemarkPreview>
@@ -21,4 +22,9 @@ interface RemarksDataSource {
     fun loadUserRemarks(userId: String): Observable<List<Remark>>
     fun loadUserFavoriteRemarks(userId: String): Observable<List<Remark>>
     fun loadUserResolvedRemarks(userId: String): Observable<List<Remark>>
+
+    fun uploadRemarkPhoto(remarkId: String, photoFile: File): Observable<Response<Void>>
+
+    fun resolveRemark(remarkId: String): Observable<Response<Void>>
+    fun renewRemark(remarkId: String): Observable<Response<Void>>
 }

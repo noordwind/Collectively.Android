@@ -2,6 +2,7 @@ package com.noordwind.apps.collectively
 
 import android.content.Context
 import android.support.multidex.MultiDexApplication
+import android.support.v7.app.AppCompatDelegate
 import com.facebook.FacebookSdk
 import jonathanfinerty.once.Once
 import com.noordwind.apps.collectively.presentation.dagger.AppComponent
@@ -23,6 +24,7 @@ class TheApp : MultiDexApplication() {
         initAppComponent()
         FacebookSdk.sdkInitialize(applicationContext)
         Once.initialise(this);
+        AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
     }
 
     private fun initAppComponent() {

@@ -7,11 +7,11 @@
               android:orientation="vertical">
 
     <LinearLayout
-        android:layout_margin="@dimen/spacing_large"
         android:layout_width="match_parent"
-        android:orientation="vertical"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/spacing_large"
         android:background="#fff"
-        android:layout_height="wrap_content">
+        android:orientation="vertical">
 
         <TextView
             android:layout_width="match_parent"
@@ -20,11 +20,11 @@
             android:background="@color/red_dark_2"
             android:fontFamily="@string/font_condensed"
             android:gravity="center"
+            android:padding="@dimen/spacing_small"
             android:text="@string/filter_remarks_dialog_title"
             android:textAllCaps="true"
-            android:padding="@dimen/spacing_small"
-            android:textStyle="bold"
-            android:textColor="@color/font_light"/>
+            android:textColor="@color/font_light"
+            android:textStyle="bold"/>
 
         <TextView
             android:layout_width="match_parent"
@@ -32,92 +32,117 @@
             android:layout_gravity="center"
             android:fontFamily="@string/font_condensed"
             android:gravity="left"
+            android:padding="@dimen/spacing_small"
             android:text="@string/filter_remarks_dialog_categories_label"
             android:textAllCaps="true"
-            android:padding="@dimen/spacing_small"
-            android:textStyle="bold"
-            android:textColor="@color/font_dark_hint"/>
+            android:textColor="@color/font_dark_hint"
+            android:textStyle="bold"/>
 
         <LinearLayout
             android:id="@+id/categoriesLayout"
-            android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
         </LinearLayout>
 
         <TextView
-            android:layout_marginTop="@dimen/spacing_small"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
+            android:layout_marginTop="@dimen/spacing_small"
             android:fontFamily="@string/font_condensed"
             android:gravity="left"
-            android:text="@string/filter_remarks_dialog_other_label"
-            android:textAllCaps="true"
             android:padding="@dimen/spacing_small"
-            android:textStyle="bold"
-            android:textColor="@color/font_dark_hint"/>
+            android:text="@string/groups"
+            android:textAllCaps="true"
+            android:textColor="@color/font_dark_hint"
+            android:textStyle="bold"/>
 
-            <LinearLayout
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:padding="@dimen/spacing_small">
+
+            <Spinner
+                android:id="@+id/groupsSpinner"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="horizontal"
-                android:padding="@dimen/spacing_small">
+                android:layout_height="wrap_content"
+                android:popupBackground="@color/white"/>
+        </FrameLayout>
 
-                <TextView
-                    android:id="@+id/resolvedFilterButton"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_marginRight="@dimen/spacing_small"
-                    android:layout_weight="0.5"
-                    android:background="@drawable/button_unselected"
-                    android:fontFamily="@string/font_condensed"
-                    android:gravity="center"
-                    android:padding="@dimen/spacing_small"
-                    android:text="@string/resolved_filter"
-                    android:textColor="@color/white"
-                    android:textSize="@dimen/font_normal" />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="@dimen/spacing_small"
+            android:fontFamily="@string/font_condensed"
+            android:gravity="left"
+            android:padding="@dimen/spacing_small"
+            android:text="@string/filter_remarks_dialog_status_label"
+            android:textAllCaps="true"
+            android:textColor="@color/font_dark_hint"
+            android:textStyle="bold"/>
 
-                <TextView
-                    android:id="@+id/unresolvedFilterButton"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_weight="0.5"
-                    android:fontFamily="@string/font_condensed"
-                    android:gravity="center"
-                    android:padding="@dimen/spacing_small"
-                    android:text="@string/unresolved_filter"
-                    android:textColor="@color/font_dark_hint"
-                    android:textSize="@dimen/font_normal" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:padding="@dimen/spacing_small">
 
-            </LinearLayout>
+            <TextView
+                android:id="@+id/resolvedFilterButton"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginRight="@dimen/spacing_small"
+                android:layout_weight="0.5"
+                android:background="@drawable/button_unselected"
+                android:fontFamily="@string/font_condensed"
+                android:gravity="center"
+                android:padding="@dimen/spacing_small"
+                android:text="@string/resolved_filter"
+                android:textColor="@color/white"
+                android:textSize="@dimen/font_normal"/>
 
+            <TextView
+                android:id="@+id/unresolvedFilterButton"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_weight="0.5"
+                android:fontFamily="@string/font_condensed"
+                android:gravity="center"
+                android:padding="@dimen/spacing_small"
+                android:text="@string/unresolved_filter"
+                android:textColor="@color/font_dark_hint"
+                android:textSize="@dimen/font_normal"/>
+
+        </LinearLayout>
 
 
         <FrameLayout
-            android:padding="@dimen/spacing_small"
             android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:layout_height="wrap_content">
+            android:padding="@dimen/spacing_small">
 
             <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_gravity="left|center_vertical"
-                android:textColor="@color/font_dark_hint"
+                android:maxLines="1"
                 android:singleLine="true"
                 android:text="@string/filter_show_only_mine"
-                android:maxLines="1"
-                android:textSize="@dimen/font_medium"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
+                android:textColor="@color/font_dark_hint"
+                android:textSize="@dimen/font_medium"/>
 
             <CheckBox
-                android:layout_gravity="right|center_vertical"
                 android:id="@+id/showOnlyMineCheckButton"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content"
+                android:layout_gravity="right|center_vertical"/>
 
 
         </FrameLayout>

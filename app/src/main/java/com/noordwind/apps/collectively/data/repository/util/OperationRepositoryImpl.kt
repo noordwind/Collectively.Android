@@ -1,10 +1,10 @@
 package com.noordwind.apps.collectively.data.repository.util
 
-import io.reactivex.Observable
 import com.noordwind.apps.collectively.Constants
 import com.noordwind.apps.collectively.data.datasource.OperationDataSource
 import com.noordwind.apps.collectively.data.model.Operation
 import com.noordwind.apps.collectively.data.model.OperationError
+import io.reactivex.Observable
 import retrofit2.Response
 import java.util.concurrent.TimeUnit
 
@@ -23,7 +23,7 @@ class OperationRepositoryImpl(val operationDataSource: OperationDataSource) : Op
         fun <T> pollOperation(operationDataSource: OperationDataSource, sourceObservable: Observable<Response<T>>): Observable<Operation> {
             return sourceObservable.flatMap {
                 var operationPath = it.headers().get(Constants.Headers.X_OPERATION)
-                operationDataSource.operation(operationPath)
+                operationDataSource.operation(operationPath!!)
                         .repeatWhen { objectObservable: Observable<Any> -> objectObservable.delay(RETRY_DELAY_IN_MS, TimeUnit.MILLISECONDS) }
                         .takeUntil { operation: Operation -> operation.isFinished() || counter++ >= MAX_RETRIES }
                         .filter { operation: Operation -> operation.isFinished() || counter >= MAX_RETRIES }

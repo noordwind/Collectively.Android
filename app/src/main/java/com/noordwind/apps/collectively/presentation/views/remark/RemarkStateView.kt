@@ -1,65 +1,35 @@
 package com.noordwind.apps.collectively.presentation.views.remark
 
 import android.content.Context
-import android.support.graphics.drawable.VectorDrawableCompat
 import android.view.View
-import android.widget.ImageView
 import android.widget.LinearLayout
-import com.bumptech.glide.Glide
-import kotlinx.android.synthetic.main.view_remark_state.view.*
 import com.noordwind.apps.collectively.R
-import com.noordwind.apps.collectively.TheApp
 import com.noordwind.apps.collectively.data.model.RemarkState
-import com.noordwind.apps.collectively.data.repository.UsersRepository
-import com.noordwind.apps.collectively.domain.thread.PostExecutionThread
-import com.noordwind.apps.collectively.domain.thread.UseCaseThread
-import com.noordwind.apps.collectively.presentation.rxjava.AppDisposableObserver
-import com.noordwind.apps.collectively.presentation.statistics.LoadUserPictureUrlUseCase
-import javax.inject.Inject
+import com.noordwind.apps.collectively.presentation.extension.getLongRemarkStateTranslation
+import com.noordwind.apps.collectively.presentation.extension.getRemarkStateIcon
+import com.noordwind.apps.collectively.presentation.extension.hideIfEmptyText
+import com.noordwind.apps.collectively.presentation.extension.uppercaseFirstLetter
+import kotlinx.android.synthetic.main.view_remark_state.view.*
+import java.text.SimpleDateFormat
 
 
 class RemarkStateView(context: Context, state: RemarkState) : LinearLayout(context) {
 
-    @Inject
-    lateinit var usersRepository: UsersRepository
-
-    @Inject
-    lateinit var ioThread: UseCaseThread
-
-    @Inject
-    lateinit var uiThread: PostExecutionThread
+    private var dateFormat = SimpleDateFormat("HH:mm, dd MMM")
 
     init {
         View.inflate(getContext(), R.layout.view_remark_state, this)
-        TheApp[getContext()].appComponent!!.inject(this)
 
-        userImage.setImageDrawable(VectorDrawableCompat.create(context.resources, R.drawable.ic_person_grey_48dp, null))
         authorLabel.text = state.user?.name
         descriptionLabel.text = state.description
-        LoadUserPictureUrlUseCase(usersRepository, ioThread, uiThread).execute(UserPictureUrlObserver(context, userImage), state.user.name)
-    }
+        descriptionLabel.hideIfEmptyText()
+        dateLabel.text = dateFormat.format(state.creationDate())
+        statusLabel.text = state.state.getLongRemarkStateTranslation(context).uppercaseFirstLetter()
 
-    class UserPictureUrlObserver(val context: Context, val userImage: ImageView) : AppDisposableObserver<String>() {
-
-        override fun onStart() {
-            super.onStart()
-        }
-
-        override fun onNext(url: String) {
-            super.onNext(url)
-            Glide.with(context).load(url).placeholder(VectorDrawableCompat.create(context.resources, R.drawable.ic_person_grey_48dp, null)).into(userImage)
-        }
-
-        override fun onError(e: Throwable) {
-            super.onError(e)
-        }
-
-        override fun onServerError(message: String?) {
-            super.onServerError(message)
-        }
-
-        override fun onNetworkError() {
-            super.onNetworkError()
+        var stateIcon = state.state.getRemarkStateIcon()
+        stateIcon?.let {
+            stateImage.visibility = View.VISIBLE
+            stateImage.setImageResource(stateIcon)
         }
     }
 }

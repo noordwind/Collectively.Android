@@ -8,14 +8,11 @@ import android.os.Build
 import android.util.Log
 import com.google.gson.Gson
 import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
-import dagger.Module
-import dagger.Provides
-import okhttp3.*
-import okhttp3.logging.HttpLoggingInterceptor
 import com.noordwind.apps.collectively.BuildConfig
 import com.noordwind.apps.collectively.Constants
 import com.noordwind.apps.collectively.data.cache.ProfileCache
 import com.noordwind.apps.collectively.data.cache.RemarkCategoriesCache
+import com.noordwind.apps.collectively.data.cache.UserGroupsCache
 import com.noordwind.apps.collectively.data.datasource.*
 import com.noordwind.apps.collectively.data.net.Api
 import com.noordwind.apps.collectively.data.repository.*
@@ -24,6 +21,10 @@ import com.noordwind.apps.collectively.domain.thread.PostExecutionThread
 import com.noordwind.apps.collectively.domain.thread.UseCaseThread
 import com.noordwind.apps.collectively.presentation.IOThread
 import com.noordwind.apps.collectively.presentation.UIThread
+import dagger.Module
+import dagger.Provides
+import okhttp3.*
+import okhttp3.logging.HttpLoggingInterceptor
 import pl.charmas.android.reactivelocation.ReactiveLocationProvider
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -45,7 +46,8 @@ class AppModule(private val application: Application) : Constants {
     @Singleton
     internal fun provideOkHttpClient(sessionRepository: SessionRepository): OkHttpClient {
         val builder = enableTls12OnPreLollipop(OkHttpClient.Builder())
-        builder.readTimeout(10, TimeUnit.SECONDS)
+        builder.writeTimeout(30, TimeUnit.SECONDS)
+        builder.readTimeout(30, TimeUnit.SECONDS)
         builder.connectTimeout(30, TimeUnit.SECONDS)
 
         var sessionInterceptor = object : Interceptor {
@@ -119,8 +121,30 @@ class AppModule(private val application: Application) : Constants {
 
     @Provides
     @Singleton
-    fun provideAuthenticationRepository(authDataSource: AuthDataSource, profileRepository: ProfileRepository, operationRepository: OperationRepository, sessionRepository: SessionRepository): AuthenticationRepository {
-        return AuthenticationRepositoryImpl(authDataSource, profileRepository, operationRepository, sessionRepository)
+    fun providerUserGroupsCache(): UserGroupsCache {
+        return UserGroupsCache(application.getSharedPreferences("shared_preferences_user_groups", Activity.MODE_PRIVATE), Gson())
+    }
+
+    @Provides
+    @Singleton
+    fun providerUserGroupsSource(api: Api): UserGroupsDataSource {
+        return UserGroupsDataSourceImpl(api)
+    }
+
+    @Provides
+    @Singleton
+    fun providerUserGroupsRepository(dataCache: UserGroupsCache, dataSource: UserGroupsDataSource): UserGroupsRepository {
+        return UserGroupsRepositoryImpl(dataSource, dataCache)
+    }
+
+    @Provides
+    @Singleton
+    fun provideAuthenticationRepository(authDataSource: AuthDataSource,
+                                        profileRepository: ProfileRepository,
+                                        userGroupsRepository: UserGroupsRepository,
+                                        operationRepository: OperationRepository,
+                                        sessionRepository: SessionRepository): AuthenticationRepository {
+        return AuthenticationRepositoryImpl(authDataSource, profileRepository, userGroupsRepository, operationRepository, sessionRepository)
     }
 
     @Provides
@@ -147,8 +171,10 @@ class AppModule(private val application: Application) : Constants {
     @Singleton
     fun provideRemarkCategoriesRepository(remarkCategoriesCache: RemarkCategoriesCache, remarksDataSource: RemarksDataSource,
                                           fileDataSource: FileDataSource, profileRepository: ProfileRepository,
-                                          filtersRepository: FiltersRepository, operationRepository: OperationRepository): RemarksRepository
-            = RemarkRepositoryImpl(remarkCategoriesCache, remarksDataSource, fileDataSource, profileRepository, filtersRepository, operationRepository)
+                                          mapFiltersRepository: MapFiltersRepository, userGroupsRepository: UserGroupsRepository, operationRepository: OperationRepository): RemarksRepository
+            = RemarkRepositoryImpl(remarkCategoriesCache = remarkCategoriesCache, remarksDataSource = remarksDataSource,
+            fileDataSource = fileDataSource, profileRepository = profileRepository, mapFiltersRepository = mapFiltersRepository,
+            userGroupsRepository = userGroupsRepository, operationRepository = operationRepository)
 
     @Provides
     @Singleton
@@ -188,12 +214,19 @@ class AppModule(private val application: Application) : Constants {
 
     @Provides
     @Singleton
-    fun provideFiltersDataSource(): FiltersDataSource = FiltersDataSourceImpl(application.applicationContext)
+    fun provideMapFiltersDataSource(): MapFiltersDataSource = MapFiltersDataSourceImpl(application.applicationContext)
 
     @Provides
     @Singleton
-    fun provideFiltersRepository(filtersDataSource: FiltersDataSource): FiltersRepository = FiltersRepositoryImpl(filtersDataSource, application.applicationContext)
+    fun provideMapFiltersRepository(filtersDataSource: MapFiltersDataSource): MapFiltersRepository = MapFiltersRepositoryImpl(filtersDataSource, application.applicationContext)
 
+    @Provides
+    @Singleton
+    fun provideRemarkFiltersDataSource(): RemarkFiltersDataSource = RemarkFiltersDataSourceImpl(application.applicationContext)
+
+    @Provides
+    @Singleton
+    fun provideRemarkFiltersRepository(filtersDataSource: RemarkFiltersDataSource): RemarkFiltersRepository = RemarkFiltersRepositoryImpl(filtersDataSource, application.applicationContext)
 
     @Provides
     @Singleton
@@ -214,6 +247,10 @@ class AppModule(private val application: Application) : Constants {
     @Provides
     @Singleton
     fun provideFacebookRepository(): FacebookTokenRepository = FacebookTokenRepositoryImpl()
+
+    @Provides
+    @Singleton
+    fun provideTranslationsDataSource(): FiltersTranslationsDataSource = FiltersTranslationsDataSourceImpl(application.applicationContext)
 
     @Provides
     @Singleton

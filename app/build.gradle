@@ -12,7 +12,7 @@ android {
         applicationId "com.noordwind.apps.collectively"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 1
+        versionCode 3
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         resValue "string", "tray__authority", "${applicationId}.tray"
@@ -20,10 +20,20 @@ android {
         vectorDrawables.useSupportLibrary = true
     }
 
+    signingConfigs {
+        release {
+            keyAlias 'collectively'
+            keyPassword 'collectively'
+            storeFile file('/Users/adriankremski/.keys/collectively.keystore')
+            storePassword 'collectively'
+        }
+    }
+
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release
         }
     }
 
@@ -47,12 +57,14 @@ android {
             applicationId "com.noordwind.apps.collectively.dev"
             minSdkVersion 21
             buildConfigField "String", "SERVER_URL", "\"https://api-dev.becollective.ly/\""
-	    resConfigs ("en", "xxhdpi")
+	    resConfigs ("pl", "xxhdpi")
         }
     }
     kapt {
         generateStubs = true
     }
+
+
     packagingOptions {
         pickFirst  'META-INF/rxjava.properties'
     }
@@ -89,8 +101,8 @@ dependencies {
 
     //NETWORKING
     compile "com.facebook.android:facebook-android-sdk:4.1.0"
-    compile 'com.squareup.retrofit2:retrofit:2.1.0'
-    compile 'com.squareup.retrofit2:converter-gson:2.1.0'
+    compile 'com.squareup.retrofit2:retrofit:2.3.0'
+    compile 'com.squareup.retrofit2:converter-gson:2.3.0'
     compile 'com.jakewharton.retrofit:retrofit2-rxjava2-adapter:1.0.0'
 
     compile "com.squareup.okhttp3:okhttp:$okHttpVersion"

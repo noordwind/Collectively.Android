@@ -42,7 +42,7 @@
                     android:layout_width="30dp"
                     android:layout_height="30dp"
                     android:layout_gravity="center"
-                    app:srcCompat="@drawable/ic_place_white_24dp"/>
+                    app:srcCompat="@drawable/ic_place_dark_24dp"/>
             </FrameLayout>
 
             <com.getbase.floatingactionbutton.FloatingActionsMenu
@@ -67,6 +67,39 @@
             app:srcCompat="@drawable/ic_hamburger_black_24dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
+
+    </RelativeLayout>
+
+
+    <RelativeLayout
+        android:id="@+id/tooltipBackground"
+        android:layout_width="match_parent"
+        android:visibility="gone"
+        android:layout_height="match_parent"
+        android:background="#CC000000">
+
+
+        <TextView
+            android:id="@+id/tooltip_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:lines="2"
+            android:layout_marginRight="8dp"
+            android:layout_alignParentRight="true"
+            android:fontFamily="@string/font_light"
+            android:text="@string/swipe_left_main_screen_tooltip"
+            android:textColor="@color/background_light"
+            android:textSize="@dimen/font_medium"/>
+
+        <android.support.v7.widget.AppCompatImageView
+            android:id="@+id/tooltip_arrow"
+            app:srcCompat="@drawable/ic_arrow_back_white_24dp"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="10dp"
+            android:layout_toLeftOf="@id/tooltip_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
 
     </RelativeLayout>
 

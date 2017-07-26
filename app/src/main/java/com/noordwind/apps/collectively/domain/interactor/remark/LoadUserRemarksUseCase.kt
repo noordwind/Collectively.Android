@@ -1,16 +1,22 @@
 package com.noordwind.apps.collectively.domain.interactor.remark
 
-import io.reactivex.Observable
 import com.noordwind.apps.collectively.data.model.Remark
 import com.noordwind.apps.collectively.data.repository.RemarksRepository
 import com.noordwind.apps.collectively.domain.interactor.UseCase
 import com.noordwind.apps.collectively.domain.thread.PostExecutionThread
 import com.noordwind.apps.collectively.domain.thread.UseCaseThread
+import io.reactivex.Observable
 
 class LoadUserRemarksUseCase(val remarksRepository: RemarksRepository,
                          useCaseThread: UseCaseThread,
-                         postExecutionThread: PostExecutionThread) : UseCase<List<Remark>, Void>(useCaseThread, postExecutionThread) {
+                         postExecutionThread: PostExecutionThread) : UseCase<List<Remark>, String>(useCaseThread, postExecutionThread) {
 
-    override fun buildUseCaseObservable(params: Void?): Observable<List<Remark>> = remarksRepository.loadUserRemarks()
+    override fun buildUseCaseObservable(userId: String?): Observable<List<Remark>> {
+        if (userId == null) {
+            return remarksRepository.loadUserRemarks()
+        } else {
+            return remarksRepository.loadUserRemarks(userId)
+        }
+    }
 }
 

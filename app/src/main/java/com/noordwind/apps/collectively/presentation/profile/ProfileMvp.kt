@@ -1,9 +1,9 @@
 package com.noordwind.apps.collectively.presentation.profile
 
-import io.reactivex.disposables.Disposable
-import com.noordwind.apps.collectively.data.model.Profile
+import com.noordwind.apps.collectively.data.model.User
 import com.noordwind.apps.collectively.domain.model.UserProfileData
 import com.noordwind.apps.collectively.presentation.mvp.BasePresenter
+import io.reactivex.disposables.Disposable
 
 interface ProfileMvp {
 
@@ -11,11 +11,13 @@ interface ProfileMvp {
         fun addDisposable(disposable: Disposable)
         fun showLoading()
         fun showLoadProfileError(message: String?)
-        fun showProfile(profile: UserProfileData)
-        fun showLoadProfileNetworkError()
+        fun showCurrentUserProfile(profile: UserProfileData)
+        fun showCustomUserProfile(profile: UserProfileData)
+        fun showLoadCurrentUserProfileNetworkError()
+        fun showLoadCustomUserProfileNetworkError()
     }
 
     interface Presenter : BasePresenter {
-        fun loadProfile()
+        fun loadProfile(user: User?)
     }
 }

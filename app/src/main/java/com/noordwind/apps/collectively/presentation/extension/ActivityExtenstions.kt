@@ -5,14 +5,11 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Environment
 import android.provider.MediaStore
-import android.support.v4.content.FileProvider
 import com.noordwind.apps.collectively.Constants
 import java.io.File
 import java.io.IOException
 import java.text.SimpleDateFormat
 import java.util.*
-
-
 
 
 @Throws(IOException::class)
@@ -30,23 +27,23 @@ fun Activity.openCamera(): Uri? {
     val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
 
     if (intent.resolveActivity(packageManager) != null) {
-        var photoFile : File? = null;
+        var photoFile: File? = null;
         try {
             photoFile = createImageFile();
-        } catch (ex : IOException) { }
+        } catch (ex: IOException) {
+        }
+
+        var outputFileUri = Uri.fromFile(photoFile);
 
         photoFile.let {
-            val photoURI = FileProvider.getUriForFile(this, "com.example.android.fileprovider", photoFile)
-            intent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI)
+            intent.putExtra(MediaStore.EXTRA_OUTPUT, outputFileUri)
             startActivityForResult(intent, Constants.RequestCodes.TAKE_PICTURE)
-            return photoURI
+            return outputFileUri
         }
     }
     return null
 
 }
-
-
 
 
 @Throws(IOException::class)

@@ -15,6 +15,7 @@ import android.support.v4.widget.DrawerLayout
 import android.support.v7.app.ActionBarDrawerToggle
 import android.view.Gravity
 import android.view.Menu
+import android.view.View
 import android.widget.Toast
 import com.getbase.floatingactionbutton.FloatingActionButton
 import com.getbase.floatingactionbutton.FloatingActionsMenu
@@ -30,19 +31,19 @@ import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
-import kotlinx.android.synthetic.main.activity_main.*
+import com.noordwind.apps.collectively.Constants
 import com.noordwind.apps.collectively.R
 import com.noordwind.apps.collectively.TheApp
-import com.noordwind.apps.collectively.data.datasource.FiltersRepository
+import com.noordwind.apps.collectively.data.datasource.MapFiltersRepository
 import com.noordwind.apps.collectively.data.model.Remark
 import com.noordwind.apps.collectively.data.model.RemarkCategory
 import com.noordwind.apps.collectively.data.repository.RemarksRepository
+import com.noordwind.apps.collectively.data.repository.UserGroupsRepository
 import com.noordwind.apps.collectively.domain.interactor.remark.LoadRemarkCategoriesUseCase
 import com.noordwind.apps.collectively.domain.interactor.remark.LoadRemarksUseCase
-import com.noordwind.apps.collectively.domain.interactor.remark.filters.LoadMapFiltersUseCase
+import com.noordwind.apps.collectively.domain.interactor.remark.filters.map.LoadMapFiltersUseCase
 import com.noordwind.apps.collectively.domain.thread.PostExecutionThread
 import com.noordwind.apps.collectively.domain.thread.UseCaseThread
-import com.noordwind.apps.collectively.presentation.BaseActivity
 import com.noordwind.apps.collectively.presentation.adapter.delegates.MainScreenRemarksAdapterDelegate
 import com.noordwind.apps.collectively.presentation.addremark.AddRemarkActivity
 import com.noordwind.apps.collectively.presentation.extension.colorOfCategory
@@ -52,6 +53,8 @@ import com.noordwind.apps.collectively.presentation.extension.uppercaseFirstLett
 import com.noordwind.apps.collectively.presentation.views.MainScreenRemarkBottomSheetDialog
 import com.noordwind.apps.collectively.presentation.views.dialogs.mapfilters.MapFiltersDialog
 import com.noordwind.apps.collectively.presentation.views.toast.ToastManager
+import jonathanfinerty.once.Once
+import kotlinx.android.synthetic.main.activity_main.*
 import java.util.*
 import javax.inject.Inject
 
@@ -78,7 +81,10 @@ class MainActivity : com.noordwind.apps.collectively.presentation.BaseActivity()
     lateinit var remarksRepository: RemarksRepository
 
     @Inject
-    lateinit var filtersRepository: FiltersRepository
+    lateinit var mapFiltersRepository: MapFiltersRepository
+
+    @Inject
+    lateinit var userGroupsRepository: UserGroupsRepository
 
     @Inject
     lateinit var ioThread: UseCaseThread
@@ -108,20 +114,25 @@ class MainActivity : com.noordwind.apps.collectively.presentation.BaseActivity()
 
         floatingActionsMenu = findViewById(R.id.actions) as FloatingActionsMenu
 
-        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            checkLocationPermission();
-        }
-
         val mapFragment = supportFragmentManager.findFragmentById(R.id.map) as SupportMapFragment
         mapFragment.getMapAsync(this)
 
         mainPresenter = MainPresenter(this, LoadRemarksUseCase(remarksRepository, ioThread, uiThread),
                 LoadRemarkCategoriesUseCase(remarksRepository, ioThread, uiThread),
-                LoadMapFiltersUseCase(filtersRepository, ioThread, uiThread))
+                LoadMapFiltersUseCase(mapFiltersRepository, userGroupsRepository, ioThread, uiThread))
         mainPresenter.loadRemarkCategories()
 
         filtersButton.setOnClickListener {
             mainPresenter.loadMapFiltersDialog()
+        }
+
+        if (!Once.beenDone(Once.THIS_APP_INSTALL, Constants.OnceKey.SHOW_SWIPE_LEFT_TOOLTIP_ON_MAIN_SCREEN)) {
+            Once.markDone(Constants.OnceKey.SHOW_SWIPE_LEFT_TOOLTIP_ON_MAIN_SCREEN)
+            tooltipBackground.visibility = View.VISIBLE
+            tooltipBackground.setOnClickListener {
+                tooltipBackground.visibility = View.GONE
+                Once.markDone(Constants.OnceKey.SHOW_SWIPE_LEFT_TOOLTIP_ON_MAIN_SCREEN)
+            }
         }
     }
 
@@ -173,6 +184,11 @@ class MainActivity : com.noordwind.apps.collectively.presentation.BaseActivity()
         if (map != null) {
             mainPresenter.loadRemarks()
         }
+
+
+        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            checkLocationPermission();
+        }
     }
 
     fun buildGoogleApiClient() {
@@ -197,7 +213,6 @@ class MainActivity : com.noordwind.apps.collectively.presentation.BaseActivity()
 
     override fun onLocationChanged(location: Location?) {
         lastLocation = location;
-
 
         //Place current location marker
         var latLng = LatLng(location?.latitude!!, location?.longitude!!);
@@ -292,14 +307,17 @@ class MainActivity : com.noordwind.apps.collectively.presentation.BaseActivity()
     }
 
     override fun onMarkerClick(marker: Marker?): Boolean {
-        remarks?.filter { it.id != null && it.id.equals(marker?.snippet) }?.forEach {
-            //Place current location marker
-            var latLng = LatLng(it.location!!.coordinates[1], it.location!!.coordinates[0]);
+        remarks?.filter { marker?.snippet.equals(it.id) }?.forEach {
+            var latitude = it.location!!.coordinates[1]
+            var longitude = it.location!!.coordinates[0]
 
-            //move map camera
-            map?.moveCamera(CameraUpdateFactory.newLatLng(latLng));
-            map?.animateCamera(CameraUpdateFactory.zoomTo(14.0f));
-            MainScreenRemarkBottomSheetDialog(this, it).show()
+            var remarkLocation = Location("")
+            remarkLocation.latitude = latitude
+            remarkLocation.longitude = longitude
+
+            map?.moveCamera(CameraUpdateFactory.newLatLng(LatLng(latitude, longitude)))
+            map?.animateCamera(CameraUpdateFactory.zoomTo(14.0f))
+            MainScreenRemarkBottomSheetDialog(this, it, lastLocation, remarkLocation).show()
         }
         return true
     }
@@ -308,10 +326,16 @@ class MainActivity : com.noordwind.apps.collectively.presentation.BaseActivity()
         drawerLayout.closeDrawer(Gravity.RIGHT)
 
         if (remark.location != null) {
-            var latLng = LatLng(remark.location.coordinates[1], remark.location.coordinates[0]);
-            map?.moveCamera(CameraUpdateFactory.newLatLng(latLng));
+            var latitude = remark.location!!.coordinates[1]
+            var longitude = remark.location!!.coordinates[0]
+
+            var remarkLocation = Location("")
+            remarkLocation.latitude = latitude
+            remarkLocation.longitude = longitude
+
+            map?.moveCamera(CameraUpdateFactory.newLatLng(LatLng(latitude, longitude)));
             map?.animateCamera(CameraUpdateFactory.zoomTo(20.0f));
-            MainScreenRemarkBottomSheetDialog(this, remark).show()
+            MainScreenRemarkBottomSheetDialog(this, remark, lastLocation, remarkLocation).show()
         }
     }
 

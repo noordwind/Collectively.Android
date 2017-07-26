@@ -16,6 +16,7 @@
     <string name="register">Zarejestruj</string>
     <string name="password_confirmation">Potwierdź hasło</string>
     <string name="retrieve_password_screen_title">Odzyskaj hasło</string>
+    <string name="set_nickname_screen_title">New user</string>
     <string name="reset_password">Zresetuj hasło</string>
     <string name="login_in_progress_message">Logowanie</string>
     <string name="login_success_message">Zostałes zalogowany</string>
@@ -31,6 +32,7 @@
     <string name="close">Close</string>
     <string name="submit">Submit</string>
     <string name="password_reset_failed">Błąd resetowania hasła</string>
+    <string name="set_user_nickname_failed">Błąd operacji</string>
     <string name="login_error_title">Błąd logowania</string>
     <string name="registration_error_title">Błąd rejestracji</string>
     <string name="ok_button">Ok</string>
@@ -78,6 +80,7 @@
     <string name="show_activity">Act!</string>
     <string name="activity_with_remark">Activity</string>
     <string name="resolve">Resolve</string>
+    <string name="reopen">Reopen</string>
     <string name="delete">Delete</string>
     <string name="act">Act!</string>
     <string name="your_activity">Your activity</string>
@@ -86,10 +89,12 @@
     <string name="top_resolvers">Top resolvers</string>
     <string name="profile_resolved_remarks">Resolved remarks</string>
     <string name="profile_reported_remarks">Reported remarks</string>
-    <string name="your_remarks">Your remarks</string>
+    <string name="your_remarks">Created remarks</string>
     <string name="favorite_remarks">Favorite remarks</string>
-    <string name="user_created_remarks_screen_title">Your remarks</string>
+    <string name="user_created_remarks_screen_title">Created remarks</string>
+    <string name="current_user_created_remarks_screen_title">Your remarks</string>
     <string name="user_favorite_remarks_screen_title">Favorite remarks</string>
+    <string name="user_resolved_remarks_screen_title">Resolved remarks</string>
     <string name="facebook_login">Facebook</string>
     <string name="facebook_app_id">1827531987461765</string>
     <string name="error_login_general">Could not login. Please try again</string>
@@ -128,9 +133,18 @@
     <string name="saving_settings">Saving settings</string>
     <string name="no_internet_connection">No internet connection</string>
     <string name="settings_saved">Settings saved</string>
-    <string name="empty_screen_no_reported_remarks">You don\'t have any remarks yet</string>
+
+    <string name="empty_screen_no_reported_remarks">User has not any remarks yet</string>
+    <string name="empty_screen_current_user_no_reported_remarks">You don\'t have any remarks yet</string>
+
+    <string name="empty_screen_no_resolved_remarks">User has not any resolved remarks yet</string>
+    <string name="empty_screen_current_user_no_resolved_remarks">You don\'t have any resolved remarks yet</string>
+
     <string name="empty_screen_no_favorited_remarks">You don\'t have any favorite remarks yet</string>
-    <string name="error_loading_profile_no_network">Connect to internet to check your profile</string>
+
+    <string name="error_loading_current_user_profile_no_network">Connect to internet to check your profile</string>
+    <string name="error_loading_custom_user_profile_no_network">Connect to internet to check user profile</string>
+
     <string name="filter_show_only_mine">Show only mine</string>
     <string name="next">Next</string>
     <string name="go_to_login">Join our community</string>
@@ -138,7 +152,6 @@
     <string name="camera">Camera</string>
     <string name="add_photo">Add photo</string>
     <string name="saving_remark">Saving remark...</string>
-    <string name="saving_photo">Saving remark photo...</string>
     <string name="updating_remarks">Updating remarks</string>
     <string name="change_password">Change password</string>
     <string name="change_password_screen_title">Change password</string>
@@ -154,4 +167,39 @@
     <string name="resolved_filter_api" translatable="false">resolved</string>
     <string name="unresolved_filter_api" translatable="false">new</string>
     <string name="history">History</string>
+    <string name="filter_remarks">Filter remarks</string>
+    <string name="filter_remarks_dialog_states_label">States</string>
+    <string name="filter">Filter</string>
+    <string name="filetered_remarks_message">Found %1$s remarks</string>
+    <string name="users">Users</string>
+
+    <string name="error_loading_users_no_network">Connect to internet to see Collectively users</string>
+    <string name="users_activity">Users</string>
+    <string name="resolved_remarks">Resolved remarks</string>
+    <string name="nickname">Username</string>
+    <string name="set_nickname">Accept</string>
+    <string name="delete_account">Delete account</string>
+    <string name="account_removed_message">Account removed</string>
+    <string name="removing_account">Removing account</string>
+    <string name="operation_failed">Operation failed</string>
+    <string name="empty_description">No description</string>
+    <string name="tap_to_zoom">Tap to zoom</string>
+    <string name="swipe_left_main_screen_tooltip">Swipe left to check \nthe remarks list</string>
+    <string name="remark_state_new_long_description">New</string>
+    <string name="remark_state_processing_long_description">Processing</string>
+    <string name="remark_state_resolved_long_description">Resolved</string>
+    <string name="remark_state_renewed_long_description">Renewed</string>
+    <string name="add_remark_group_hint">For group...</string>
+    <string name="add_remark_all_groups_target">Wszystkie</string>
+    <string name="add_remark_category_not_selected">Nie wybrano kategorii</string>
+    <string name="filter_remarks_dialog_status_label">Status</string>
+    <string name="groups">Group</string>
+    <string name="add_remark_enabling_location_service_required_title">Nieznana lokalizacja</string>
+    <string name="add_remark_enabling_location_service_required_message"> Upewnij się, że Twój GPS jest włączony</string>
+    <string name="remark_added">Zgłoszenie dodane</string>
+    <string name="adding_remark_error">Nie udało się dodać zgłoszenia</string>
+    <string name="remark_resolved">Remark resolved</string>
+    <string name="remark_reopened">Remark reopened</string>
+    <string name="resolving_remark">Resolving remark</string>
+    <string name="reopening_remark">Reopening remark</string>
 </resources>

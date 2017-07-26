@@ -10,6 +10,8 @@ import android.widget.TextView
 import com.hannesdorfmann.adapterdelegates.AbsAdapterDelegate
 import com.noordwind.apps.collectively.R
 import com.noordwind.apps.collectively.data.model.Remark
+import com.noordwind.apps.collectively.presentation.extension.getLongRemarkStateTranslation
+import com.noordwind.apps.collectively.presentation.extension.hideIfEmptyText
 import com.noordwind.apps.collectively.presentation.extension.iconOfCategory
 import com.noordwind.apps.collectively.presentation.extension.uppercaseFirstLetter
 import com.noordwind.apps.collectively.presentation.remarkpreview.RemarkActivity
@@ -45,8 +47,9 @@ class UserRemarksAdapterDelegate(viewType: Int) : AbsAdapterDelegate<List<Any>>(
             itemView.setOnClickListener { RemarkActivity.start(itemView.context, remark.id) }
             categoryIcon.setImageDrawable(ContextCompat.getDrawable(itemView.context, remark.category?.name?.iconOfCategory()!!))
             nameLabel.text = remark.description
+            nameLabel.hideIfEmptyText()
             addressLabel.text = remark.location?.address
-            statusLabel.text = remark.state.state.uppercaseFirstLetter()
+            statusLabel.text = remark.state.state.getLongRemarkStateTranslation(itemView.context).uppercaseFirstLetter()
         }
     }
 

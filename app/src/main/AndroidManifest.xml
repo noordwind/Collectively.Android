@@ -48,6 +48,11 @@
             >
         </activity>
 
+        <activity android:name=".presentation.users.UsersActivity"
+                  android:parentActivityName=".presentation.main.MainActivity"
+            >
+        </activity>
+
         <activity android:name=".presentation.remarkpreview.RemarkActivity"
             android:parentActivityName=".presentation.main.MainActivity"
             >
@@ -95,6 +100,9 @@
         <activity android:name=".presentation.authentication.retrievepassword.ResetPasswordActivity">
         </activity>
 
+        <activity android:name=".presentation.authentication.setnickname.SetNickNameActivity">
+        </activity>
+
         <activity
             android:name="com.facebook.FacebookActivity"
             android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
@@ -113,6 +121,15 @@
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
+
+        <receiver
+            android:name=".presentation.receiver.LocationProviderChangedReceiver"
+            android:exported="false" >
+            <intent-filter>
+                <action android:name="android.location.PROVIDERS_CHANGED" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </receiver>
 
     </application>
 

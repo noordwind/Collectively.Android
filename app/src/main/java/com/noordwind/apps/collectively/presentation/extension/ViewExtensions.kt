@@ -5,6 +5,7 @@ import android.content.res.Resources
 import android.graphics.Rect
 import android.support.v4.content.ContextCompat
 import android.support.v7.app.AlertDialog
+import android.text.TextUtils
 import android.util.DisplayMetrics
 import android.util.TypedValue
 import android.view.TouchDelegate
@@ -102,6 +103,33 @@ fun Activity.showResetPasswordErrorDialog(message: String) {
     builder.show()
 }
 
+fun Activity.showAddressNotSpecifiedDialogError() {
+    val builder = AlertDialog.Builder(this)
+    builder
+            .setTitle(this.getString(R.string.add_remark_enabling_location_service_required_title))
+            .setMessage(this.getString(R.string.add_remark_enabling_location_service_required_message))
+            .setPositiveButton(this.getString(R.string.ok_button), null)
+    builder.show()
+}
+
+fun Activity.showSetNicknameErrorDialog(message: String) {
+    val builder = AlertDialog.Builder(this)
+    builder
+            .setTitle(this.getString(R.string.set_user_nickname_failed))
+            .setMessage(message)
+            .setPositiveButton(this.getString(R.string.ok_button), null)
+    builder.show()
+}
+
+fun Activity.showOperationFailedDialog(message: String) {
+    val builder = AlertDialog.Builder(this)
+    builder
+            .setTitle(this.getString(R.string.operation_failed))
+            .setMessage(message)
+            .setPositiveButton(this.getString(R.string.ok_button), null)
+    builder.show()
+}
+
 
 fun Float.dpToPx(): Int {
     var densityDpi = DisplayMetrics.DENSITY_DEFAULT
@@ -116,6 +144,12 @@ fun Float.spToPx(): Int = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, 
 
 fun View.expandTouchArea(padding: Int = 20) {
     this.post(ExpandedAreaRunnable(this, padding))
+}
+
+fun TextView.hideIfEmptyText() {
+    if (TextUtils.isEmpty(this.text)) {
+        this.visibility = View.GONE
+    }
 }
 
 class ExpandedAreaRunnable : Runnable {

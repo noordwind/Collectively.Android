@@ -1,13 +1,13 @@
 package com.noordwind.apps.collectively.presentation.main
 
-import io.reactivex.observers.DisposableObserver
 import com.noordwind.apps.collectively.data.model.Remark
 import com.noordwind.apps.collectively.data.model.RemarkCategory
 import com.noordwind.apps.collectively.domain.interactor.remark.LoadRemarkCategoriesUseCase
 import com.noordwind.apps.collectively.domain.interactor.remark.LoadRemarksUseCase
-import com.noordwind.apps.collectively.domain.interactor.remark.filters.LoadMapFiltersUseCase
+import com.noordwind.apps.collectively.domain.interactor.remark.filters.map.LoadMapFiltersUseCase
 import com.noordwind.apps.collectively.domain.model.MapFilters
 import com.noordwind.apps.collectively.presentation.rxjava.AppDisposableObserver
+import io.reactivex.observers.DisposableObserver
 
 class MainPresenter(val view: MainMvp.View,
                     val loadRemarksUseCase: LoadRemarksUseCase,
@@ -72,7 +72,7 @@ class MainPresenter(val view: MainMvp.View,
             override fun onComplete() {}
 
             override fun onNext(filters: MapFilters) {
-                filtersKey = filters.selectedFilters.sortedBy { it }.toString() + filters.remarkStatus + filters.showOnlyMine
+                filtersKey = keyFromFilters(filters)
                 view.showMapFiltersDialog()
             }
 
@@ -82,12 +82,14 @@ class MainPresenter(val view: MainMvp.View,
         loadMapFiltersUseCase.execute(filtersObserver)
     }
 
+    fun keyFromFilters(filters: MapFilters) = filters.selectedFilters.sortedBy { it }.toString() + filters.remarkStatus + filters.showOnlyMine + filters.selectedGroup
+
     override fun checkIfFiltersHasChanged() {
         var filtersObserver = object : DisposableObserver<MapFilters>() {
             override fun onComplete() {}
 
             override fun onNext(filters: MapFilters) {
-                var newFiltersKey = filters.selectedFilters.sortedBy { it }.toString() + filters.remarkStatus + filters.showOnlyMine
+                var newFiltersKey = keyFromFilters(filters)
                 if (!filtersKey.equals(newFiltersKey, true)) {
                     loadRemarks()
                     view.showRemarksReloadingProgress()

@@ -2,15 +2,13 @@ package com.noordwind.apps.collectively.presentation.addremark
 
 import android.location.Address
 import android.net.Uri
-import com.noordwind.apps.collectively.data.model.NewRemark
-import com.noordwind.apps.collectively.data.model.RemarkCategory
-import com.noordwind.apps.collectively.data.model.RemarkNotFromList
-import com.noordwind.apps.collectively.data.model.RemarkTag
+import com.noordwind.apps.collectively.data.model.*
 import com.noordwind.apps.collectively.domain.interactor.remark.LoadRemarkCategoriesUseCase
 import com.noordwind.apps.collectively.domain.interactor.remark.LoadRemarkTagsUseCase
 import com.noordwind.apps.collectively.domain.interactor.remark.SaveRemarkUseCase
 import com.noordwind.apps.collectively.presentation.mvp.BasePresenter
 import com.noordwind.apps.collectively.presentation.rxjava.AppDisposableObserver
+import com.noordwind.apps.collectively.presentation.statistics.LoadUserGroupsUseCase
 import com.noordwind.apps.collectively.usecases.LoadLastKnownLocationUseCase
 import io.reactivex.observers.DisposableObserver
 
@@ -18,11 +16,13 @@ class AddRemarkPresenter(val view: AddRemarkMvp.View,
                          val saveRemarkUseCase: SaveRemarkUseCase,
                          val loadRemarkTagsUseCase: LoadRemarkTagsUseCase,
                          val loadRemarkCategoriesUseCase: LoadRemarkCategoriesUseCase,
-                         val loadLastKnownLocationUseCase: LoadLastKnownLocationUseCase) : BasePresenter, AddRemarkMvp.Presenter {
+                         val loadLastKnownLocationUseCase: LoadLastKnownLocationUseCase,
+                         val loadUserGroupsUseCase: LoadUserGroupsUseCase) : BasePresenter, AddRemarkMvp.Presenter {
 
     private var lastKnownLatitude: Double? = null
     private var lastKnownLongitude: Double? = null
     private var lastKnownAddress: String? = null
+    private var groups: List<UserGroup>? = null
 
     override fun loadRemarkCategories() {
         var observer = object : AppDisposableObserver<List<RemarkCategory>>() {
@@ -46,6 +46,31 @@ class AddRemarkPresenter(val view: AddRemarkMvp.View,
         }
 
         loadRemarkCategoriesUseCase.execute(observer, null)
+    }
+
+    override fun loadUserGroups() {
+        var observer = object : AppDisposableObserver<List<UserGroup>>() {
+
+            override fun onStart() {
+                super.onStart()
+            }
+
+            override fun onNext(userGroup: List<UserGroup>) {
+                super.onNext(userGroup)
+                groups = userGroup
+                view.showAvailableUserGroups(userGroup)
+            }
+
+            override fun onError(e: Throwable) {
+                super.onError(e)
+            }
+
+            override fun onNetworkError() {
+                super.onNetworkError()
+            }
+        }
+
+        loadUserGroupsUseCase.execute(observer, true)
     }
 
     override fun loadRemarkTags() {
@@ -79,11 +104,6 @@ class AddRemarkPresenter(val view: AddRemarkMvp.View,
             }
 
             override fun onError(e: Throwable?) {
-                lastKnownAddress = "Reymonta 20, 30-059 Kraków, Polska"
-                lastKnownLongitude = 19.908943
-                lastKnownLatitude = 50.065689
-
-                view.showAddress(lastKnownAddress!!)
             }
 
             override fun onComplete() {
@@ -107,7 +127,12 @@ class AddRemarkPresenter(val view: AddRemarkMvp.View,
         loadLastKnownLocationUseCase.execute(observer)
     }
 
-    override fun saveRemark(category: String, description: String, selectedTags: List<String>, capturedImageUri: Uri?) {
+    override fun saveRemark(groupName: String?, category: String, description: String, selectedTags: List<String>, capturedImageUri: Uri?) {
+        if (lastKnownAddress.isNullOrBlank()) {
+            view.showAddressNotSpecifiedDialog()
+            return
+        }
+
         var observer = object : AppDisposableObserver<RemarkNotFromList>() {
             override fun onStart() {
                 super.onStart()
@@ -119,6 +144,11 @@ class AddRemarkPresenter(val view: AddRemarkMvp.View,
                 view.showSaveRemarkError()
             }
 
+            override fun onServerError(message: String?) {
+                super.onServerError(message)
+                view.showSaveRemarkError(message)
+            }
+
             override fun onComplete() {
             }
 
@@ -127,7 +157,23 @@ class AddRemarkPresenter(val view: AddRemarkMvp.View,
             }
         }
 
-        var newRemark =  NewRemark(category.toLowerCase(), lastKnownLatitude!!, lastKnownLongitude!!, lastKnownAddress!!, description, capturedImageUri)
+        var groupId: String? = null
+
+        if (groups != null && groupName != null) {
+            groups!!.find { it.name.equals(groupName, true) }.let {
+                groupId = it!!.id
+            }
+        }
+
+        var newRemark = NewRemark(
+                groupId = groupId,
+                category = category.toLowerCase(),
+                latitude = lastKnownLatitude!!,
+                longitude = lastKnownLongitude!!,
+                address = lastKnownAddress!!,
+                description = description,
+                imageUri = capturedImageUri)
+
         saveRemarkUseCase.execute(observer, newRemark)
     }
 
@@ -135,6 +181,7 @@ class AddRemarkPresenter(val view: AddRemarkMvp.View,
         loadRemarkTagsUseCase.dispose()
         loadRemarkCategoriesUseCase.dispose()
         loadLastKnownLocationUseCase.dispose()
+        loadUserGroupsUseCase.dispose()
         saveRemarkUseCase.dispose()
     }
 }

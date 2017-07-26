@@ -1,11 +1,33 @@
 package com.noordwind.apps.collectively.data.datasource
 
-import io.reactivex.Observable
 import com.noordwind.apps.collectively.data.model.*
 import com.noordwind.apps.collectively.data.net.Api
+import io.reactivex.Observable
+import okhttp3.MediaType
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
 import retrofit2.Response
+import java.io.File
 
 class RemarksDataSourceImpl(val api: Api) : RemarksDataSource {
+    override fun uploadRemarkPhoto(remarkId: String, photoFile: File): Observable<Response<Void>> {
+        var reqFile = RequestBody.create(MediaType.parse("image/*"), photoFile);
+        var body = MultipartBody.Part.createFormData("file", photoFile.getName(), reqFile);
+        var name = RequestBody.create(MediaType.parse("text/plain"), "name");
+
+        return api.uploadRemarkPhoto(remarkId, body, name)
+    }
+
+    //    override fun uploadRemarkPhoto(remarkId: String, photoFile: File): Observable<Response<Void>> {
+//        var requestFile = RequestBody.create(MediaType.parse("image/*"), photoFile)
+//        val name = RequestBody.create(MediaType.parse("text/plain"), photoFile.name)
+//
+//        return api.uploadRemarkPhoto(remarkId, requestFile, name)
+//    }
+    override fun resolveRemark(remarkId: String): Observable<Response<Void>> = api.resolveRemark(remarkId, Object())
+
+    override fun renewRemark(remarkId: String): Observable<Response<Void>> = api.renewRemark(remarkId, Object())
+
     override fun loadUserRemarks(userId: String): Observable<List<Remark>> = api.userRemarks(userId, 1000)
 
     override fun loadUserFavoriteRemarks(userName: String): Observable<List<Remark>> = api.userFavoriteRemarks(userName, userName, 1000)
@@ -18,12 +40,13 @@ class RemarksDataSourceImpl(val api: Api) : RemarksDataSource {
 
     override fun saveRemark(remark: NewRemark): Observable<Response<Void>> = api.saveRemark(remark)
 
-    override fun loadRemarks(authorId: String?, state: String, categories: List<String>): Observable<List<Remark>>
-            = api.remarks(authorId, state, categories, true, "createdat", "descending", 1000)
+    override fun loadRemarks(authorId: String?, state: String, groupId: String?, categories: List<String>): Observable<List<Remark>>
+            = api.remarks(authorId = authorId, state = state, categories = categories, groupId = groupId, latest = true,
+            orderBy = "createdat", sortorder = "descending", results = 1000)
 
     override fun loadRemarkTags(): Observable<List<RemarkTag>> = api.remarkTags()
 
-    override fun loadRemarkCategories(): Observable<List<RemarkCategory>>  = api.remarkCategories()
+    override fun loadRemarkCategories(): Observable<List<RemarkCategory>> = api.remarkCategories()
 
     override fun deleteRemarkVote(remarkId: String): Observable<Response<Void>> = api.deleteRemarkVote(remarkId)
 

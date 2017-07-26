@@ -1,8 +1,10 @@
 package com.noordwind.apps.collectively.data.net
 
-import io.reactivex.Observable
 import com.noordwind.apps.collectively.Constants
 import com.noordwind.apps.collectively.data.model.*
+import io.reactivex.Observable
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
 import retrofit2.Response
 import retrofit2.http.*
 
@@ -10,10 +12,19 @@ interface Api {
 
     // GET
 
-    // USER
+    // GROUPS
+    @Headers(Constants.ApiHeader.ACCEPT_HEADER, Constants.ApiHeader.CONTENT_TYPE_HEADER)
+    @GET("groups")
+    fun groups(): Observable<List<UserGroup>>
+
+    // USERS
     @Headers(Constants.ApiHeader.ACCEPT_HEADER, Constants.ApiHeader.CONTENT_TYPE_HEADER)
     @GET("users/{name}")
     fun loadUser(@Path("name") userName: String): Observable<User>
+
+    @Headers(Constants.ApiHeader.ACCEPT_HEADER, Constants.ApiHeader.CONTENT_TYPE_HEADER)
+    @GET("users")
+    fun loadUsers(@Query("page") pageNumber: String, @Query("results") results: String): Observable<List<User>>
 
     //REMARKS
 
@@ -25,8 +36,21 @@ interface Api {
             @Query("categories") categories: List<String>,
             @Query("latest") latest: Boolean,
             @Query("orderBy") orderBy: String,
+            @Query("groupId") groupId: String?,
             @Query("sortorder") sortorder: String,
             @Query("results") results: Int): Observable<List<Remark>>
+
+    @Headers(Constants.ApiHeader.ACCEPT_HEADER, Constants.ApiHeader.CONTENT_TYPE_HEADER)
+    @PUT("remarks/{remarkId}/resolve")
+    fun resolveRemark(@Path("remarkId") remarkId: String, @Body emptyBody: Object): Observable<Response<Void>>
+
+    @Headers(Constants.ApiHeader.ACCEPT_HEADER, Constants.ApiHeader.CONTENT_TYPE_HEADER)
+    @PUT("remarks/{remarkId}/renew")
+    fun renewRemark(@Path("remarkId") remarkId: String, @Body emptyBody: Object): Observable<Response<Void>>
+
+    @Multipart
+    @PUT("remarks/{remarkId}/photo")
+    fun uploadRemarkPhoto(@Path("remarkId") remarkId: String, @Part image: MultipartBody.Part, @Part("name") name: RequestBody): Observable<Response<Void>>
 
     @Headers(Constants.ApiHeader.ACCEPT_HEADER, Constants.ApiHeader.CONTENT_TYPE_HEADER)
     @GET("remarks")
@@ -82,8 +106,16 @@ interface Api {
     fun loadProfile(): Observable<Profile>
 
     @Headers(Constants.ApiHeader.ACCEPT_HEADER, Constants.ApiHeader.CONTENT_TYPE_HEADER)
+    @PUT("account/name")
+    fun setNickName(@Body setNickNameRequest: SetNickNameRequest): Observable<Response<Void>>
+
+    @Headers(Constants.ApiHeader.ACCEPT_HEADER, Constants.ApiHeader.CONTENT_TYPE_HEADER)
     @GET("account/settings/notifications")
     fun settings(): Observable<Settings>
+
+    @Headers(Constants.ApiHeader.ACCEPT_HEADER)
+    @DELETE("account")
+    fun deleteAccount(): Observable<Response<Void>>
 
     // POST
     @Headers(Constants.ApiHeader.ACCEPT_HEADER, Constants.ApiHeader.CONTENT_TYPE_HEADER)

@@ -1,20 +1,25 @@
 package com.noordwind.apps.collectively.presentation.views.dialogs.mapfilters
 
-import io.reactivex.observers.DisposableObserver
-import com.noordwind.apps.collectively.domain.interactor.remark.filters.*
+import com.noordwind.apps.collectively.domain.interactor.remark.filters.map.*
 import com.noordwind.apps.collectively.domain.model.MapFilters
+import io.reactivex.observers.DisposableObserver
 
-class MapFiltersPresenter(val view : MapFiltersMvp.View,
+class MapFiltersPresenter(val view: MapFiltersMvp.View,
                           val loadMapFiltersUseCase: LoadMapFiltersUseCase,
-                          val addFilterUseCase: AddFilterUseCase,
-                          val removeFilterUseCase: RemoveFilterUseCase,
+                          val addMapFilterUseCase: AddMapFilterUseCase,
+                          val removeMapFilterUseCase: RemoveMapFilterUseCase,
                           val selectShowOnlyMyRemarksUseCase: SelectShowOnlyMyRemarksUseCase,
-                          val selectRemarkStatusUseCase: SelectRemarkStatusUseCase) : MapFiltersMvp.Presenter{
+                          val selectRemarkStatusUseCase: SelectRemarkStatusUseCase,
+                          val selectRemarkGroupUseCase: SelectRemarkGroupUseCase) : MapFiltersMvp.Presenter {
+    override fun selectGroup(group: String) {
+        selectRemarkGroupUseCase.execute(group)
+    }
+
     override fun toggleFilter(filter: String, selected: Boolean) {
         if (selected) {
-            addFilterUseCase.execute(filter)
+            addMapFilterUseCase.execute(filter)
         } else {
-            removeFilterUseCase.execute(filter)
+            removeMapFilterUseCase.execute(filter)
         }
     }
 
@@ -26,6 +31,7 @@ class MapFiltersPresenter(val view : MapFiltersMvp.View,
                 view.showFilters(filters.selectedFilters, filters.allFilters)
                 view.selectRemarkStatusFilter(filters.remarkStatus)
                 view.selectShowOnlyMineRemarksFilter(filters.showOnlyMine)
+                view.showUserGroups(filters.allGroups, filters.selectedGroup)
             }
 
             override fun onError(e: Throwable?) {}
@@ -44,10 +50,11 @@ class MapFiltersPresenter(val view : MapFiltersMvp.View,
 
     override fun destroy() {
         loadMapFiltersUseCase.dispose()
-        addFilterUseCase.dispose()
-        removeFilterUseCase.dispose()
+        addMapFilterUseCase.dispose()
+        removeMapFilterUseCase.dispose()
         selectRemarkStatusUseCase.dispose()
         selectShowOnlyMyRemarksUseCase.dispose()
+        selectRemarkGroupUseCase.dispose()
     }
 }
 

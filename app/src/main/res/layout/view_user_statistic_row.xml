@@ -22,15 +22,14 @@
             android:layout_centerVertical="true"
             android:orientation="vertical">
 
-            <android.support.v7.widget.AppCompatImageView
+            <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/userImage"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
                 android:layout_alignParentLeft="true"
-                android:layout_centerVertical="true"
                 android:layout_alignParentTop="true"
-                android:background="@drawable/circle_shape"
-                app:srcCompat="@drawable/ic_person_grey_48dp" />
+                android:layout_centerVertical="true"
+                android:background="@drawable/circle_shape"/>
 
             <TextView
                 android:layout_marginLeft="@dimen/spacing_small"

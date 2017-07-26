@@ -2,9 +2,6 @@
     <string name="app_name">Collectively</string>
     <string name="login_screen_title">Collectively - Logowanie</string>
     <string name="want_new_account">Nowy użytkownik?</string>
-    <string name="font_normal" translatable="false">sans-serif</string>
-    <string name="font_light" translatable="false">sans-serif-light</string>
-    <string name="font_condensed" translatable="false">sans-serif-condensed</string>
 
     <string name="sign_up">Rejestracja</string>
 
@@ -33,6 +30,7 @@
     <string name="password_reset_failed">Błąd resetowania hasła</string>
     <string name="login_error_title">Błąd logowania</string>
     <string name="registration_error_title">Błąd rejestracji</string>
+    <string name="resolved_remarks">Rozwiązane zgłoszenia</string>
     <string name="ok_button">Ok</string>
     <string name="error_invalid_user_credentials">Nieprawidłowe dane użytkownika</string>
     <string name="profile">Profil</string>
@@ -78,6 +76,7 @@
     <string name="show_activity">Działaj!</string>
     <string name="activity_with_remark">Historia zgłoszenia</string>
     <string name="resolve">Rozwiąż zgłoszenie</string>
+    <string name="reopen">Przywróć zgłoszenie</string>
     <string name="delete">Usuń</string>
     <string name="act">Działaj!</string>
     <string name="your_activity">Twoja aktywność</string>
@@ -86,11 +85,14 @@
     <string name="top_reportes">Najwięcej zgłoszonych</string>
     <string name="top_resolvers">Najwięcej rozwiązanych</string>
     <string name="profile_resolved_remarks">Rozwiązane zgłoszenia</string>
-    <string name="profile_reported_remarks">Zraportowane zgłoszenia</string>
-    <string name="your_remarks">Twoje zgłoszenia</string>
+    <string name="profile_reported_remarks">Utworzone zgłoszenia</string>
+    <string name="your_remarks">Utworzone zgłoszenia</string>
     <string name="favorite_remarks">Śledzone zgłoszenia</string>
-    <string name="user_created_remarks_screen_title">Twoje zgłoszenia</string>
+    <string name="user_created_remarks_screen_title">Utworzone zgłoszenia</string>
+    <string name="set_nickname_screen_title">Nowy użytkownik</string>
+    <string name="current_user_created_remarks_screen_title">Twoje zgłoszenia</string>
     <string name="user_favorite_remarks_screen_title">Śledzone zgłoszenia</string>
+    <string name="user_resolved_remarks_screen_title">Rozwiązane zgłoszenia</string>
     <string name="facebook_login">Facebook</string>
     <string name="facebook_app_id">1827531987461765</string>
     <string name="error_login_general">Logowanie nie powiodło się, Spróbuj ponownie</string>
@@ -100,6 +102,7 @@
     <string name="password_reset_success">Link do zresetowania hasła został wysłany na Twój adres email</string>
     <string name="filter_remarks_dialog_title">Filtrowanie zgłoszeń</string>
     <string name="filter_remarks_dialog_categories_label">Kategorie</string>
+    <string name="filter_remarks_dialog_states_label">Status</string>
     <string name="filter_remarks_dialog_other_label">Inne</string>
     <string name="resolved_filter">rozwiązane</string>
     <string name="unresolved_filter">nierozwiązane</string>
@@ -129,17 +132,26 @@
     <string name="saving_settings">Zapisywanie ustawień</string>
     <string name="no_internet_connection">Brak połączenia z internetem</string>
     <string name="settings_saved">Ustawienia zapisane</string>
-    <string name="empty_screen_no_reported_remarks">Nie dodałeś jeszcze żadnego zgłoszenia</string>
+
+    <string name="empty_screen_no_reported_remarks">Użytkownik nie dodał jeszcze żadnego zgłoszenia</string>
+
+    <string name="empty_screen_current_user_no_reported_remarks">Nie dodałeś jeszcze żadnego zgłoszenia</string>
+
     <string name="empty_screen_no_favorited_remarks">Nie masz żadnych obserwowanych zgłoszeń</string>
-    <string name="error_loading_profile_no_network">Połącz się z internetem aby obejrzeć profil</string>
+
+    <string name="empty_screen_no_resolved_remarks">Użytkownik nie rozwiązał jeszcze żadnego zgłoszenia</string>
+    <string name="empty_screen_current_user_no_resolved_remarks">Nie rozwiązałeś jeszcze żadnego zgłoszenia</string>
+
+    <string name="error_loading_current_user_profile_no_network">Połącz się z internetem aby obejrzeć profil</string>
+    <string name="error_loading_custom_user_profile_no_network">Połącz się z internetem aby obejrzeć profil</string>
+
     <string name="filter_show_only_mine">Tylko moje</string>
     <string name="next">Dalej</string>
     <string name="go_to_login">Dołącz do Collectively!</string>
-    <string name="gallery">Galera</string>
+    <string name="gallery">Galeria</string>
     <string name="camera">Kamera</string>
     <string name="add_photo">Dodaj zdjęcie</string>
     <string name="saving_remark">Przesyłanie zgloszenia...</string>
-    <string name="saving_photo">Przesyłanie zdjęcia...</string>
     <string name="updating_remarks">Aktualizuje zgłoszenia</string>
     <string name="change_password">Zmień hasło</string>
     <string name="change_password_screen_title">Zmiana hasła</string>
@@ -153,4 +165,38 @@
 
     <string name="remark_statistics_chart_label"><![CDATA[Rozwiązano <b>%1$s</b> zgłoszeń spośród <b>%2$s</b>]]></string>
     <string name="history">Historia</string>
+    <string name="filter">Filtruj</string>
+    <string name="filetered_remarks_message">Znaleziono %1$s zgłoszeń</string>
+    <string name="users">Użytkownicy</string>
+
+    <string name="error_loading_users_no_network">Połącz się z internetem aby zobaczyć użytkowników platformy Collectively</string>
+    <string name="users_activity">Użytkownicy</string>
+    <string name="nickname">Nazwa użytkownika</string>
+    <string name="set_nickname">Akceptuj</string>
+    <string name="delete_account">Usuń konto</string>
+    <string name="account_removed_message">Konto usunięte</string>
+    <string name="removing_account">Usuwanie konta</string>
+    <string name="operation_failed">Operacja nie powiodła się</string>
+    <string name="empty_description">Brak opisu</string>
+    <string name="swipe_left_main_screen_tooltip">Przewiń palcem w lewo \naby zobaczyć liste zgłoszeń</string>
+    <string name="remark_state_new_long_description">Nowe zgłoszenie</string>
+    <string name="remark_state_processing_long_description">Zgłoszenie jest procesowane</string>
+    <string name="remark_state_resolved_long_description">Zgłoszenie rozwiązane</string>
+    <string name="remark_state_renewed_long_description">Zgłoszenie przywrócone</string>
+    <string name="filter_remarks">Filtruj zgłoszenia</string>
+    <string name="set_user_nickname_failed">Błąd operacji</string>
+    <string name="tap_to_zoom">Powiększ</string>
+    <string name="add_remark_group_hint">Dla grupy...</string>
+    <string name="add_remark_all_groups_target">Wszystkie</string>
+    <string name="add_remark_category_not_selected">Nie wybrano kategorii</string>
+    <string name="filter_remarks_dialog_status_label">Status</string>
+    <string name="groups">Grupa</string>
+    <string name="add_remark_enabling_location_service_required_title">Nieznana lokalizacja</string>
+    <string name="add_remark_enabling_location_service_required_message"> Upewnij się, że Twój GPS jest włączony</string>
+    <string name="resolving_remark">Rozwiązuje zgłoszenie</string>
+    <string name="reopening_remark">Przywracam zgłoszenie</string>
+    <string name="remark_resolved">Zgłoszenie rozwiązane</string>
+    <string name="remark_reopened">Zgłoszenie przywrócone</string>
+    <string name="remark_added">Zgłoszenie dodane</string>
+    <string name="adding_remark_error">Nie udało się dodać zgłoszenia</string>
 </resources>

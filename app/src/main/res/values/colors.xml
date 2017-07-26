@@ -39,4 +39,8 @@
     <color name="font_dark_hint">#888</color>
     <color name="font_light">#FFF</color>
     <color name="background_light">@color/background_material_light</color>
+    <color name="defect_category_color">#37474F</color>
+    <color name="issue_category_color">#DD2C00</color>
+    <color name="suggestion_category_color">#FDD835</color>
+    <color name="praise_category_color">#66BB6A</color>
 </resources>

@@ -7,6 +7,7 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.noordwind.apps.collectively.BuildConfig
 import com.noordwind.apps.collectively.Constants
 import com.noordwind.apps.collectively.R
 import com.noordwind.apps.collectively.data.model.Statistics
@@ -33,7 +34,15 @@ class TopReportersStatisticsFragment : Fragment() {
         var statistics = arguments.getSerializable(Constants.BundleKey.STATISTICS) as Statistics
         var recycler = layout?.findViewById(R.id.recycler) as RecyclerView
 
-        var entries = statistics.usersStatistics.sortedByDescending { it.reportedCount() }.map { UsersStatisticsAdapterDelegate.UserStatistic(it.name, it.reportedCount().toInt()) }
+        var entries = statistics.usersStatistics
+                .sortedByDescending { it.reportedCount() }
+                .map {
+                    UsersStatisticsAdapterDelegate.UserStatistic(
+                            name = it.name,
+                            avatarUrl = String.format("%s/users/%s/avatar", BuildConfig.SERVER_URL, it.userId),
+                            statistic = it.reportedCount().toInt(),
+                            userId = it.userId)
+                }
 
         userStatisticsAdapter = UsersStatisticsAdapter().setData(entries).initDelegates()
         recycler.adapter = userStatisticsAdapter

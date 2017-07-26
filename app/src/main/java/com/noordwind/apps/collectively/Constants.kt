@@ -16,11 +16,16 @@ interface Constants {
             val SESSION_KEY = "session"
             val REMARK_CATEGORIES_CACHE_TIME = "remark_categories_cache_time"
             val PROFILE_CACHE_TIME = "profile_cache_time"
+            val GROUPS_CACHE_TIME = "groups_cache_time"
             val REMARK_CATEGORIES = "remark_categories"
+            val USER_GROUPS = "user_groups"
             val PROFILE = "profile"
-            val FILTERS = "filters"
+            val MAP_FILTERS = "map_filters"
+            val REMARK_CATEGORY_FILTERS = "remark_category_filters"
+            val REMARK_STATUS_FILTERS = "remark_status_filters"
             val REMARK_STATUS = "remark_status"
             val SHOW_ONLY_MINE = "show_only_mine_remark0"
+            val REMARK_GROUP = "remark_group"
         }
     }
 
@@ -46,6 +51,8 @@ interface Constants {
     interface OnceKey {
         companion object {
             val WALKTHROUGH = "walkthrough"
+            val SHOW_SWIPE_LEFT_TOOLTIP_ON_MAIN_SCREEN = "SHOW_SWIPE_LEFT_TOOLTIP_ON_MAIN_SCREEN"
+            val SHOW_TAP_TO_ZOOM_ICON = "show_tap_to_zoom_icon"
         }
     }
 
@@ -62,6 +69,15 @@ interface Constants {
             val ISSUE = "issue"
             val SUGGESTION = "suggestion"
             val PRAISE = "praise"
+        }
+    }
+
+    interface RemarkStates {
+        companion object {
+            val NEW = "new"
+            val RESOLVED = "resolved"
+            val RENEWED = "renewed"
+            val PROCESSING = "processing"
         }
     }
 
@@ -101,6 +117,13 @@ interface Constants {
             const val STATES = "states"
             const val COMMENTS = "comments"
             const val REMARK_ID = "remark_id"
+            const val USER = "user"
+        }
+    }
+
+    interface AccountStates {
+        companion object {
+            const val ACCOUNT_INCOMPLETE = "incomplete"
         }
     }
 
@@ -116,6 +139,10 @@ interface Constants {
         companion object {
             const val GALLERY_EVENT = "gallery"
             const val CAMERA_EVENT = "camera"
+            const val CATEGORY_SELECT = "camera"
+            const val LOCATION_SERVICE_ENABLED = "location_service_enabled"
+            const val RESOLVE_REMARK_EVENT = "resolve_remark_event"
+            const val REOPEN_REMARK_EVENT = "reopen_remark_event"
         }
     }
 }

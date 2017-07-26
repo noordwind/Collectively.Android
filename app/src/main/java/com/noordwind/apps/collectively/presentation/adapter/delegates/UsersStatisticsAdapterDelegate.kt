@@ -24,6 +24,6 @@ class UsersStatisticsAdapterDelegate(viewType: Int): AbsAdapterDelegate<List<Any
         return UserStatisticRowHolder( view)
     }
 
-    class UserStatistic(val name: String, val statistic: Int)
+    class UserStatistic(val name: String, val avatarUrl: String?, val statistic: Int, val userId: String)
 }
 
