@@ -7,15 +7,15 @@ import com.noordwind.apps.collectively.domain.thread.PostExecutionThread
 import com.noordwind.apps.collectively.domain.thread.UseCaseThread
 import io.reactivex.Observable
 
-class LoadUserRemarksUseCase(val remarksRepository: RemarksRepository,
+class LoadUserResolvedRemarksUseCase(val remarksRepository: RemarksRepository,
                          useCaseThread: UseCaseThread,
                          postExecutionThread: PostExecutionThread) : UseCase<List<Remark>, String>(useCaseThread, postExecutionThread) {
 
     override fun buildUseCaseObservable(userId: String?): Observable<List<Remark>> {
         if (userId == null) {
-            return remarksRepository.loadUserRemarks()
+            return remarksRepository.loadUserResolvedRemarks()
         } else {
-            return remarksRepository.loadUserRemarks(userId)
+            return remarksRepository.loadUserResolvedRemarks(userId)
         }
     }
 }

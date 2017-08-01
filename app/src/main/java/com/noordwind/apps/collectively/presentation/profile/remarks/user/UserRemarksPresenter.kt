@@ -3,6 +3,7 @@ package com.noordwind.apps.collectively.presentation.profile.remarks.user
 import com.noordwind.apps.collectively.data.model.Remark
 import com.noordwind.apps.collectively.domain.interactor.remark.LoadUserFavoriteRemarksUseCase
 import com.noordwind.apps.collectively.domain.interactor.remark.LoadUserRemarksUseCase
+import com.noordwind.apps.collectively.domain.interactor.remark.LoadUserResolvedRemarksUseCase
 import com.noordwind.apps.collectively.domain.interactor.remark.filters.map.ClearRemarkFiltersUseCase
 import com.noordwind.apps.collectively.domain.interactor.remark.filters.map.LoadRemarkFiltersUseCase
 import com.noordwind.apps.collectively.domain.model.RemarkFilters
@@ -13,6 +14,7 @@ import io.reactivex.observers.DisposableObserver
 class UserRemarksPresenter(
         val view: UserRemarksMvp.View,
         val loadUserRemarksUseCase: LoadUserRemarksUseCase,
+        val loadUserResolvedRemarksUseCase: LoadUserResolvedRemarksUseCase,
         val loadRemarkFiltersUseCase: LoadRemarkFiltersUseCase,
         val loadUserFavoriteRemarksUseCase: LoadUserFavoriteRemarksUseCase,
         val clearRemarkFiltersUseCase: ClearRemarkFiltersUseCase
@@ -21,7 +23,7 @@ class UserRemarksPresenter(
     private var filtersKey: String? = null
     private var loadedRemarks: List<Remark>? = null
 
-    override fun loadUserRemarks() {
+    override fun loadUserRemarks(userId: String?) {
         var observer = object : AppDisposableObserver<List<Remark>>() {
 
             override fun onStart() {
@@ -58,7 +60,51 @@ class UserRemarksPresenter(
             }
         }
 
-        loadUserRemarksUseCase.execute(observer)
+        loadUserRemarksUseCase.execute(observer, userId)
+
+        initFiltersKey()
+
+        clearRemarkFiltersUseCase.execute(null)
+    }
+
+    override fun loadUserResolvedRemarks(userId: String?) {
+        var observer = object : AppDisposableObserver<List<Remark>>() {
+
+            override fun onStart() {
+                super.onStart()
+                view.showRemarksLoading()
+            }
+
+            override fun onNext(remarks: List<Remark>) {
+                super.onNext(remarks)
+                loadedRemarks = remarks
+
+                if (remarks.size > 0) {
+                    view.showLoadedRemarks(remarks)
+                } else {
+                    view.showEmptyScreen()
+                }
+            }
+
+            override fun onError(e: Throwable) {
+                super.onError(e)
+                view.showRemarksLoadingError()
+            }
+
+            override fun onServerError(message: String?) {
+                super.onServerError(message)
+                if (message != null) {
+                    view.showRemarksLoadingServerError(message)
+                }
+            }
+
+            override fun onNetworkError() {
+                super.onNetworkError()
+                view.showRemarksLoadingNetworkError()
+            }
+        }
+
+        loadUserResolvedRemarksUseCase.execute(observer, userId)
 
         initFiltersKey()
 

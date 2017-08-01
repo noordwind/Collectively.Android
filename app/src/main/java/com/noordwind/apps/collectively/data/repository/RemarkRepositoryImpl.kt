@@ -23,9 +23,13 @@ class RemarkRepositoryImpl(val remarkCategoriesCache: RemarkCategoriesCache,
         return profileRepository.loadProfile(false).flatMap { remarksDataSource.loadUserRemarks(it.userId) }
     }
 
+    override fun loadUserRemarks(userId: String): Observable<List<Remark>>  = remarksDataSource.loadUserRemarks(userId)
+
     override fun loadUserResolvedRemarks(): Observable<List<Remark>> {
         return profileRepository.loadProfile(false).flatMap { remarksDataSource.loadUserResolvedRemarks(it.userId) }
     }
+
+    override fun loadUserResolvedRemarks(userId: String): Observable<List<Remark>> = remarksDataSource.loadUserResolvedRemarks(userId)
 
     override fun loadUserFavoriteRemarks(): Observable<List<Remark>> {
         return profileRepository.loadProfile(false).flatMap { remarksDataSource.loadUserFavoriteRemarks(it.userId) }

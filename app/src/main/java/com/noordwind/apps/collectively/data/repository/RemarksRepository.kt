@@ -1,7 +1,7 @@
 package com.noordwind.apps.collectively.data.repository
 
-import io.reactivex.Observable
 import com.noordwind.apps.collectively.data.model.*
+import io.reactivex.Observable
 
 
 interface RemarksRepository {
@@ -21,6 +21,8 @@ interface RemarksRepository {
     fun deleteRemarkCommentVote(remarkId: String, commentId: String) : Observable<Boolean>
 
     fun loadUserRemarks(): Observable<List<Remark>>
+    fun loadUserRemarks(userId: String): Observable<List<Remark>>
+    fun loadUserResolvedRemarks(userId: String): Observable<List<Remark>>
     fun loadUserResolvedRemarks(): Observable<List<Remark>>
     fun loadUserFavoriteRemarks(): Observable<List<Remark>>
 }

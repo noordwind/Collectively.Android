@@ -6,7 +6,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.bumptech.glide.Glide
-import kotlinx.android.synthetic.main.fragment_main_navigation.*
 import com.noordwind.apps.collectively.R
 import com.noordwind.apps.collectively.TheApp
 import com.noordwind.apps.collectively.data.repository.ProfileRepository
@@ -16,7 +15,9 @@ import com.noordwind.apps.collectively.domain.thread.UseCaseThread
 import com.noordwind.apps.collectively.presentation.profile.ProfileActivity
 import com.noordwind.apps.collectively.presentation.settings.SettingsActivity
 import com.noordwind.apps.collectively.presentation.statistics.StatisticsActivity
+import com.noordwind.apps.collectively.presentation.users.UsersActivity
 import com.noordwind.apps.collectively.presentation.util.FacebookUtils
+import kotlinx.android.synthetic.main.fragment_main_navigation.*
 import javax.inject.Inject
 
 
@@ -46,6 +47,7 @@ class MainNavigationFragment : Fragment(), NavigationMvp.View {
         super.onViewCreated(view, savedInstanceState)
 
         mProfileOptionView.setOnClickListener { openProfile() }
+        mUsersOptionView.setOnClickListener { openUsers() }
         mStatisticsOptionView.setOnClickListener { openStatistics() }
         mSettingsOptionView.setOnClickListener { openSettings() }
         mFanpageOptionView.setOnClickListener { openFanPage() }
@@ -60,6 +62,10 @@ class MainNavigationFragment : Fragment(), NavigationMvp.View {
 
     fun openProfile() {
         ProfileActivity.start(context)
+    }
+
+    fun openUsers() {
+        UsersActivity.start(context)
     }
 
     fun openStatistics() {

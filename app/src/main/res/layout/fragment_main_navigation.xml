@@ -67,6 +67,26 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/mUsersOptionView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingLeft="@dimen/spacing_medium">
+
+            <android.support.v7.widget.AppCompatImageView
+                app:srcCompat="@drawable/ic_people_white_24dp"
+                android:layout_gravity="center_vertical"
+                android:paddingRight="@dimen/spacing_medium"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+            <TextView
+                style="@style/MenuOption"
+                android:paddingLeft="0dp"
+                android:text="@string/users" />
+        </LinearLayout>
+
+        <LinearLayout
             android:id="@+id/mStatisticsOptionView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

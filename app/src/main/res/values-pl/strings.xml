@@ -30,6 +30,7 @@
     <string name="password_reset_failed">Błąd resetowania hasła</string>
     <string name="login_error_title">Błąd logowania</string>
     <string name="registration_error_title">Błąd rejestracji</string>
+    <string name="resolved_remarks">Rozwiązane zgłoszenia</string>
     <string name="ok_button">Ok</string>
     <string name="error_invalid_user_credentials">Nieprawidłowe dane użytkownika</string>
     <string name="profile">Profil</string>
@@ -84,10 +85,12 @@
     <string name="top_resolvers">Najwięcej rozwiązanych</string>
     <string name="profile_resolved_remarks">Rozwiązane zgłoszenia</string>
     <string name="profile_reported_remarks">Zraportowane zgłoszenia</string>
-    <string name="your_remarks">Twoje zgłoszenia</string>
+    <string name="your_remarks">Utworzone zgłoszenia</string>
     <string name="favorite_remarks">Śledzone zgłoszenia</string>
-    <string name="user_created_remarks_screen_title">Twoje zgłoszenia</string>
+    <string name="user_created_remarks_screen_title">Zgłoszenia użytkownika</string>
+    <string name="current_user_created_remarks_screen_title">Twoje zgłoszenia</string>
     <string name="user_favorite_remarks_screen_title">Śledzone zgłoszenia</string>
+    <string name="user_resolved_remarks_screen_title">Rozwiązane zgłoszenia</string>
     <string name="facebook_login">Facebook</string>
     <string name="facebook_app_id">1827531987461765</string>
     <string name="error_login_general">Logowanie nie powiodło się, Spróbuj ponownie</string>
@@ -127,8 +130,16 @@
     <string name="saving_settings">Zapisywanie ustawień</string>
     <string name="no_internet_connection">Brak połączenia z internetem</string>
     <string name="settings_saved">Ustawienia zapisane</string>
-    <string name="empty_screen_no_reported_remarks">Nie dodałeś jeszcze żadnego zgłoszenia</string>
+
+    <string name="empty_screen_no_reported_remarks">Użytkownik nie dodał jeszcze żadnego zgłoszenia</string>
+
+    <string name="empty_screen_current_user_no_reported_remarks">Nie dodałeś jeszcze żadnego zgłoszenia</string>
+
     <string name="empty_screen_no_favorited_remarks">Nie masz żadnych obserwowanych zgłoszeń</string>
+
+    <string name="empty_screen_no_resolved_remarks">Użytkownik nie rozwiązał jeszcze żadnego zgłoszenia</string>
+    <string name="empty_screen_current_user_no_resolved_remarks">Nie rozwiązałeś jeszcze żadnego zgłoszenia</string>
+
     <string name="error_loading_profile_no_network">Połącz się z internetem aby obejrzeć profil</string>
     <string name="filter_show_only_mine">Tylko moje</string>
     <string name="next">Dalej</string>
@@ -153,4 +164,8 @@
     <string name="history">Historia</string>
     <string name="filter">Filtruj</string>
     <string name="filetered_remarks_message">Znaleziono %1$s zgłoszeń</string>
+    <string name="users">Użytkownicy</string>
+
+    <string name="error_loading_users_no_network">Połącz się z internetem aby zobaczyć użytkowników platformy Collectively</string>
+    <string name="users_activity">Użytkownicy</string>
 </resources>

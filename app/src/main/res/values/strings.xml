@@ -88,8 +88,10 @@
     <string name="profile_reported_remarks">Reported remarks</string>
     <string name="your_remarks">Your remarks</string>
     <string name="favorite_remarks">Favorite remarks</string>
-    <string name="user_created_remarks_screen_title">Your remarks</string>
+    <string name="user_created_remarks_screen_title">User remarks</string>
+    <string name="current_user_created_remarks_screen_title">Your remarks</string>
     <string name="user_favorite_remarks_screen_title">Favorite remarks</string>
+    <string name="user_resolved_remarks_screen_title">Resolved remarks</string>
     <string name="facebook_login">Facebook</string>
     <string name="facebook_app_id">1827531987461765</string>
     <string name="error_login_general">Could not login. Please try again</string>
@@ -128,8 +130,15 @@
     <string name="saving_settings">Saving settings</string>
     <string name="no_internet_connection">No internet connection</string>
     <string name="settings_saved">Settings saved</string>
-    <string name="empty_screen_no_reported_remarks">You don\'t have any remarks yet</string>
+
+    <string name="empty_screen_no_reported_remarks">User has not any remarks yet</string>
+    <string name="empty_screen_current_user_no_reported_remarks">You don\'t have any remarks yet</string>
+
+    <string name="empty_screen_no_resolved_remarks">User has not any resolved remarks yet</string>
+    <string name="empty_screen_current_user_no_resolved_remarks">You don\'t have any resolved remarks yet</string>
+
     <string name="empty_screen_no_favorited_remarks">You don\'t have any favorite remarks yet</string>
+
     <string name="error_loading_profile_no_network">Connect to internet to check your profile</string>
     <string name="filter_show_only_mine">Show only mine</string>
     <string name="next">Next</string>
@@ -158,4 +167,10 @@
     <string name="filter_remarks_dialog_states_label">States</string>
     <string name="filter">Filter</string>
     <string name="filetered_remarks_message">Found %1$s remarks</string>
+    <string name="users">Users</string>
+
+    <string name="error_loading_users_no_network">Connect to internet to see Collectively users</string>
+    <string name="users_activity">Users</string>
+    <string name="resolved_remarks">Resolved remarks</string>
+    <string name="reported_remarks">Reported remarks</string>
 </resources>

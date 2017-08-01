@@ -18,7 +18,8 @@ interface UserRemarksMvp {
     }
 
     interface Presenter : BasePresenter{
-        fun loadUserRemarks()
+        fun loadUserRemarks(userId: String?)
+        fun loadUserResolvedRemarks(userId: String?)
         fun loadFavoriteRemarks()
         fun checkIfFiltersHasChanged()
     }

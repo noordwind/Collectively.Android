@@ -103,6 +103,7 @@ interface Constants {
             const val STATES = "states"
             const val COMMENTS = "comments"
             const val REMARK_ID = "remark_id"
+            const val USER = "user"
         }
     }
 

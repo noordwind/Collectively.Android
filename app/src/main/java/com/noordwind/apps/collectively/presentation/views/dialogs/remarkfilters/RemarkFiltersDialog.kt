@@ -29,7 +29,13 @@ class RemarkFiltersDialog : DialogFragment(), Constants, FiltersMvp.View {
     }
 
     companion object {
-        fun newInstance(): RemarkFiltersDialog = RemarkFiltersDialog()
+        fun newInstance(showStateFilters: Boolean = true): RemarkFiltersDialog {
+            var dialog = RemarkFiltersDialog()
+            var arguments = Bundle()
+            arguments.putBoolean(Constants.BundleKey.STATES, showStateFilters)
+            dialog.arguments = arguments
+            return dialog
+        }
     }
 
     @Inject
@@ -56,7 +62,6 @@ class RemarkFiltersDialog : DialogFragment(), Constants, FiltersMvp.View {
         super.onCreate(savedInstanceState)
         setStyle(DialogFragment.STYLE_NO_TITLE, android.R.style.Theme_Holo_Light_Dialog)
         TheApp[context].appComponent?.inject(this)
-
         presenter = RemarkFiltersPresenter(this,
                 loadRemarkFiltersUseCase = LoadRemarkFiltersUseCase(filtersRepository, ioThread, uiThread),
                 addCategoryFilterUseCase = AddCategoryFilterUseCase(filtersRepository, ioThread, uiThread),
@@ -76,6 +81,13 @@ class RemarkFiltersDialog : DialogFragment(), Constants, FiltersMvp.View {
             filterListener.filter()
         }
         presenter.loadFilters()
+
+        if (arguments[Constants.BundleKey.STATES] as Boolean) {
+            statesLayout.visibility = View.VISIBLE
+        } else {
+            statesLayout.visibility = View.GONE
+        }
+
         return rootView
     }
 

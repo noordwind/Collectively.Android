@@ -48,6 +48,11 @@
             >
         </activity>
 
+        <activity android:name=".presentation.users.UsersActivity"
+                  android:parentActivityName=".presentation.main.MainActivity"
+            >
+        </activity>
+
         <activity android:name=".presentation.remarkpreview.RemarkActivity"
             android:parentActivityName=".presentation.main.MainActivity"
             >

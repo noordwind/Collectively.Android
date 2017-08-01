@@ -16,6 +16,7 @@ import com.noordwind.apps.collectively.presentation.remarkpreview.activity.Remar
 import com.noordwind.apps.collectively.presentation.remarkpreview.comments.RemarkCommentsActivity
 import com.noordwind.apps.collectively.presentation.settings.SettingsActivity
 import com.noordwind.apps.collectively.presentation.statistics.StatisticsActivity
+import com.noordwind.apps.collectively.presentation.users.UsersActivity
 import com.noordwind.apps.collectively.presentation.views.RemarkCommentView
 import com.noordwind.apps.collectively.presentation.views.dialogs.mapfilters.MapFiltersDialog
 import com.noordwind.apps.collectively.presentation.views.dialogs.mapfilters.RemarkFiltersDialog
@@ -44,6 +45,7 @@ interface AppComponent {
     fun inject(activity: UserRemarksActivity)
     fun inject(activity: NotificationsSettingsActivity)
     fun inject(activity: ChangePasswordActivity)
+    fun inject(activity: UsersActivity)
 
     //Views
     fun inject(remarkCommentRowHolder: RemarkCommentRowHolder)

@@ -17,6 +17,7 @@ import com.noordwind.apps.collectively.data.model.Remark
 import com.noordwind.apps.collectively.data.repository.RemarksRepository
 import com.noordwind.apps.collectively.domain.interactor.remark.LoadUserFavoriteRemarksUseCase
 import com.noordwind.apps.collectively.domain.interactor.remark.LoadUserRemarksUseCase
+import com.noordwind.apps.collectively.domain.interactor.remark.LoadUserResolvedRemarksUseCase
 import com.noordwind.apps.collectively.domain.interactor.remark.filters.map.ClearRemarkFiltersUseCase
 import com.noordwind.apps.collectively.domain.interactor.remark.filters.map.LoadRemarkFiltersUseCase
 import com.noordwind.apps.collectively.domain.thread.PostExecutionThread
@@ -36,15 +37,17 @@ import javax.inject.Inject
 
 class UserRemarksActivity : com.noordwind.apps.collectively.presentation.BaseActivity(), UserRemarksMvp.View {
     companion object {
-        fun start(context: Context, mode: String) {
+        fun start(context: Context, mode: String, userId: String?) {
             val intent = Intent(context, UserRemarksActivity::class.java)
             intent.putExtra(Constants.BundleKey.MODE, mode)
+            intent.putExtra(Constants.BundleKey.USER_ID, userId)
             intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
             context.startActivity(intent)
         }
 
         const val CREATED_REMARKS_MODE = "created_remarks_mode"
         const val FAVORITE_REMARKS_MODE = "favorite_remarks_mode"
+        const val RESOLVED_REMARKS_MODE = "resolved_remarks_mode"
     }
 
     @Inject
@@ -71,13 +74,23 @@ class UserRemarksActivity : com.noordwind.apps.collectively.presentation.BaseAct
         TheApp[this].appComponent?.inject(this)
         setContentView(R.layout.user_remarks_activity);
 
+        var userId = intent.getStringExtra(Constants.BundleKey.USER_ID)
+
         if (intent.getStringExtra(Constants.BundleKey.MODE).equals(CREATED_REMARKS_MODE)) {
-            toolbarTitleLabel?.text = getString(R.string.user_created_remarks_screen_title)
-        } else {
+            if (userId != null) {
+                toolbarTitleLabel?.text = getString(R.string.user_created_remarks_screen_title)
+            } else {
+                toolbarTitleLabel?.text = getString(R.string.current_user_created_remarks_screen_title)
+            }
+        } else if (intent.getStringExtra(Constants.BundleKey.MODE).equals(RESOLVED_REMARKS_MODE)){
+            toolbarTitleLabel?.text = getString(R.string.user_resolved_remarks_screen_title)
+        } else if (intent.getStringExtra(Constants.BundleKey.MODE).equals(FAVORITE_REMARKS_MODE)){
             toolbarTitleLabel?.text = getString(R.string.user_favorite_remarks_screen_title)
         }
 
-        presenter = UserRemarksPresenter(this, LoadUserRemarksUseCase(remarksRepository, ioThread, uiThread),
+        presenter = UserRemarksPresenter(this,
+                LoadUserRemarksUseCase(remarksRepository, ioThread, uiThread),
+                LoadUserResolvedRemarksUseCase(remarksRepository, ioThread, uiThread),
                 LoadRemarkFiltersUseCase(filtersRepository, ioThread, uiThread),
                 LoadUserFavoriteRemarksUseCase(remarksRepository, ioThread, uiThread),
                 ClearRemarkFiltersUseCase(filtersRepository, ioThread, uiThread))
@@ -93,20 +106,34 @@ class UserRemarksActivity : com.noordwind.apps.collectively.presentation.BaseAct
                 .withProgressViews(listOf<View>(switcherProgress))
                 .build(this)
 
-        switcherErrorButton.setOnClickListener { loadRemarks() }
+        switcherErrorButton.setOnClickListener { loadRemarks(userId) }
 
-        loadRemarks()
+        loadRemarks(userId)
 
         emptyButton.visibility = View.GONE
     }
 
-    private fun loadRemarks() {
+    private fun loadRemarks(userId: String?) {
         if (intent.getStringExtra(Constants.BundleKey.MODE).equals(CREATED_REMARKS_MODE)) {
-            emptyScreenFooter.text = getString(R.string.empty_screen_no_reported_remarks)
-            presenter.loadUserRemarks()
-        } else {
+
+            if (userId != null) {
+                emptyScreenFooter.text = getString(R.string.empty_screen_no_reported_remarks)
+            } else {
+                emptyScreenFooter.text = getString(R.string.empty_screen_current_user_no_reported_remarks)
+            }
+
+            presenter.loadUserRemarks(userId)
+        } else if (intent.getStringExtra(Constants.BundleKey.MODE).equals(FAVORITE_REMARKS_MODE)){
             emptyScreenFooter.text = getString(R.string.empty_screen_no_favorited_remarks)
             presenter.loadFavoriteRemarks()
+        } else if (intent.getStringExtra(Constants.BundleKey.MODE).equals(RESOLVED_REMARKS_MODE)) {
+            if (userId != null) {
+                emptyScreenFooter.text = getString(R.string.empty_screen_no_resolved_remarks)
+            } else {
+                emptyScreenFooter.text = getString(R.string.empty_screen_current_user_no_resolved_remarks)
+            }
+
+            presenter.loadUserResolvedRemarks(userId)
         }
     }
 
@@ -171,7 +198,7 @@ class UserRemarksActivity : com.noordwind.apps.collectively.presentation.BaseAct
     }
 
     fun showFiltersDialog() {
-        var dialog = RemarkFiltersDialog.newInstance()
+        var dialog = RemarkFiltersDialog.newInstance(!intent.getStringExtra(Constants.BundleKey.MODE).equals(RESOLVED_REMARKS_MODE))
         dialog.show(supportFragmentManager, RemarkFiltersDialog.javaClass.toString())
 
         dialog.setOnFilterListener(object: RemarkFiltersDialog.OnFilter {

@@ -11,10 +11,14 @@ interface Api {
 
     // GET
 
-    // USER
+    // USERS
     @Headers(Constants.ApiHeader.ACCEPT_HEADER, Constants.ApiHeader.CONTENT_TYPE_HEADER)
     @GET("users/{name}")
     fun loadUser(@Path("name") userName: String): Observable<User>
+
+    @Headers(Constants.ApiHeader.ACCEPT_HEADER, Constants.ApiHeader.CONTENT_TYPE_HEADER)
+    @GET("users")
+    fun loadUsers(@Query("page") pageNumber: String, @Query("results") results: String): Observable<List<User>>
 
     //REMARKS
 

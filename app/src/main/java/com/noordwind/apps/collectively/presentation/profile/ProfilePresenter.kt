@@ -1,11 +1,20 @@
 package com.noordwind.apps.collectively.presentation.profile
 
+import com.noordwind.apps.collectively.data.model.User
+import com.noordwind.apps.collectively.domain.interactor.profile.LoadCurrentUserProfileDataUseCase
 import com.noordwind.apps.collectively.domain.interactor.profile.LoadUserProfileDataUseCase
 import com.noordwind.apps.collectively.domain.model.UserProfileData
 import com.noordwind.apps.collectively.presentation.rxjava.AppDisposableObserver
 
-class ProfilePresenter(val view: ProfileMvp.View, val loadProfileUseCase: LoadUserProfileDataUseCase) : ProfileMvp.Presenter {
-    override fun loadProfile() {
+class ProfilePresenter(val view: ProfileMvp.View,
+                       val loadCurrentUserProfileDataUseCase: LoadCurrentUserProfileDataUseCase,
+                       val loadProfileUseCase: LoadUserProfileDataUseCase) : ProfileMvp.Presenter {
+
+    private var user: User? = null
+
+    override fun loadProfile(user: User?) {
+        this.user = user
+
         var observer = object : AppDisposableObserver<UserProfileData>() {
 
             override fun onStart() {
@@ -15,7 +24,12 @@ class ProfilePresenter(val view: ProfileMvp.View, val loadProfileUseCase: LoadUs
 
             override fun onNext(profile: UserProfileData) {
                 super.onNext(profile)
-                view.showProfile(profile)
+
+                if (user == null) {
+                    view.showCurrentUserProfile(profile)
+                } else {
+                    view.showUserProfile(profile)
+                }
             }
 
             override fun onError(e: Throwable) {
@@ -33,10 +47,16 @@ class ProfilePresenter(val view: ProfileMvp.View, val loadProfileUseCase: LoadUs
             }
         }
 
-        loadProfileUseCase.execute(observer)
+
+        if (user == null) {
+            loadCurrentUserProfileDataUseCase.execute(observer)
+        } else {
+            loadProfileUseCase.execute(observer, user!!)
+        }
     }
 
     override fun destroy() {
+        loadCurrentUserProfileDataUseCase.dispose()
         loadProfileUseCase.dispose()
     }
 }
