@@ -23,7 +23,6 @@ import com.noordwind.apps.collectively.domain.interactor.profile.LoadUserProfile
 import com.noordwind.apps.collectively.domain.model.UserProfileData
 import com.noordwind.apps.collectively.domain.thread.PostExecutionThread
 import com.noordwind.apps.collectively.domain.thread.UseCaseThread
-import com.noordwind.apps.collectively.presentation.adapter.UserRemarksAdapter
 import com.noordwind.apps.collectively.presentation.profile.notifications.NotificationsSettingsActivity
 import com.noordwind.apps.collectively.presentation.profile.remarks.user.UserRemarksActivity
 import com.noordwind.apps.collectively.presentation.util.RequestErrorDecorator
@@ -38,13 +37,7 @@ import javax.inject.Inject
 class ProfileActivity : com.noordwind.apps.collectively.presentation.BaseActivity(), ProfileMvp.View, AppBarLayout.OnOffsetChangedListener {
 
     companion object {
-        fun start(context: Context) {
-            val intent = Intent(context, ProfileActivity::class.java)
-            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
-            context.startActivity(intent)
-        }
-
-        fun start(context: Context, user: User) {
+        fun start(context: Context, user: User? = null) {
             val intent = Intent(context, ProfileActivity::class.java)
             intent.putExtra(Constants.BundleKey.USER, user)
             intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
@@ -76,8 +69,6 @@ class ProfileActivity : com.noordwind.apps.collectively.presentation.BaseActivit
     private lateinit var switcher: Switcher
     private lateinit var errorDecorator: RequestErrorDecorator
 
-    private lateinit var userRemarksAdapter: UserRemarksAdapter
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         TheApp[this].appComponent?.inject(this)
@@ -89,13 +80,18 @@ class ProfileActivity : com.noordwind.apps.collectively.presentation.BaseActivit
         errorDecorator = RequestErrorDecorator(switcherErrorImage, switcherErrorTitle, switcherErrorFooter)
         setupSwitcher()
 
+        profileImage.setImageResource(R.drawable.ic_person_grey_48dp)
+
         presenter = ProfilePresenter(this,
                 LoadCurrentUserProfileDataUseCase(remarksRepository, profileRepository, ioThread, uiThread),
                 LoadUserProfileDataUseCase(remarksRepository, ioThread, uiThread))
 
         var user = intent.getSerializableExtra(Constants.BundleKey.USER) as User?
+        setupButtons(user)
         presenter.loadProfile(user)
+    }
 
+    private fun setupButtons(user: User?) {
         currentUserRemarksButton.setOnClickListener { UserRemarksActivity.start(baseContext, UserRemarksActivity.CREATED_REMARKS_MODE, null) }
         userRemarksButton.setOnClickListener { UserRemarksActivity.start(baseContext, UserRemarksActivity.CREATED_REMARKS_MODE, user?.userId) }
 
@@ -133,6 +129,12 @@ class ProfileActivity : com.noordwind.apps.collectively.presentation.BaseActivit
     }
 
     override fun showCurrentUserProfile(profile: UserProfileData) {
+        showUserProfile(profile)
+        currentUserOptions.visibility = View.VISIBLE
+        userOptions.visibility = View.GONE
+    }
+
+    fun showUserProfile(profile: UserProfileData) {
         switcher.showContentViewsImmediately()
         titleLabel.text = profile.name
         toolbarTitleLabel.text = SpannableString(profile.name)
@@ -143,19 +145,21 @@ class ProfileActivity : com.noordwind.apps.collectively.presentation.BaseActivit
         if (profile.avatarUrl != null) {
             Glide.with(this).load(profile.avatarUrl).into(profileImage)
         }
-
-        currentUserOptions.visibility = View.VISIBLE
-        userOptions.visibility = View.GONE
     }
 
-    override fun showUserProfile(profile: UserProfileData) {
-        showCurrentUserProfile(profile)
+    override fun showCustomUserProfile(profile: UserProfileData) {
+        showUserProfile(profile)
         currentUserOptions.visibility = View.GONE
         userOptions.visibility = View.VISIBLE
     }
 
-    override fun showLoadProfileNetworkError() {
-        errorDecorator.onNetworkError(getString(R.string.error_loading_profile_no_network))
+    override fun showLoadCurrentUserProfileNetworkError() {
+        errorDecorator.onNetworkError(getString(R.string.error_loading_current_user_profile_no_network))
+        switcher.showErrorViewsImmediately()
+    }
+
+    override fun showLoadCustomUserProfileNetworkError() {
+        errorDecorator.onNetworkError(getString(R.string.error_loading_custom_user_profile_no_network))
         switcher.showErrorViewsImmediately()
     }
 

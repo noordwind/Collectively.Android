@@ -28,7 +28,7 @@ class ProfilePresenter(val view: ProfileMvp.View,
                 if (user == null) {
                     view.showCurrentUserProfile(profile)
                 } else {
-                    view.showUserProfile(profile)
+                    view.showCustomUserProfile(profile)
                 }
             }
 
@@ -43,7 +43,11 @@ class ProfilePresenter(val view: ProfileMvp.View,
 
             override fun onNetworkError() {
                 super.onNetworkError()
-                view.showLoadProfileNetworkError()
+                if (user == null) {
+                    view.showLoadCurrentUserProfileNetworkError()
+                } else {
+                    view.showLoadCustomUserProfileNetworkError()
+                }
             }
         }
 

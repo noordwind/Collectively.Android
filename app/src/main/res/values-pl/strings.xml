@@ -84,10 +84,10 @@
     <string name="top_reportes">Najwięcej zgłoszonych</string>
     <string name="top_resolvers">Najwięcej rozwiązanych</string>
     <string name="profile_resolved_remarks">Rozwiązane zgłoszenia</string>
-    <string name="profile_reported_remarks">Zraportowane zgłoszenia</string>
+    <string name="profile_reported_remarks">Utworzone zgłoszenia</string>
     <string name="your_remarks">Utworzone zgłoszenia</string>
     <string name="favorite_remarks">Śledzone zgłoszenia</string>
-    <string name="user_created_remarks_screen_title">Zgłoszenia użytkownika</string>
+    <string name="user_created_remarks_screen_title">Utworzone zgłoszenia</string>
     <string name="current_user_created_remarks_screen_title">Twoje zgłoszenia</string>
     <string name="user_favorite_remarks_screen_title">Śledzone zgłoszenia</string>
     <string name="user_resolved_remarks_screen_title">Rozwiązane zgłoszenia</string>
@@ -140,7 +140,9 @@
     <string name="empty_screen_no_resolved_remarks">Użytkownik nie rozwiązał jeszcze żadnego zgłoszenia</string>
     <string name="empty_screen_current_user_no_resolved_remarks">Nie rozwiązałeś jeszcze żadnego zgłoszenia</string>
 
-    <string name="error_loading_profile_no_network">Połącz się z internetem aby obejrzeć profil</string>
+    <string name="error_loading_current_user_profile_no_network">Połącz się z internetem aby obejrzeć profil</string>
+    <string name="error_loading_custom_user_profile_no_network">Połącz się z internetem aby obejrzeć profil</string>
+
     <string name="filter_show_only_mine">Tylko moje</string>
     <string name="next">Dalej</string>
     <string name="go_to_login">Dołącz do Collectively!</string>

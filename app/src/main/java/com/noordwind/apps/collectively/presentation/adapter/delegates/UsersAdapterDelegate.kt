@@ -9,7 +9,7 @@ import com.noordwind.apps.collectively.data.model.User
 import com.noordwind.apps.collectively.presentation.views.remark.states.UserRowHolder
 
 
-class UsersAdapterDelegate(viewType: Int): AbsAdapterDelegate<List<Any>>(viewType) {
+class UsersAdapterDelegate(viewType: Int) : AbsAdapterDelegate<List<Any>>(viewType) {
 
     override fun isForViewType(items: List<Any>, position: Int): Boolean {
         return items[position] is User
@@ -22,7 +22,7 @@ class UsersAdapterDelegate(viewType: Int): AbsAdapterDelegate<List<Any>>(viewTyp
 
     override fun onCreateViewHolder(parent: ViewGroup?): RecyclerView.ViewHolder {
         var view = LayoutInflater.from(parent?.context).inflate(R.layout.view_user_row, parent, false)
-        return UserRowHolder( view)
+        return UserRowHolder(view)
     }
 }
 

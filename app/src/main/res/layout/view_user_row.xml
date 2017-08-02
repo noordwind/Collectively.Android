@@ -9,7 +9,7 @@
     android:orientation="horizontal"
     android:padding="@dimen/spacing_normal">
 
-    <android.support.v7.widget.AppCompatImageView
+    <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/userImage"
         android:layout_width="40dp"
         android:layout_height="40dp"

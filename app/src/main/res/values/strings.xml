@@ -86,9 +86,9 @@
     <string name="top_resolvers">Top resolvers</string>
     <string name="profile_resolved_remarks">Resolved remarks</string>
     <string name="profile_reported_remarks">Reported remarks</string>
-    <string name="your_remarks">Your remarks</string>
+    <string name="your_remarks">Created remarks</string>
     <string name="favorite_remarks">Favorite remarks</string>
-    <string name="user_created_remarks_screen_title">User remarks</string>
+    <string name="user_created_remarks_screen_title">Created remarks</string>
     <string name="current_user_created_remarks_screen_title">Your remarks</string>
     <string name="user_favorite_remarks_screen_title">Favorite remarks</string>
     <string name="user_resolved_remarks_screen_title">Resolved remarks</string>
@@ -139,7 +139,9 @@
 
     <string name="empty_screen_no_favorited_remarks">You don\'t have any favorite remarks yet</string>
 
-    <string name="error_loading_profile_no_network">Connect to internet to check your profile</string>
+    <string name="error_loading_current_user_profile_no_network">Connect to internet to check your profile</string>
+    <string name="error_loading_custom_user_profile_no_network">Connect to internet to check user profile</string>
+
     <string name="filter_show_only_mine">Show only mine</string>
     <string name="next">Next</string>
     <string name="go_to_login">Join our community</string>

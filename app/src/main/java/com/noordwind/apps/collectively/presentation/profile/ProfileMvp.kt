@@ -12,8 +12,9 @@ interface ProfileMvp {
         fun showLoading()
         fun showLoadProfileError(message: String?)
         fun showCurrentUserProfile(profile: UserProfileData)
-        fun showUserProfile(profile: UserProfileData)
-        fun showLoadProfileNetworkError()
+        fun showCustomUserProfile(profile: UserProfileData)
+        fun showLoadCurrentUserProfileNetworkError()
+        fun showLoadCustomUserProfileNetworkError()
     }
 
     interface Presenter : BasePresenter {
