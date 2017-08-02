@@ -18,6 +18,7 @@ interface LoginMvp {
         fun showInvalidEmailError()
         fun showInvalidPasswordError()
         fun showWalkthroughScreen()
+        fun showSetNicknameScreen()
     }
 
     interface Presenter : BasePresenter{

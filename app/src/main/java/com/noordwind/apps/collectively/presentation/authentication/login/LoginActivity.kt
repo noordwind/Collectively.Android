@@ -10,12 +10,11 @@ import com.facebook.FacebookCallback
 import com.facebook.FacebookException
 import com.facebook.login.LoginManager
 import com.facebook.login.LoginResult
-import kotlinx.android.synthetic.main.activity_login.*
-import kotlinx.android.synthetic.main.view_login_progress.*
 import com.noordwind.apps.collectively.R
 import com.noordwind.apps.collectively.TheApp
 import com.noordwind.apps.collectively.data.repository.AuthenticationRepository
 import com.noordwind.apps.collectively.data.repository.FacebookTokenRepository
+import com.noordwind.apps.collectively.data.repository.ProfileRepository
 import com.noordwind.apps.collectively.data.repository.SessionRepository
 import com.noordwind.apps.collectively.data.repository.util.ConnectivityRepository
 import com.noordwind.apps.collectively.domain.interactor.GetFacebookTokenUseCase
@@ -24,6 +23,7 @@ import com.noordwind.apps.collectively.domain.interactor.authentication.LoginUse
 import com.noordwind.apps.collectively.domain.thread.PostExecutionThread
 import com.noordwind.apps.collectively.domain.thread.UseCaseThread
 import com.noordwind.apps.collectively.presentation.authentication.retrievepassword.ResetPasswordActivity
+import com.noordwind.apps.collectively.presentation.authentication.setnickname.SetNickNameActivity
 import com.noordwind.apps.collectively.presentation.authentication.signup.SignUpActivity
 import com.noordwind.apps.collectively.presentation.extension.setGone
 import com.noordwind.apps.collectively.presentation.extension.setVisible
@@ -31,6 +31,8 @@ import com.noordwind.apps.collectively.presentation.extension.showLoginErrorDial
 import com.noordwind.apps.collectively.presentation.extension.textInString
 import com.noordwind.apps.collectively.presentation.main.MainActivity
 import com.noordwind.apps.collectively.presentation.walkthrough.WalkthroughActivity
+import kotlinx.android.synthetic.main.activity_login.*
+import kotlinx.android.synthetic.main.view_login_progress.*
 import java.lang.ref.WeakReference
 import java.util.*
 import javax.inject.Inject
@@ -56,6 +58,9 @@ class LoginActivity : AppCompatActivity(), LoginMvp.View {
 
     @Inject
     lateinit var facebookRepository: FacebookTokenRepository
+
+    @Inject
+    lateinit var profileRepository: ProfileRepository
 
     @Inject
     lateinit var ioThread: UseCaseThread
@@ -99,6 +104,7 @@ class LoginActivity : AppCompatActivity(), LoginMvp.View {
                 LoginUseCase(authenticationRepository, sessionRepository, ioThread, uiThread),
                 FacebookLoginUseCase(authenticationRepository, ioThread, uiThread),
                 GetFacebookTokenUseCase(facebookRepository, ioThread, uiThread),
+                profileRepository,
                 connectivityRepository);
 
         loginPresenter.onCreate();
@@ -146,6 +152,10 @@ class LoginActivity : AppCompatActivity(), LoginMvp.View {
     override fun showInvalidEmailError() = Snackbar.make(findViewById(android.R.id.content), getString(R.string.error_invalid_email), Snackbar.LENGTH_LONG).show();
 
     override fun showInvalidPasswordError() = Snackbar.make(findViewById(android.R.id.content), getString(R.string.error_invalid_password), Snackbar.LENGTH_LONG).show();
+
+    override fun showSetNicknameScreen() {
+        SetNickNameActivity.start(this)
+    }
 
     override fun showLoginSuccess() = showMainScreen();
 

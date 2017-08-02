@@ -14,7 +14,14 @@ class ToastManager(val context: Context, message: String, duration: Int) {
     fun networkError() : ToastManager {
         toast.setBackgroundColor(Color.parseColor("#ff5a5f"))
         toast.setTextColor(Color.WHITE)
-        toast.setIcon(R.drawable.ic_signal_wifi_off_white_24dp)
+
+
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP){
+            toast.setIcon(R.drawable.ic_signal_wifi_off_white_24dp)
+        } else {
+            toast.setIcon(R.drawable.ic_signal_wifi_off_pre_lollipop)
+        }
+
         toast.setMaxAlpha()
 
         return this
@@ -23,20 +30,32 @@ class ToastManager(val context: Context, message: String, duration: Int) {
     fun progress(): ToastManager {
         toast.setTextColor(Color.WHITE)
         toast.setBackgroundColor(ContextCompat.getColor(context, R.color.red_dark_2))
-        toast.setIcon(R.drawable.ic_autorenew_24dp)
+
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP){
+            toast.setIcon(R.drawable.ic_autorenew_24dp)
+        } else {
+            toast.setIcon(R.drawable.ic_autorenew_pre_lollipop)
+        }
+
         toast.spinIcon()
         toast.setMaxAlpha()
         return this
     }
 
     fun show() : ToastManager {
-//        toast.show()
+        toast.show()
         return this
     }
 
-    fun  success(): ToastManager {
+    fun success(): ToastManager {
         toast.setBackgroundColor(Color.parseColor("#4CAF50"))
-        toast.setIcon(R.drawable.ic_check_white_24dp)
+
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP){
+            toast.setIcon(R.drawable.ic_check_white_24dp)
+        } else {
+            toast.setIcon(R.drawable.ic_check_white_pre_lollipop)
+        }
+
         toast.setTextColor(Color.WHITE)
         toast.setMaxAlpha()
 
@@ -44,7 +63,7 @@ class ToastManager(val context: Context, message: String, duration: Int) {
     }
 
     fun hide() {
-//        toast.cancel()
+        toast.cancel()
     }
 
 }

@@ -102,6 +102,24 @@ fun Activity.showResetPasswordErrorDialog(message: String) {
     builder.show()
 }
 
+fun Activity.showSetNicknameErrorDialog(message: String) {
+    val builder = AlertDialog.Builder(this)
+    builder
+            .setTitle(this.getString(R.string.set_user_nickname_failed))
+            .setMessage(message)
+            .setPositiveButton(this.getString(R.string.ok_button), null)
+    builder.show()
+}
+
+fun Activity.showOperationFailedDialog(message: String) {
+    val builder = AlertDialog.Builder(this)
+    builder
+            .setTitle(this.getString(R.string.operation_failed))
+            .setMessage(message)
+            .setPositiveButton(this.getString(R.string.ok_button), null)
+    builder.show()
+}
+
 
 fun Float.dpToPx(): Int {
     var densityDpi = DisplayMetrics.DENSITY_DEFAULT

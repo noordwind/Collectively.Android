@@ -1,9 +1,10 @@
 package com.noordwind.apps.collectively.presentation.authentication.login
 
 import com.jakewharton.retrofit2.adapter.rxjava2.HttpException
-import jonathanfinerty.once.Once
 import com.noordwind.apps.collectively.Constants
 import com.noordwind.apps.collectively.data.model.Optional
+import com.noordwind.apps.collectively.data.model.Profile
+import com.noordwind.apps.collectively.data.repository.ProfileRepository
 import com.noordwind.apps.collectively.data.repository.util.ConnectivityRepository
 import com.noordwind.apps.collectively.domain.interactor.GetFacebookTokenUseCase
 import com.noordwind.apps.collectively.domain.interactor.authentication.FacebookLoginUseCase
@@ -12,11 +13,13 @@ import com.noordwind.apps.collectively.domain.model.LoginCredentials
 import com.noordwind.apps.collectively.presentation.extension.isValidEmail
 import com.noordwind.apps.collectively.presentation.extension.isValidPassword
 import com.noordwind.apps.collectively.presentation.rxjava.AppDisposableObserver
+import jonathanfinerty.once.Once
 
 class LoginPresenter(val view: LoginMvp.View,
                      val loginUseCase: LoginUseCase,
                      val loginWithFacebookUseCase: FacebookLoginUseCase,
                      val getFacebookTokenUseCase: GetFacebookTokenUseCase,
+                     val profileRepository: ProfileRepository,
                      val connectivityRepository: ConnectivityRepository) : LoginMvp.Presenter {
 
     override fun onCreate() {
@@ -24,8 +27,14 @@ class LoginPresenter(val view: LoginMvp.View,
             view.showWalkthroughScreen()
             view.closeScreen()
         } else if (loginUseCase.isLoggedIn()) {
-            view.showMainScreen()
-            view.closeScreen()
+            profileRepository.loadProfile(false).subscribe {
+                if (it.isAccountIncomplete()) {
+                    view.showSetNicknameScreen()
+                } else {
+                    view.showMainScreen()
+                    view.closeScreen()
+                }
+            }
         }
     }
 
@@ -49,12 +58,17 @@ class LoginPresenter(val view: LoginMvp.View,
     override fun facebookLogin(token: String) {
         view.showLoading()
 
-        var observer = object : AppDisposableObserver<String>(connectivityRepository) {
+        var observer = object : AppDisposableObserver<Pair<Profile, String>>(connectivityRepository) {
 
-            override fun onNext(token: String) {
-                super.onNext(token)
+            override fun onNext(loginData: Pair<Profile, String>) {
+                super.onNext(loginData)
+
                 view.hideLoading()
-                view.showLoginSuccess()
+                if (loginData.first.isAccountIncomplete()) {
+                    view.showSetNicknameScreen()
+                } else {
+                    view.showLoginSuccess()
+                }
             }
 
             override fun onError(e: Throwable) {

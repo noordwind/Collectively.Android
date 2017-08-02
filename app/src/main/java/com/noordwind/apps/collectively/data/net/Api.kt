@@ -91,8 +91,16 @@ interface Api {
     fun loadProfile(): Observable<Profile>
 
     @Headers(Constants.ApiHeader.ACCEPT_HEADER, Constants.ApiHeader.CONTENT_TYPE_HEADER)
+    @PUT("account/name")
+    fun setNickName(@Body setNickNameRequest: SetNickNameRequest): Observable<Response<Void>>
+
+    @Headers(Constants.ApiHeader.ACCEPT_HEADER, Constants.ApiHeader.CONTENT_TYPE_HEADER)
     @GET("account/settings/notifications")
     fun settings(): Observable<Settings>
+
+    @Headers(Constants.ApiHeader.ACCEPT_HEADER)
+    @DELETE("account")
+    fun deleteAccount(): Observable<Response<Void>>
 
     // POST
     @Headers(Constants.ApiHeader.ACCEPT_HEADER, Constants.ApiHeader.CONTENT_TYPE_HEADER)

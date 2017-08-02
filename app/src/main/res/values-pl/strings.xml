@@ -88,6 +88,7 @@
     <string name="your_remarks">Utworzone zgłoszenia</string>
     <string name="favorite_remarks">Śledzone zgłoszenia</string>
     <string name="user_created_remarks_screen_title">Utworzone zgłoszenia</string>
+    <string name="set_nickname_screen_title">Nowy użytkownik</string>
     <string name="current_user_created_remarks_screen_title">Twoje zgłoszenia</string>
     <string name="user_favorite_remarks_screen_title">Śledzone zgłoszenia</string>
     <string name="user_resolved_remarks_screen_title">Rozwiązane zgłoszenia</string>
@@ -170,4 +171,10 @@
 
     <string name="error_loading_users_no_network">Połącz się z internetem aby zobaczyć użytkowników platformy Collectively</string>
     <string name="users_activity">Użytkownicy</string>
+    <string name="nickname">Nazwa użytkownika</string>
+    <string name="set_nickname">Akceptuj</string>
+    <string name="delete_account">Usuń konto</string>
+    <string name="account_removed_message">Konto usunięte</string>
+    <string name="removing_account">Usuwanie konta</string>
+    <string name="operation_failed">Operacja nie powiodła się</string>
 </resources>

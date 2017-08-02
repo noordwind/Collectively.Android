@@ -16,6 +16,7 @@
     <string name="register">Zarejestruj</string>
     <string name="password_confirmation">Potwierdź hasło</string>
     <string name="retrieve_password_screen_title">Odzyskaj hasło</string>
+    <string name="set_nickname_screen_title">New user</string>
     <string name="reset_password">Zresetuj hasło</string>
     <string name="login_in_progress_message">Logowanie</string>
     <string name="login_success_message">Zostałes zalogowany</string>
@@ -31,6 +32,7 @@
     <string name="close">Close</string>
     <string name="submit">Submit</string>
     <string name="password_reset_failed">Błąd resetowania hasła</string>
+    <string name="set_user_nickname_failed">Błąd operacji</string>
     <string name="login_error_title">Błąd logowania</string>
     <string name="registration_error_title">Błąd rejestracji</string>
     <string name="ok_button">Ok</string>
@@ -175,4 +177,10 @@
     <string name="users_activity">Users</string>
     <string name="resolved_remarks">Resolved remarks</string>
     <string name="reported_remarks">Reported remarks</string>
+    <string name="nickname">Username</string>
+    <string name="set_nickname">Accept</string>
+    <string name="delete_account">Delete account</string>
+    <string name="account_removed_message">Account removed</string>
+    <string name="removing_account">Removing account</string>
+    <string name="operation_failed">Operation failed</string>
 </resources>

@@ -4,6 +4,8 @@ import android.app.Application
 import com.noordwind.apps.collectively.presentation.addremark.AddRemarkActivity
 import com.noordwind.apps.collectively.presentation.authentication.login.LoginActivity
 import com.noordwind.apps.collectively.presentation.authentication.retrievepassword.ResetPasswordActivity
+import com.noordwind.apps.collectively.presentation.authentication.setnickname.SetNickNameActivity
+import com.noordwind.apps.collectively.presentation.authentication.setnickname.SetNickNameMvp
 import com.noordwind.apps.collectively.presentation.authentication.signup.SignUpActivity
 import com.noordwind.apps.collectively.presentation.changepassword.ChangePasswordActivity
 import com.noordwind.apps.collectively.presentation.main.MainActivity
@@ -46,6 +48,7 @@ interface AppComponent {
     fun inject(activity: NotificationsSettingsActivity)
     fun inject(activity: ChangePasswordActivity)
     fun inject(activity: UsersActivity)
+    fun inject(activity: SetNickNameActivity)
 
     //Views
     fun inject(remarkCommentRowHolder: RemarkCommentRowHolder)

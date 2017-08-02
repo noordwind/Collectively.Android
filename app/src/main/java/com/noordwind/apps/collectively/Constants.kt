@@ -107,6 +107,12 @@ interface Constants {
         }
     }
 
+    interface AccountStates {
+        companion object {
+            const val ACCOUNT_INCOMPLETE = "incomplete"
+        }
+    }
+
     interface UseCaseKeys {
         companion object {
             const val REMARK_ID = "remark_id"

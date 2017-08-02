@@ -1,6 +1,8 @@
 package com.noordwind.apps.collectively.data.model
 
-class Profile(val name: String, val userId: String, val avatarUrl: String?) {
+import com.noordwind.apps.collectively.Constants
 
+class Profile(val name: String, val userId: String, val avatarUrl: String?, val state: String) {
+    fun isAccountIncomplete() : Boolean  = state.equals(Constants.AccountStates.ACCOUNT_INCOMPLETE, true)
 }
 
