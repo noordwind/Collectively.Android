@@ -11,9 +11,19 @@ import java.io.File
 
 class RemarksDataSourceImpl(val api: Api) : RemarksDataSource {
     override fun uploadRemarkPhoto(remarkId: String, photoFile: File): Observable<Response<Void>> {
-        return Observable.just(MultipartBody.Part.createFormData("file", photoFile.name, RequestBody.create(MediaType.parse("image/*"), photoFile)))
-                .flatMap { api.uploadRemarkPhoto(remarkId, it) }
+        var reqFile = RequestBody.create(MediaType.parse("image/*"), photoFile);
+        var body = MultipartBody.Part.createFormData("file", photoFile.getName(), reqFile);
+        var name = RequestBody.create(MediaType.parse("text/plain"), "name");
+
+        return api.uploadRemarkPhoto(remarkId, body, name)
     }
+
+//    override fun uploadRemarkPhoto(remarkId: String, photoFile: File): Observable<Response<Void>> {
+//        var requestFile = RequestBody.create(MediaType.parse("image/*"), photoFile)
+//        val name = RequestBody.create(MediaType.parse("text/plain"), photoFile.name)
+//
+//        return api.uploadRemarkPhoto(remarkId, requestFile, name)
+//    }
 
     override fun loadUserRemarks(userId: String): Observable<List<Remark>> = api.userRemarks(userId, 1000)
 

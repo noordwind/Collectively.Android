@@ -88,7 +88,9 @@ class LoginActivity : AppCompatActivity(), LoginMvp.View {
                 object : FacebookCallback<LoginResult> {
                     private val activityWeakReference = WeakReference<LoginActivity>(this@LoginActivity)
 
-                    override fun onError(error: FacebookException?) {}
+                    override fun onError(error: FacebookException?) {
+                        showNetworkError()
+                    }
 
                     override fun onCancel() {}
 

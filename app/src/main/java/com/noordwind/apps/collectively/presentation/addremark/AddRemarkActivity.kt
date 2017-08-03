@@ -1,6 +1,5 @@
 package com.noordwind.apps.collectively.presentation.addremark
 
-import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
@@ -30,8 +29,6 @@ import com.noordwind.apps.collectively.presentation.rxjava.RxBus
 import com.noordwind.apps.collectively.presentation.views.RemarkTagView
 import com.noordwind.apps.collectively.presentation.views.dialogs.addphoto.AddPhotoDialog
 import com.noordwind.apps.collectively.usecases.LoadLastKnownLocationUseCase
-import com.theartofdev.edmodo.cropper.CropImage
-import com.theartofdev.edmodo.cropper.CropImageView
 import com.wefika.flowlayout.FlowLayout
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
@@ -185,36 +182,18 @@ class AddRemarkActivity : com.noordwind.apps.collectively.presentation.BaseActiv
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
-
         if (resultCode == RESULT_OK) {
             if (requestCode == Constants.RequestCodes.PICK_PICTURE_FROM_GALLERY) {
                 capturedImageUri = data?.data
-
-                CropImage.activity(capturedImageUri)
-                        .setGuidelines(CropImageView.Guidelines.ON)
-                        .setAllowRotation(true)
-                        .setAspectRatio(remarkImage.width, remarkImage.height)
-                        .start(this);
-
+                loadPhoto(capturedImageUri)
             } else if (requestCode == Constants.RequestCodes.TAKE_PICTURE) {
-                CropImage.activity(capturedImageUri)
-                        .setGuidelines(CropImageView.Guidelines.ON)
-                        .setMaxCropResultSize(remarkImage.width, remarkImage.height)
-                        .start(this);
-
-            } else if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
-                var result = CropImage.getActivityResult(data)
-                if (resultCode == RESULT_OK) {
-                    capturedImageUri = result.uri;
-                    capturedImageUri.let { Glide.with(baseContext).load(capturedImageUri).into(remarkImage) }
-                } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
-                    var error = result.error;
-                }
+                loadPhoto(capturedImageUri)
             }
-
-        } else if (resultCode == Activity.RESULT_CANCELED) {
-
         }
+    }
+
+    fun loadPhoto(imageUri: Uri?) {
+        imageUri.let { Glide.with(baseContext).load(imageUri).into(remarkImage) }
     }
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {

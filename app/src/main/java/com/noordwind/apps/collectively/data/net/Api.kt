@@ -4,6 +4,7 @@ import com.noordwind.apps.collectively.Constants
 import com.noordwind.apps.collectively.data.model.*
 import io.reactivex.Observable
 import okhttp3.MultipartBody
+import okhttp3.RequestBody
 import retrofit2.Response
 import retrofit2.http.*
 
@@ -35,7 +36,7 @@ interface Api {
 
     @Multipart
     @PUT("remarks/{remarkId}/photo")
-    fun uploadRemarkPhoto(@Path("remarkId") remarkId: String, @Part photo: MultipartBody.Part): Observable<Response<Void>>
+    fun uploadRemarkPhoto(@Path("remarkId") remarkId: String, @Part image: MultipartBody.Part, @Part("name") name: RequestBody): Observable<Response<Void>>
 
     @Headers(Constants.ApiHeader.ACCEPT_HEADER, Constants.ApiHeader.CONTENT_TYPE_HEADER)
     @GET("remarks")
