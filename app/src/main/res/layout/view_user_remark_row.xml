@@ -30,7 +30,7 @@
                 android:layout_width="20dp"
                 android:layout_height="20dp"
                 android:layout_gravity="center"
-                app:srcCompat="@drawable/ic_place_white_24dp"/>
+                app:srcCompat="@drawable/ic_place_dark_24dp"/>
         </FrameLayout>
 
         <LinearLayout

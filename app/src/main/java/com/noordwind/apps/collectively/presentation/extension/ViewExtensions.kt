@@ -5,6 +5,7 @@ import android.content.res.Resources
 import android.graphics.Rect
 import android.support.v4.content.ContextCompat
 import android.support.v7.app.AlertDialog
+import android.text.TextUtils
 import android.util.DisplayMetrics
 import android.util.TypedValue
 import android.view.TouchDelegate
@@ -134,6 +135,12 @@ fun Float.spToPx(): Int = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, 
 
 fun View.expandTouchArea(padding: Int = 20) {
     this.post(ExpandedAreaRunnable(this, padding))
+}
+
+fun TextView.hideIfEmptyText() {
+    if (TextUtils.isEmpty(this.text)) {
+        this.visibility = View.GONE
+    }
 }
 
 class ExpandedAreaRunnable : Runnable {

@@ -13,6 +13,8 @@ import com.noordwind.apps.collectively.domain.model.LoginCredentials
 import com.noordwind.apps.collectively.presentation.extension.isValidEmail
 import com.noordwind.apps.collectively.presentation.extension.isValidPassword
 import com.noordwind.apps.collectively.presentation.rxjava.AppDisposableObserver
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.schedulers.Schedulers
 import jonathanfinerty.once.Once
 
 class LoginPresenter(val view: LoginMvp.View,
@@ -23,18 +25,23 @@ class LoginPresenter(val view: LoginMvp.View,
                      val connectivityRepository: ConnectivityRepository) : LoginMvp.Presenter {
 
     override fun onCreate() {
+        Once.markDone(Constants.OnceKey.WALKTHROUGH)
+
         if (!Once.beenDone(Once.THIS_APP_INSTALL, Constants.OnceKey.WALKTHROUGH)) {
             view.showWalkthroughScreen()
             view.closeScreen()
         } else if (loginUseCase.isLoggedIn()) {
-            profileRepository.loadProfile(false).subscribe {
-                if (it.isAccountIncomplete()) {
-                    view.showSetNicknameScreen()
-                } else {
-                    view.showMainScreen()
-                    view.closeScreen()
-                }
-            }
+            profileRepository.loadProfile(false)
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe {
+                        if (it.isAccountIncomplete()) {
+                            view.showSetNicknameScreen()
+                        } else {
+                            view.showMainScreen()
+                            view.closeScreen()
+                        }
+                    }
         }
     }
 
@@ -109,7 +116,7 @@ class LoginPresenter(val view: LoginMvp.View,
 
             override fun onError(e: Throwable) {
                 super.onError(e)
-                if (e is HttpException && e.code() == 401)  {
+                if (e is HttpException && e.code() == 401) {
                     view.showInvalidUserError();
                 }
                 view.hideLoading()

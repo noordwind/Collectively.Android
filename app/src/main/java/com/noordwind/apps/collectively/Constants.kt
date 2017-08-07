@@ -48,6 +48,8 @@ interface Constants {
     interface OnceKey {
         companion object {
             val WALKTHROUGH = "walkthrough"
+            val SHOW_SWIPE_LEFT_TOOLTIP_ON_MAIN_SCREEN = "SHOW_SWIPE_LEFT_TOOLTIP_ON_MAIN_SCREEN"
+            val SHOW_TAP_TO_ZOOM_ICON = "show_tap_to_zoom_icon"
         }
     }
 
@@ -64,6 +66,14 @@ interface Constants {
             val ISSUE = "issue"
             val SUGGESTION = "suggestion"
             val PRAISE = "praise"
+        }
+    }
+
+    interface RemarkStates {
+        companion object {
+            val NEW = "new"
+            val RESOLVED = "resolved"
+            val PROCESSING = "processing"
         }
     }
 

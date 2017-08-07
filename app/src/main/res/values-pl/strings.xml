@@ -177,4 +177,12 @@
     <string name="account_removed_message">Konto usunięte</string>
     <string name="removing_account">Usuwanie konta</string>
     <string name="operation_failed">Operacja nie powiodła się</string>
+    <string name="empty_description">Brak opisu</string>
+    <string name="swipe_left_main_screen_tooltip">Przewiń palcem w lewo \naby zobaczyć liste zgłoszeń</string>
+    <string name="remark_state_new_long_description">Nowe zgłoszenie</string>
+    <string name="remark_state_processing_long_description">Zgłoszenie jest procesowane</string>
+    <string name="remark_state_resolved_long_description">Zgłoszenie rozwiązane</string>
+    <string name="filter_remarks">Filtruj zgłoszenia</string>
+    <string name="set_user_nickname_failed">Błąd operacji</string>
+    <string name="tap_to_zoom">Powiększ</string>
 </resources>

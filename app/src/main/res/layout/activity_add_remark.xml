@@ -1,195 +1,240 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-<android.support.design.widget.CoordinatorLayout
+<FrameLayout
+    android:id="@+id/container"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <android.support.design.widget.AppBarLayout
-        android:id="@+id/app_bar_layout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:fitsSystemWindows="true"
-        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
 
-        <android.support.design.widget.CollapsingToolbarLayout
-            android:id="@+id/collapsing_toolbar"
+    <android.support.design.widget.CoordinatorLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <android.support.design.widget.AppBarLayout
+            android:id="@+id/app_bar_layout"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:fitsSystemWindows="true"
-            app:contentScrim="?attr/colorPrimary"
-            app:expandedTitleMarginEnd="64dp"
-            app:expandedTitleMarginStart="48dp"
-            app:layout_scrollFlags="scroll|exitUntilCollapsed">
+            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
 
-
-            <RelativeLayout
+            <android.support.design.widget.CollapsingToolbarLayout
+                android:id="@+id/collapsing_toolbar"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:layout_collapseMode="parallax">
-
-                <android.support.v7.widget.AppCompatImageView
-                    android:id="@+id/remarkImage"
-                    android:layout_width="match_parent"
-                    android:layout_height="230dp"
-                    android:fitsSystemWindows="true"
-                    android:scaleType="centerCrop"/>
+                android:layout_height="match_parent"
+                android:fitsSystemWindows="true"
+                app:contentScrim="?attr/colorPrimary"
+                app:expandedTitleMarginEnd="64dp"
+                app:expandedTitleMarginStart="48dp"
+                app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
 
-            </RelativeLayout>
-
-            <android.support.v7.widget.Toolbar
-                android:id="@+id/toolbar"
-                android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize"
-                app:layout_collapseMode="pin"
-                app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
-
-            </android.support.v7.widget.Toolbar>
-
-            <TextView
-                android:id="@+id/address"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="bottom"
-                android:background="@color/black_light_transparent"
-                android:fontFamily="@string/font_condensed"
-                android:gravity="left"
-                android:padding="@dimen/spacing_small"
-                android:textColor="@color/font_light"
-                android:textSize="@dimen/font_medium"
-                app:layout_collapseMode="parallax"></TextView>
-
-        </android.support.design.widget.CollapsingToolbarLayout>
-
-    </android.support.design.widget.AppBarLayout>
-
-    <android.support.v4.widget.NestedScrollView
-        android:id="@+id/scroll"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/white"
-        android:clipToPadding="false"
-        android:paddingBottom="10dp"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:padding="@dimen/spacing_normal">
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/spacing_small"
-                android:fontFamily="@string/font_normal"
-                android:text="@string/add_remark_category_hint"
-                android:textColor="@color/red_dark_2"
-                android:textSize="@dimen/font_normal"/>
-
-            <FrameLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@color/white"
-                android:padding="@dimen/spacing_small">
-
-                <Spinner
-                    android:id="@+id/remark_categories"
+                <FrameLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:popupBackground="@color/white"/>
-            </FrameLayout>
+                    app:layout_collapseMode="parallax">
 
-            <android.support.design.widget.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/spacing_normal">
+                    <android.support.v7.widget.AppCompatImageView
+                        android:id="@+id/remarkImage"
+                        android:layout_width="match_parent"
+                        android:layout_height="230dp"
+                        android:fitsSystemWindows="true"
+                        android:scaleType="centerCrop"/>
 
-                <EditText
-                    android:id="@+id/description"
+                    <LinearLayout
+                        android:id="@+id/tapToZoomView"
+                        android:layout_width="wrap_content"
+                        android:visibility="gone"
+                        android:layout_gravity="center"
+                        android:layout_height="wrap_content">
+
+                        <android.support.v7.widget.AppCompatImageView
+                            app:srcCompat="@drawable/ic_tap_to_zoom_white_24dp"
+                            android:layout_width="32dp"
+                            android:layout_gravity="center"
+                            android:layout_height="32dp"/>
+
+                        <TextView
+                            android:layout_gravity="center"
+                            android:textColor="#FFFFFFFF"
+                            android:textSize="20sp"
+                            android:fontFamily="@string/font_light"
+                            android:text="@string/tap_to_zoom"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"/>
+
+
+                    </LinearLayout>
+
+
+                </FrameLayout>
+
+                <android.support.v7.widget.Toolbar
+                    android:id="@+id/toolbar"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@string/font_light"
-                    android:gravity="top|left"
-                    android:hint="@string/description_hint"
-                    android:inputType="textMultiLine"
-                    android:lineSpacingMultiplier="1.25"
-                    android:lines="3"
-                    android:maxLength="200"
-                    android:maxLines="3"
-                    android:padding="@dimen/spacing_normal"
-                    android:textSize="@dimen/font_normal"/>
+                    android:layout_height="?attr/actionBarSize"
+                    app:layout_collapseMode="pin"
+                    app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
 
-            </android.support.design.widget.TextInputLayout>
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/spacing_small"
-                android:layout_marginTop="@dimen/spacing_small"
-                android:fontFamily="@string/font_normal"
-                android:text="@string/add_remark_tags_hint"
-                android:textColor="@color/red_dark_2"
-                android:textSize="@dimen/font_normal"
-                android:visibility="gone"/>
-
-            <com.wefika.flowlayout.FlowLayout
-                android:id="@+id/tags_layout"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="start|top"
-                android:visibility="gone"/>
-
-            <FrameLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                </android.support.v7.widget.Toolbar>
 
                 <TextView
-                    android:id="@+id/submitButton"
+                    android:id="@+id/address"
                     android:layout_width="match_parent"
-                    android:layout_height="48dp"
-                    android:layout_marginTop="@dimen/spacing_small"
-                    android:background="@drawable/button_selected_light"
-                    android:fontFamily="@string/font_normal"
-                    android:gravity="center"
-                    android:paddingBottom="8dp"
-                    android:paddingLeft="16dp"
-                    android:paddingRight="16dp"
-                    android:paddingTop="8dp"
-                    android:text="@string/submit"
-                    android:textColor="@color/white"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom"
+                    android:background="@color/black_light_transparent"
+                    android:fontFamily="@string/font_condensed"
+                    android:gravity="left"
+                    android:padding="@dimen/spacing_small"
+                    android:textColor="@color/font_light"
                     android:textSize="@dimen/font_medium"
-                    android:textStyle="bold"/>
+                    app:layout_collapseMode="parallax"></TextView>
 
-                <com.pnikosis.materialishprogress.ProgressWheel
-                    xmlns:wheel="http://schemas.android.com/apk/res-auto"
-                    android:id="@+id/submitProgress"
-                    android:layout_width="40dp"
-                    android:visibility="gone"
-                    android:layout_marginTop="10dp"
-                    android:layout_height="match_parent"
-                    wheel:matProg_barColor="@color/white"
-                    wheel:matProg_circleRadius="24dp"
-                    wheel:matProg_progressIndeterminate="true"
-                    wheel:matProg_spinSpeed="1"/>
+            </android.support.design.widget.CollapsingToolbarLayout>
 
-            </FrameLayout>
+        </android.support.design.widget.AppBarLayout>
 
-        </LinearLayout>
+        <android.support.v4.widget.NestedScrollView
+            android:id="@+id/scroll"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/white"
+            android:clipToPadding="false"
+            android:paddingBottom="10dp"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-    </android.support.v4.widget.NestedScrollView>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:padding="@dimen/spacing_normal">
 
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/fab"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginRight="@dimen/spacing_medium"
-        android:background="@color/red_dark_2"
-        app:srcCompat="@drawable/ic_photo_camera_white_24dp"
-        app:layout_anchor="@id/app_bar_layout"
-        app:layout_anchorGravity="bottom|right|end"/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/spacing_small"
+                    android:fontFamily="@string/font_normal"
+                    android:text="@string/add_remark_category_hint"
+                    android:textColor="@color/red_dark_2"
+                    android:textSize="@dimen/font_normal"/>
 
-</android.support.design.widget.CoordinatorLayout>
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/white"
+                    android:padding="@dimen/spacing_small">
+
+                    <Spinner
+                        android:id="@+id/remark_categories"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:popupBackground="@color/white"/>
+                </FrameLayout>
+
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/spacing_normal">
+
+                    <EditText
+                        android:id="@+id/description"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@string/font_light"
+                        android:gravity="top|left"
+                        android:hint="@string/description_hint"
+                        android:inputType="textMultiLine"
+                        android:lineSpacingMultiplier="1.25"
+                        android:lines="3"
+                        android:maxLength="200"
+                        android:maxLines="3"
+                        android:padding="@dimen/spacing_normal"
+                        android:textSize="@dimen/font_normal"/>
+
+                </android.support.design.widget.TextInputLayout>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/spacing_small"
+                    android:layout_marginTop="@dimen/spacing_small"
+                    android:fontFamily="@string/font_normal"
+                    android:text="@string/add_remark_tags_hint"
+                    android:textColor="@color/red_dark_2"
+                    android:textSize="@dimen/font_normal"
+                    android:visibility="gone"/>
+
+                <com.wefika.flowlayout.FlowLayout
+                    android:id="@+id/tags_layout"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="start|top"
+                    android:visibility="gone"/>
+
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:id="@+id/submitButton"
+                        android:layout_width="match_parent"
+                        android:layout_height="48dp"
+                        android:layout_marginTop="@dimen/spacing_small"
+                        android:background="@drawable/button_selected_light"
+                        android:fontFamily="@string/font_normal"
+                        android:gravity="center"
+                        android:paddingBottom="8dp"
+                        android:paddingLeft="16dp"
+                        android:paddingRight="16dp"
+                        android:paddingTop="8dp"
+                        android:text="@string/submit"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/font_medium"
+                        android:textStyle="bold"/>
+
+                    <com.pnikosis.materialishprogress.ProgressWheel
+                        xmlns:wheel="http://schemas.android.com/apk/res-auto"
+                        android:id="@+id/submitProgress"
+                        android:layout_width="40dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginTop="10dp"
+                        android:visibility="gone"
+                        wheel:matProg_barColor="@color/white"
+                        wheel:matProg_circleRadius="24dp"
+                        wheel:matProg_progressIndeterminate="true"
+                        wheel:matProg_spinSpeed="1"/>
+
+                </FrameLayout>
+
+            </LinearLayout>
+
+        </android.support.v4.widget.NestedScrollView>
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/fab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="@dimen/spacing_medium"
+            android:background="@color/red_dark_2"
+            app:layout_anchor="@id/app_bar_layout"
+            app:layout_anchorGravity="bottom|right|end"
+            app:srcCompat="@drawable/ic_photo_camera_white_24dp"/>
+
+    </android.support.design.widget.CoordinatorLayout>
+
+    <FrameLayout
+        android:id="@+id/expandedRemarkImageContainer"
+        android:background="@color/background_light"
+        android:layout_width="match_parent"
+        android:visibility="invisible"
+        android:layout_height="match_parent">
+
+        <android.support.v7.widget.AppCompatImageView
+            android:id="@+id/expandedRemarkImage"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="invisible"/>
+    </FrameLayout>
+</FrameLayout>

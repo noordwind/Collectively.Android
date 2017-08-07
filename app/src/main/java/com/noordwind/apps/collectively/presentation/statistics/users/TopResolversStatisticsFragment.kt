@@ -33,7 +33,9 @@ class TopResolversStatisticsFragment : Fragment() {
         var statistics = arguments.getSerializable(Constants.BundleKey.STATISTICS) as Statistics
         var recycler = layout?.findViewById(R.id.recycler) as RecyclerView
 
-        var entries = statistics.usersStatistics.sortedByDescending { it.resolvedCount() }.map { UsersStatisticsAdapterDelegate.UserStatistic(it.name, it.resolvedCount().toInt()) }
+        var entries = statistics.usersStatistics
+                .sortedByDescending { it.resolvedCount() }
+                .map { UsersStatisticsAdapterDelegate.UserStatistic(it.name, it.avatarUrl, it.resolvedCount().toInt()) }
 
         userStatisticsAdapter = UsersStatisticsAdapter().setData(entries).initDelegates()
         recycler.adapter = userStatisticsAdapter

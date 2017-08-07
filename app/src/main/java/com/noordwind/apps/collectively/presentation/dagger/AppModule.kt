@@ -224,6 +224,10 @@ class AppModule(private val application: Application) : Constants {
 
     @Provides
     @Singleton
+    fun provideTranslationsDataSource(): FiltersTranslationsDataSource = FiltersTranslationsDataSourceImpl(application.applicationContext)
+
+    @Provides
+    @Singleton
     fun provideConnectivityRepository(): ConnectivityRepository {
         var connectivityManager = application.applicationContext.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
         return ConnectivityRepositoryImpl(connectivityManager)

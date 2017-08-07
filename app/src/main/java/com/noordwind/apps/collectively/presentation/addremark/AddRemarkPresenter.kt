@@ -79,11 +79,6 @@ class AddRemarkPresenter(val view: AddRemarkMvp.View,
             }
 
             override fun onError(e: Throwable?) {
-                lastKnownAddress = "Reymonta 20, 30-059 Kraków, Polska"
-                lastKnownLongitude = 19.908943
-                lastKnownLatitude = 50.065689
-
-                view.showAddress(lastKnownAddress!!)
             }
 
             override fun onComplete() {

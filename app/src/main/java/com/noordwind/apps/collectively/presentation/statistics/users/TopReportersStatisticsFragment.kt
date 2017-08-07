@@ -33,7 +33,9 @@ class TopReportersStatisticsFragment : Fragment() {
         var statistics = arguments.getSerializable(Constants.BundleKey.STATISTICS) as Statistics
         var recycler = layout?.findViewById(R.id.recycler) as RecyclerView
 
-        var entries = statistics.usersStatistics.sortedByDescending { it.reportedCount() }.map { UsersStatisticsAdapterDelegate.UserStatistic(it.name, it.reportedCount().toInt()) }
+        var entries = statistics.usersStatistics
+                .sortedByDescending { it.reportedCount() }
+                .map { UsersStatisticsAdapterDelegate.UserStatistic(it.name, it.avatarUrl, it.reportedCount().toInt()) }
 
         userStatisticsAdapter = UsersStatisticsAdapter().setData(entries).initDelegates()
         recycler.adapter = userStatisticsAdapter

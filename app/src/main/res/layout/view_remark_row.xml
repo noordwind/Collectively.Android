@@ -18,7 +18,7 @@
             android:layout_height="20dp"
             android:layout_centerVertical="true"
             android:layout_marginRight="@dimen/spacing_normal"
-            app:srcCompat="@drawable/ic_place_white_24dp" />
+            app:srcCompat="@drawable/ic_place_dark_24dp" />
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -56,13 +56,12 @@
                 android:textStyle="bold" />
 
             <TextView
-                android:id="@+id/status"
+                android:id="@+id/statusLabel"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:fontFamily="@string/font_light"
                 android:gravity="left"
-                android:text="Cleaning in process"
                 android:textColor="@color/white"
                 android:textSize="@dimen/font_tiny"
                 android:textStyle="italic" />
@@ -84,11 +83,11 @@
                 app:srcCompat="@drawable/ic_explore_white_24dp" />
 
             <TextView
+                android:id="@+id/distanceToRemarkLabel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:fontFamily="@string/font_light"
-                android:text="200m"
                 android:textColor="@color/grey"
                 android:textSize="@dimen/font_small" />
 

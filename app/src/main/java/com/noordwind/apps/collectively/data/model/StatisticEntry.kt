@@ -9,7 +9,7 @@ class StatisticEntry(val name: String, val remarks: StatisticRemarksCount) : Ser
     fun deletedCount(): Long = remarks.deletedCount
 }
 
-class UserStatisticsEntry(val userId : String, val name: String, val remarks: StatisticRemarksCount) : Serializable {
+class UserStatisticsEntry(val userId : String, val name: String, val avatarUrl: String?, val remarks: StatisticRemarksCount) : Serializable {
     fun reportedCount(): Long = remarks.reportedCount
     fun resolvedCount(): Long = remarks.resolvedCount
     fun deletedCount(): Long = remarks.deletedCount

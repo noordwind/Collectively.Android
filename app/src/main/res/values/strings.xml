@@ -176,11 +176,16 @@
     <string name="error_loading_users_no_network">Connect to internet to see Collectively users</string>
     <string name="users_activity">Users</string>
     <string name="resolved_remarks">Resolved remarks</string>
-    <string name="reported_remarks">Reported remarks</string>
     <string name="nickname">Username</string>
     <string name="set_nickname">Accept</string>
     <string name="delete_account">Delete account</string>
     <string name="account_removed_message">Account removed</string>
     <string name="removing_account">Removing account</string>
     <string name="operation_failed">Operation failed</string>
+    <string name="empty_description">No description</string>
+    <string name="tap_to_zoom">Tap to zoom</string>
+    <string name="swipe_left_main_screen_tooltip">Swipe left to check \nthe remarks list</string>
+    <string name="remark_state_new_long_description">New</string>
+    <string name="remark_state_processing_long_description">Processing</string>
+    <string name="remark_state_resolved_long_description">Resolved</string>
 </resources>

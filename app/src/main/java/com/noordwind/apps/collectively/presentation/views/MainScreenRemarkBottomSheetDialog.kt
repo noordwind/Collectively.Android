@@ -1,20 +1,16 @@
 package com.noordwind.apps.collectively.presentation.views
 
 import android.content.Context
-import android.content.DialogInterface
+import android.location.Location
 import android.support.design.widget.BottomSheetDialog
 import com.noordwind.apps.collectively.data.model.Remark
 
-class MainScreenRemarkBottomSheetDialog(context: Context, remark: Remark) {
+class MainScreenRemarkBottomSheetDialog(context: Context, remark: Remark, lastLocation: Location?, remarkLocation: Location) {
     private val bottomSheetDialog: BottomSheetDialog = BottomSheetDialog(context)
-    private val bottomSheetView: MainScreenRemarkBottomSheet = MainScreenRemarkBottomSheet(context, remark)
+    private val bottomSheetView: MainScreenRemarkBottomSheet = MainScreenRemarkBottomSheet(context, remark, lastLocation, remarkLocation)
 
     init {
         bottomSheetDialog.setContentView(bottomSheetView)
-    }
-
-    fun setOnDismissListener(onDismissListener: DialogInterface.OnDismissListener) {
-        bottomSheetDialog.setOnDismissListener(onDismissListener)
     }
 
     fun show() {
