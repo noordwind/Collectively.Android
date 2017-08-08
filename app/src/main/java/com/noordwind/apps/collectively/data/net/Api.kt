@@ -12,7 +12,6 @@ interface Api {
 
     // GET
 
-
     // GROUPS
     @Headers(Constants.ApiHeader.ACCEPT_HEADER, Constants.ApiHeader.CONTENT_TYPE_HEADER)
     @GET("groups")
@@ -37,6 +36,7 @@ interface Api {
             @Query("categories") categories: List<String>,
             @Query("latest") latest: Boolean,
             @Query("orderBy") orderBy: String,
+            @Query("groupId") groupId: String?,
             @Query("sortorder") sortorder: String,
             @Query("results") results: Int): Observable<List<Remark>>
 

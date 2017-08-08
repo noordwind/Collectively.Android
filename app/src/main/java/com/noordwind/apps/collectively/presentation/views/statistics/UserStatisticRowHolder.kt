@@ -17,8 +17,13 @@ class UserStatisticRowHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
     fun setStatistic(userStatistic: UsersStatisticsAdapterDelegate.UserStatistic) {
         authorLabel.text = userStatistic.name
         statisticLabel.text = userStatistic.statistic.toString()
+
+        userImage.setImageResource(R.drawable.ic_person_grey_48dp);
         userStatistic.avatarUrl?.let {
-            Glide.with(itemView.context).load(userStatistic.avatarUrl).into(userImage)
+            Glide.with(itemView.context)
+                    .load(userStatistic.avatarUrl)
+                    .error(R.drawable.ic_person_grey_48dp)
+                    .into(userImage)
         }
     }
 }

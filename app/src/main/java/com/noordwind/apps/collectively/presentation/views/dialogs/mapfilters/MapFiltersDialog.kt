@@ -9,30 +9,41 @@ import android.support.v4.content.ContextCompat
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
+import android.widget.AdapterView.OnItemSelectedListener
+import android.widget.ArrayAdapter
 import android.widget.CheckBox
 import android.widget.TextView
 import com.noordwind.apps.collectively.Constants
 import com.noordwind.apps.collectively.R
 import com.noordwind.apps.collectively.TheApp
 import com.noordwind.apps.collectively.data.datasource.MapFiltersRepository
-import com.noordwind.apps.collectively.domain.interactor.remark.filters.*
+import com.noordwind.apps.collectively.data.model.UserGroup
+import com.noordwind.apps.collectively.data.repository.UserGroupsRepository
 import com.noordwind.apps.collectively.domain.interactor.remark.filters.map.*
 import com.noordwind.apps.collectively.domain.thread.PostExecutionThread
 import com.noordwind.apps.collectively.domain.thread.UseCaseThread
 import com.noordwind.apps.collectively.presentation.extension.dpToPx
+import com.noordwind.apps.collectively.presentation.extension.uppercaseFirstLetter
 import com.noordwind.apps.collectively.presentation.rxjava.RxBus
 import com.noordwind.apps.collectively.presentation.views.FilterView
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
+import kotlinx.android.synthetic.main.activity_add_remark.*
+import java.util.*
 import javax.inject.Inject
 
 class MapFiltersDialog : DialogFragment(), Constants, MapFiltersMvp.View {
+
     companion object {
         fun newInstance(): MapFiltersDialog = MapFiltersDialog()
     }
 
     @Inject
     lateinit var mapFiltersRepository: MapFiltersRepository
+
+    @Inject
+    lateinit var userGroupsRepository: UserGroupsRepository
 
     @Inject
     lateinit var uiThread: PostExecutionThread
@@ -54,11 +65,12 @@ class MapFiltersDialog : DialogFragment(), Constants, MapFiltersMvp.View {
         TheApp[context].appComponent?.inject(this)
 
         presenter = MapFiltersPresenter(this,
-                LoadMapFiltersUseCase(mapFiltersRepository, ioThread, uiThread),
+                LoadMapFiltersUseCase(mapFiltersRepository, userGroupsRepository, ioThread, uiThread),
                 AddMapFilterUseCase(mapFiltersRepository, ioThread, uiThread),
                 RemoveMapFilterUseCase(mapFiltersRepository, ioThread, uiThread),
                 SelectShowOnlyMyRemarksUseCase(mapFiltersRepository, ioThread, uiThread),
-                SelectRemarkStatusUseCase(mapFiltersRepository, ioThread, uiThread))
+                SelectRemarkStatusUseCase(mapFiltersRepository, ioThread, uiThread),
+                SelectRemarkGroupUseCase(mapFiltersRepository, ioThread, uiThread))
     }
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
@@ -111,6 +123,35 @@ class MapFiltersDialog : DialogFragment(), Constants, MapFiltersMvp.View {
         categoriesLayout.removeAllViews()
         allFilters.forEach {
             categoriesLayout.addView(FilterView(context, it, selectedFilters.contains(it)), categoriesLayout.childCount)
+        }
+    }
+
+    override fun showUserGroups(allGroups: List<UserGroup>, selectedGroup: String) {
+        val groupNames = LinkedList<String>()
+        var initialSelection = 0
+
+        groupNames.add(getString(R.string.add_remark_all_groups_target))
+        allGroups.forEachIndexed { i, group ->
+            groupNames.add(group.name.uppercaseFirstLetter())
+        }
+
+        groupNames.forEachIndexed { i, group ->
+            if (group.equals(selectedGroup, ignoreCase = true)) {
+                initialSelection = i
+            }
+        }
+
+        val adapter = ArrayAdapter(context, android.R.layout.simple_spinner_item, groupNames)
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        groupsSpinner.adapter = adapter
+        groupsSpinner.setSelection(initialSelection)
+        groupsSpinner.onItemSelectedListener = object: OnItemSelectedListener {
+            override fun onNothingSelected(p0: AdapterView<*>?) {
+            }
+
+            override fun onItemSelected(p0: AdapterView<*>?, selectedItemView: View?, position: Int, p3: Long) {
+                presenter.selectGroup(groupsSpinner.selectedItem.toString())
+            }
         }
     }
 

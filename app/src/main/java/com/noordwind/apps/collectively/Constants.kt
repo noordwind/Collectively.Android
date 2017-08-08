@@ -25,6 +25,7 @@ interface Constants {
             val REMARK_STATUS_FILTERS = "remark_status_filters"
             val REMARK_STATUS = "remark_status"
             val SHOW_ONLY_MINE = "show_only_mine_remark0"
+            val REMARK_GROUP = "remark_group"
         }
     }
 

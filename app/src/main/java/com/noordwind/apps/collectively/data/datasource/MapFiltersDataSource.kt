@@ -11,5 +11,7 @@ interface MapFiltersDataSource {
     fun getSelectRemarkStatus(): Observable<String>
     fun getShowOnlyMineStatus(): Observable<Boolean>
     fun selectShowOnlyMine(shouldShow: Boolean): Observable<Boolean>
+    fun selectGroup(group: String): Observable<Boolean>
+    fun getSelectedGroup(): Observable<String>
 }
 

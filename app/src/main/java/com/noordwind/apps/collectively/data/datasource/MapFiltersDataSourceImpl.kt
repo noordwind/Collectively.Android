@@ -46,6 +46,14 @@ class MapFiltersDataSourceImpl(context: Context) : MapFiltersDataSource, TrayPre
         }.flatMap { Observable.just(true) }
     }
 
+    override fun selectGroup(group: String): Observable<Boolean> {
+        return Observable.fromCallable {
+            put(Constants.PreferencesKey.REMARK_GROUP, group)
+        }.flatMap { Observable.just(true) }
+    }
+
+    override fun getSelectedGroup(): Observable<String> = Observable.just(getString(Constants.PreferencesKey.REMARK_GROUP, context.getString(R.string.add_remark_all_groups_target)))
+
     override fun selectShowOnlyMine(shouldShow: Boolean): Observable<Boolean> {
         return Observable.fromCallable {
             put(Constants.PreferencesKey.SHOW_ONLY_MINE, shouldShow)

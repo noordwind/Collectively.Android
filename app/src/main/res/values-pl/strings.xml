@@ -188,4 +188,6 @@
     <string name="add_remark_group_hint">Dla grupy...</string>
     <string name="add_remark_all_groups_target">Wszystkie</string>
     <string name="add_remark_category_not_selected">Nie wybrano kategorii</string>
+    <string name="filter_remarks_dialog_status_label">Status</string>
+    <string name="groups">Grupa</string>
 </resources>

@@ -22,5 +22,7 @@ class MapFiltersRepositoryImpl(val filtersDataSource: MapFiltersDataSource, val 
     override fun getSelectRemarkStatus(): Observable<String> = filtersDataSource.getSelectRemarkStatus()
     override fun getShowOnlyMineStatus(): Observable<Boolean> = filtersDataSource.getShowOnlyMineStatus()
     override fun selectShowOnlyMineStatus(shouldShow: Boolean): Observable<Boolean> = filtersDataSource.selectShowOnlyMine(shouldShow)
+    override fun selectGroup(group: String): Observable<Boolean> = filtersDataSource.selectGroup(group)
+    override fun getSelectedGroup(): Observable<String> = filtersDataSource.getSelectedGroup()
 }
 

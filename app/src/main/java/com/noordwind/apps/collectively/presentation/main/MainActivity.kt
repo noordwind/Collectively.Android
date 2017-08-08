@@ -38,6 +38,7 @@ import com.noordwind.apps.collectively.data.datasource.MapFiltersRepository
 import com.noordwind.apps.collectively.data.model.Remark
 import com.noordwind.apps.collectively.data.model.RemarkCategory
 import com.noordwind.apps.collectively.data.repository.RemarksRepository
+import com.noordwind.apps.collectively.data.repository.UserGroupsRepository
 import com.noordwind.apps.collectively.domain.interactor.remark.LoadRemarkCategoriesUseCase
 import com.noordwind.apps.collectively.domain.interactor.remark.LoadRemarksUseCase
 import com.noordwind.apps.collectively.domain.interactor.remark.filters.map.LoadMapFiltersUseCase
@@ -83,6 +84,9 @@ class MainActivity : com.noordwind.apps.collectively.presentation.BaseActivity()
     lateinit var mapFiltersRepository: MapFiltersRepository
 
     @Inject
+    lateinit var userGroupsRepository: UserGroupsRepository
+
+    @Inject
     lateinit var ioThread: UseCaseThread
 
     @Inject
@@ -115,7 +119,7 @@ class MainActivity : com.noordwind.apps.collectively.presentation.BaseActivity()
 
         mainPresenter = MainPresenter(this, LoadRemarksUseCase(remarksRepository, ioThread, uiThread),
                 LoadRemarkCategoriesUseCase(remarksRepository, ioThread, uiThread),
-                LoadMapFiltersUseCase(mapFiltersRepository, ioThread, uiThread))
+                LoadMapFiltersUseCase(mapFiltersRepository, userGroupsRepository, ioThread, uiThread))
         mainPresenter.loadRemarkCategories()
 
         filtersButton.setOnClickListener {
