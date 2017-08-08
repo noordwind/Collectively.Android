@@ -84,9 +84,15 @@ class RemarkRepositoryImpl(val remarkCategoriesCache: RemarkCategoriesCache,
 
     override fun saveRemark(remark: NewRemark): Observable<RemarkNotFromList> {
         if (remark.imageUri != null) {
+            var remarkId : String? = null
             return operationRepository.pollOperation(remarksDataSource.saveRemark(remark))
-                    .flatMap { remarksDataSource.loadSavedRemark(it.resource) }
-                    .flatMap { operationRepository.pollOperation(remarksDataSource.uploadRemarkPhoto(it.id, fileDataSource.fileFromUri(remark.imageUri!!)))}
+                    .flatMap {
+                        remarkId = it.resource
+                        remarksDataSource.loadSavedRemark(it.resource)
+                    }
+                    .flatMap { operationRepository.pollOperation(remarksDataSource.uploadRemarkPhoto(it.id, fileDataSource.fileFromUri(remark.imageUri!!))).onErrorReturn {
+                        Operation("", true, remarkId!!, "", "")
+                    }}
                     .flatMap { remarksDataSource.loadSavedRemark(it.resource) }
         } else {
             return operationRepository.pollOperation(remarksDataSource.saveRemark(remark)).flatMap { remarksDataSource.loadSavedRemark(it.resource) }

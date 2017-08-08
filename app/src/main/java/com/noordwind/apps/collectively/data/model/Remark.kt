@@ -24,6 +24,7 @@ class RemarkNotFromList(
 )
 
 class NewRemark(
+        val groupId: String?,
         val category: String,
         val latitude: Double,
         val longitude: Double,

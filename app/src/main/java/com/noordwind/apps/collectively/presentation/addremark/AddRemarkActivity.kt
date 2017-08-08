@@ -38,6 +38,7 @@ import com.noordwind.apps.collectively.presentation.util.ZoomUtil
 import com.noordwind.apps.collectively.presentation.views.RemarkCategoryFlowLayoutView
 import com.noordwind.apps.collectively.presentation.views.RemarkTagView
 import com.noordwind.apps.collectively.presentation.views.dialogs.addphoto.AddPhotoDialog
+import com.noordwind.apps.collectively.presentation.views.toast.ToastManager
 import com.noordwind.apps.collectively.usecases.LoadLastKnownLocationUseCase
 import com.wefika.flowlayout.FlowLayout
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -99,13 +100,18 @@ class AddRemarkActivity : com.noordwind.apps.collectively.presentation.BaseActiv
         tagsLayout = findViewById(R.id.tags_layout) as FlowLayout
 
         selectedCategory = intent.getStringExtra(Constants.BundleKey.CATEGORY)
-//        categoriesSpinner = findViewById(R.id.remark_categories) as Spinner
 
         addressLabel = findViewById(R.id.address) as TextView
 
         descriptionLabel = findViewById(R.id.description) as EditText
 
-        submitButton.setOnClickListener { presenter.saveRemark(getCategory(), getDescription(), getSelectedTags(), capturedImageUri) }
+        submitButton.setOnClickListener {
+            if (getCategory().equals("")) {
+                ToastManager(this, getString(R.string.add_remark_category_not_selected), Toast.LENGTH_SHORT).error().show()
+            } else {
+                presenter.saveRemark(getGroupName(), getCategory(), getDescription(), getSelectedTags(), capturedImageUri)
+            }
+        }
 
         presenter = AddRemarkPresenter(this, SaveRemarkUseCase(remarksRepository, ioThread, uiThread),
                 LoadRemarkTagsUseCase(remarksRepository, ioThread, uiThread),
@@ -135,7 +141,7 @@ class AddRemarkActivity : com.noordwind.apps.collectively.presentation.BaseActiv
         categorySelectedEventDisposable = RxBus.instance
                 .getEvents(RemarkCategoryFlowLayoutView.CategorySelectedEvent::class.java)
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({ selectCategory(it.category, it.isSelected)})
+                .subscribe({ selectCategory(it.category, it.isSelected) })
 
         mShortAnimationDuration = resources.getInteger(android.R.integer.config_shortAnimTime);
     }
@@ -155,6 +161,14 @@ class AddRemarkActivity : com.noordwind.apps.collectively.presentation.BaseActiv
     }
 
     fun getCategory() = selectedCategory
+
+    fun getGroupName() : String? {
+        var groupName = groupsSpinner.selectedItem.toString()
+        if (groupName.equals(getString(R.string.add_remark_all_groups_target))) {
+            return null
+        }
+        return groupName
+    }
 
     fun getDescription() = descriptionLabel.text.toString()
 
@@ -233,6 +247,12 @@ class AddRemarkActivity : com.noordwind.apps.collectively.presentation.BaseActiv
         submitButton.text = getString(R.string.submit)
         submitProgress.visibility = View.GONE
         Toast.makeText(this, "Remark Not ADDED", Toast.LENGTH_SHORT).show()
+    }
+
+    override fun showSaveRemarkError(message: String?) {
+        submitButton.text = getString(R.string.submit)
+        submitProgress.visibility = View.GONE
+        showOperationFailedDialog(message!!)
     }
 
     override fun showSaveRemarkSuccess(newRemark: RemarkNotFromList) {

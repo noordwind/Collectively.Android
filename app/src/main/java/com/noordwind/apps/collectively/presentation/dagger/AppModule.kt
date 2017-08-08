@@ -46,7 +46,8 @@ class AppModule(private val application: Application) : Constants {
     @Singleton
     internal fun provideOkHttpClient(sessionRepository: SessionRepository): OkHttpClient {
         val builder = enableTls12OnPreLollipop(OkHttpClient.Builder())
-        builder.readTimeout(10, TimeUnit.SECONDS)
+        builder.writeTimeout(30, TimeUnit.SECONDS)
+        builder.readTimeout(30, TimeUnit.SECONDS)
         builder.connectTimeout(30, TimeUnit.SECONDS)
 
         var sessionInterceptor = object : Interceptor {

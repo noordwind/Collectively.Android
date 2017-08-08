@@ -22,6 +22,7 @@ class AddRemarkPresenter(val view: AddRemarkMvp.View,
     private var lastKnownLatitude: Double? = null
     private var lastKnownLongitude: Double? = null
     private var lastKnownAddress: String? = null
+    private var groups: List<UserGroup>? = null
 
     override fun loadRemarkCategories() {
         var observer = object : AppDisposableObserver<List<RemarkCategory>>() {
@@ -56,6 +57,7 @@ class AddRemarkPresenter(val view: AddRemarkMvp.View,
 
             override fun onNext(userGroup: List<UserGroup>) {
                 super.onNext(userGroup)
+                groups = userGroup
                 view.showAvailableUserGroups(userGroup)
             }
 
@@ -125,7 +127,7 @@ class AddRemarkPresenter(val view: AddRemarkMvp.View,
         loadLastKnownLocationUseCase.execute(observer)
     }
 
-    override fun saveRemark(category: String, description: String, selectedTags: List<String>, capturedImageUri: Uri?) {
+    override fun saveRemark(groupName: String?, category: String, description: String, selectedTags: List<String>, capturedImageUri: Uri?) {
         var observer = object : AppDisposableObserver<RemarkNotFromList>() {
             override fun onStart() {
                 super.onStart()
@@ -137,6 +139,11 @@ class AddRemarkPresenter(val view: AddRemarkMvp.View,
                 view.showSaveRemarkError()
             }
 
+            override fun onServerError(message: String?) {
+                super.onServerError(message)
+                view.showSaveRemarkError(message)
+            }
+
             override fun onComplete() {
             }
 
@@ -145,7 +152,23 @@ class AddRemarkPresenter(val view: AddRemarkMvp.View,
             }
         }
 
-        var newRemark =  NewRemark(category.toLowerCase(), lastKnownLatitude!!, lastKnownLongitude!!, lastKnownAddress!!, description, capturedImageUri)
+        var groupId: String? = null
+
+        if (groups != null && groupName != null) {
+            groups!!.find { it.name.equals(groupName, true) }.let {
+                groupId = it!!.id
+            }
+        }
+
+        var newRemark = NewRemark(
+                groupId = groupId,
+                category = category.toLowerCase(),
+                latitude = lastKnownLatitude!!,
+                longitude = lastKnownLongitude!!,
+                address = lastKnownAddress!!,
+                description = description,
+                imageUri = capturedImageUri)
+
         saveRemarkUseCase.execute(observer, newRemark)
     }
 

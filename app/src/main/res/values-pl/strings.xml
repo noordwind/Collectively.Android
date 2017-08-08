@@ -187,4 +187,5 @@
     <string name="tap_to_zoom">Powiększ</string>
     <string name="add_remark_group_hint">Dla grupy...</string>
     <string name="add_remark_all_groups_target">Wszystkie</string>
+    <string name="add_remark_category_not_selected">Nie wybrano kategorii</string>
 </resources>

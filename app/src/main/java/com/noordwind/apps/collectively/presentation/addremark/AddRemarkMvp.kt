@@ -18,7 +18,8 @@ interface AddRemarkMvp {
         fun showSaveRemarkLoading()
         fun showSaveRemarkError()
         fun showSaveRemarkSuccess(newRemark: RemarkNotFromList)
-        fun  showAvailableUserGroups(userGroup: List<UserGroup>)
+        fun showAvailableUserGroups(userGroup: List<UserGroup>)
+        fun showSaveRemarkError(message: String?)
     }
 
     interface Presenter : BasePresenter{
@@ -26,6 +27,6 @@ interface AddRemarkMvp {
         fun loadRemarkTags()
         fun loadLastKnownAddress()
         fun loadUserGroups()
-        fun saveRemark(category: String, description: String, selectedTags: List<String>, capturedImageUri: Uri?)
+        fun saveRemark(groupName: String?, category: String, description: String, selectedTags: List<String>, capturedImageUri: Uri?)
     }
 }

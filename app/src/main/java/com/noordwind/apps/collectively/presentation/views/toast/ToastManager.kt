@@ -27,6 +27,13 @@ class ToastManager(val context: Context, message: String, duration: Int) {
         return this
     }
 
+    fun error() : ToastManager {
+        toast.setBackgroundColor(Color.parseColor("#ff5a5f"))
+        toast.setTextColor(Color.WHITE)
+        toast.setMaxAlpha()
+        return this
+    }
+
     fun progress(): ToastManager {
         toast.setTextColor(Color.WHITE)
         toast.setBackgroundColor(ContextCompat.getColor(context, R.color.red_dark_2))
