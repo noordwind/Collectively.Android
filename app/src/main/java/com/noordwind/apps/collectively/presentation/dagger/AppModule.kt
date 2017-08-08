@@ -12,6 +12,7 @@ import com.noordwind.apps.collectively.BuildConfig
 import com.noordwind.apps.collectively.Constants
 import com.noordwind.apps.collectively.data.cache.ProfileCache
 import com.noordwind.apps.collectively.data.cache.RemarkCategoriesCache
+import com.noordwind.apps.collectively.data.cache.UserGroupsCache
 import com.noordwind.apps.collectively.data.datasource.*
 import com.noordwind.apps.collectively.data.net.Api
 import com.noordwind.apps.collectively.data.repository.*
@@ -119,8 +120,30 @@ class AppModule(private val application: Application) : Constants {
 
     @Provides
     @Singleton
-    fun provideAuthenticationRepository(authDataSource: AuthDataSource, profileRepository: ProfileRepository, operationRepository: OperationRepository, sessionRepository: SessionRepository): AuthenticationRepository {
-        return AuthenticationRepositoryImpl(authDataSource, profileRepository, operationRepository, sessionRepository)
+    fun providerUserGroupsCache(): UserGroupsCache {
+        return UserGroupsCache(application.getSharedPreferences("shared_preferences_user_groups", Activity.MODE_PRIVATE), Gson())
+    }
+
+    @Provides
+    @Singleton
+    fun providerUserGroupsSource(api: Api): UserGroupsDataSource {
+        return UserGroupsDataSourceImpl(api)
+    }
+
+    @Provides
+    @Singleton
+    fun providerUserGroupsRepository(dataCache: UserGroupsCache, dataSource: UserGroupsDataSource): UserGroupsRepository {
+        return UserGroupsRepositoryImpl(dataSource, dataCache)
+    }
+
+    @Provides
+    @Singleton
+    fun provideAuthenticationRepository(authDataSource: AuthDataSource,
+                                        profileRepository: ProfileRepository,
+                                        userGroupsRepository: UserGroupsRepository,
+                                        operationRepository: OperationRepository,
+                                        sessionRepository: SessionRepository): AuthenticationRepository {
+        return AuthenticationRepositoryImpl(authDataSource, profileRepository, userGroupsRepository, operationRepository, sessionRepository)
     }
 
     @Provides

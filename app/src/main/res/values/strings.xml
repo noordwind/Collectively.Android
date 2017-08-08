@@ -188,4 +188,6 @@
     <string name="remark_state_new_long_description">New</string>
     <string name="remark_state_processing_long_description">Processing</string>
     <string name="remark_state_resolved_long_description">Resolved</string>
+    <string name="add_remark_group_hint">For group...</string>
+    <string name="add_remark_all_groups_target">Wszystkie</string>
 </resources>

@@ -2,15 +2,13 @@ package com.noordwind.apps.collectively.presentation.addremark
 
 import android.location.Address
 import android.net.Uri
-import com.noordwind.apps.collectively.data.model.NewRemark
-import com.noordwind.apps.collectively.data.model.RemarkCategory
-import com.noordwind.apps.collectively.data.model.RemarkNotFromList
-import com.noordwind.apps.collectively.data.model.RemarkTag
+import com.noordwind.apps.collectively.data.model.*
 import com.noordwind.apps.collectively.domain.interactor.remark.LoadRemarkCategoriesUseCase
 import com.noordwind.apps.collectively.domain.interactor.remark.LoadRemarkTagsUseCase
 import com.noordwind.apps.collectively.domain.interactor.remark.SaveRemarkUseCase
 import com.noordwind.apps.collectively.presentation.mvp.BasePresenter
 import com.noordwind.apps.collectively.presentation.rxjava.AppDisposableObserver
+import com.noordwind.apps.collectively.presentation.statistics.LoadUserGroupsUseCase
 import com.noordwind.apps.collectively.usecases.LoadLastKnownLocationUseCase
 import io.reactivex.observers.DisposableObserver
 
@@ -18,7 +16,8 @@ class AddRemarkPresenter(val view: AddRemarkMvp.View,
                          val saveRemarkUseCase: SaveRemarkUseCase,
                          val loadRemarkTagsUseCase: LoadRemarkTagsUseCase,
                          val loadRemarkCategoriesUseCase: LoadRemarkCategoriesUseCase,
-                         val loadLastKnownLocationUseCase: LoadLastKnownLocationUseCase) : BasePresenter, AddRemarkMvp.Presenter {
+                         val loadLastKnownLocationUseCase: LoadLastKnownLocationUseCase,
+                         val loadUserGroupsUseCase: LoadUserGroupsUseCase) : BasePresenter, AddRemarkMvp.Presenter {
 
     private var lastKnownLatitude: Double? = null
     private var lastKnownLongitude: Double? = null
@@ -46,6 +45,30 @@ class AddRemarkPresenter(val view: AddRemarkMvp.View,
         }
 
         loadRemarkCategoriesUseCase.execute(observer, null)
+    }
+
+    override fun loadUserGroups() {
+        var observer = object : AppDisposableObserver<List<UserGroup>>() {
+
+            override fun onStart() {
+                super.onStart()
+            }
+
+            override fun onNext(userGroup: List<UserGroup>) {
+                super.onNext(userGroup)
+                view.showAvailableUserGroups(userGroup)
+            }
+
+            override fun onError(e: Throwable) {
+                super.onError(e)
+            }
+
+            override fun onNetworkError() {
+                super.onNetworkError()
+            }
+        }
+
+        loadUserGroupsUseCase.execute(observer, true)
     }
 
     override fun loadRemarkTags() {
@@ -130,6 +153,7 @@ class AddRemarkPresenter(val view: AddRemarkMvp.View,
         loadRemarkTagsUseCase.dispose()
         loadRemarkCategoriesUseCase.dispose()
         loadLastKnownLocationUseCase.dispose()
+        loadUserGroupsUseCase.dispose()
         saveRemarkUseCase.dispose()
     }
 }

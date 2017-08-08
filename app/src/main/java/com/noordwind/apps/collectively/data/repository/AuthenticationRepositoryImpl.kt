@@ -5,9 +5,11 @@ import com.noordwind.apps.collectively.data.datasource.AuthDataSource
 import com.noordwind.apps.collectively.data.model.*
 import com.noordwind.apps.collectively.data.repository.util.OperationRepository
 import io.reactivex.Observable
+import io.reactivex.functions.BiFunction
 
 class AuthenticationRepositoryImpl(val authDataSource: AuthDataSource,
                                    val profileRepository: ProfileRepository,
+                                   val userGroupsRepository: UserGroupsRepository,
                                    val operationRepository: OperationRepository,
                                    val sessionRepository: SessionRepository) : AuthenticationRepository {
     override fun loginWithEmail(email: String, password: String): Observable<String> {
@@ -25,9 +27,12 @@ class AuthenticationRepositoryImpl(val authDataSource: AuthDataSource,
                 }
                 .flatMap {
                     authResponse ->
-                    profileRepository.loadProfile(true).flatMap {
-                        Observable.just(authResponse)
-                    }
+
+                    var profileObs = profileRepository.loadProfile(true)
+                    var userGroupsObs = userGroupsRepository.loadGroups(true)
+
+                    Observable.zip(profileObs, userGroupsObs,
+                            BiFunction<Profile, List<UserGroup>, String> { t1, t2 -> authResponse })
                 }
     }
 
@@ -38,9 +43,12 @@ class AuthenticationRepositoryImpl(val authDataSource: AuthDataSource,
                 .flatMap {
                     authResponse ->
                     sessionRepository.sessionToken = authResponse.token
-                    profileRepository.loadProfile(true).flatMap {
-                        Observable.just(Pair(it, authResponse.token))
-                    }
+
+                    var profileObs = profileRepository.loadProfile(true)
+                    var userGroupsObs = userGroupsRepository.loadGroups(true)
+
+                    Observable.zip(profileObs, userGroupsObs,
+                            BiFunction<Profile, List<UserGroup>, Pair<Profile,String>> { t1, t2 -> Pair(t1, authResponse.token) })
                 }
     }
 

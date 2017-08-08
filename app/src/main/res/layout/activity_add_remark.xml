@@ -120,6 +120,21 @@
                     android:textColor="@color/red_dark_2"
                     android:textSize="@dimen/font_normal"/>
 
+                <com.wefika.flowlayout.FlowLayout
+                    android:id="@+id/remarkCategoriesLayout"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="start|top"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/spacing_small"
+                    android:fontFamily="@string/font_normal"
+                    android:text="@string/add_remark_group_hint"
+                    android:textColor="@color/red_dark_2"
+                    android:textSize="@dimen/font_normal"/>
+
                 <FrameLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -127,7 +142,7 @@
                     android:padding="@dimen/spacing_small">
 
                     <Spinner
-                        android:id="@+id/remark_categories"
+                        android:id="@+id/groupsSpinner"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:popupBackground="@color/white"/>
@@ -150,7 +165,6 @@
                         android:lines="3"
                         android:maxLength="200"
                         android:maxLines="3"
-                        android:padding="@dimen/spacing_normal"
                         android:textSize="@dimen/font_normal"/>
 
                 </android.support.design.widget.TextInputLayout>

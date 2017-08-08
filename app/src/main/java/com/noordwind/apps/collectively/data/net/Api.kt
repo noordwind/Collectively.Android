@@ -12,6 +12,12 @@ interface Api {
 
     // GET
 
+
+    // GROUPS
+    @Headers(Constants.ApiHeader.ACCEPT_HEADER, Constants.ApiHeader.CONTENT_TYPE_HEADER)
+    @GET("groups")
+    fun groups(): Observable<List<UserGroup>>
+
     // USERS
     @Headers(Constants.ApiHeader.ACCEPT_HEADER, Constants.ApiHeader.CONTENT_TYPE_HEADER)
     @GET("users/{name}")

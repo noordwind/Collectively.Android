@@ -185,4 +185,6 @@
     <string name="filter_remarks">Filtruj zgłoszenia</string>
     <string name="set_user_nickname_failed">Błąd operacji</string>
     <string name="tap_to_zoom">Powiększ</string>
+    <string name="add_remark_group_hint">Dla grupy...</string>
+    <string name="add_remark_all_groups_target">Wszystkie</string>
 </resources>

@@ -16,7 +16,9 @@ interface Constants {
             val SESSION_KEY = "session"
             val REMARK_CATEGORIES_CACHE_TIME = "remark_categories_cache_time"
             val PROFILE_CACHE_TIME = "profile_cache_time"
+            val GROUPS_CACHE_TIME = "groups_cache_time"
             val REMARK_CATEGORIES = "remark_categories"
+            val USER_GROUPS = "user_groups"
             val PROFILE = "profile"
             val MAP_FILTERS = "map_filters"
             val REMARK_CATEGORY_FILTERS = "remark_category_filters"
@@ -135,6 +137,7 @@ interface Constants {
         companion object {
             const val GALLERY_EVENT = "gallery"
             const val CAMERA_EVENT = "camera"
+            const val CATEGORY_SELECT = "camera"
         }
     }
 }
