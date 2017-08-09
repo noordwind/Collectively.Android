@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical" android:layout_width="match_parent"
+              android:layout_height="wrap_content">
+
+    <TextView
+        android:id="@+id/resolveButton"
+        android:layout_width="match_parent"
+        android:layout_margin="@dimen/spacing_small"
+        android:layout_height="48dp"
+        android:background="@color/red_dark_2"
+        android:gravity="center"
+        android:text="@string/reopen"
+        android:textColor="@color/white"
+        android:textSize="@dimen/font_normal" />
+
+</LinearLayout>

@@ -76,6 +76,7 @@
     <string name="show_activity">Działaj!</string>
     <string name="activity_with_remark">Historia zgłoszenia</string>
     <string name="resolve">Rozwiąż zgłoszenie</string>
+    <string name="reopen">Przywróć zgłoszenie</string>
     <string name="delete">Usuń</string>
     <string name="act">Działaj!</string>
     <string name="your_activity">Twoja aktywność</string>
@@ -181,6 +182,7 @@
     <string name="remark_state_new_long_description">Nowe zgłoszenie</string>
     <string name="remark_state_processing_long_description">Zgłoszenie jest procesowane</string>
     <string name="remark_state_resolved_long_description">Zgłoszenie rozwiązane</string>
+    <string name="remark_state_renewed_long_description">Zgłoszenie przywrócone</string>
     <string name="filter_remarks">Filtruj zgłoszenia</string>
     <string name="set_user_nickname_failed">Błąd operacji</string>
     <string name="tap_to_zoom">Powiększ</string>
@@ -191,4 +193,10 @@
     <string name="groups">Grupa</string>
     <string name="add_remark_enabling_location_service_required_title">Nieznana lokalizacja</string>
     <string name="add_remark_enabling_location_service_required_message"> Upewnij się, że Twój GPS jest włączony</string>
+    <string name="resolving_remark">Rozwiązuje zgłoszenie</string>
+    <string name="reopening_remark">Przywracam zgłoszenie</string>
+    <string name="remark_resolved">Zgłoszenie rozwiązane</string>
+    <string name="remark_reopened">Zgłoszenie przywrócone</string>
+    <string name="remark_added">Zgłoszenie dodane</string>
+    <string name="adding_remark_error">Nie udało się dodać zgłoszenia</string>
 </resources>

@@ -24,4 +24,7 @@ interface RemarksDataSource {
     fun loadUserResolvedRemarks(userId: String): Observable<List<Remark>>
 
     fun uploadRemarkPhoto(remarkId: String, photoFile: File): Observable<Response<Void>>
+
+    fun resolveRemark(remarkId: String): Observable<Response<Void>>
+    fun renewRemark(remarkId: String): Observable<Response<Void>>
 }

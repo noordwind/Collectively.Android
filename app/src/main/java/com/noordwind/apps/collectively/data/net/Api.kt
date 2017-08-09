@@ -40,6 +40,14 @@ interface Api {
             @Query("sortorder") sortorder: String,
             @Query("results") results: Int): Observable<List<Remark>>
 
+    @Headers(Constants.ApiHeader.ACCEPT_HEADER, Constants.ApiHeader.CONTENT_TYPE_HEADER)
+    @PUT("remarks/{remarkId}/resolve")
+    fun resolveRemark(@Path("remarkId") remarkId: String, @Body emptyBody: Object): Observable<Response<Void>>
+
+    @Headers(Constants.ApiHeader.ACCEPT_HEADER, Constants.ApiHeader.CONTENT_TYPE_HEADER)
+    @PUT("remarks/{remarkId}/renew")
+    fun renewRemark(@Path("remarkId") remarkId: String, @Body emptyBody: Object): Observable<Response<Void>>
+
     @Multipart
     @PUT("remarks/{remarkId}/photo")
     fun uploadRemarkPhoto(@Path("remarkId") remarkId: String, @Part image: MultipartBody.Part, @Part("name") name: RequestBody): Observable<Response<Void>>

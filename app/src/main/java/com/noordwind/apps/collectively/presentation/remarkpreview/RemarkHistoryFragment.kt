@@ -5,6 +5,7 @@ import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.google.gson.Gson
 import com.noordwind.apps.collectively.Constants
 import com.noordwind.apps.collectively.R
 import com.noordwind.apps.collectively.data.model.RemarkState
@@ -18,7 +19,7 @@ class RemarkHistoryFragment : Fragment() {
         fun newInstance(states: List<RemarkState>, userId: String, remarkId: String): RemarkHistoryFragment {
             var fragment = RemarkHistoryFragment()
             var arguments = Bundle()
-            arguments.putSerializable(Constants.BundleKey.STATES, RemarkStates(states))
+            arguments.putString(Constants.BundleKey.STATES, Gson().toJson(RemarkStates(states)))
             arguments.putString(Constants.BundleKey.USER_ID, userId)
             arguments.putString(Constants.BundleKey.REMARK_ID, remarkId)
             fragment.arguments = arguments
@@ -30,7 +31,8 @@ class RemarkHistoryFragment : Fragment() {
         val layout = inflater?.inflate(R.layout.fragment_remark_states, container, false)
         var historyLayout = layout?.findViewById(R.id.history_layout) as ViewGroup
 
-        var states = arguments.getSerializable(Constants.BundleKey.STATES) as RemarkStates
+        var statesJson = arguments.getString(Constants.BundleKey.STATES)
+        var states = Gson().fromJson(statesJson, RemarkStates::class.java)
         historyLayout.removeAllViews()
 
         states.states.forEach {

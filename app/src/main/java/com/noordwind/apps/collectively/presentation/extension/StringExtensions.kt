@@ -23,6 +23,27 @@ fun String.uppercaseFirstLetter(): String {
     }
 }
 
+fun String.getRemarkStateIcon(): Int? {
+    when (this.toLowerCase()) {
+        Constants.RemarkStates.NEW.toLowerCase() -> {
+            return R.drawable.ic_state_remark_added_24dp
+        }
+        Constants.RemarkStates.PROCESSING.toLowerCase() -> {
+            return R.drawable.ic_state_remark_processing_24dp
+        }
+        Constants.RemarkStates.RESOLVED.toLowerCase() -> {
+            return R.drawable.ic_state_remark_resolved_24dp
+        }
+        Constants.RemarkStates.RENEWED.toLowerCase() -> {
+            return R.drawable.ic_state_remark_renewed_24dp
+        }
+        else -> {
+            return null
+        }
+    }
+
+}
+
 fun String.getLongRemarkStateTranslation(context: Context): String {
     when (this.toLowerCase()) {
         Constants.RemarkStates.NEW.toLowerCase() -> {
@@ -33,6 +54,9 @@ fun String.getLongRemarkStateTranslation(context: Context): String {
         }
         Constants.RemarkStates.RESOLVED.toLowerCase() -> {
             return context.getString(R.string.remark_state_resolved_long_description)
+        }
+        Constants.RemarkStates.RENEWED.toLowerCase() -> {
+            return context.getString(R.string.remark_state_renewed_long_description)
         }
         else -> {
             return this

@@ -18,12 +18,15 @@ class RemarksDataSourceImpl(val api: Api) : RemarksDataSource {
         return api.uploadRemarkPhoto(remarkId, body, name)
     }
 
-//    override fun uploadRemarkPhoto(remarkId: String, photoFile: File): Observable<Response<Void>> {
+    //    override fun uploadRemarkPhoto(remarkId: String, photoFile: File): Observable<Response<Void>> {
 //        var requestFile = RequestBody.create(MediaType.parse("image/*"), photoFile)
 //        val name = RequestBody.create(MediaType.parse("text/plain"), photoFile.name)
 //
 //        return api.uploadRemarkPhoto(remarkId, requestFile, name)
 //    }
+    override fun resolveRemark(remarkId: String): Observable<Response<Void>> = api.resolveRemark(remarkId, Object())
+
+    override fun renewRemark(remarkId: String): Observable<Response<Void>> = api.renewRemark(remarkId, Object())
 
     override fun loadUserRemarks(userId: String): Observable<List<Remark>> = api.userRemarks(userId, 1000)
 

@@ -124,6 +124,14 @@ class RemarkRepositoryImpl(val remarkCategoriesCache: RemarkCategoriesCache,
         }
     }
 
+    override fun resolveRemark(remarkId: String): Observable<Boolean> {
+        return operationRepository.pollOperation(remarksDataSource.resolveRemark(remarkId)).flatMap { Observable.just(true) }
+    }
+
+    override fun renewRemark(remarkId: String): Observable<Boolean> {
+        return operationRepository.pollOperation(remarksDataSource.renewRemark(remarkId)).flatMap { Observable.just(true) }
+    }
+
     override fun loadRemarkTags(): Observable<List<RemarkTag>> = remarksDataSource.loadRemarkTags()
 
     override fun submitRemarkVote(remarkId: String, remarkVote: RemarkVote): Observable<RemarkPreview> {

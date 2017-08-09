@@ -24,7 +24,7 @@ class UserStatisticRowHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
         userStatistic.avatarUrl?.let {
             Glide.with(itemView.context)
                     .load(userStatistic.avatarUrl)
-                    .error(R.drawable.ic_person_grey_48dp)
+//                    .error(R.drawable.ic_person_grey_48dp)
                     .into(userImage)
         }
 

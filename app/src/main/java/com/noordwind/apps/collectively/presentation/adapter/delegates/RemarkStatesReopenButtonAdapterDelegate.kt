@@ -8,22 +8,21 @@ import com.noordwind.apps.collectively.Constants
 import com.noordwind.apps.collectively.R
 import com.noordwind.apps.collectively.presentation.rxjava.RxBus
 
-
-class RemarkStatesResolveButtonAdapterDelegate(viewType: Int): AbsAdapterDelegate<List<Any>>(viewType) {
+class RemarkStatesReopenButtonAdapterDelegate(viewType: Int): AbsAdapterDelegate<List<Any>>(viewType) {
 
     override fun isForViewType(items: List<Any>, position: Int): Boolean {
-        return items[position] is RemarkResolveButton
+        return items[position] is RemarkReopenButton
     }
 
     override fun onBindViewHolder(items: List<Any>, position: Int, holder: RecyclerView.ViewHolder) {
     }
 
     override fun onCreateViewHolder(parent: ViewGroup?): RecyclerView.ViewHolder {
-        var view = LayoutInflater.from(parent?.context).inflate(R.layout.view_remark_resolve_button, parent, false)
-        view.setOnClickListener { RxBus.instance.postEvent(Constants.RxBusEvent.RESOLVE_REMARK_EVENT) }
+        var view = LayoutInflater.from(parent?.context).inflate(R.layout.view_remark_reopen_button, parent, false)
+        view.setOnClickListener { RxBus.instance.postEvent(Constants.RxBusEvent.REOPEN_REMARK_EVENT) }
         return object : RecyclerView.ViewHolder(view) {}
     }
 
-    class RemarkResolveButton
+    class RemarkReopenButton
 }
 

@@ -5,6 +5,7 @@ import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.google.gson.Gson
 import com.noordwind.apps.collectively.Constants
 import com.noordwind.apps.collectively.R
 import com.noordwind.apps.collectively.data.model.RemarkComment
@@ -18,7 +19,7 @@ class RemarkCommentsFragment : Fragment() {
         fun newInstance(comments: List<RemarkComment>, userId: String, remarkId: String): RemarkCommentsFragment {
             var fragment = RemarkCommentsFragment()
             var arguments = Bundle()
-            arguments.putSerializable(Constants.BundleKey.COMMENTS, RemarkComments(comments))
+            arguments.putString(Constants.BundleKey.COMMENTS, Gson().toJson(RemarkComments(comments)))
             arguments.putString(Constants.BundleKey.USER_ID, userId)
             arguments.putString(Constants.BundleKey.REMARK_ID, remarkId)
             fragment.arguments = arguments
@@ -30,7 +31,9 @@ class RemarkCommentsFragment : Fragment() {
         val layout = inflater?.inflate(R.layout.fragment_remark_comments, container, false)
         var commentsLayout = layout?.findViewById(R.id.comments_layout) as ViewGroup
 
-        var comments = (arguments.getSerializable(Constants.BundleKey.COMMENTS) as RemarkComments).comments
+        var commentsJson = arguments.getString(Constants.BundleKey.COMMENTS)
+        var comments = (Gson().fromJson(commentsJson, RemarkComments::class.java)).comments
+
         var userId = arguments.getString(Constants.BundleKey.USER_ID)
         var remarkId = arguments.getString(Constants.BundleKey.REMARK_ID)
 

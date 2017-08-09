@@ -29,8 +29,7 @@
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentTop="true"
                 android:layout_centerVertical="true"
-                android:background="@drawable/circle_shape"
-                app:srcCompat="@drawable/ic_person_grey_48dp"/>
+                android:background="@drawable/circle_shape"/>
 
             <TextView
                 android:layout_marginLeft="@dimen/spacing_small"

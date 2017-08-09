@@ -2,10 +2,7 @@ package com.noordwind.apps.collectively.presentation.adapter
 
 import com.hannesdorfmann.adapterdelegates.ListDelegationAdapter
 import com.noordwind.apps.collectively.Constants
-import com.noordwind.apps.collectively.presentation.adapter.delegates.RemarkStatesAdapterDelegate
-import com.noordwind.apps.collectively.presentation.adapter.delegates.RemarkStatesDeleteButtonAdapterDelegate
-import com.noordwind.apps.collectively.presentation.adapter.delegates.RemarkStatesResolveButtonAdapterDelegate
-import com.noordwind.apps.collectively.presentation.adapter.delegates.SpacingAdapterDelegate
+import com.noordwind.apps.collectively.presentation.adapter.delegates.*
 import java.util.*
 
 class RemarkStatesAdapter() : ListDelegationAdapter<List<Any>>(), Constants {
@@ -17,9 +14,10 @@ class RemarkStatesAdapter() : ListDelegationAdapter<List<Any>>(), Constants {
 
     fun initDelegates(): RemarkStatesAdapter {
         delegatesManager.addDelegate(RemarkStatesResolveButtonAdapterDelegate(0))
-        delegatesManager.addDelegate(RemarkStatesDeleteButtonAdapterDelegate(1))
-        delegatesManager.addDelegate(RemarkStatesAdapterDelegate(2))
-        delegatesManager.addDelegate(SpacingAdapterDelegate(3))
+        delegatesManager.addDelegate(RemarkStatesReopenButtonAdapterDelegate(1))
+        delegatesManager.addDelegate(RemarkStatesDeleteButtonAdapterDelegate(2))
+        delegatesManager.addDelegate(RemarkStatesAdapterDelegate(3))
+        delegatesManager.addDelegate(SpacingAdapterDelegate(4))
         return this
     }
 

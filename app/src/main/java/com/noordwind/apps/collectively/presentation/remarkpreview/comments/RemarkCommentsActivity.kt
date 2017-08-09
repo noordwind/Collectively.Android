@@ -8,11 +8,6 @@ import android.support.design.widget.Snackbar
 import android.support.v7.widget.LinearLayoutManager
 import android.view.MenuItem
 import android.view.View
-import kotlinx.android.synthetic.main.activity_remark_comments.*
-import kotlinx.android.synthetic.main.view_empty.*
-import kotlinx.android.synthetic.main.view_error.*
-import kotlinx.android.synthetic.main.view_progress.*
-import kotlinx.android.synthetic.main.view_toolbar_with_title.*
 import com.noordwind.apps.collectively.Constants
 import com.noordwind.apps.collectively.R
 import com.noordwind.apps.collectively.TheApp
@@ -22,12 +17,16 @@ import com.noordwind.apps.collectively.domain.interactor.remark.comments.LoadRem
 import com.noordwind.apps.collectively.domain.interactor.remark.comments.SubmitRemarkCommentUseCase
 import com.noordwind.apps.collectively.domain.thread.PostExecutionThread
 import com.noordwind.apps.collectively.domain.thread.UseCaseThread
-import com.noordwind.apps.collectively.presentation.BaseActivity
 import com.noordwind.apps.collectively.presentation.adapter.RemarkCommentsAdapter
 import com.noordwind.apps.collectively.presentation.adapter.delegates.RemarkCommentsLoaderAdapterDelegate
 import com.noordwind.apps.collectively.presentation.extension.dpToPx
 import com.noordwind.apps.collectively.presentation.util.RequestErrorDecorator
 import com.noordwind.apps.collectively.presentation.util.Switcher
+import kotlinx.android.synthetic.main.activity_remark_comments.*
+import kotlinx.android.synthetic.main.view_empty.*
+import kotlinx.android.synthetic.main.view_error.*
+import kotlinx.android.synthetic.main.view_progress.*
+import kotlinx.android.synthetic.main.view_toolbar_with_title.*
 import java.util.*
 import javax.inject.Inject
 
@@ -104,6 +103,10 @@ class RemarkCommentsActivity : com.noordwind.apps.collectively.presentation.Base
 
         userId = intent.getStringExtra(Constants.BundleKey.USER_ID)
 
+        remarkCommentsAdapter = RemarkCommentsAdapter(userId).setData(LinkedList()).addSpacing().initDelegates()
+        remarkCommentsRecycler.adapter = remarkCommentsAdapter
+        remarkCommentsRecycler.layoutManager = LinearLayoutManager(baseContext)
+
         emptyButton.visibility = View.GONE
     }
 
@@ -136,9 +139,7 @@ class RemarkCommentsActivity : com.noordwind.apps.collectively.presentation.Base
         bottomSheet.visibility = View.VISIBLE
         switcher.showContentViews()
 
-        remarkCommentsAdapter = RemarkCommentsAdapter(userId).setData(comments).addSpacing().initDelegates()
-        remarkCommentsRecycler.adapter = remarkCommentsAdapter
-        remarkCommentsRecycler.layoutManager = LinearLayoutManager(baseContext)
+        remarkCommentsAdapter.items = comments
         remarkCommentsAdapter.notifyDataSetChanged()
     }
 
@@ -147,6 +148,7 @@ class RemarkCommentsActivity : com.noordwind.apps.collectively.presentation.Base
     }
 
     override fun showSubmitRemarkCommentProgress() {
+        switcher.showContentViews()
         var list = LinkedList<Any>(remarkCommentsAdapter.items)
         list.add(0, submitRemarkProgress)
         remarkCommentsAdapter.setData(list)

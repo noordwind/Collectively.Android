@@ -80,6 +80,7 @@
     <string name="show_activity">Act!</string>
     <string name="activity_with_remark">Activity</string>
     <string name="resolve">Resolve</string>
+    <string name="reopen">Reopen</string>
     <string name="delete">Delete</string>
     <string name="act">Act!</string>
     <string name="your_activity">Your activity</string>
@@ -151,7 +152,6 @@
     <string name="camera">Camera</string>
     <string name="add_photo">Add photo</string>
     <string name="saving_remark">Saving remark...</string>
-    <string name="saving_photo">Saving remark photo...</string>
     <string name="updating_remarks">Updating remarks</string>
     <string name="change_password">Change password</string>
     <string name="change_password_screen_title">Change password</string>
@@ -188,6 +188,7 @@
     <string name="remark_state_new_long_description">New</string>
     <string name="remark_state_processing_long_description">Processing</string>
     <string name="remark_state_resolved_long_description">Resolved</string>
+    <string name="remark_state_renewed_long_description">Renewed</string>
     <string name="add_remark_group_hint">For group...</string>
     <string name="add_remark_all_groups_target">Wszystkie</string>
     <string name="add_remark_category_not_selected">Nie wybrano kategorii</string>
@@ -197,4 +198,8 @@
     <string name="add_remark_enabling_location_service_required_message"> Upewnij się, że Twój GPS jest włączony</string>
     <string name="remark_added">Zgłoszenie dodane</string>
     <string name="adding_remark_error">Nie udało się dodać zgłoszenia</string>
+    <string name="remark_resolved">Remark resolved</string>
+    <string name="remark_reopened">Remark reopened</string>
+    <string name="resolving_remark">Resolving remark</string>
+    <string name="reopening_remark">Reopening remark</string>
 </resources>

@@ -13,6 +13,7 @@ import com.noordwind.apps.collectively.TheApp
 import com.noordwind.apps.collectively.data.model.Remark
 import com.noordwind.apps.collectively.data.repository.util.LocationRepository
 import com.noordwind.apps.collectively.presentation.extension.getLongRemarkStateTranslation
+import com.noordwind.apps.collectively.presentation.extension.hideIfEmptyText
 import com.noordwind.apps.collectively.presentation.extension.iconOfCategory
 import com.noordwind.apps.collectively.presentation.extension.uppercaseFirstLetter
 import javax.inject.Inject
@@ -61,6 +62,7 @@ class MainScreenRemarksAdapterDelegate(viewType: Int, val onRemarkSelectedListen
             this.remark = remark
             categoryIcon.setImageDrawable(ContextCompat.getDrawable(itemView.context, remark.category?.name?.iconOfCategory()!!))
             nameLabel.text = remark.description
+            nameLabel.hideIfEmptyText()
             addressLabel.text = remark.location?.address
             statusLabel.text = remark.state.state.getLongRemarkStateTranslation(itemView.context).uppercaseFirstLetter()
         }

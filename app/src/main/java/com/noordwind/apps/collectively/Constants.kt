@@ -76,6 +76,7 @@ interface Constants {
         companion object {
             val NEW = "new"
             val RESOLVED = "resolved"
+            val RENEWED = "renewed"
             val PROCESSING = "processing"
         }
     }
@@ -140,6 +141,8 @@ interface Constants {
             const val CAMERA_EVENT = "camera"
             const val CATEGORY_SELECT = "camera"
             const val LOCATION_SERVICE_ENABLED = "location_service_enabled"
+            const val RESOLVE_REMARK_EVENT = "resolve_remark_event"
+            const val REOPEN_REMARK_EVENT = "reopen_remark_event"
         }
     }
 }

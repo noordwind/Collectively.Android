@@ -1,5 +1,6 @@
 package com.noordwind.apps.collectively.data.model
 
+import com.noordwind.apps.collectively.Constants
 import java.io.Serializable
 import java.text.SimpleDateFormat
 import java.util.*
@@ -13,6 +14,7 @@ class RemarkPreview(
         val tags: Array<String>,
         val photos: Array<RemarkPhoto>,
         val votes: Array<RemarkVote>,
+        val state: RemarkState,
         val comments: List<RemarkComment>,
         val states: List<RemarkState>
 ) {
@@ -25,6 +27,11 @@ class RemarkPreview(
             return null
         }
     }
+
+    fun isNewRemark() = state.state.equals(Constants.RemarkStates.NEW, true)
+    fun isRenewedRemark() = state.state.equals(Constants.RemarkStates.RENEWED, true)
+    fun isRemarkBeingProcessed() = state.state.equals(Constants.RemarkStates.PROCESSING, true)
+    fun isRemarkResolved() = state.state.equals(Constants.RemarkStates.RESOLVED, true)
 
     fun positiveVotesCount(): Int = positiveVotes().count()
     fun negativeVotesCount(): Int = negativeVotes().count()
@@ -55,7 +62,7 @@ class RemarkVote(
 )
 
 class RemarkState(
-        val state: String,
+        var state: String,
         val user: RemarkPreviewAuthor,
         val description: String,
         val createdAt: String,
