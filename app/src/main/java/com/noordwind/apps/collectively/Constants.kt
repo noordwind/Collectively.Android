@@ -139,6 +139,7 @@ interface Constants {
             const val GALLERY_EVENT = "gallery"
             const val CAMERA_EVENT = "camera"
             const val CATEGORY_SELECT = "camera"
+            const val LOCATION_SERVICE_ENABLED = "location_service_enabled"
         }
     }
 }

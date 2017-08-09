@@ -7,10 +7,6 @@ import android.support.design.widget.BottomSheetBehavior
 import android.support.v7.widget.LinearLayoutManager
 import android.view.MenuItem
 import android.view.View
-import kotlinx.android.synthetic.main.activity_remark_states.*
-import kotlinx.android.synthetic.main.view_error.*
-import kotlinx.android.synthetic.main.view_progress.*
-import kotlinx.android.synthetic.main.view_toolbar_with_title.*
 import com.noordwind.apps.collectively.Constants
 import com.noordwind.apps.collectively.R
 import com.noordwind.apps.collectively.TheApp
@@ -19,7 +15,6 @@ import com.noordwind.apps.collectively.data.repository.RemarksRepository
 import com.noordwind.apps.collectively.domain.interactor.remark.states.LoadRemarkStatesUseCase
 import com.noordwind.apps.collectively.domain.thread.PostExecutionThread
 import com.noordwind.apps.collectively.domain.thread.UseCaseThread
-import com.noordwind.apps.collectively.presentation.BaseActivity
 import com.noordwind.apps.collectively.presentation.adapter.RemarkStatesAdapter
 import com.noordwind.apps.collectively.presentation.adapter.delegates.RemarkCommentsLoaderAdapterDelegate
 import com.noordwind.apps.collectively.presentation.adapter.delegates.RemarkStatesDeleteButtonAdapterDelegate
@@ -27,6 +22,10 @@ import com.noordwind.apps.collectively.presentation.adapter.delegates.RemarkStat
 import com.noordwind.apps.collectively.presentation.extension.dpToPx
 import com.noordwind.apps.collectively.presentation.util.RequestErrorDecorator
 import com.noordwind.apps.collectively.presentation.util.Switcher
+import kotlinx.android.synthetic.main.activity_remark_states.*
+import kotlinx.android.synthetic.main.view_error.*
+import kotlinx.android.synthetic.main.view_progress.*
+import kotlinx.android.synthetic.main.view_toolbar_with_title.*
 import java.util.*
 import javax.inject.Inject
 
@@ -111,7 +110,7 @@ class RemarkStatesActivity : com.noordwind.apps.collectively.presentation.BaseAc
     }
 
     override fun showLoadedStates(states: List<RemarkState>) {
-        bottomSheet.visibility = View.VISIBLE
+        bottomSheet.visibility = View.GONE
         switcher.showContentViews()
 
         var list = LinkedList<Any>(states)

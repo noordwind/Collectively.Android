@@ -122,6 +122,15 @@
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
 
+        <receiver
+            android:name=".presentation.receiver.LocationProviderChangedReceiver"
+            android:exported="false" >
+            <intent-filter>
+                <action android:name="android.location.PROVIDERS_CHANGED" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </receiver>
+
     </application>
 
 </manifest>

@@ -128,6 +128,11 @@ class AddRemarkPresenter(val view: AddRemarkMvp.View,
     }
 
     override fun saveRemark(groupName: String?, category: String, description: String, selectedTags: List<String>, capturedImageUri: Uri?) {
+        if (lastKnownAddress.isNullOrBlank()) {
+            view.showAddressNotSpecifiedDialog()
+            return
+        }
+
         var observer = object : AppDisposableObserver<RemarkNotFromList>() {
             override fun onStart() {
                 super.onStart()

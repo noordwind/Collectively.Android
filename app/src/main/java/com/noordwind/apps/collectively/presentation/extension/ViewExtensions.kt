@@ -103,6 +103,15 @@ fun Activity.showResetPasswordErrorDialog(message: String) {
     builder.show()
 }
 
+fun Activity.showAddressNotSpecifiedDialogError() {
+    val builder = AlertDialog.Builder(this)
+    builder
+            .setTitle(this.getString(R.string.add_remark_enabling_location_service_required_title))
+            .setMessage(this.getString(R.string.add_remark_enabling_location_service_required_message))
+            .setPositiveButton(this.getString(R.string.ok_button), null)
+    builder.show()
+}
+
 fun Activity.showSetNicknameErrorDialog(message: String) {
     val builder = AlertDialog.Builder(this)
     builder

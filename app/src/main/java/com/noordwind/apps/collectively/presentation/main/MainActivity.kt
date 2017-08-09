@@ -214,7 +214,6 @@ class MainActivity : com.noordwind.apps.collectively.presentation.BaseActivity()
     override fun onLocationChanged(location: Location?) {
         lastLocation = location;
 
-
         //Place current location marker
         var latLng = LatLng(location?.latitude!!, location?.longitude!!);
 

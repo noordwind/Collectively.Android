@@ -46,6 +46,7 @@ import io.reactivex.disposables.Disposable
 import jonathanfinerty.once.Once
 import kotlinx.android.synthetic.main.activity_add_remark.*
 import java.util.*
+import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 
@@ -86,6 +87,7 @@ class AddRemarkActivity : com.noordwind.apps.collectively.presentation.BaseActiv
     private lateinit var galleryButtonClickEventDisposable: Disposable
     private lateinit var cameraButtonClickEventDisposable: Disposable
     private lateinit var categorySelectedEventDisposable: Disposable
+    private lateinit var locationServiceEnabledEventDisposable: Disposable
     private var capturedImageUri: Uri? = null
 
     private val mCurrentAnimator: Animator? = null
@@ -143,7 +145,18 @@ class AddRemarkActivity : com.noordwind.apps.collectively.presentation.BaseActiv
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({ selectCategory(it.category, it.isSelected) })
 
+        locationServiceEnabledEventDisposable = RxBus.instance
+                .getEvents(String::class.java)
+                .filter { it.equals(Constants.RxBusEvent.LOCATION_SERVICE_ENABLED) }
+                .delay(3, TimeUnit.SECONDS)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({ presenter.loadLastKnownAddress() })
+
         mShortAnimationDuration = resources.getInteger(android.R.integer.config_shortAnimTime);
+    }
+
+    override fun showAddressNotSpecifiedDialog() {
+        showAddressNotSpecifiedDialogError()
     }
 
     fun selectCategory(category: RemarkCategory, isSelected: Boolean) {
@@ -246,7 +259,7 @@ class AddRemarkActivity : com.noordwind.apps.collectively.presentation.BaseActiv
     override fun showSaveRemarkError() {
         submitButton.text = getString(R.string.submit)
         submitProgress.visibility = View.GONE
-        Toast.makeText(this, "Remark Not ADDED", Toast.LENGTH_SHORT).show()
+        ToastManager(this, getString(R.string.adding_remark_error), Toast.LENGTH_SHORT).error().show()
     }
 
     override fun showSaveRemarkError(message: String?) {
@@ -256,9 +269,9 @@ class AddRemarkActivity : com.noordwind.apps.collectively.presentation.BaseActiv
     }
 
     override fun showSaveRemarkSuccess(newRemark: RemarkNotFromList) {
-        submitButton.text = getString(R.string.saving_photo)
+        submitButton.text = getString(R.string.submit)
         submitProgress.visibility = View.GONE
-        Toast.makeText(this, "Remark Addded", Toast.LENGTH_SHORT).show()
+        ToastManager(this, getString(R.string.remark_added), Toast.LENGTH_SHORT).success().show()
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -335,5 +348,6 @@ class AddRemarkActivity : com.noordwind.apps.collectively.presentation.BaseActiv
         galleryButtonClickEventDisposable.dispose()
         cameraButtonClickEventDisposable.dispose()
         categorySelectedEventDisposable.dispose()
+        locationServiceEnabledEventDisposable.dispose()
     }
 }

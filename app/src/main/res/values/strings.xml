@@ -193,4 +193,8 @@
     <string name="add_remark_category_not_selected">Nie wybrano kategorii</string>
     <string name="filter_remarks_dialog_status_label">Status</string>
     <string name="groups">Group</string>
+    <string name="add_remark_enabling_location_service_required_title">Nieznana lokalizacja</string>
+    <string name="add_remark_enabling_location_service_required_message"> Upewnij się, że Twój GPS jest włączony</string>
+    <string name="remark_added">Zgłoszenie dodane</string>
+    <string name="adding_remark_error">Nie udało się dodać zgłoszenia</string>
 </resources>

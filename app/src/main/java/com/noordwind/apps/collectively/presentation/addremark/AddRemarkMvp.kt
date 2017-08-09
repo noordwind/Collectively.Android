@@ -20,6 +20,7 @@ interface AddRemarkMvp {
         fun showSaveRemarkSuccess(newRemark: RemarkNotFromList)
         fun showAvailableUserGroups(userGroup: List<UserGroup>)
         fun showSaveRemarkError(message: String?)
+        fun showAddressNotSpecifiedDialog()
     }
 
     interface Presenter : BasePresenter{

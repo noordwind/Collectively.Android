@@ -151,7 +151,6 @@
     <string name="camera">Kamera</string>
     <string name="add_photo">Dodaj zdjęcie</string>
     <string name="saving_remark">Przesyłanie zgloszenia...</string>
-    <string name="saving_photo">Przesyłanie zdjęcia...</string>
     <string name="updating_remarks">Aktualizuje zgłoszenia</string>
     <string name="change_password">Zmień hasło</string>
     <string name="change_password_screen_title">Zmiana hasła</string>
@@ -190,4 +189,6 @@
     <string name="add_remark_category_not_selected">Nie wybrano kategorii</string>
     <string name="filter_remarks_dialog_status_label">Status</string>
     <string name="groups">Grupa</string>
+    <string name="add_remark_enabling_location_service_required_title">Nieznana lokalizacja</string>
+    <string name="add_remark_enabling_location_service_required_message"> Upewnij się, że Twój GPS jest włączony</string>
 </resources>
