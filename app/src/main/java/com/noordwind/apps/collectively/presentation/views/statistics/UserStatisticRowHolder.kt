@@ -6,7 +6,9 @@ import android.widget.ImageView
 import android.widget.TextView
 import com.bumptech.glide.Glide
 import com.noordwind.apps.collectively.R
+import com.noordwind.apps.collectively.data.model.User
 import com.noordwind.apps.collectively.presentation.adapter.delegates.UsersStatisticsAdapterDelegate
+import com.noordwind.apps.collectively.presentation.profile.ProfileActivity
 
 class UserStatisticRowHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
@@ -25,5 +27,8 @@ class UserStatisticRowHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
                     .error(R.drawable.ic_person_grey_48dp)
                     .into(userImage)
         }
+
+        itemView.setOnClickListener { ProfileActivity.start(itemView.context, User(avatarUrl = userStatistic.avatarUrl,
+                name = userStatistic.name, userId = userStatistic.userId)) }
     }
 }

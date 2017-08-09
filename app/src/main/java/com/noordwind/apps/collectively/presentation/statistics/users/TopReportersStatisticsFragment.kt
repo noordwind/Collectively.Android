@@ -40,7 +40,8 @@ class TopReportersStatisticsFragment : Fragment() {
                     UsersStatisticsAdapterDelegate.UserStatistic(
                             name = it.name,
                             avatarUrl = String.format("%s/users/%s/avatar", BuildConfig.SERVER_URL, it.userId),
-                            statistic = it.reportedCount().toInt())
+                            statistic = it.reportedCount().toInt(),
+                            userId = it.userId)
                 }
 
         userStatisticsAdapter = UsersStatisticsAdapter().setData(entries).initDelegates()
