@@ -64,6 +64,12 @@ class SettingsActivity : com.noordwind.apps.collectively.presentation.BaseActivi
         logoutButton.setOnClickListener { presenter.logout() }
 
         deleteAccountButton.setOnClickListener { presenter.removeAccount() }
+
+        presenter.onCreate()
+    }
+
+    override fun hideChangePasswordButton() {
+        changePasswordButton.visibility = View.GONE
     }
 
     override fun showLogoutSuccess() {

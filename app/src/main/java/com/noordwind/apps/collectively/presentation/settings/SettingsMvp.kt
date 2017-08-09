@@ -11,9 +11,11 @@ interface SettingsMvp {
         fun showRemoveAccountNetworkError()
         fun showRemoveAccountProgress()
         fun hideRemoveAccountProgress()
+        fun hideChangePasswordButton()
     }
 
     interface Presenter : BasePresenter{
+        fun onCreate()
         fun logout()
         fun removeAccount()
     }
