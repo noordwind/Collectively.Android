@@ -3,11 +3,13 @@ package com.noordwind.apps.collectively
 import android.content.Context
 import android.support.multidex.MultiDexApplication
 import android.support.v7.app.AppCompatDelegate
+import com.crashlytics.android.Crashlytics
 import com.facebook.FacebookSdk
-import jonathanfinerty.once.Once
 import com.noordwind.apps.collectively.presentation.dagger.AppComponent
 import com.noordwind.apps.collectively.presentation.dagger.AppModule
 import com.noordwind.apps.collectively.presentation.dagger.DaggerAppComponent
+import io.fabric.sdk.android.Fabric
+import jonathanfinerty.once.Once
 
 class TheApp : MultiDexApplication() {
 
@@ -22,6 +24,7 @@ class TheApp : MultiDexApplication() {
     override fun onCreate() {
         super.onCreate()
         initAppComponent()
+        Fabric.with(this, Crashlytics())
         FacebookSdk.sdkInitialize(applicationContext)
         Once.initialise(this);
         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);

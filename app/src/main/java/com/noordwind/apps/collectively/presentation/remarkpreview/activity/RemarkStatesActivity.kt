@@ -23,6 +23,7 @@ import com.noordwind.apps.collectively.presentation.adapter.delegates.RemarkComm
 import com.noordwind.apps.collectively.presentation.adapter.delegates.RemarkStatesReopenButtonAdapterDelegate
 import com.noordwind.apps.collectively.presentation.adapter.delegates.RemarkStatesResolveButtonAdapterDelegate
 import com.noordwind.apps.collectively.presentation.extension.dpToPx
+import com.noordwind.apps.collectively.presentation.rxjava.RxBus
 import com.noordwind.apps.collectively.presentation.util.RequestErrorDecorator
 import com.noordwind.apps.collectively.presentation.util.Switcher
 import com.noordwind.apps.collectively.presentation.views.toast.ToastManager
@@ -121,10 +122,12 @@ class RemarkStatesActivity : com.noordwind.apps.collectively.presentation.BaseAc
 
     override fun showRemarkResolvedMessage() {
         ToastManager(this, getString(R.string.remark_resolved), Toast.LENGTH_SHORT).success().show()
+        RxBus.instance.postEvent(Constants.RxBusEvent.REMARK_STATE_CHANGED_EVENT)
     }
 
     override fun showRemarkReopenedMessage() {
         ToastManager(this, getString(R.string.remark_reopened), Toast.LENGTH_SHORT).success().show()
+        RxBus.instance.postEvent(Constants.RxBusEvent.REMARK_STATE_CHANGED_EVENT)
     }
 
     private fun loadStates() {

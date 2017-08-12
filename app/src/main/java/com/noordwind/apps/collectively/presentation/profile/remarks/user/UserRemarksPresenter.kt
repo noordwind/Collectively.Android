@@ -1,5 +1,6 @@
 package com.noordwind.apps.collectively.presentation.profile.remarks.user
 
+import com.noordwind.apps.collectively.Constants
 import com.noordwind.apps.collectively.data.model.Remark
 import com.noordwind.apps.collectively.domain.interactor.remark.LoadUserFavoriteRemarksUseCase
 import com.noordwind.apps.collectively.domain.interactor.remark.LoadUserRemarksUseCase
@@ -8,6 +9,9 @@ import com.noordwind.apps.collectively.domain.interactor.remark.filters.map.Clea
 import com.noordwind.apps.collectively.domain.interactor.remark.filters.map.LoadRemarkFiltersUseCase
 import com.noordwind.apps.collectively.domain.model.RemarkFilters
 import com.noordwind.apps.collectively.presentation.rxjava.AppDisposableObserver
+import com.noordwind.apps.collectively.presentation.rxjava.RxBus
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.Disposable
 import io.reactivex.observers.DisposableObserver
 
 
@@ -22,8 +26,45 @@ class UserRemarksPresenter(
 
     private var filtersKey: String? = null
     private var loadedRemarks: List<Remark>? = null
+    private var userId: String? = null
+
+    private lateinit var remarksStateChangedDisposable: Disposable
+    private var refreshUserRemarks: Boolean = false
+    private lateinit var mode: String
+
+    private val USER_REMARKS_MODE = "USER_REMARKS_MODE"
+    private val USER_FAVORITE_REMARKS_MODE = "USER_FAVORITE_REMARKS_MODE"
+    private val USER_RESOLVED_REMARKS_MODE = "USER_RESOLVED_REMARKS_MODE"
+
+    override fun onCreate() {
+        remarksStateChangedDisposable = RxBus.instance
+                .getEvents(String::class.java)
+                .filter { it.equals(Constants.RxBusEvent.REMARK_STATE_CHANGED_EVENT) }
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({ refreshUserRemarks = true })
+    }
+
+    override fun onStart() {
+        if (refreshUserRemarks) {
+            when (mode) {
+                USER_REMARKS_MODE -> {
+                    loadUserRemarks(userId)
+                }
+                USER_FAVORITE_REMARKS_MODE -> {
+                    loadFavoriteRemarks()
+                }
+                USER_RESOLVED_REMARKS_MODE -> {
+                    loadUserResolvedRemarks(userId)
+                }
+            }
+            refreshUserRemarks = false
+        }
+    }
 
     override fun loadUserRemarks(userId: String?) {
+        this.userId = userId
+        mode = USER_REMARKS_MODE
+
         var observer = object : AppDisposableObserver<List<Remark>>() {
 
             override fun onStart() {
@@ -68,6 +109,9 @@ class UserRemarksPresenter(
     }
 
     override fun loadUserResolvedRemarks(userId: String?) {
+        this.userId = userId
+
+        mode = USER_RESOLVED_REMARKS_MODE
         var observer = object : AppDisposableObserver<List<Remark>>() {
 
             override fun onStart() {
@@ -126,6 +170,8 @@ class UserRemarksPresenter(
     }
 
     override fun loadFavoriteRemarks() {
+        mode = USER_FAVORITE_REMARKS_MODE
+
         var observer = object : AppDisposableObserver<List<Remark>>() {
 
             override fun onStart() {
@@ -199,5 +245,6 @@ class UserRemarksPresenter(
         loadUserRemarksUseCase.dispose()
         loadUserFavoriteRemarksUseCase.dispose()
         loadRemarkFiltersUseCase.dispose()
+        remarksStateChangedDisposable.dispose()
     }
 }

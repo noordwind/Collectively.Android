@@ -92,6 +92,8 @@ class RemarkActivity : com.noordwind.apps.collectively.presentation.BaseActivity
                 SubmitRemarkVoteUseCase(remarksRepository, profileRepository, ioThread, uiThread),
                 DeleteRemarkVoteUseCase(remarksRepository, profileRepository, ioThread, uiThread))
 
+        presenter.onCreate()
+
         errorDecorator = RequestErrorDecorator(switcherErrorImage, switcherErrorTitle, switcherErrorFooter)
         val contentViews = LinkedList<View>()
         contentViews.add(contentLayout)
@@ -339,6 +341,11 @@ class RemarkActivity : com.noordwind.apps.collectively.presentation.BaseActivity
 
         voteUpButton.setLiked(false)
         positiveVotesCountLabel.setTextColor(ContextCompat.getColor(baseContext, R.color.font_dark_hint))
+    }
+
+    override fun onStart() {
+        super.onStart()
+        presenter.onStart()
     }
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {

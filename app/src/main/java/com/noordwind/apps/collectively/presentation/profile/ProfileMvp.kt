@@ -19,5 +19,7 @@ interface ProfileMvp {
 
     interface Presenter : BasePresenter {
         fun loadProfile(user: User?)
+        fun onStart()
+        fun onCreate()
     }
 }

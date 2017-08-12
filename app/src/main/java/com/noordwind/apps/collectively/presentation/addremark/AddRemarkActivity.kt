@@ -19,6 +19,7 @@ import com.bumptech.glide.request.target.Target
 import com.noordwind.apps.collectively.Constants
 import com.noordwind.apps.collectively.R
 import com.noordwind.apps.collectively.TheApp
+import com.noordwind.apps.collectively.data.datasource.FiltersTranslationsDataSource
 import com.noordwind.apps.collectively.data.model.RemarkCategory
 import com.noordwind.apps.collectively.data.model.RemarkNotFromList
 import com.noordwind.apps.collectively.data.model.RemarkTag
@@ -70,6 +71,9 @@ class AddRemarkActivity : com.noordwind.apps.collectively.presentation.BaseActiv
     lateinit var userGroupsRepository: UserGroupsRepository
 
     @Inject
+    lateinit var translationDataSource: FiltersTranslationsDataSource
+
+    @Inject
     lateinit var ioThread: UseCaseThread
 
     @Inject
@@ -101,7 +105,7 @@ class AddRemarkActivity : com.noordwind.apps.collectively.presentation.BaseActiv
 
         tagsLayout = findViewById(R.id.tags_layout) as FlowLayout
 
-        selectedCategory = intent.getStringExtra(Constants.BundleKey.CATEGORY)
+        selectedCategory = translationDataSource.translateFromType(intent.getStringExtra(Constants.BundleKey.CATEGORY))
 
         addressLabel = findViewById(R.id.address) as TextView
 
@@ -117,7 +121,7 @@ class AddRemarkActivity : com.noordwind.apps.collectively.presentation.BaseActiv
 
         presenter = AddRemarkPresenter(this, SaveRemarkUseCase(remarksRepository, ioThread, uiThread),
                 LoadRemarkTagsUseCase(remarksRepository, ioThread, uiThread),
-                LoadRemarkCategoriesUseCase(remarksRepository, ioThread, uiThread),
+                LoadRemarkCategoriesUseCase(remarksRepository, translationDataSource, ioThread, uiThread),
                 LoadLastKnownLocationUseCase(locationRepository, ioThread, uiThread),
                 LoadUserGroupsUseCase(userGroupsRepository, ioThread, uiThread))
 
@@ -173,7 +177,7 @@ class AddRemarkActivity : com.noordwind.apps.collectively.presentation.BaseActiv
         }
     }
 
-    fun getCategory() = selectedCategory
+    fun getCategory() = translationDataSource.translateToType(selectedCategory)
 
     fun getGroupName() : String? {
         var groupName = groupsSpinner.selectedItem.toString()
@@ -197,7 +201,9 @@ class AddRemarkActivity : com.noordwind.apps.collectively.presentation.BaseActiv
         categories.forEach {
             val newView = RemarkCategoryFlowLayoutView(this, it, true)
             newView.setBackgroundCompat(R.drawable.remark_tag_unselected_background)
-            newView.text = it.name
+
+            var translation = it.translation
+            translation?.let { newView.text = translation!!.uppercaseFirstLetter() }
             newView.gravity = Gravity.CENTER
             newView.setTextColor(ContextCompat.getColor(baseContext, R.color.white))
             newView.setPadding(30, 5, 30, 5)
@@ -206,7 +212,7 @@ class AddRemarkActivity : com.noordwind.apps.collectively.presentation.BaseActiv
             params.bottomMargin = 10
             newView.layoutParams = params
 
-            if (it.name.toLowerCase().equals(selectedCategory.toLowerCase())) {
+            if (it.translation.toLowerCase().equals(selectedCategory.toLowerCase())) {
                 newView.select(true)
             }
 

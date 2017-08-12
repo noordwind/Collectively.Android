@@ -1,5 +1,6 @@
 package com.noordwind.apps.collectively.presentation.main
 
+import com.noordwind.apps.collectively.data.datasource.FiltersTranslationsDataSource
 import com.noordwind.apps.collectively.data.model.Remark
 import com.noordwind.apps.collectively.data.model.RemarkCategory
 import com.noordwind.apps.collectively.domain.interactor.remark.LoadRemarkCategoriesUseCase
@@ -12,7 +13,8 @@ import io.reactivex.observers.DisposableObserver
 class MainPresenter(val view: MainMvp.View,
                     val loadRemarksUseCase: LoadRemarksUseCase,
                     val loadRemarkCategoriesUseCase: LoadRemarkCategoriesUseCase,
-                    val loadMapFiltersUseCase: LoadMapFiltersUseCase) : MainMvp.Presenter {
+                    val loadMapFiltersUseCase: LoadMapFiltersUseCase,
+                    val translationsDataSource: FiltersTranslationsDataSource) : MainMvp.Presenter {
 
     var filtersKey: String = ""
 
@@ -66,6 +68,8 @@ class MainPresenter(val view: MainMvp.View,
 
         loadRemarkCategoriesUseCase.execute(observer)
     }
+
+    override fun remarkCategoryTranslation(name: String): String = translationsDataSource.translateFromType(name)
 
     override fun loadMapFiltersDialog() {
         var filtersObserver = object : DisposableObserver<MapFilters>() {
