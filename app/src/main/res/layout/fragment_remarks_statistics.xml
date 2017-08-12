@@ -63,11 +63,13 @@
             android:padding="@dimen/spacing_normal"
             android:text="@string/statistics_remarks_by_tag"
             android:textColor="@color/red_dark_2"
+            android:visibility="gone"
             android:textSize="@dimen/font_medium"
             android:textStyle="bold" />
 
         <com.noordwind.apps.collectively.presentation.views.chart.RemarksByTagChart
             android:id="@+id/remarksByTagChart"
+            android:visibility="gone"
             android:layout_marginBottom="70dp"
             android:layout_width="match_parent"
             android:layout_height="160dp" />

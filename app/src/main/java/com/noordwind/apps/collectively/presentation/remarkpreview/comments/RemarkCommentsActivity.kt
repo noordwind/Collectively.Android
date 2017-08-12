@@ -20,6 +20,7 @@ import com.noordwind.apps.collectively.domain.thread.UseCaseThread
 import com.noordwind.apps.collectively.presentation.adapter.RemarkCommentsAdapter
 import com.noordwind.apps.collectively.presentation.adapter.delegates.RemarkCommentsLoaderAdapterDelegate
 import com.noordwind.apps.collectively.presentation.extension.dpToPx
+import com.noordwind.apps.collectively.presentation.rxjava.RxBus
 import com.noordwind.apps.collectively.presentation.util.RequestErrorDecorator
 import com.noordwind.apps.collectively.presentation.util.Switcher
 import kotlinx.android.synthetic.main.activity_remark_comments.*
@@ -179,6 +180,7 @@ class RemarkCommentsActivity : com.noordwind.apps.collectively.presentation.Base
         remarkCommentsAdapter.setData(list)
         remarkCommentsAdapter.notifyItemInserted(0)
         (remarkCommentsRecycler.layoutManager as LinearLayoutManager).scrollToPositionWithOffset(0, 0)
+        RxBus.instance.postEvent(Constants.RxBusEvent.REMARK_STATE_CHANGED_EVENT)
     }
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
