@@ -122,6 +122,11 @@
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
 
+        <meta-data
+            android:name="io.fabric.ApiKey"
+            android:value="aead572faf38edd05a1ce5a5b410b7b1d86685ce"
+            />
+
         <receiver
             android:name=".presentation.receiver.LocationProviderChangedReceiver"
             android:exported="false" >

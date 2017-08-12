@@ -1,5 +1,6 @@
 package com.noordwind.apps.collectively.presentation.remarkpreview
 
+import com.noordwind.apps.collectively.Constants
 import com.noordwind.apps.collectively.data.model.RemarkPreview
 import com.noordwind.apps.collectively.data.model.RemarkVote
 import com.noordwind.apps.collectively.domain.interactor.remark.LoadRemarkViewDataUseCase
@@ -7,6 +8,9 @@ import com.noordwind.apps.collectively.domain.interactor.remark.votes.DeleteRema
 import com.noordwind.apps.collectively.domain.interactor.remark.votes.SubmitRemarkVoteUseCase
 import com.noordwind.apps.collectively.domain.model.RemarkViewData
 import com.noordwind.apps.collectively.presentation.rxjava.AppDisposableObserver
+import com.noordwind.apps.collectively.presentation.rxjava.RxBus
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.Disposable
 
 
 class RemarkPresenter(val view: RemarkPreviewMvp.View, val loadRemarkUseCase: LoadRemarkViewDataUseCase, val submitRemarkVoteUseCase: SubmitRemarkVoteUseCase, val deleteRemarkVoteUseCase: DeleteRemarkVoteUseCase) : RemarkPreviewMvp.Presenter {
@@ -14,6 +18,25 @@ class RemarkPresenter(val view: RemarkPreviewMvp.View, val loadRemarkUseCase: Lo
     private var remarkId : String = ""
     private var userId : String = ""
     private lateinit var remark: RemarkPreview
+
+    private lateinit var remarksStateChangedDisposable: Disposable
+    private var refreshRemark: Boolean = false
+
+    override fun onCreate() {
+        remarksStateChangedDisposable = RxBus.instance
+                .getEvents(String::class.java)
+                .filter { it.equals(Constants.RxBusEvent.REMARK_STATE_CHANGED_EVENT) }
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({ refreshRemark = true })
+    }
+
+    override fun onStart() {
+        if (refreshRemark) {
+            loadRemark(remarkId)
+            refreshRemark = false
+
+        }
+    }
 
     override fun loadRemark(id: String) {
         var observer = object : AppDisposableObserver<RemarkViewData>() {
@@ -95,6 +118,7 @@ class RemarkPresenter(val view: RemarkPreviewMvp.View, val loadRemarkUseCase: Lo
         submitRemarkVoteUseCase.dispose()
         deleteRemarkVoteUseCase.dispose()
         loadRemarkUseCase.dispose()
+        remarksStateChangedDisposable.dispose()
     }
 
     class VoteChangeObserver(val view: RemarkPreviewMvp.View)  : AppDisposableObserver<RemarkViewData>() {

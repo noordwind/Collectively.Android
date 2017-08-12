@@ -1,16 +1,37 @@
 package com.noordwind.apps.collectively.presentation.profile
 
+import com.noordwind.apps.collectively.Constants
 import com.noordwind.apps.collectively.data.model.User
 import com.noordwind.apps.collectively.domain.interactor.profile.LoadCurrentUserProfileDataUseCase
 import com.noordwind.apps.collectively.domain.interactor.profile.LoadUserProfileDataUseCase
 import com.noordwind.apps.collectively.domain.model.UserProfileData
 import com.noordwind.apps.collectively.presentation.rxjava.AppDisposableObserver
+import com.noordwind.apps.collectively.presentation.rxjava.RxBus
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.Disposable
 
 class ProfilePresenter(val view: ProfileMvp.View,
                        val loadCurrentUserProfileDataUseCase: LoadCurrentUserProfileDataUseCase,
                        val loadProfileUseCase: LoadUserProfileDataUseCase) : ProfileMvp.Presenter {
 
     private var user: User? = null
+    private lateinit var remarksStateChangedDisposable: Disposable
+    private var refreshProfile: Boolean = false
+
+    override fun onCreate() {
+        remarksStateChangedDisposable = RxBus.instance
+                .getEvents(String::class.java)
+                .filter { it.equals(Constants.RxBusEvent.REMARK_STATE_CHANGED_EVENT) }
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({refreshProfile = true})
+    }
+
+    override fun onStart() {
+        if (refreshProfile) {
+            loadProfile(user)
+            refreshProfile = false
+        }
+    }
 
     override fun loadProfile(user: User?) {
         this.user = user
@@ -62,5 +83,6 @@ class ProfilePresenter(val view: ProfileMvp.View,
     override fun destroy() {
         loadCurrentUserProfileDataUseCase.dispose()
         loadProfileUseCase.dispose()
+        remarksStateChangedDisposable.dispose()
     }
 }

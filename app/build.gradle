@@ -3,6 +3,7 @@ apply plugin: 'me.tatarka.retrolambda'
 apply plugin: 'com.neenbedankt.android-apt'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
+apply plugin: 'io.fabric'
 
 android {
     compileSdkVersion rootProject.ext.compileSdkVersion
@@ -12,7 +13,7 @@ android {
         applicationId "com.noordwind.apps.collectively"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 3
+        versionCode 5
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         resValue "string", "tray__authority", "${applicationId}.tray"
@@ -120,6 +121,9 @@ dependencies {
     compile "com.android.support:multidex:1.0.0"
     compile 'net.grandcentrix.tray:tray:0.11.0'
     compile 'com.annimon:stream:1.0.9'
+    compile('com.crashlytics.sdk.android:crashlytics:2.6.8@aar') {
+        transitive = true;
+    }
 
     //UI
 compile 'com.theartofdev.edmodo:android-image-cropper:2.4.+'

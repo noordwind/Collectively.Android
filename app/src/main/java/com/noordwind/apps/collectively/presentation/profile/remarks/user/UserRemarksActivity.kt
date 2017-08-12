@@ -111,6 +111,8 @@ class UserRemarksActivity : com.noordwind.apps.collectively.presentation.BaseAct
         loadRemarks(userId)
 
         emptyButton.visibility = View.GONE
+
+        presenter.onCreate()
     }
 
     private fun loadRemarks(userId: String?) {
@@ -173,6 +175,11 @@ class UserRemarksActivity : com.noordwind.apps.collectively.presentation.BaseAct
 
     override fun showEmptyScreen() {
         switcher.showEmptyViews()
+    }
+
+    override fun onStart() {
+        super.onStart()
+        presenter.onStart()
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {

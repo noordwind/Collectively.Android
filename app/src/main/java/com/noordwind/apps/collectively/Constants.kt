@@ -143,6 +143,7 @@ interface Constants {
             const val LOCATION_SERVICE_ENABLED = "location_service_enabled"
             const val RESOLVE_REMARK_EVENT = "resolve_remark_event"
             const val REOPEN_REMARK_EVENT = "reopen_remark_event"
+            const val REMARK_STATE_CHANGED_EVENT = "remark_changed_disposable"
         }
     }
 }

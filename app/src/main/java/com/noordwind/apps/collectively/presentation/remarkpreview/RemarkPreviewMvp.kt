@@ -32,5 +32,7 @@ interface RemarkPreviewMvp {
         fun remarkId(): String
         fun remarkLatitude(): Double
         fun remarkLongitude(): Double
+        fun onCreate()
+        fun onStart()
     }
 }

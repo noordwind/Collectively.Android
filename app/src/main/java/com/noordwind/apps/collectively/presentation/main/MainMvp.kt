@@ -21,6 +21,7 @@ interface MainMvp {
         fun loadRemarks()
         fun loadMapFiltersDialog()
         fun checkIfFiltersHasChanged()
+        fun  remarkCategoryTranslation(name: String): String
     }
 }
 

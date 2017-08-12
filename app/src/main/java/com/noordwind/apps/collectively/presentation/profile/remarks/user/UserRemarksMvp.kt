@@ -22,5 +22,7 @@ interface UserRemarksMvp {
         fun loadUserResolvedRemarks(userId: String?)
         fun loadFavoriteRemarks()
         fun checkIfFiltersHasChanged()
+        fun onCreate()
+        fun onStart()
     }
 }

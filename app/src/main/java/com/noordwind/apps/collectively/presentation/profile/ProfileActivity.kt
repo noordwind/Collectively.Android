@@ -88,6 +88,7 @@ class ProfileActivity : com.noordwind.apps.collectively.presentation.BaseActivit
 
         var user = intent.getSerializableExtra(Constants.BundleKey.USER) as User?
         setupButtons(user)
+        presenter.onCreate()
         presenter.loadProfile(user)
     }
 
@@ -213,6 +214,11 @@ class ProfileActivity : com.noordwind.apps.collectively.presentation.BaseActivit
         alphaAnimation.duration = duration
         alphaAnimation.fillAfter = true
         v.startAnimation(alphaAnimation)
+    }
+
+    override fun onStart() {
+        super.onStart()
+        presenter.onStart()
     }
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {

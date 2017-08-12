@@ -34,6 +34,7 @@ import com.google.android.gms.maps.model.MarkerOptions
 import com.noordwind.apps.collectively.Constants
 import com.noordwind.apps.collectively.R
 import com.noordwind.apps.collectively.TheApp
+import com.noordwind.apps.collectively.data.datasource.FiltersTranslationsDataSource
 import com.noordwind.apps.collectively.data.datasource.MapFiltersRepository
 import com.noordwind.apps.collectively.data.model.Remark
 import com.noordwind.apps.collectively.data.model.RemarkCategory
@@ -84,6 +85,9 @@ class MainActivity : com.noordwind.apps.collectively.presentation.BaseActivity()
     lateinit var mapFiltersRepository: MapFiltersRepository
 
     @Inject
+    lateinit var translationDataSource: FiltersTranslationsDataSource
+
+    @Inject
     lateinit var userGroupsRepository: UserGroupsRepository
 
     @Inject
@@ -118,8 +122,10 @@ class MainActivity : com.noordwind.apps.collectively.presentation.BaseActivity()
         mapFragment.getMapAsync(this)
 
         mainPresenter = MainPresenter(this, LoadRemarksUseCase(remarksRepository, ioThread, uiThread),
-                LoadRemarkCategoriesUseCase(remarksRepository, ioThread, uiThread),
-                LoadMapFiltersUseCase(mapFiltersRepository, userGroupsRepository, ioThread, uiThread))
+                LoadRemarkCategoriesUseCase(remarksRepository, translationDataSource, ioThread, uiThread),
+                LoadMapFiltersUseCase(mapFiltersRepository, userGroupsRepository, ioThread, uiThread),
+                translationDataSource)
+
         mainPresenter.loadRemarkCategories()
 
         filtersButton.setOnClickListener {
@@ -156,7 +162,7 @@ class MainActivity : com.noordwind.apps.collectively.presentation.BaseActivity()
     override fun showRemarkCategory(remarkCategory: RemarkCategory) {
         var remarkButton = FloatingActionButton(baseContext);
         remarkButton.colorNormal = Color.parseColor(remarkCategory.name.colorOfCategory())
-        remarkButton.title = remarkCategory.name.uppercaseFirstLetter()
+        remarkButton.title = mainPresenter.remarkCategoryTranslation(remarkCategory.name).uppercaseFirstLetter()
         remarkButton.setIcon(remarkCategory.name.iconOfCategory())
         remarkButton.setOnClickListener { runOnUiThread { AddRemarkActivity.start(baseContext, remarkCategory.name.toLowerCase()) } }
         floatingActionsMenu.addButton(remarkButton)
