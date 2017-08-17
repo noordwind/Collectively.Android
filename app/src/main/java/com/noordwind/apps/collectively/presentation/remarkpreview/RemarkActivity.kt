@@ -248,7 +248,7 @@ class RemarkActivity : com.noordwind.apps.collectively.presentation.BaseActivity
 
 
         locationLabel.text = remark.location.address
-        remarkPhotoTitle.text = Html.fromHtml(getString(R.string.remark_preview_photo_title, remark.category.name.uppercaseFirstLetter(), remark.author.name))
+        remarkPhotoTitle.text = Html.fromHtml(getString(R.string.remark_preview_photo_title, remark.category.translation.uppercaseFirstLetter(), remark.author.name))
         negativeVotesCountLabel.text = remark.negativeVotesCount().toString()
 
         remark.tags.forEach {

@@ -3,6 +3,7 @@ package com.noordwind.apps.collectively.data.repository
 import com.noordwind.apps.collectively.Constants
 import com.noordwind.apps.collectively.data.cache.RemarkCategoriesCache
 import com.noordwind.apps.collectively.data.datasource.FileDataSource
+import com.noordwind.apps.collectively.data.datasource.FiltersTranslationsDataSource
 import com.noordwind.apps.collectively.data.datasource.MapFiltersRepository
 import com.noordwind.apps.collectively.data.datasource.RemarksDataSource
 import com.noordwind.apps.collectively.data.model.*
@@ -17,6 +18,7 @@ class RemarkRepositoryImpl(val remarkCategoriesCache: RemarkCategoriesCache,
                            val fileDataSource: FileDataSource,
                            val profileRepository: ProfileRepository,
                            val mapFiltersRepository: MapFiltersRepository,
+                           val translationsDataSource: FiltersTranslationsDataSource,
                            val userGroupsRepository: UserGroupsRepository,
                            val operationRepository: OperationRepository) : RemarksRepository, Constants {
 
@@ -103,7 +105,12 @@ class RemarkRepositoryImpl(val remarkCategoriesCache: RemarkCategoriesCache,
         return if (userGroup != null) userGroup.id else ""
     }
 
-    override fun loadRemark(id: String): Observable<RemarkPreview> = remarksDataSource.loadRemarkPreview(id)
+    override fun loadRemark(id: String): Observable<RemarkPreview> {
+        return remarksDataSource.loadRemarkPreview(id).flatMap {
+            it.category.translation = translationsDataSource.translateFromType(it.category.name)
+            Observable.just(it)
+        }
+    }
 
     override fun saveRemark(remark: NewRemark): Observable<RemarkNotFromList> {
         if (remark.imageUri != null) {
