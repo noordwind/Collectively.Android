@@ -171,10 +171,10 @@ class AppModule(private val application: Application) : Constants {
     @Singleton
     fun provideRemarkCategoriesRepository(remarkCategoriesCache: RemarkCategoriesCache, remarksDataSource: RemarksDataSource,
                                           fileDataSource: FileDataSource, profileRepository: ProfileRepository,
-                                          mapFiltersRepository: MapFiltersRepository, userGroupsRepository: UserGroupsRepository, operationRepository: OperationRepository): RemarksRepository
+                                          mapFiltersRepository: MapFiltersRepository, translationsDataSource: FiltersTranslationsDataSource, userGroupsRepository: UserGroupsRepository, operationRepository: OperationRepository): RemarksRepository
             = RemarkRepositoryImpl(remarkCategoriesCache = remarkCategoriesCache, remarksDataSource = remarksDataSource,
             fileDataSource = fileDataSource, profileRepository = profileRepository, mapFiltersRepository = mapFiltersRepository,
-            userGroupsRepository = userGroupsRepository, operationRepository = operationRepository)
+            userGroupsRepository = userGroupsRepository, operationRepository = operationRepository, translationsDataSource = translationsDataSource)
 
     @Provides
     @Singleton

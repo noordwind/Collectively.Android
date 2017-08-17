@@ -28,8 +28,8 @@ class MainScreenRemarkBottomSheet(context: Context, remark: Remark, lastLocation
         statusLabel.text = remark.state.state.getLongRemarkStateTranslation(context).uppercaseFirstLetter()
 
         setOnClickListener { RemarkActivity.start(context, remark.id) }
-        lastLocation.let {
-            val distanceInMeters = lastLocation!!.distanceTo(remarkLocation)
+        lastLocation?.let {
+            val distanceInMeters = lastLocation.distanceTo(remarkLocation)
             distanceToRemarkLabel.text = distanceInMeters.toInt().toString() + "m"
         }
     }
