@@ -141,6 +141,9 @@
             </intent-filter>
         </receiver>
 
+
+        <service android:name=".data.datasource.UploadRemarkPhotoService"></service>
+
     </application>
 
 </manifest>
