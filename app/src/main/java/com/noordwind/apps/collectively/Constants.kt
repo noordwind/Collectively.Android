@@ -122,6 +122,7 @@ interface Constants {
             const val USER = "user"
             const val LOCATION = "location"
             const val ADDRESS = "address"
+            const val REMARK_PHOTO_URI = "remark_photo_uri"
         }
     }
 

@@ -1,11 +1,10 @@
 package com.noordwind.apps.collectively.data.repository
 
+import android.content.Context
+import android.content.Intent
 import com.noordwind.apps.collectively.Constants
 import com.noordwind.apps.collectively.data.cache.RemarkCategoriesCache
-import com.noordwind.apps.collectively.data.datasource.FileDataSource
-import com.noordwind.apps.collectively.data.datasource.FiltersTranslationsDataSource
-import com.noordwind.apps.collectively.data.datasource.MapFiltersRepository
-import com.noordwind.apps.collectively.data.datasource.RemarksDataSource
+import com.noordwind.apps.collectively.data.datasource.*
 import com.noordwind.apps.collectively.data.model.*
 import com.noordwind.apps.collectively.data.repository.util.OperationRepository
 import io.reactivex.Observable
@@ -13,14 +12,16 @@ import io.reactivex.functions.BiFunction
 import io.reactivex.functions.Function4
 import java.util.concurrent.TimeUnit
 
-class RemarkRepositoryImpl(val remarkCategoriesCache: RemarkCategoriesCache,
-                           val remarksDataSource: RemarksDataSource,
-                           val fileDataSource: FileDataSource,
-                           val profileRepository: ProfileRepository,
-                           val mapFiltersRepository: MapFiltersRepository,
-                           val translationsDataSource: FiltersTranslationsDataSource,
-                           val userGroupsRepository: UserGroupsRepository,
-                           val operationRepository: OperationRepository) : RemarksRepository, Constants {
+class RemarkRepositoryImpl(
+        val context: Context,
+        val remarkCategoriesCache: RemarkCategoriesCache,
+        val remarksDataSource: RemarksDataSource,
+        val fileDataSource: FileDataSource,
+        val profileRepository: ProfileRepository,
+        val mapFiltersRepository: MapFiltersRepository,
+        val translationsDataSource: FiltersTranslationsDataSource,
+        val userGroupsRepository: UserGroupsRepository,
+        val operationRepository: OperationRepository) : RemarksRepository, Constants {
 
     override fun loadUserRemarks(): Observable<List<Remark>> {
         return profileRepository.loadProfile(false).flatMap { remarksDataSource.loadUserRemarks(it.userId) }
@@ -114,18 +115,17 @@ class RemarkRepositoryImpl(val remarkCategoriesCache: RemarkCategoriesCache,
 
     override fun saveRemark(remark: NewRemark): Observable<RemarkNotFromList> {
         if (remark.imageUri != null) {
-            var remarkId: String? = null
             return operationRepository.pollOperation(remarksDataSource.saveRemark(remark))
                     .flatMap {
-                        remarkId = it.resource
                         remarksDataSource.loadSavedRemark(it.resource)
                     }
-                    .flatMap {
-                        operationRepository.pollOperation(remarksDataSource.uploadRemarkPhoto(it.id, fileDataSource.fileFromUri(remark.imageUri!!))).onErrorReturn {
-                            Operation("", true, remarkId!!, "", "")
-                        }
+                    .doOnNext {
+                        var uploadPhotoService = Intent()
+                        uploadPhotoService.setClass(context, UploadRemarkPhotoService::class.java)
+                        uploadPhotoService.putExtra(Constants.BundleKey.REMARK_ID, it.id)
+                        uploadPhotoService.putExtra(Constants.BundleKey.REMARK_PHOTO_URI, remark.imageUri);
+                        context.startService(uploadPhotoService);
                     }
-                    .flatMap { remarksDataSource.loadSavedRemark(it.resource) }
         } else {
             return operationRepository.pollOperation(remarksDataSource.saveRemark(remark)).flatMap { remarksDataSource.loadSavedRemark(it.resource) }
         }
