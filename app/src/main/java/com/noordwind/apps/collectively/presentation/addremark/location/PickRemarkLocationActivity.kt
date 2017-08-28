@@ -106,8 +106,8 @@ class PickRemarkLocationActivity : com.noordwind.apps.collectively.presentation.
         selectedLocation?.let {
             showMarker(selectedLocation!!)
 
-            map?.moveCamera(CameraUpdateFactory.newLatLng(selectedLocation));
-            map?.animateCamera(CameraUpdateFactory.zoomTo(14.0f));
+            var cameraUpdate = CameraUpdateFactory.newLatLngZoom(selectedLocation, 14.0f);
+            map?.animateCamera(cameraUpdate);
         }
     }
 
@@ -141,8 +141,8 @@ class PickRemarkLocationActivity : com.noordwind.apps.collectively.presentation.
     override fun onLocationChanged(location: Location?) {
         if (selectedLocation == null) {
             var latLng = LatLng(location?.latitude!!, location?.longitude!!);
-            map?.moveCamera(CameraUpdateFactory.newLatLng(latLng));
-            map?.animateCamera(CameraUpdateFactory.zoomTo(14.0f));
+            var cameraUpdate = CameraUpdateFactory.newLatLngZoom(latLng, 14.0f);
+            map?.animateCamera(cameraUpdate);
         }
     }
 
