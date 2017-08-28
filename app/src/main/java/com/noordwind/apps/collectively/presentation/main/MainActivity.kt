@@ -223,8 +223,8 @@ class MainActivity : com.noordwind.apps.collectively.presentation.BaseActivity()
         var latLng = LatLng(location?.latitude!!, location?.longitude!!);
 
         //move map camera
-        map?.moveCamera(CameraUpdateFactory.newLatLng(latLng));
-        map?.animateCamera(CameraUpdateFactory.zoomTo(14.0f));
+        var cameraUpdate = CameraUpdateFactory.newLatLngZoom(latLng, 14.0f);
+        map?.animateCamera(cameraUpdate);
     }
 
     fun checkLocationPermission(): Boolean {
