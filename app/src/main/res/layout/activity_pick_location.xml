@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                                                 xmlns:app="http://schemas.android.com/apk/res-auto"
+                                                 android:layout_width="match_parent"
+                                                 android:layout_height="match_parent"
+                                                 android:background="@color/white">
+
+    <android.support.design.widget.AppBarLayout
+        android:id="@+id/appBar"
+        android:layout_width="match_parent"
+        android:background="@color/white"
+        android:layout_height="wrap_content">
+
+        <include layout="@layout/view_toolbar_with_title"/>
+
+    </android.support.design.widget.AppBarLayout>
+
+
+    <RelativeLayout
+        android:layout_below="@id/appBar"
+        android:padding="4dp"
+        android:id="@+id/locationSection"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <FrameLayout
+            android:layout_alignParentLeft="true"
+            android:id="@+id/loader"
+            android:layout_centerVertical="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <android.support.v7.widget.AppCompatImageView
+                android:background="@drawable/pin_main_color_24dp"
+                android:layout_width="24dp"
+                android:layout_height="24dp"/>
+
+            <ProgressBar
+                android:visibility="gone"
+                android:id="@+id/progressBar"
+                android:layout_width="24dp"
+                android:layout_height="24dp"/>
+
+        </FrameLayout>
+
+        <TextView
+            android:layout_toRightOf="@id/loader"
+            android:id="@+id/locationLabel"
+            android:textSize="@dimen/font_medium"
+            android:fontFamily="@string/font_condensed"
+            android:layout_centerVertical="true"
+            android:background="@color/background_light"
+            android:padding="4dp"
+            android:text="@string/location_hint"
+            android:textColor="@color/font_dark"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+    </RelativeLayout>
+
+    <fragment
+        android:layout_below="@id/locationSection"
+        android:id="@+id/map"
+        android:name="com.google.android.gms.maps.SupportMapFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
+    <RelativeLayout
+        android:layout_below="@id/appBar"
+        android:id="@+id/tooltipBackground"
+        android:layout_width="match_parent"
+        android:visibility="gone"
+        android:layout_height="match_parent"
+        android:background="#CC000000">
+
+
+        <TextView
+            android:id="@+id/tooltip_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:lines="2"
+            android:layout_centerHorizontal="true"
+            android:fontFamily="@string/font_light"
+            android:text="@string/pick_location_hint"
+            android:textColor="@color/background_light"
+            android:textSize="@dimen/font_medium"/>
+
+        <android.support.v7.widget.AppCompatImageView
+            android:id="@+id/tooltip_arrow"
+            app:srcCompat="@drawable/ic_tap_to_zoom_white_24dp"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="10dp"
+            android:layout_toLeftOf="@id/tooltip_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+    </RelativeLayout>
+
+</RelativeLayout>
+
+
+

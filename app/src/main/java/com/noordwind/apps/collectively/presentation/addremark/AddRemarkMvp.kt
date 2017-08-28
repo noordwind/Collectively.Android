@@ -1,6 +1,7 @@
 package com.noordwind.apps.collectively.presentation.addremark
 
 import android.net.Uri
+import com.google.android.gms.maps.model.LatLng
 import com.noordwind.apps.collectively.data.model.RemarkCategory
 import com.noordwind.apps.collectively.data.model.RemarkNotFromList
 import com.noordwind.apps.collectively.data.model.RemarkTag
@@ -29,5 +30,9 @@ interface AddRemarkMvp {
         fun loadLastKnownAddress()
         fun loadUserGroups()
         fun saveRemark(groupName: String?, category: String, description: String, selectedTags: List<String>, capturedImageUri: Uri?)
+        fun hasAddress(): Boolean
+        fun getLocation(): LatLng
+        fun setLastKnownAddress(address: String)
+        fun setLastKnownLocation(latLng: LatLng)
     }
 }

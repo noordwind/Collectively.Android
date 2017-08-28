@@ -199,4 +199,9 @@
     <string name="remark_reopened">Zgłoszenie przywrócone</string>
     <string name="remark_added">Zgłoszenie dodane</string>
     <string name="adding_remark_error">Nie udało się dodać zgłoszenia</string>
+    <string name="picki_location_screen_title">Wybierz lokalizację</string>
+    <string name="location_hint">Lokalizacja</string>
+    <string name="pick_location_hint">Kliknij dłużej na mapie \naby wybrać lokalizację</string>
+    <string name="loading_adress">Pobieranie adresu...</string>
+    <string name="error_loading_adress">Brak adresu (sprawdź gps i połączenie z internetem)</string>
 </resources>

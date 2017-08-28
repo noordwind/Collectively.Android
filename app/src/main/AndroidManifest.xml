@@ -103,12 +103,17 @@
         <activity android:name=".presentation.authentication.setnickname.SetNickNameActivity">
         </activity>
 
+
+        <activity android:name=".presentation.addremark.location.PickRemarkLocationActivity">
+        </activity>
+
         <activity
             android:name="com.facebook.FacebookActivity"
             android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+
 
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"

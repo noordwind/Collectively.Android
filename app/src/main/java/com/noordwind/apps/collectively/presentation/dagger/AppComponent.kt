@@ -3,6 +3,7 @@ package com.noordwind.apps.collectively.presentation.dagger
 import android.app.Application
 import com.noordwind.apps.collectively.presentation.adapter.delegates.MainScreenRemarksAdapterDelegate
 import com.noordwind.apps.collectively.presentation.addremark.AddRemarkActivity
+import com.noordwind.apps.collectively.presentation.addremark.location.PickRemarkLocationActivity
 import com.noordwind.apps.collectively.presentation.authentication.login.LoginActivity
 import com.noordwind.apps.collectively.presentation.authentication.retrievepassword.ResetPasswordActivity
 import com.noordwind.apps.collectively.presentation.authentication.setnickname.SetNickNameActivity
@@ -50,6 +51,7 @@ interface AppComponent {
     fun inject(activity: ChangePasswordActivity)
     fun inject(activity: UsersActivity)
     fun inject(activity: SetNickNameActivity)
+    fun inject(activity: PickRemarkLocationActivity)
 
     //Views
     fun inject(remarkCommentRowHolder: RemarkCommentRowHolder)

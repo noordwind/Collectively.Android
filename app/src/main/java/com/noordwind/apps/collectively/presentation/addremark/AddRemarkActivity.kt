@@ -11,11 +11,15 @@ import android.view.Gravity
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
-import android.widget.*
+import android.widget.ArrayAdapter
+import android.widget.EditText
+import android.widget.TextView
+import android.widget.Toast
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.GlideDrawable
 import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.target.Target
+import com.google.android.gms.maps.model.LatLng
 import com.noordwind.apps.collectively.Constants
 import com.noordwind.apps.collectively.R
 import com.noordwind.apps.collectively.TheApp
@@ -32,6 +36,7 @@ import com.noordwind.apps.collectively.domain.interactor.remark.LoadRemarkTagsUs
 import com.noordwind.apps.collectively.domain.interactor.remark.SaveRemarkUseCase
 import com.noordwind.apps.collectively.domain.thread.PostExecutionThread
 import com.noordwind.apps.collectively.domain.thread.UseCaseThread
+import com.noordwind.apps.collectively.presentation.addremark.location.PickRemarkLocationActivity
 import com.noordwind.apps.collectively.presentation.extension.*
 import com.noordwind.apps.collectively.presentation.rxjava.RxBus
 import com.noordwind.apps.collectively.presentation.statistics.LoadUserGroupsUseCase
@@ -82,7 +87,6 @@ class AddRemarkActivity : com.noordwind.apps.collectively.presentation.BaseActiv
     lateinit var presenter: AddRemarkMvp.Presenter
 
     internal var titleLabel: TextView? = null
-    lateinit var categoriesSpinner: Spinner
     lateinit var descriptionLabel: EditText
     internal var tagsLayout: FlowLayout? = null
     lateinit var addressLabel: TextView
@@ -131,6 +135,16 @@ class AddRemarkActivity : com.noordwind.apps.collectively.presentation.BaseActiv
         presenter.loadUserGroups()
 
         fab.setOnClickListener { AddPhotoDialog.newInstance().show(supportFragmentManager, AddPhotoDialog::class.java.toString()) }
+
+        addressSectionContainer.setOnClickListener {
+            var location: LatLng? = null
+
+            if (presenter.hasAddress()) {
+                location = presenter.getLocation()
+            }
+
+            PickRemarkLocationActivity.start(this, location)
+        }
 
         galleryButtonClickEventDisposable = RxBus.instance
                 .getEvents(String::class.java)
@@ -289,6 +303,10 @@ class AddRemarkActivity : com.noordwind.apps.collectively.presentation.BaseActiv
                 loadPhoto(capturedImageUri)
             } else if (requestCode == Constants.RequestCodes.TAKE_PICTURE) {
                 loadPhoto(capturedImageUri)
+            } else if (requestCode == Constants.RequestCodes.PICK_LOCATION) {
+                presenter.setLastKnownAddress(data!!.getStringExtra(Constants.BundleKey.ADDRESS))
+                presenter.setLastKnownLocation(data!!.getParcelableExtra<LatLng>(Constants.BundleKey.LOCATION))
+                showAddress(data!!.getStringExtra(Constants.BundleKey.ADDRESS))
             }
         }
     }
