@@ -285,7 +285,12 @@ class AddRemarkActivity : com.noordwind.apps.collectively.presentation.BaseActiv
     override fun showSaveRemarkError(message: String?) {
         submitButton.text = getString(R.string.submit)
         submitProgress.visibility = View.GONE
-        showOperationFailedDialog(message!!)
+
+        if (message.isNullOrBlank()) {
+            ToastManager(this, getString(R.string.adding_remark_error), Toast.LENGTH_SHORT).error().show()
+        } else {
+            showOperationFailedDialog(message!!)
+        }
     }
 
     override fun showSaveRemarkSuccess(newRemark: RemarkNotFromList) {
