@@ -202,4 +202,9 @@
     <string name="remark_reopened">Remark reopened</string>
     <string name="resolving_remark">Resolving remark</string>
     <string name="reopening_remark">Reopening remark</string>
+    <string name="picki_location_screen_title">Pick location</string>
+    <string name="location_hint">Lokalizacja</string>
+    <string name="pick_location_hint">Long click on map \nto select your location</string>
+    <string name="loading_adress">Loading address...</string>
+    <string name="error_loading_adress">Could not load address (check your gps and internet connection)</string>
 </resources>

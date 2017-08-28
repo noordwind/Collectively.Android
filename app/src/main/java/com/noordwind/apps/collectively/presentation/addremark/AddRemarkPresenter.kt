@@ -2,6 +2,7 @@ package com.noordwind.apps.collectively.presentation.addremark
 
 import android.location.Address
 import android.net.Uri
+import com.google.android.gms.maps.model.LatLng
 import com.noordwind.apps.collectively.data.model.*
 import com.noordwind.apps.collectively.domain.interactor.remark.LoadRemarkCategoriesUseCase
 import com.noordwind.apps.collectively.domain.interactor.remark.LoadRemarkTagsUseCase
@@ -72,6 +73,10 @@ class AddRemarkPresenter(val view: AddRemarkMvp.View,
 
         loadUserGroupsUseCase.execute(observer, true)
     }
+
+    override fun hasAddress() : Boolean = !lastKnownAddress.isNullOrBlank()
+
+    override fun getLocation() : LatLng = LatLng(lastKnownLatitude!!, lastKnownLongitude!!)
 
     override fun loadRemarkTags() {
         var observer = object : AppDisposableObserver<List<RemarkTag>>() {
@@ -175,6 +180,15 @@ class AddRemarkPresenter(val view: AddRemarkMvp.View,
                 imageUri = capturedImageUri)
 
         saveRemarkUseCase.execute(observer, newRemark)
+    }
+
+    override fun setLastKnownAddress(address: String) {
+        lastKnownAddress = address
+    }
+
+    override fun setLastKnownLocation(latLng: LatLng) {
+        lastKnownLatitude = latLng.latitude
+        lastKnownLongitude = latLng.longitude
     }
 
     override fun destroy() {

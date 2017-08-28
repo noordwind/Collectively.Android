@@ -45,6 +45,7 @@ interface Constants {
         companion object {
             val PICK_PICTURE_FROM_GALLERY = 1236
             val TAKE_PICTURE = 1237
+            val PICK_LOCATION = 1238
         }
     }
 
@@ -52,6 +53,7 @@ interface Constants {
         companion object {
             val WALKTHROUGH = "walkthrough"
             val SHOW_SWIPE_LEFT_TOOLTIP_ON_MAIN_SCREEN = "SHOW_SWIPE_LEFT_TOOLTIP_ON_MAIN_SCREEN"
+            val SHOW_PICK_LOCATION_HINT = "SHOW_PICK_LOCATION_HINT"
             val SHOW_TAP_TO_ZOOM_ICON = "show_tap_to_zoom_icon"
         }
     }
@@ -118,6 +120,8 @@ interface Constants {
             const val COMMENTS = "comments"
             const val REMARK_ID = "remark_id"
             const val USER = "user"
+            const val LOCATION = "location"
+            const val ADDRESS = "address"
         }
     }
 

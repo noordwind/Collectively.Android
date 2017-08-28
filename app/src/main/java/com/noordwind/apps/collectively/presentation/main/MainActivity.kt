@@ -133,7 +133,6 @@ class MainActivity : com.noordwind.apps.collectively.presentation.BaseActivity()
         }
 
         if (!Once.beenDone(Once.THIS_APP_INSTALL, Constants.OnceKey.SHOW_SWIPE_LEFT_TOOLTIP_ON_MAIN_SCREEN)) {
-            Once.markDone(Constants.OnceKey.SHOW_SWIPE_LEFT_TOOLTIP_ON_MAIN_SCREEN)
             tooltipBackground.visibility = View.VISIBLE
             tooltipBackground.setOnClickListener {
                 tooltipBackground.visibility = View.GONE
@@ -226,11 +225,6 @@ class MainActivity : com.noordwind.apps.collectively.presentation.BaseActivity()
         //move map camera
         map?.moveCamera(CameraUpdateFactory.newLatLng(latLng));
         map?.animateCamera(CameraUpdateFactory.zoomTo(14.0f));
-
-        //stop location updates
-        if (googleApiClient != null) {
-            LocationServices.FusedLocationApi.removeLocationUpdates(googleApiClient, this);
-        }
     }
 
     fun checkLocationPermission(): Boolean {
