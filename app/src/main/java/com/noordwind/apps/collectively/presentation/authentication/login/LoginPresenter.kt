@@ -31,7 +31,7 @@ class LoginPresenter(val view: LoginMvp.View,
             view.showWalkthroughScreen()
             view.closeScreen()
         } else if (loginUseCase.isLoggedIn()) {
-            profileRepository.loadProfile(false)
+            profileRepository.loadProfileFromCache()
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe {
