@@ -175,7 +175,6 @@ class AddRemarkPresenter(val view: AddRemarkMvp.View,
                 category = category.toLowerCase(),
                 latitude = lastKnownLatitude!!,
                 longitude = lastKnownLongitude!!,
-                address = lastKnownAddress!!,
                 description = description,
                 imageUri = capturedImageUri)
 

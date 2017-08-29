@@ -1,11 +1,15 @@
 package com.noordwind.apps.collectively.data.repository
 
-import io.reactivex.Observable
 import com.noordwind.apps.collectively.data.cache.Cache
 import com.noordwind.apps.collectively.data.datasource.ProfileDataSource
 import com.noordwind.apps.collectively.data.model.Profile
+import io.reactivex.Observable
 
 class ProfileRepositoryImpl(val profileDataSource: ProfileDataSource, val profileCache: Cache<Profile>) : ProfileRepository {
+
+    override fun loadProfileFromCache(): Observable<Profile> {
+        return profileCache.getData()
+    }
 
     override fun loadProfile(forceRefresh: Boolean): Observable<Profile> {
         if (forceRefresh || profileCache.isExpired()) {

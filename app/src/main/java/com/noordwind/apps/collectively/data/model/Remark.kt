@@ -28,7 +28,6 @@ class NewRemark(
         val category: String,
         val latitude: Double,
         val longitude: Double,
-        val address: String,
         val description: String,
         val imageUri: Uri?
 )
