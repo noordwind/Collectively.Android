@@ -77,6 +77,7 @@ class MainActivity : com.noordwind.apps.collectively.presentation.BaseActivity()
     private val MY_PERMISSIONS_REQUEST_LOCATION = 99
     private val remarksMarkers: LinkedList<Marker> = LinkedList<Marker>()
     private var remarks: List<Remark>? = null
+    private var initialLocationChanged = true
 
     @Inject
     lateinit var remarksRepository: RemarksRepository
@@ -163,7 +164,7 @@ class MainActivity : com.noordwind.apps.collectively.presentation.BaseActivity()
         remarkButton.colorNormal = Color.parseColor(remarkCategory.name.colorOfCategory())
         remarkButton.title = mainPresenter.remarkCategoryTranslation(remarkCategory.name).uppercaseFirstLetter()
         remarkButton.setIcon(remarkCategory.name.iconOfCategory())
-        remarkButton.setOnClickListener { runOnUiThread { AddRemarkActivity.start(baseContext, remarkCategory.name.toLowerCase()) } }
+        remarkButton.setOnClickListener { runOnUiThread { AddRemarkActivity.start(this, remarkCategory.name.toLowerCase()) } }
         floatingActionsMenu.addButton(remarkButton)
     }
 
@@ -219,12 +220,15 @@ class MainActivity : com.noordwind.apps.collectively.presentation.BaseActivity()
     override fun onLocationChanged(location: Location?) {
         lastLocation = location;
 
-        //Place current location marker
-        var latLng = LatLng(location?.latitude!!, location?.longitude!!);
+        if (initialLocationChanged) {
+            //Place current location marker
+            var latLng = LatLng(location?.latitude!!, location?.longitude!!);
 
-        //move map camera
-        var cameraUpdate = CameraUpdateFactory.newLatLngZoom(latLng, 14.0f);
-        map?.animateCamera(cameraUpdate);
+            //move map camera
+            var cameraUpdate = CameraUpdateFactory.newLatLngZoom(latLng, 14.0f);
+            map?.animateCamera(cameraUpdate);
+            initialLocationChanged = false
+        }
     }
 
     fun checkLocationPermission(): Boolean {
@@ -316,7 +320,7 @@ class MainActivity : com.noordwind.apps.collectively.presentation.BaseActivity()
             remarkLocation.longitude = longitude
 
             map?.moveCamera(CameraUpdateFactory.newLatLng(LatLng(latitude, longitude)))
-            map?.animateCamera(CameraUpdateFactory.zoomTo(14.0f))
+            map?.animateCamera(CameraUpdateFactory.zoomTo(20.0f))
             MainScreenRemarkBottomSheetDialog(this, it, lastLocation, remarkLocation).show()
         }
         return true
@@ -347,5 +351,17 @@ class MainActivity : com.noordwind.apps.collectively.presentation.BaseActivity()
     override fun onStop() {
         super.onStop()
         mainPresenter.destroy()
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        if (resultCode == RESULT_OK) {
+            if (requestCode == Constants.RequestCodes.ADD_REMARK) {
+                var remarkLocation = data!!.extras[Constants.BundleKey.LOCATION] as LatLng
+                map?.moveCamera(CameraUpdateFactory.newLatLng(LatLng(remarkLocation.latitude, remarkLocation.longitude)));
+                map?.animateCamera(CameraUpdateFactory.zoomTo(20.0f));
+            }
+        }
     }
 }

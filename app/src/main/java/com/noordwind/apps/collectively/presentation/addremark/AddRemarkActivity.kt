@@ -2,7 +2,7 @@ package com.noordwind.apps.collectively.presentation.addremark
 
 import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
-import android.content.Context
+import android.app.Activity
 import android.content.Intent
 import android.content.IntentFilter
 import android.net.ConnectivityManager
@@ -60,11 +60,10 @@ import javax.inject.Inject
 
 class AddRemarkActivity : com.noordwind.apps.collectively.presentation.BaseActivity(), AddRemarkMvp.View {
     companion object {
-        fun start(context: Context, category: String) {
-            val intent = Intent(context, AddRemarkActivity::class.java)
+        fun start(activity: Activity, category: String) {
+            val intent = Intent(activity, AddRemarkActivity::class.java)
             intent.putExtra(Constants.BundleKey.CATEGORY, category)
-            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
-            context.startActivity(intent)
+            activity.startActivityForResult(intent, Constants.RequestCodes.ADD_REMARK)
         }
     }
 
@@ -304,6 +303,15 @@ class AddRemarkActivity : com.noordwind.apps.collectively.presentation.BaseActiv
         submitButton.text = getString(R.string.submit)
         submitProgress.visibility = View.GONE
         ToastManager(this, getString(R.string.remark_added), Toast.LENGTH_SHORT).success().show()
+
+        var resultIntent = Intent()
+        var latitude = newRemark.location!!.coordinates[1]
+        var longitude = newRemark.location!!.coordinates[0]
+        resultIntent.putExtra(Constants.BundleKey.LOCATION, LatLng(latitude, longitude))
+
+        setResult(Activity.RESULT_OK, resultIntent)
+
+        finish()
     }
 
     override fun showNetworkError() {
