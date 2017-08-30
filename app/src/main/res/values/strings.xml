@@ -207,4 +207,7 @@
     <string name="pick_location_hint">Long click on map \nto select your location</string>
     <string name="loading_adress">Loading address...</string>
     <string name="error_loading_adress">Could not load address (check your gps and internet connection)</string>
+    <string name="uploading_remark_photo">Uploading remark photo</string>
+    <string name="remark_photo_uploaded">Remark photo uploaded</string>
+    <string name="error_uploading_remark_photo">Uploading remark photo has failed</string>
 </resources>

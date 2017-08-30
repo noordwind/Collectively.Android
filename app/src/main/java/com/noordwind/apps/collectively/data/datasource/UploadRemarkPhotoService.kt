@@ -4,10 +4,11 @@ import android.app.Service
 import android.content.Intent
 import android.net.Uri
 import android.os.IBinder
-import android.widget.Toast
 import com.noordwind.apps.collectively.Constants
+import com.noordwind.apps.collectively.R
 import com.noordwind.apps.collectively.TheApp
 import com.noordwind.apps.collectively.data.model.Operation
+import com.noordwind.apps.collectively.data.repository.util.BarNotificationRepository
 import com.noordwind.apps.collectively.data.repository.util.OperationRepository
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
@@ -25,6 +26,9 @@ class UploadRemarkPhotoService : Service() {
     @Inject
     lateinit var operationRepository: OperationRepository
 
+    @Inject
+    lateinit var barNotificationRepository: BarNotificationRepository
+
     var disposables: CompositeDisposable? = null
 
     override fun onBind(p0: Intent?): IBinder? {
@@ -41,12 +45,16 @@ class UploadRemarkPhotoService : Service() {
             var id = intent.getStringExtra(Constants.BundleKey.REMARK_ID)
             var imageUri = intent.getParcelableExtra<Uri>(Constants.BundleKey.REMARK_PHOTO_URI)
 
-            Toast.makeText(baseContext, "Uploading photo " + id, Toast.LENGTH_LONG).show()
-
             var scaleImageObservable = fileDataSource.scaledImageFile(imageUri)
             var uploadImageObservable = scaleImageObservable.flatMap {
                 remarksDataSource.uploadRemarkPhoto(id, it)
             }
+
+            barNotificationRepository.showProgressNotification(
+                    tag = id,
+                    smallIconResourceId = R.drawable.ic_place_white_24dp,
+                    title = baseContext.getString(R.string.uploading_remark_photo),
+                    message = null)
 
             operationRepository.pollOperation(uploadImageObservable).onErrorReturn {
                 Operation("", true, id, "", "")
@@ -56,10 +64,20 @@ class UploadRemarkPhotoService : Service() {
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(
                             {
-                                Toast.makeText(baseContext, "Photo uploaded" + id, Toast.LENGTH_LONG).show()
+                                barNotificationRepository.removeNotification(id)
+                                barNotificationRepository.showNotification(
+                                        tag = id,
+                                        smallIconResourceId = R.drawable.ic_place_white_24dp,
+                                        title = baseContext.getString(R.string.remark_photo_uploaded),
+                                        message = null)
                             },
                             {
-                                Toast.makeText(baseContext, "Photo uploading error" + id, Toast.LENGTH_LONG).show()
+                                barNotificationRepository.showNotification(
+                                        tag = id,
+                                        smallIconResourceId = R.drawable.ic_place_white_24dp,
+                                        title = baseContext.getString(R.string.error_uploading_remark_photo),
+                                        message = "",
+                                        isHeadsUp = true)
                             })
 
         }

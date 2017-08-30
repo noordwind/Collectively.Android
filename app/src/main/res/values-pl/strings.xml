@@ -204,4 +204,8 @@
     <string name="pick_location_hint">Kliknij dłużej na mapie \naby wybrać lokalizację</string>
     <string name="loading_adress">Pobieranie adresu...</string>
     <string name="error_loading_adress">Brak adresu (sprawdź gps i połączenie z internetem)</string>
+
+    <string name="uploading_remark_photo">Przesyłanie zdjęcia</string>
+    <string name="remark_photo_uploaded">Zdjęcie zostało dodane do zgłoszenia</string>
+    <string name="error_uploading_remark_photo">Przesyłanie zdjęcia nie powiodło się</string>
 </resources>
