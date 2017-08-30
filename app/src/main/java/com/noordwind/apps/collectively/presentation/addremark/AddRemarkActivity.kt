@@ -4,6 +4,8 @@ import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
 import android.content.Context
 import android.content.Intent
+import android.content.IntentFilter
+import android.net.ConnectivityManager
 import android.net.Uri
 import android.os.Bundle
 import android.support.v4.content.ContextCompat
@@ -29,6 +31,7 @@ import com.noordwind.apps.collectively.data.model.RemarkNotFromList
 import com.noordwind.apps.collectively.data.model.UserGroup
 import com.noordwind.apps.collectively.data.repository.RemarksRepository
 import com.noordwind.apps.collectively.data.repository.UserGroupsRepository
+import com.noordwind.apps.collectively.data.repository.util.ConnectivityRepository
 import com.noordwind.apps.collectively.data.repository.util.LocationRepository
 import com.noordwind.apps.collectively.domain.interactor.remark.LoadRemarkCategoriesUseCase
 import com.noordwind.apps.collectively.domain.interactor.remark.SaveRemarkUseCase
@@ -36,6 +39,7 @@ import com.noordwind.apps.collectively.domain.thread.PostExecutionThread
 import com.noordwind.apps.collectively.domain.thread.UseCaseThread
 import com.noordwind.apps.collectively.presentation.addremark.location.PickRemarkLocationActivity
 import com.noordwind.apps.collectively.presentation.extension.*
+import com.noordwind.apps.collectively.presentation.receiver.NetworkChangeReceiver
 import com.noordwind.apps.collectively.presentation.rxjava.RxBus
 import com.noordwind.apps.collectively.presentation.statistics.LoadUserGroupsUseCase
 import com.noordwind.apps.collectively.presentation.util.ZoomUtil
@@ -74,6 +78,9 @@ class AddRemarkActivity : com.noordwind.apps.collectively.presentation.BaseActiv
     lateinit var userGroupsRepository: UserGroupsRepository
 
     @Inject
+    lateinit var connectivityRepository: ConnectivityRepository
+
+    @Inject
     lateinit var translationDataSource: FiltersTranslationsDataSource
 
     @Inject
@@ -94,10 +101,13 @@ class AddRemarkActivity : com.noordwind.apps.collectively.presentation.BaseActiv
     private lateinit var cameraButtonClickEventDisposable: Disposable
     private lateinit var categorySelectedEventDisposable: Disposable
     private lateinit var locationServiceEnabledEventDisposable: Disposable
+    private lateinit var internetEnabledDiposable: Disposable
+
     private var capturedImageUri: Uri? = null
 
     private val mCurrentAnimator: Animator? = null
     private var mShortAnimationDuration: Int = 0
+    private var networkChangeReceiver: NetworkChangeReceiver = NetworkChangeReceiver()
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -114,7 +124,9 @@ class AddRemarkActivity : com.noordwind.apps.collectively.presentation.BaseActiv
         descriptionLabel = findViewById(R.id.description) as EditText
 
         submitButton.setOnClickListener {
-            if (getCategory().equals("")) {
+            if (!presenter.checkInternetConnection()) {
+               // skip, and the error will be shown
+            } else if (getCategory().equals("")) {
                 ToastManager(this, getString(R.string.add_remark_category_not_selected), Toast.LENGTH_SHORT).error().show()
             } else {
                 presenter.saveRemark(getGroupName(), getCategory(), getDescription(), getSelectedTags(), capturedImageUri)
@@ -124,8 +136,10 @@ class AddRemarkActivity : com.noordwind.apps.collectively.presentation.BaseActiv
         presenter = AddRemarkPresenter(this, SaveRemarkUseCase(remarksRepository, ioThread, uiThread),
                 LoadRemarkCategoriesUseCase(remarksRepository, translationDataSource, ioThread, uiThread),
                 LoadLastKnownLocationUseCase(locationRepository, ioThread, uiThread),
-                LoadUserGroupsUseCase(userGroupsRepository, ioThread, uiThread))
+                LoadUserGroupsUseCase(userGroupsRepository, ioThread, uiThread),
+                connectivityRepository)
 
+        presenter.checkInternetConnection()
         presenter.loadRemarkCategories()
         presenter.loadLastKnownAddress()
         presenter.loadUserGroups()
@@ -166,7 +180,18 @@ class AddRemarkActivity : com.noordwind.apps.collectively.presentation.BaseActiv
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({ presenter.loadLastKnownAddress() })
 
+        internetEnabledDiposable = RxBus.instance
+                .getEvents(String::class.java)
+                .filter { it.equals(Constants.RxBusEvent.INTERNET_CONNECTION_ENABLED) }
+                .delay(2, TimeUnit.SECONDS)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({ presenter.onInternetEnabled() })
+
         mShortAnimationDuration = resources.getInteger(android.R.integer.config_shortAnimTime);
+
+        var intentFilter = IntentFilter();
+        intentFilter.addAction(ConnectivityManager.CONNECTIVITY_ACTION);
+        registerReceiver(networkChangeReceiver, intentFilter);
     }
 
     override fun showAddressNotSpecifiedDialog() {
@@ -193,7 +218,7 @@ class AddRemarkActivity : com.noordwind.apps.collectively.presentation.BaseActiv
         if (groupsSpinner.adapter.isEmpty) {
             return null
         }
-        
+
         var groupName = groupsSpinner.selectedItem.toString()
         if (groupName.equals(getString(R.string.add_remark_all_groups_target))) {
             return null
@@ -281,6 +306,10 @@ class AddRemarkActivity : com.noordwind.apps.collectively.presentation.BaseActiv
         ToastManager(this, getString(R.string.remark_added), Toast.LENGTH_SHORT).success().show()
     }
 
+    override fun showNetworkError() {
+        ToastManager(this, getString(R.string.no_internet_connection), Toast.LENGTH_SHORT).networkError().show()
+    }
+
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
@@ -360,5 +389,7 @@ class AddRemarkActivity : com.noordwind.apps.collectively.presentation.BaseActiv
         cameraButtonClickEventDisposable.dispose()
         categorySelectedEventDisposable.dispose()
         locationServiceEnabledEventDisposable.dispose()
+        internetEnabledDiposable.dispose()
+        unregisterReceiver(networkChangeReceiver)
     }
 }
