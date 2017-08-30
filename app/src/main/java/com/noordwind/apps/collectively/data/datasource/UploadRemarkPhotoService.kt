@@ -68,15 +68,15 @@ class UploadRemarkPhotoService : Service() {
                                 barNotificationRepository.showNotification(
                                         tag = id,
                                         smallIconResourceId = R.drawable.ic_place_white_24dp,
-                                        title = baseContext.getString(R.string.remark_photo_uploaded),
-                                        message = null)
+                                        title = baseContext.getString(R.string.remark_photo_uploaded_title),
+                                        message = baseContext.getString(R.string.remark_photo_uploaded_message))
                             },
                             {
                                 barNotificationRepository.showNotification(
                                         tag = id,
                                         smallIconResourceId = R.drawable.ic_place_white_24dp,
-                                        title = baseContext.getString(R.string.error_uploading_remark_photo),
-                                        message = "",
+                                        title = baseContext.getString(R.string.error_uploading_remark_photo_title),
+                                        message = baseContext.getString(R.string.error_uploading_remark_photo_message),
                                         isHeadsUp = true)
                             })
 
