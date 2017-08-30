@@ -7,6 +7,7 @@ import com.noordwind.apps.collectively.data.model.NewRemark
 import com.noordwind.apps.collectively.data.model.RemarkCategory
 import com.noordwind.apps.collectively.data.model.RemarkNotFromList
 import com.noordwind.apps.collectively.data.model.UserGroup
+import com.noordwind.apps.collectively.data.repository.util.ConnectivityRepository
 import com.noordwind.apps.collectively.domain.interactor.remark.LoadRemarkCategoriesUseCase
 import com.noordwind.apps.collectively.domain.interactor.remark.SaveRemarkUseCase
 import com.noordwind.apps.collectively.presentation.mvp.BasePresenter
@@ -19,12 +20,36 @@ class AddRemarkPresenter(val view: AddRemarkMvp.View,
                          val saveRemarkUseCase: SaveRemarkUseCase,
                          val loadRemarkCategoriesUseCase: LoadRemarkCategoriesUseCase,
                          val loadLastKnownLocationUseCase: LoadLastKnownLocationUseCase,
-                         val loadUserGroupsUseCase: LoadUserGroupsUseCase) : BasePresenter, AddRemarkMvp.Presenter {
+                         val loadUserGroupsUseCase: LoadUserGroupsUseCase,
+                         val connectivityRepository: ConnectivityRepository) : BasePresenter, AddRemarkMvp.Presenter {
 
     private var lastKnownLatitude: Double? = null
     private var lastKnownLongitude: Double? = null
     private var lastKnownAddress: String? = null
     private var groups: List<UserGroup>? = null
+    private var categories: List<RemarkCategory>? = null
+
+    override fun checkInternetConnection() : Boolean {
+        if (!connectivityRepository.isOnline()) {
+            view.showNetworkError()
+            return false
+        }
+        return true
+    }
+
+    override fun onInternetEnabled() {
+        if (groups == null) {
+            loadUserGroups()
+        }
+
+        if (categories == null) {
+            loadRemarkCategories()
+        }
+
+        if (lastKnownAddress.isNullOrBlank()) {
+            loadLastKnownAddress()
+        }
+    }
 
     override fun loadRemarkCategories() {
         var observer = object : AppDisposableObserver<List<RemarkCategory>>() {
@@ -33,9 +58,10 @@ class AddRemarkPresenter(val view: AddRemarkMvp.View,
                 super.onStart()
             }
 
-            override fun onNext(categories: List<RemarkCategory>) {
-                super.onNext(categories)
-                view.showAvailableRemarkCategories(categories)
+            override fun onNext(remarkCategories: List<RemarkCategory>) {
+                super.onNext(remarkCategories)
+                categories = remarkCategories
+                view.showAvailableRemarkCategories(remarkCategories)
             }
 
             override fun onError(e: Throwable) {
@@ -57,10 +83,10 @@ class AddRemarkPresenter(val view: AddRemarkMvp.View,
                 super.onStart()
             }
 
-            override fun onNext(userGroup: List<UserGroup>) {
-                super.onNext(userGroup)
-                groups = userGroup
-                view.showAvailableUserGroups(userGroup)
+            override fun onNext(userGroups: List<UserGroup>) {
+                super.onNext(userGroups)
+                groups = userGroups
+                view.showAvailableUserGroups(userGroups)
             }
 
             override fun onError(e: Throwable) {

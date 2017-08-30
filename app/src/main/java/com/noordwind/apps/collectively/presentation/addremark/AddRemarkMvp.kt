@@ -20,9 +20,11 @@ interface AddRemarkMvp {
         fun showAvailableUserGroups(userGroup: List<UserGroup>)
         fun showSaveRemarkError(message: String?)
         fun showAddressNotSpecifiedDialog()
+        fun showNetworkError()
     }
 
     interface Presenter : BasePresenter{
+        fun checkInternetConnection(): Boolean
         fun loadRemarkCategories()
         fun loadLastKnownAddress()
         fun loadUserGroups()
@@ -31,5 +33,6 @@ interface AddRemarkMvp {
         fun getLocation(): LatLng
         fun setLastKnownAddress(address: String)
         fun setLastKnownLocation(latLng: LatLng)
+        fun onInternetEnabled()
     }
 }
