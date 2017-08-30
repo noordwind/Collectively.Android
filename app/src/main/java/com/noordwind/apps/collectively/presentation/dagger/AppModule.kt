@@ -267,6 +267,12 @@ class AppModule(private val application: Application) : Constants {
 
     @Provides
     @Singleton
+    fun providerBarNotificationRepository(): BarNotificationRepository {
+        return BarNotificationRepositoryImpl(application.applicationContext)
+    }
+
+    @Provides
+    @Singleton
     fun useCaseThread(): UseCaseThread = IOThread()
 
     @Provides
