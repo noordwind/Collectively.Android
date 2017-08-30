@@ -6,19 +6,34 @@ import android.net.Uri
 import android.os.IBinder
 import android.widget.Toast
 import com.noordwind.apps.collectively.Constants
+import com.noordwind.apps.collectively.TheApp
+import com.noordwind.apps.collectively.data.model.Operation
 import com.noordwind.apps.collectively.data.repository.util.OperationRepository
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
 
 class UploadRemarkPhotoService : Service() {
 
     @Inject
-    lateinit var remarkDataSource: RemarksDataSource
+    lateinit var remarksDataSource: RemarksDataSource
+
+    @Inject
+    lateinit var fileDataSource: FileDataSource
 
     @Inject
     lateinit var operationRepository: OperationRepository
 
+    var disposables: CompositeDisposable? = null
+
     override fun onBind(p0: Intent?): IBinder? {
         return null
+    }
+
+    override fun onCreate() {
+        TheApp[baseContext]!!.appComponent!!.inject(this)
+        disposables = CompositeDisposable()
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
@@ -27,11 +42,34 @@ class UploadRemarkPhotoService : Service() {
             var imageUri = intent.getParcelableExtra<Uri>(Constants.BundleKey.REMARK_PHOTO_URI)
 
             Toast.makeText(baseContext, "Uploading photo " + id, Toast.LENGTH_LONG).show()
-//        operationRepository.pollOperation(remarksDataSource.uploadRemarkPhoto(it.id, fileDataSource.fileFromUri(remark.imageUri!!))).onErrorReturn {
-//            Operation("", true, remarkId!!, "", "")
-//        }
+
+            var scaleImageObservable = fileDataSource.scaledImageFile(imageUri)
+            var uploadImageObservable = scaleImageObservable.flatMap {
+                remarksDataSource.uploadRemarkPhoto(id, it)
+            }
+
+            operationRepository.pollOperation(uploadImageObservable).onErrorReturn {
+                Operation("", true, id, "", "")
+            }.flatMap {
+                remarksDataSource.loadRemarkPreview(id)
+            }.subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(
+                            {
+                                Toast.makeText(baseContext, "Photo uploaded" + id, Toast.LENGTH_LONG).show()
+                            },
+                            {
+                                Toast.makeText(baseContext, "Photo uploading error" + id, Toast.LENGTH_LONG).show()
+                            })
+
         }
         return START_NOT_STICKY
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        disposables?.let(CompositeDisposable::dispose)
+        disposables = null
     }
 
 }
