@@ -4,7 +4,6 @@ import android.net.Uri
 import com.google.android.gms.maps.model.LatLng
 import com.noordwind.apps.collectively.data.model.RemarkCategory
 import com.noordwind.apps.collectively.data.model.RemarkNotFromList
-import com.noordwind.apps.collectively.data.model.RemarkTag
 import com.noordwind.apps.collectively.data.model.UserGroup
 import com.noordwind.apps.collectively.presentation.mvp.BasePresenter
 import io.reactivex.disposables.Disposable
@@ -14,7 +13,6 @@ interface AddRemarkMvp {
     interface View {
         fun addDisposable(disposable: Disposable)
         fun showAvailableRemarkCategories(category: List<RemarkCategory>)
-        fun showAvailableRemarkTags(categories: List<RemarkTag>)
         fun showAddress(addressPretty: String)
         fun showSaveRemarkLoading()
         fun showSaveRemarkError()
@@ -26,7 +24,6 @@ interface AddRemarkMvp {
 
     interface Presenter : BasePresenter{
         fun loadRemarkCategories()
-        fun loadRemarkTags()
         fun loadLastKnownAddress()
         fun loadUserGroups()
         fun saveRemark(groupName: String?, category: String, description: String, selectedTags: List<String>, capturedImageUri: Uri?)

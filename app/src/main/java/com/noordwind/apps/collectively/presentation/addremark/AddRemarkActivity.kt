@@ -26,13 +26,11 @@ import com.noordwind.apps.collectively.TheApp
 import com.noordwind.apps.collectively.data.datasource.FiltersTranslationsDataSource
 import com.noordwind.apps.collectively.data.model.RemarkCategory
 import com.noordwind.apps.collectively.data.model.RemarkNotFromList
-import com.noordwind.apps.collectively.data.model.RemarkTag
 import com.noordwind.apps.collectively.data.model.UserGroup
 import com.noordwind.apps.collectively.data.repository.RemarksRepository
 import com.noordwind.apps.collectively.data.repository.UserGroupsRepository
 import com.noordwind.apps.collectively.data.repository.util.LocationRepository
 import com.noordwind.apps.collectively.domain.interactor.remark.LoadRemarkCategoriesUseCase
-import com.noordwind.apps.collectively.domain.interactor.remark.LoadRemarkTagsUseCase
 import com.noordwind.apps.collectively.domain.interactor.remark.SaveRemarkUseCase
 import com.noordwind.apps.collectively.domain.thread.PostExecutionThread
 import com.noordwind.apps.collectively.domain.thread.UseCaseThread
@@ -124,13 +122,11 @@ class AddRemarkActivity : com.noordwind.apps.collectively.presentation.BaseActiv
         }
 
         presenter = AddRemarkPresenter(this, SaveRemarkUseCase(remarksRepository, ioThread, uiThread),
-                LoadRemarkTagsUseCase(remarksRepository, ioThread, uiThread),
                 LoadRemarkCategoriesUseCase(remarksRepository, translationDataSource, ioThread, uiThread),
                 LoadLastKnownLocationUseCase(locationRepository, ioThread, uiThread),
                 LoadUserGroupsUseCase(userGroupsRepository, ioThread, uiThread))
 
         presenter.loadRemarkCategories()
-        presenter.loadRemarkTags()
         presenter.loadLastKnownAddress()
         presenter.loadUserGroups()
 
@@ -194,6 +190,10 @@ class AddRemarkActivity : com.noordwind.apps.collectively.presentation.BaseActiv
     fun getCategory() = translationDataSource.translateToType(selectedCategory)
 
     fun getGroupName() : String? {
+        if (groupsSpinner.adapter.isEmpty) {
+            return null
+        }
+        
         var groupName = groupsSpinner.selectedItem.toString()
         if (groupName.equals(getString(R.string.add_remark_all_groups_target))) {
             return null
@@ -247,24 +247,6 @@ class AddRemarkActivity : com.noordwind.apps.collectively.presentation.BaseActiv
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         groupsSpinner.adapter = adapter
         groupsSpinner.setSelection(initialSelection)
-    }
-
-    override fun showAvailableRemarkTags(categories: List<RemarkTag>) {
-//        categories.forEach {
-//
-//            val newView = RemarkTagView(this, it, true)
-//            newView.setBackgroundCompat(R.drawable.remark_tag_unselected_background)
-//            newView.text = it.name
-//            newView.gravity = Gravity.CENTER
-//            newView.setTextColor(ContextCompat.getColor(baseContext, R.color.white))
-//            newView.setPadding(30, 5, 30, 5)
-//            val params = FlowLayout.LayoutParams(ViewGroup.MarginLayoutParams.WRAP_CONTENT, 150)
-//            params.rightMargin = 10
-//            params.bottomMargin = 10
-//            newView.layoutParams = params
-//
-//            tagsLayout?.addView(newView)
-//        }
     }
 
     override fun showAddress(addressPretty: String) {
