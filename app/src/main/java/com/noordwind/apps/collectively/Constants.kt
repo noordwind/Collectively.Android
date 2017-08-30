@@ -46,6 +46,7 @@ interface Constants {
             val PICK_PICTURE_FROM_GALLERY = 1236
             val TAKE_PICTURE = 1237
             val PICK_LOCATION = 1238
+            val ADD_REMARK = 1239
         }
     }
 

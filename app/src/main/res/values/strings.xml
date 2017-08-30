@@ -211,5 +211,5 @@
     <string name="remark_photo_uploaded_title">Upload finished</string>
     <string name="remark_photo_uploaded_message">Photo has been added to the remark</string>
     <string name="error_uploading_remark_photo_title">Upload failed</string>
-    <string name="error_uploading_remark_photo_message">Photo hasn\'t been added to the remark<</string>
+    <string name="error_uploading_remark_photo_message">Photo hasn\'t been added to the remark</string>
 </resources>
