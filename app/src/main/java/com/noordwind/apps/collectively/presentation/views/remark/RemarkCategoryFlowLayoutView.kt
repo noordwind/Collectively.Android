@@ -32,23 +32,7 @@ class RemarkCategoryFlowLayoutView(context: Context, val category: RemarkCategor
     }
 
     fun getCategoryFlowLayoutBackgroundResourceId(category: RemarkCategory): Int {
-        when (category.name.toLowerCase()) {
-            "defect" -> {
-                return R.drawable.remark_defect_category_selected_flow_layout_background
-            }
-            "issue" -> {
-                return R.drawable.remark_issue_category_selected_flow_layout_background
-            }
-            "suggestion" -> {
-                return R.drawable.remark_suggestion_category_selected_flow_layout_background
-            }
-            "praise" -> {
-                return R.drawable.remark_praise_category_selected_flow_layout_background
-            }
-            else -> {
-                return R.drawable.remark_tag_selected_background
-            }
-        }
+        return R.drawable.remark_tag_selected_background
     }
 
     class CategorySelectedEvent(val category: RemarkCategory, val isSelected: Boolean)

@@ -187,9 +187,9 @@ class MainActivity : com.noordwind.apps.collectively.presentation.BaseActivity()
 
     override fun onStart() {
         super.onStart()
-        if (map != null) {
+//        if (map != null) {
             mainPresenter.loadRemarks()
-        }
+//        }
 
 
         if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
