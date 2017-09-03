@@ -6,17 +6,17 @@ import com.noordwind.apps.collectively.presentation.mvp.BasePresenter
 
 interface MapFiltersMvp {
     interface View {
-        fun showFilters(selectedFilters: List<String>, allFilters: List<String>)
-        fun selectRemarkStatusFilter(status: String)
         fun selectShowOnlyMineRemarksFilter(showOnlyMine: Boolean)
         fun showUserGroups(allGroups: List<UserGroup>, selectedGroup: String)
+        fun showCategoryFilters(selectedCategoryFilters: List<String>, allCategoryFilters: List<String>)
+        fun showStatusFilters(selectedStatusFilters: List<String>, allStatusFilters: List<String>)
     }
 
     interface Presenter : BasePresenter {
         fun loadFilters()
-        fun toggleFilter(filter: String, selected: Boolean)
-        fun selectRemarkStatus(status: String)
         fun toggleShouldShowOnlyMyRemarksFilter(shouldShow: Boolean)
         fun selectGroup(group: String)
+        fun toggleStatusFilter(filter: String, selected: Boolean)
+        fun toggleCategoryFilter(filter: String, selected: Boolean)
     }
 }

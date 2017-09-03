@@ -5,8 +5,8 @@
                 xmlns:app="http://schemas.android.com/apk/res-auto"
                 android:layout_marginRight="8dp"
                 android:layout_marginLeft="8dp"
-                android:layout_marginTop="4dp"
-                android:layout_marginBottom="4dp"
+                android:layout_marginTop="2dp"
+                android:layout_marginBottom="2dp"
                 android:orientation="vertical">
 
     <FrameLayout
@@ -17,15 +17,15 @@
         android:layout_marginRight="@dimen/spacing_normal">
 
         <android.support.v7.widget.AppCompatImageView
-            android:layout_width="30dp"
-            android:layout_height="30dp"
+            android:layout_width="26dp"
+            android:layout_height="26dp"
             android:layout_gravity="center"
             android:background="@drawable/circle_shape_dark"/>
 
         <android.support.v7.widget.AppCompatImageView
             android:id="@+id/filterIconLabel"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
+            android:layout_width="16dp"
+            android:layout_height="16dp"
             android:layout_gravity="center"
             app:srcCompat="@drawable/ic_place_dark_24dp"/>
     </FrameLayout>
@@ -37,7 +37,7 @@
         android:textColor="@color/font_dark_hint"
         android:singleLine="true"
         android:maxLines="1"
-        android:textSize="@dimen/font_medium"
+        android:textSize="@dimen/font_normal"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
 

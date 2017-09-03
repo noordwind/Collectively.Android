@@ -49,7 +49,6 @@ import com.noordwind.apps.collectively.presentation.adapter.delegates.MainScreen
 import com.noordwind.apps.collectively.presentation.addremark.AddRemarkActivity
 import com.noordwind.apps.collectively.presentation.extension.colorOfCategory
 import com.noordwind.apps.collectively.presentation.extension.iconOfCategory
-import com.noordwind.apps.collectively.presentation.extension.markerBitmapOfCategory
 import com.noordwind.apps.collectively.presentation.extension.uppercaseFirstLetter
 import com.noordwind.apps.collectively.presentation.views.MainScreenRemarkBottomSheetDialog
 import com.noordwind.apps.collectively.presentation.views.dialogs.mapfilters.MapFiltersDialog
@@ -304,7 +303,7 @@ class MainActivity : com.noordwind.apps.collectively.presentation.BaseActivity()
                 markerOptions.position(latLng);
                 markerOptions.snippet(it.id)
                 markerOptions.title(it.description);
-                markerOptions.icon(it.category?.name?.markerBitmapOfCategory());
+                markerOptions.icon(it.markerBitmapOfCategory());
                 remarksMarkers.add(map!!.addMarker(markerOptions))
             }
         }

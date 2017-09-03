@@ -10,40 +10,67 @@ import net.grandcentrix.tray.TrayPreferences
 import java.util.*
 
 class MapFiltersDataSourceImpl(context: Context) : MapFiltersDataSource, TrayPreferences(context, "MAP_FILTERS", 1), Constants {
+
     private val gson = Gson()
     private val listType = object : TypeToken<LinkedList<String>>() {}.type
-    private val allFilters = listOf("defect", "issue", "suggestion", "praise").sortedBy { it }
+    private val allCategoryFilters = listOf("defect", "issue", "suggestion", "praise").sortedBy { it }
+    private val allStatusFilters = listOf("new", "processing", "resolved", "removed").sortedBy { it }
 
-    override fun addFilter(filter: String) : Observable<Boolean> {
+    override fun addCategoryFilter(filter: String) : Observable<Boolean> {
         return Observable.fromCallable {
-            var filters = LinkedList<String>(selectedFilters())
+            var filters = LinkedList<String>(selectedCategoryFilters())
             if (!filters.contains(filter)) filters.add(filter)
-            saveFilters(filters)
+            saveCategoryFilters(filters)
         }.flatMap { Observable.just(true) }
     }
 
-    override fun removeFilter(filter: String) : Observable<Boolean>  {
+    override fun removeCategoryFilter(filter: String) : Observable<Boolean>  {
         return Observable.fromCallable {
-            saveFilters(selectedFilters().filterNot { it.equals(filter) })
+            saveCategoryFilters(selectedCategoryFilters().filterNot { it.equals(filter) })
         }.flatMap { Observable.just(true) }
     }
 
-    override fun allFilters(): List<String> = allFilters
+    override fun allCategoryFilters(): List<String> = allCategoryFilters
 
-    override fun selectedFilters(): List<String> {
-        var filtersJson = getString(Constants.PreferencesKey.MAP_FILTERS, "")
+    override fun selectedCategoryFilters(): List<String> {
+        var filtersJson = getString(Constants.PreferencesKey.REMARK_CATEGORY_FILTERS, gson.toJson(allCategoryFilters))
         var filters = if(filtersJson.isNullOrBlank()) LinkedList<String>() else gson.fromJson(filtersJson, listType)
         return filters
     }
 
-    private fun saveFilters(filters: List<String>) {
-        put(Constants.PreferencesKey.MAP_FILTERS, gson.toJson(filters))
+    private fun saveCategoryFilters(filters: List<String>) {
+        put(Constants.PreferencesKey.REMARK_CATEGORY_FILTERS, gson.toJson(filters))
     }
 
-    override fun selectRemarkStatus(status: String): Observable<Boolean> {
+    override fun addStatusFilter(filter: String): Observable<Boolean> {
         return Observable.fromCallable {
-            put(Constants.PreferencesKey.REMARK_STATUS, status)
+            var filters = LinkedList<String>(selectedStatusFilters())
+            if (!filters.contains(filter)) filters.add(filter)
+            saveStatusFilters(filters)
         }.flatMap { Observable.just(true) }
+    }
+
+    override fun removeStatusFilter(filter: String): Observable<Boolean> {
+        return Observable.fromCallable {
+            saveStatusFilters(selectedStatusFilters().filterNot { it.equals(filter) })
+        }.flatMap { Observable.just(true) }
+    }
+
+    override fun allStatusFilters(): List<String> = allStatusFilters
+
+    override fun selectedStatusFilters(): List<String>  {
+        var filtersJson = getString(Constants.PreferencesKey.REMARK_STATUS_FILTERS, gson.toJson(allStatusFilters))
+        var filters = if(filtersJson.isNullOrBlank()) LinkedList<String>() else gson.fromJson(filtersJson, listType)
+        return filters
+    }
+
+    private fun saveStatusFilters(filters: List<String>) {
+        put(Constants.PreferencesKey.REMARK_STATUS_FILTERS, gson.toJson(filters))
+    }
+
+    override fun reset() {
+        saveStatusFilters(allStatusFilters)
+        saveCategoryFilters(allCategoryFilters)
     }
 
     override fun selectGroup(group: String): Observable<Boolean> {
@@ -60,12 +87,9 @@ class MapFiltersDataSourceImpl(context: Context) : MapFiltersDataSource, TrayPre
         }.flatMap { Observable.just(true) }
     }
 
-    override fun getSelectRemarkStatus(): Observable<String> = Observable.just(getString(Constants.PreferencesKey.REMARK_STATUS, context.getString(R.string.unresolved_filter_api)))
-
     override fun getShowOnlyMineStatus(): Observable<Boolean> = Observable.just(getBoolean(Constants.PreferencesKey.SHOW_ONLY_MINE, false))
 
     override fun onCreate(i: Int) {
-
     }
 
     override fun onUpgrade(i: Int, i1: Int) {

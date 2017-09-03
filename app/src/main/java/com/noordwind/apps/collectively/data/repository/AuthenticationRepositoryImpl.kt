@@ -2,12 +2,14 @@ package com.noordwind.apps.collectively.data.repository
 
 import com.noordwind.apps.collectively.Constants
 import com.noordwind.apps.collectively.data.datasource.AuthDataSource
+import com.noordwind.apps.collectively.data.datasource.MapFiltersRepository
 import com.noordwind.apps.collectively.data.model.*
 import com.noordwind.apps.collectively.data.repository.util.OperationRepository
 import io.reactivex.Observable
 import io.reactivex.functions.BiFunction
 
 class AuthenticationRepositoryImpl(val authDataSource: AuthDataSource,
+                                   val mapFiltersRepository: MapFiltersRepository,
                                    val profileRepository: ProfileRepository,
                                    val userGroupsRepository: UserGroupsRepository,
                                    val operationRepository: OperationRepository,
@@ -28,6 +30,8 @@ class AuthenticationRepositoryImpl(val authDataSource: AuthDataSource,
                 .flatMap {
                     authResponse ->
 
+                    mapFiltersRepository.reset()
+
                     var profileObs = profileRepository.loadProfile(true)
                     var userGroupsObs = userGroupsRepository.loadGroups(true)
 
@@ -44,11 +48,13 @@ class AuthenticationRepositoryImpl(val authDataSource: AuthDataSource,
                     authResponse ->
                     sessionRepository.sessionToken = authResponse.token
 
+                    mapFiltersRepository.reset()
+
                     var profileObs = profileRepository.loadProfile(true)
                     var userGroupsObs = userGroupsRepository.loadGroups(true)
 
                     Observable.zip(profileObs, userGroupsObs,
-                            BiFunction<Profile, List<UserGroup>, Pair<Profile,String>> { t1, t2 -> Pair(t1, authResponse.token) })
+                            BiFunction<Profile, List<UserGroup>, Pair<Profile, String>> { t1, t2 -> Pair(t1, authResponse.token) })
                 }
     }
 

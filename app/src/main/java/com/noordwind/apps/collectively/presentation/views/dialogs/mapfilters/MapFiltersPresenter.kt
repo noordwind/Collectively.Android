@@ -6,20 +6,29 @@ import io.reactivex.observers.DisposableObserver
 
 class MapFiltersPresenter(val view: MapFiltersMvp.View,
                           val loadMapFiltersUseCase: LoadMapFiltersUseCase,
-                          val addMapFilterUseCase: AddMapFilterUseCase,
-                          val removeMapFilterUseCase: RemoveMapFilterUseCase,
+                          val addMapCategoryFilterUseCase: AddMapCategoryFilterUseCase,
+                          val removeMapCategoryFilterUseCase: RemoveMapCategoryFilterUseCase,
+                          val addMapStatusFilterUseCase: AddMapStatusFilterUseCase,
+                          val removeMapStatusFilterUseCase: RemoveMapStatusFilterUseCase,
                           val selectShowOnlyMyRemarksUseCase: SelectShowOnlyMyRemarksUseCase,
-                          val selectRemarkStatusUseCase: SelectRemarkStatusUseCase,
                           val selectRemarkGroupUseCase: SelectRemarkGroupUseCase) : MapFiltersMvp.Presenter {
     override fun selectGroup(group: String) {
         selectRemarkGroupUseCase.execute(group)
     }
 
-    override fun toggleFilter(filter: String, selected: Boolean) {
+    override fun toggleCategoryFilter(filter: String, selected: Boolean) {
         if (selected) {
-            addMapFilterUseCase.execute(filter)
+            addMapCategoryFilterUseCase.execute(filter)
         } else {
-            removeMapFilterUseCase.execute(filter)
+            removeMapCategoryFilterUseCase.execute(filter)
+        }
+    }
+
+    override fun toggleStatusFilter(filter: String, selected: Boolean) {
+        if (selected) {
+            addMapStatusFilterUseCase.execute(filter)
+        } else {
+            removeMapStatusFilterUseCase.execute(filter)
         }
     }
 
@@ -28,8 +37,8 @@ class MapFiltersPresenter(val view: MapFiltersMvp.View,
             override fun onComplete() {}
 
             override fun onNext(filters: MapFilters) {
-                view.showFilters(filters.selectedFilters, filters.allFilters)
-                view.selectRemarkStatusFilter(filters.remarkStatus)
+                view.showCategoryFilters(filters.selectedCategoryFilters, filters.allCategoryFilters)
+                view.showStatusFilters(filters.selectedStatusFilters, filters.allStatusFilters)
                 view.selectShowOnlyMineRemarksFilter(filters.showOnlyMine)
                 view.showUserGroups(filters.allGroups, filters.selectedGroup)
             }
@@ -40,19 +49,16 @@ class MapFiltersPresenter(val view: MapFiltersMvp.View,
         loadMapFiltersUseCase.execute(filtersObserver)
     }
 
-    override fun selectRemarkStatus(status: String) {
-        selectRemarkStatusUseCase.execute(status)
-    }
-
     override fun toggleShouldShowOnlyMyRemarksFilter(shouldShow: Boolean) {
         selectShowOnlyMyRemarksUseCase.execute(shouldShow)
     }
 
     override fun destroy() {
         loadMapFiltersUseCase.dispose()
-        addMapFilterUseCase.dispose()
-        removeMapFilterUseCase.dispose()
-        selectRemarkStatusUseCase.dispose()
+        addMapCategoryFilterUseCase.dispose()
+        removeMapCategoryFilterUseCase.dispose()
+        addMapStatusFilterUseCase.dispose()
+        removeMapStatusFilterUseCase.dispose()
         selectShowOnlyMyRemarksUseCase.dispose()
         selectRemarkGroupUseCase.dispose()
     }

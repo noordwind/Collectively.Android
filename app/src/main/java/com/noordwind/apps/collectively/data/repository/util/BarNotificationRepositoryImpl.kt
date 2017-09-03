@@ -14,7 +14,7 @@ class BarNotificationRepositoryImpl(val context: Context) : BarNotificationRepos
         var notificationBuilder = NotificationCompat.Builder(context)
         notificationBuilder.setContentTitle(title)
                 .setProgress(0, 0, true)
-                .setSmallIcon(smallIconResource)
+//                .setSmallIcon(smallIconResource)
 
         message?.let {
             notificationBuilder.setContentText(message)
@@ -26,7 +26,8 @@ class BarNotificationRepositoryImpl(val context: Context) : BarNotificationRepos
     override fun showNotification(tag: String, smallIconResource: Int, title: String, message: String?, isHeadsUp: Boolean) {
         var notificationBuilder = NotificationCompat.Builder(context)
 
-        notificationBuilder.setContentTitle(title).setSmallIcon(smallIconResource)
+        notificationBuilder.setContentTitle(title)
+//                .setSmallIcon(smallIconResource)
 
         message?.let {
             notificationBuilder.setContentText(message)

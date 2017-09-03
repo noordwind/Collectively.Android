@@ -141,10 +141,11 @@ class AppModule(private val application: Application) : Constants {
     @Singleton
     fun provideAuthenticationRepository(authDataSource: AuthDataSource,
                                         profileRepository: ProfileRepository,
+                                        mapFiltersRepository: MapFiltersRepository,
                                         userGroupsRepository: UserGroupsRepository,
                                         operationRepository: OperationRepository,
                                         sessionRepository: SessionRepository): AuthenticationRepository {
-        return AuthenticationRepositoryImpl(authDataSource, profileRepository, userGroupsRepository, operationRepository, sessionRepository)
+        return AuthenticationRepositoryImpl(authDataSource, mapFiltersRepository, profileRepository, userGroupsRepository, operationRepository, sessionRepository)
     }
 
     @Provides

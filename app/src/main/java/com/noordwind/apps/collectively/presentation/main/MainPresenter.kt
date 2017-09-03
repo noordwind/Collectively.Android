@@ -86,7 +86,11 @@ class MainPresenter(val view: MainMvp.View,
         loadMapFiltersUseCase.execute(filtersObserver)
     }
 
-    fun keyFromFilters(filters: MapFilters) = filters.selectedFilters.sortedBy { it }.toString() + filters.remarkStatus + filters.showOnlyMine + filters.selectedGroup
+    fun keyFromFilters(filters: MapFilters) =
+            filters.selectedCategoryFilters.sortedBy { it }.toString() +
+                    filters.selectedStatusFilters.sortedBy { it }.toString() +
+                    filters.showOnlyMine +
+                    filters.selectedGroup
 
     override fun checkIfFiltersHasChanged() {
         var filtersObserver = object : DisposableObserver<MapFilters>() {

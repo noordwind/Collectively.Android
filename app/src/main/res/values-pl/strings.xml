@@ -101,7 +101,7 @@
     <string name="error_invalid_username">Nazwa użytkownika nie może być pusta</string>
     <string name="password_reset_success">Link do zresetowania hasła został wysłany na Twój adres email</string>
     <string name="filter_remarks_dialog_title">Filtrowanie zgłoszeń</string>
-    <string name="filter_remarks_dialog_categories_label">Kategorie</string>
+    <string name="filter_remarks_dialog_categories_label">Kategoria</string>
     <string name="filter_remarks_dialog_states_label">Status</string>
     <string name="filter_remarks_dialog_other_label">Inne</string>
     <string name="resolved_filter">rozwiązane</string>
