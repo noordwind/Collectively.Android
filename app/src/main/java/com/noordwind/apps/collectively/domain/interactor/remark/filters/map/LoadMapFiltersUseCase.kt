@@ -7,7 +7,7 @@ import com.noordwind.apps.collectively.domain.model.MapFilters
 import com.noordwind.apps.collectively.domain.thread.PostExecutionThread
 import com.noordwind.apps.collectively.domain.thread.UseCaseThread
 import io.reactivex.Observable
-import io.reactivex.functions.Function6
+import io.reactivex.functions.Function7
 
 class LoadMapFiltersUseCase(val mapFiltersRepository: MapFiltersRepository,
                             val groupsRepository: UserGroupsRepository,
@@ -15,19 +15,23 @@ class LoadMapFiltersUseCase(val mapFiltersRepository: MapFiltersRepository,
                             postExecutionThread: PostExecutionThread) : UseCase<MapFilters, Void>(useCaseThread, postExecutionThread) {
 
     override fun buildUseCaseObservable(params: Void?): Observable<MapFilters> {
-        val selectedFiltersObservable = mapFiltersRepository.selectedFilters()
-        val allFiltersObservable = mapFiltersRepository.allFilters()
-        val selectedRemarkStatusObservable = mapFiltersRepository.getSelectRemarkStatus()
+        val selectedCategoryFiltersObservable = mapFiltersRepository.selectedCategoryFilters()
+        val allCategoryFiltersObservable = mapFiltersRepository.allCategoryFilters()
+
+        val selectedStatusFiltersObservable = mapFiltersRepository.selectedStatusFilters()
+        val allStatusFiltersObservable = mapFiltersRepository.allStatusFilters()
+
         val showOnlyMineObservable = mapFiltersRepository.getShowOnlyMineStatus()
         val selectedGroupObservable = mapFiltersRepository.getSelectedGroup()
         val availableGroupsObs = groupsRepository.loadGroups(false)
 
-        return Observable.zip(selectedFiltersObservable, allFiltersObservable, selectedRemarkStatusObservable, showOnlyMineObservable, selectedGroupObservable, availableGroupsObs,
-                Function6 { selectedFilters, allFilters, status, showOnlyMine, selectedGroup, allGroups ->
+        return Observable.zip(selectedCategoryFiltersObservable, allCategoryFiltersObservable, selectedStatusFiltersObservable, allStatusFiltersObservable, showOnlyMineObservable, selectedGroupObservable, availableGroupsObs,
+                Function7 { selectedCategoryFilters, allCategoryFilters, selectedStatusFilters, allStatusFilters, showOnlyMine, selectedGroup, allGroups ->
                     MapFilters(
-                            allFilters = allFilters,
-                            selectedFilters = selectedFilters,
-                            remarkStatus = status,
+                            selectedCategoryFilters = selectedCategoryFilters,
+                            allCategoryFilters = allCategoryFilters,
+                            selectedStatusFilters = selectedStatusFilters,
+                            allStatusFilters = allStatusFilters,
                             showOnlyMine = showOnlyMine,
                             selectedGroup = selectedGroup,
                             allGroups = allGroups)

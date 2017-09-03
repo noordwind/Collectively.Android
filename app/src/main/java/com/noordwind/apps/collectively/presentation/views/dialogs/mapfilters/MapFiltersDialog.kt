@@ -5,7 +5,6 @@ import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.support.v4.app.DialogFragment
-import android.support.v4.content.ContextCompat
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,7 +12,6 @@ import android.widget.AdapterView
 import android.widget.AdapterView.OnItemSelectedListener
 import android.widget.ArrayAdapter
 import android.widget.CheckBox
-import android.widget.TextView
 import com.noordwind.apps.collectively.Constants
 import com.noordwind.apps.collectively.R
 import com.noordwind.apps.collectively.TheApp
@@ -23,7 +21,6 @@ import com.noordwind.apps.collectively.data.repository.UserGroupsRepository
 import com.noordwind.apps.collectively.domain.interactor.remark.filters.map.*
 import com.noordwind.apps.collectively.domain.thread.PostExecutionThread
 import com.noordwind.apps.collectively.domain.thread.UseCaseThread
-import com.noordwind.apps.collectively.presentation.extension.dpToPx
 import com.noordwind.apps.collectively.presentation.extension.uppercaseFirstLetter
 import com.noordwind.apps.collectively.presentation.rxjava.RxBus
 import com.noordwind.apps.collectively.presentation.views.FilterView
@@ -52,9 +49,10 @@ class MapFiltersDialog : DialogFragment(), Constants, MapFiltersMvp.View {
     lateinit var ioThread: UseCaseThread
 
     private lateinit var presenter: MapFiltersMvp.Presenter
+
     private lateinit var categoriesLayout: ViewGroup
-    private lateinit var resolvedFilterButton: TextView
-    private lateinit var unresolvedFilterButton: TextView
+    private lateinit var statesLayout: ViewGroup
+
     private lateinit var showOnlyMyRemarksCheckButton: CheckBox
     private lateinit var mMapFilterSelectedEventDisposable: Disposable
     private lateinit var dismissListener: DialogInterface.OnDismissListener
@@ -66,10 +64,11 @@ class MapFiltersDialog : DialogFragment(), Constants, MapFiltersMvp.View {
 
         presenter = MapFiltersPresenter(this,
                 LoadMapFiltersUseCase(mapFiltersRepository, userGroupsRepository, ioThread, uiThread),
-                AddMapFilterUseCase(mapFiltersRepository, ioThread, uiThread),
-                RemoveMapFilterUseCase(mapFiltersRepository, ioThread, uiThread),
+                AddMapCategoryFilterUseCase(mapFiltersRepository, ioThread, uiThread),
+                RemoveMapCategoryFilterUseCase(mapFiltersRepository, ioThread, uiThread),
+                AddMapStatusFilterUseCase(mapFiltersRepository, ioThread, uiThread),
+                RemoveMapStatusFilterUseCase(mapFiltersRepository, ioThread, uiThread),
                 SelectShowOnlyMyRemarksUseCase(mapFiltersRepository, ioThread, uiThread),
-                SelectRemarkStatusUseCase(mapFiltersRepository, ioThread, uiThread),
                 SelectRemarkGroupUseCase(mapFiltersRepository, ioThread, uiThread))
     }
 
@@ -77,52 +76,45 @@ class MapFiltersDialog : DialogFragment(), Constants, MapFiltersMvp.View {
                               savedInstanceState: Bundle?): View? {
         val rootView = inflater!!.inflate(R.layout.fragment_filter_remarks_dialog, container, false)
         categoriesLayout = rootView.findViewById(R.id.categoriesLayout) as ViewGroup
+        statesLayout = rootView.findViewById(R.id.statesLayout) as ViewGroup
 
         rootView.findViewById(R.id.background).setOnClickListener { dismiss() }
 
-        resolvedFilterButton = rootView.findViewById(R.id.resolvedFilterButton) as TextView
-        unresolvedFilterButton = rootView.findViewById(R.id.unresolvedFilterButton) as TextView
         showOnlyMyRemarksCheckButton = rootView.findViewById((R.id.showOnlyMineCheckButton)) as CheckBox
 
-        resolvedFilterButton.setOnClickListener {
-            presenter.selectRemarkStatus(resolvedFilterButton.text.toString())
-            selectResolvedFilterButton()
-        }
-
-        unresolvedFilterButton.setOnClickListener {
-            presenter.selectRemarkStatus(unresolvedFilterButton.text.toString())
-            selectUnresolvedFilterButton()
-        }
-
-
-        showOnlyMyRemarksCheckButton.setOnCheckedChangeListener { button, isChecked -> presenter.toggleShouldShowOnlyMyRemarksFilter(isChecked)  }
+        showOnlyMyRemarksCheckButton.setOnCheckedChangeListener { button, isChecked -> presenter.toggleShouldShowOnlyMyRemarksFilter(isChecked) }
 
         presenter.loadFilters()
         return rootView
     }
 
-    fun selectResolvedFilterButton() {
-        unresolvedFilterButton.setBackgroundResource(0)
-        unresolvedFilterButton.setTextColor(ContextCompat.getColor(context, R.color.font_dark_hint))
-        unresolvedFilterButton.setPadding(8f.dpToPx(), 8f.dpToPx(), 8f.dpToPx(), 8f.dpToPx())
-        resolvedFilterButton.setTextColor(ContextCompat.getColor(context, android.R.color.white))
-        resolvedFilterButton.setBackgroundResource(R.drawable.button_unselected)
-        resolvedFilterButton.setPadding(8f.dpToPx(), 8f.dpToPx(), 8f.dpToPx(), 8f.dpToPx())
-    }
-
-    fun selectUnresolvedFilterButton() {
-        resolvedFilterButton.setBackgroundResource(0)
-        resolvedFilterButton.setTextColor(ContextCompat.getColor(context, R.color.font_dark_hint))
-        resolvedFilterButton.setPadding(8f.dpToPx(), 8f.dpToPx(), 8f.dpToPx(), 8f.dpToPx())
-        unresolvedFilterButton.setTextColor(ContextCompat.getColor(context, android.R.color.white))
-        unresolvedFilterButton.setBackgroundResource(R.drawable.button_unselected)
-        unresolvedFilterButton.setPadding(8f.dpToPx(), 8f.dpToPx(), 8f.dpToPx(), 8f.dpToPx())
-    }
-
-    override fun showFilters(selectedFilters: List<String>, allFilters: List<String>) {
+    override fun showCategoryFilters(selectedCategoryFilters: List<String>, allCategoryFilters: List<String>) {
         categoriesLayout.removeAllViews()
-        allFilters.forEach {
-            categoriesLayout.addView(FilterView(context, it, selectedFilters.contains(it)), categoriesLayout.childCount)
+        allCategoryFilters.forEach {
+            var filterSelected = selectedCategoryFilters.contains(it)
+
+            var filterView = FilterView(context = context,
+                    filter = it,
+                    isChecked = filterSelected,
+                    showIcon = true,
+                    type = "category")
+
+            categoriesLayout.addView(filterView, categoriesLayout.childCount)
+        }
+    }
+
+    override fun showStatusFilters(selectedStatusFilters: List<String>, allStatusFilters: List<String>) {
+        statesLayout.removeAllViews()
+        allStatusFilters.forEach {
+            var filterSelected = selectedStatusFilters.contains(it)
+
+            var filterView = FilterView(context = context,
+                    filter = it,
+                    isChecked = filterSelected,
+                    showIcon = false,
+                    type = "state")
+
+            statesLayout.addView(filterView, statesLayout.childCount)
         }
     }
 
@@ -145,21 +137,13 @@ class MapFiltersDialog : DialogFragment(), Constants, MapFiltersMvp.View {
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         groupsSpinner.adapter = adapter
         groupsSpinner.setSelection(initialSelection)
-        groupsSpinner.onItemSelectedListener = object: OnItemSelectedListener {
+        groupsSpinner.onItemSelectedListener = object : OnItemSelectedListener {
             override fun onNothingSelected(p0: AdapterView<*>?) {
             }
 
             override fun onItemSelected(p0: AdapterView<*>?, selectedItemView: View?, position: Int, p3: Long) {
                 presenter.selectGroup(groupsSpinner.selectedItem.toString())
             }
-        }
-    }
-
-    override fun selectRemarkStatusFilter(status: String) {
-        if (context.getString(R.string.resolved_filter_api).equals(status)) {
-            selectResolvedFilterButton()
-        } else if (context.getString(R.string.unresolved_filter_api).equals(status)) {
-            selectUnresolvedFilterButton()
         }
     }
 
@@ -186,7 +170,15 @@ class MapFiltersDialog : DialogFragment(), Constants, MapFiltersMvp.View {
         mMapFilterSelectedEventDisposable = RxBus.instance
                 .getEvents(FilterView.FilterSelectionChangedEvent::class.java)
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({ presenter.toggleFilter(it.filter, it.selected) })
+                .subscribe({ onFilterSelectionChanged(it) })
+    }
+
+    fun onFilterSelectionChanged(event: FilterView.FilterSelectionChangedEvent) {
+        if (event.type!!.equals("category")) {
+            presenter.toggleCategoryFilter(event.filter, event.selected)
+        } else {
+            presenter.toggleStatusFilter(event.filter, event.selected)
+        }
     }
 
     override fun onStop() {

@@ -32,7 +32,7 @@ interface Api {
     @GET("remarks")
     fun remarks(
             @Query("authorId") authorId: String?,
-            @Query("states") state: String,
+            @Query("states") states: List<String>,
             @Query("categories") categories: List<String>,
             @Query("latest") latest: Boolean,
             @Query("orderBy") orderBy: String,

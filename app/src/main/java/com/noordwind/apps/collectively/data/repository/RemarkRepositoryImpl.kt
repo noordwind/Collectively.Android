@@ -9,8 +9,9 @@ import com.noordwind.apps.collectively.data.model.*
 import com.noordwind.apps.collectively.data.repository.util.OperationRepository
 import io.reactivex.Observable
 import io.reactivex.functions.BiFunction
-import io.reactivex.functions.Function4
+import java.util.*
 import java.util.concurrent.TimeUnit
+import io.reactivex.functions.Function4
 
 class RemarkRepositoryImpl(
         val context: Context,
@@ -73,16 +74,26 @@ class RemarkRepositoryImpl(
         var groupIdObservable = Observable.zip(userGroupsRepository.loadGroups(false), mapFiltersRepository.getSelectedGroup(),
                 BiFunction<List<UserGroup>, String, String> { userGroups, selectedGroup -> getSelectedGroupId(userGroups, selectedGroup) })
 
-        return Observable.zip<String, String, List<String>, String, LoadRemarkParameters>(
-                showOnlyMineIdObservable, mapFiltersRepository.getSelectRemarkStatus(), mapFiltersRepository.selectedFilters(), groupIdObservable,
+        return Observable.zip<String, List<String>, List<String>, String, LoadRemarkParameters>(
+                showOnlyMineIdObservable,
+                mapFiltersRepository.selectedCategoryFilters(),
+                mapFiltersRepository.selectedStatusFilters(),
+                groupIdObservable,
                 Function4(::LoadRemarkParameters)
         ).flatMap {
             var onlyMine = if (it.authorId.isEmpty()) null else it.authorId
             var selectedGroupId = if (it.groupId.isEmpty()) null else it.groupId
 
-            remarksDataSource.loadRemarks(authorId = onlyMine, state = it.remarkStatus, categories = it.selectedFilters, groupId = selectedGroupId).repeatWhen {
-                objectObservable: Observable<Any> ->
-                objectObservable.delay(Constants.RetryTime.LOAD_REMARKS_RETRY_MS, TimeUnit.MILLISECONDS)
+            if (it.selectedCategoryFilters.isEmpty() || it.selectedStatusFilters.isEmpty()) {
+                Observable.just(LinkedList<Remark>())
+            } else {
+                remarksDataSource.loadRemarks(authorId = onlyMine,
+                        states = it.selectedStatusFilters,
+                        categories = it.selectedCategoryFilters,
+                        groupId = selectedGroupId).repeatWhen {
+                    objectObservable: Observable<Any> ->
+                    objectObservable.delay(Constants.RetryTime.LOAD_REMARKS_RETRY_MS, TimeUnit.MILLISECONDS)
+                }
             }
         }
 //        return Observable.zip<String, String, List<String>, Triple<String, String, List<String>>>(
@@ -99,7 +110,10 @@ class RemarkRepositoryImpl(
 //        }
     }
 
-    private class LoadRemarkParameters(val authorId: String, val remarkStatus: String, val selectedFilters: List<String>, val groupId: String) {}
+    private class LoadRemarkParameters(val authorId: String,
+                                       val selectedCategoryFilters: List<String>,
+                                       val selectedStatusFilters: List<String>,
+                                       val groupId: String)
 
     private fun getSelectedGroupId(allGroups: List<UserGroup>, selectedGroupName: String): String {
         var userGroup = allGroups.firstOrNull { it.name.equals(selectedGroupName, true) }
