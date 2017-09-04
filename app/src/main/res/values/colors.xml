@@ -43,4 +43,8 @@
     <color name="issue_category_color">#DD2C00</color>
     <color name="suggestion_category_color">#FDD835</color>
     <color name="praise_category_color">#66BB6A</color>
+    <color name="remark_state_new_color">#4368F8</color>
+    <color name="remark_state_processing_color">#E9B72B</color>
+    <color name="remark_state_renewed_color">#75D7FF</color>
+    <color name="remark_state_resolved_color">#8EFA6E</color>
 </resources>

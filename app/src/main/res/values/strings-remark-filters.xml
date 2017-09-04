@@ -13,10 +13,12 @@
     <string name="remark_state_new" translatable="false">New</string>
     <string name="remark_state_processing" translatable="false">Processing</string>
     <string name="remark_state_removed" translatable="false">Removed</string>
+    <string name="remark_state_renewed" translatable="false">Renewed</string>
     <string name="remark_state_resolved" translatable="false">Resolved</string>
 
     <string name="remark_state_new_name">New</string>
     <string name="remark_state_processing_name">Processing</string>
     <string name="remark_state_removed_name">Removed</string>
+    <string name="remark_state_renewed_name">Renewed</string>
     <string name="remark_state_resolved_name">Resolved</string>
 </resources>

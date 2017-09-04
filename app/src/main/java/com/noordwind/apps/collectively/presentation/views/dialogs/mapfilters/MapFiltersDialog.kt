@@ -114,6 +114,21 @@ class MapFiltersDialog : DialogFragment(), Constants, MapFiltersMvp.View {
                     showIcon = false,
                     type = "state")
 
+            when (it.toLowerCase())  {
+                Constants.RemarkStates.NEW.toLowerCase() -> {
+                    filterView.setCheckboxTintColor(R.color.remark_state_new_color)
+                }
+                Constants.RemarkStates.PROCESSING.toLowerCase() -> {
+                    filterView.setCheckboxTintColor(R.color.remark_state_processing_color)
+                }
+                Constants.RemarkStates.RENEWED.toLowerCase() -> {
+                    filterView.setCheckboxTintColor(R.color.remark_state_renewed_color)
+                }
+                Constants.RemarkStates.RESOLVED.toLowerCase() -> {
+                    filterView.setCheckboxTintColor(R.color.remark_state_resolved_color)
+                }
+            }
+
             statesLayout.addView(filterView, statesLayout.childCount)
         }
     }

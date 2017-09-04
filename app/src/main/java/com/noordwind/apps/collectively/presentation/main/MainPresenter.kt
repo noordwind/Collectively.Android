@@ -1,6 +1,7 @@
 package com.noordwind.apps.collectively.presentation.main
 
 import com.google.android.gms.maps.model.LatLng
+import com.noordwind.apps.collectively.Constants
 import com.noordwind.apps.collectively.data.datasource.FiltersTranslationsDataSource
 import com.noordwind.apps.collectively.data.model.Remark
 import com.noordwind.apps.collectively.data.model.RemarkCategory
@@ -10,6 +11,7 @@ import com.noordwind.apps.collectively.domain.interactor.remark.filters.map.Load
 import com.noordwind.apps.collectively.domain.model.MapFilters
 import com.noordwind.apps.collectively.presentation.rxjava.AppDisposableObserver
 import io.reactivex.observers.DisposableObserver
+import jonathanfinerty.once.Once
 
 class MainPresenter(val view: MainMvp.View,
                     val loadRemarksUseCase: LoadRemarksUseCase,
@@ -19,6 +21,16 @@ class MainPresenter(val view: MainMvp.View,
 
     var filtersKey: String = ""
     var loadedRemarks: List<Remark>? = null
+
+    override fun onCreate() {
+        if (!Once.beenDone(Once.THIS_APP_INSTALL, Constants.OnceKey.SHOW_SWIPE_LEFT_TOOLTIP_ON_MAIN_SCREEN)) {
+            view.showTooltip()
+        }
+    }
+
+    override fun onTooltipShown() {
+        Once.markDone(Constants.OnceKey.SHOW_SWIPE_LEFT_TOOLTIP_ON_MAIN_SCREEN)
+    }
 
     override fun getRemarks(): List<Remark>? = loadedRemarks
 
@@ -58,7 +70,6 @@ class MainPresenter(val view: MainMvp.View,
 
             override fun onNext(categories: List<RemarkCategory>) {
                 super.onNext(categories)
-                view.clearCategories()
                 categories.forEach { view.showRemarkCategory(it) }
             }
 
@@ -104,8 +115,13 @@ class MainPresenter(val view: MainMvp.View,
             override fun onNext(filters: MapFilters) {
                 var newFiltersKey = keyFromFilters(filters)
                 if (!filtersKey.equals(newFiltersKey, true)) {
-//                    loadRemarks(centerOfMap, radiusOfMap)
-                    view.showRemarksReloadingProgress()
+                    var centerOfMap = view.centerOfMap()
+                    var radiusOfMap = view.radiusOfMap()
+
+                    if (centerOfMap != null && radiusOfMap != null) {
+                        loadRemarks(centerOfMap, radiusOfMap)
+                        view.showRemarksReloadingProgress()
+                    }
                 }
                 filtersKey = newFiltersKey
             }

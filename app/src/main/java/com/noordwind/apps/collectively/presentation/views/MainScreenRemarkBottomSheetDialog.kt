@@ -13,7 +13,14 @@ class MainScreenRemarkBottomSheetDialog(context: Context, remark: Remark, lastLo
         bottomSheetDialog.setContentView(bottomSheetView)
     }
 
-    fun show() {
+    fun show() : MainScreenRemarkBottomSheetDialog {
         bottomSheetDialog.show()
+        return this
+    }
+
+    fun isVisible() : Boolean = bottomSheetDialog.isShowing
+
+    fun hide() {
+        bottomSheetDialog.hide()
     }
 }
