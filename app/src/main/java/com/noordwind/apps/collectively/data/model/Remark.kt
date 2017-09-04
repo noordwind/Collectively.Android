@@ -1,10 +1,6 @@
 package com.noordwind.apps.collectively.data.model
 
 import android.net.Uri
-import com.google.android.gms.maps.model.BitmapDescriptor
-import com.google.android.gms.maps.model.BitmapDescriptorFactory
-import com.noordwind.apps.collectively.Constants
-import com.noordwind.apps.collectively.R
 
 class RemarkLocation(
         val address: String,
@@ -22,76 +18,13 @@ class Remark(
         val rating: Int
 ) {
 
-
-    fun markerBitmapOfCategory(): BitmapDescriptor {
-        when (category!!.name) {
-            Constants.RemarkCategories.DEFECT -> {
-                when (state.state) {
-                    Constants.RemarkStates.NEW -> {
-                        return BitmapDescriptorFactory.fromResource(R.drawable.defect_marker_new)
-                    }
-                    Constants.RemarkStates.PROCESSING -> {
-                        return BitmapDescriptorFactory.fromResource(R.drawable.defect_marker_processing)
-                    }
-                    Constants.RemarkStates.RENEWED -> {
-                        return BitmapDescriptorFactory.fromResource(R.drawable.defect_marker_renewed)
-                    }
-                    Constants.RemarkStates.RESOLVED -> {
-                        return BitmapDescriptorFactory.fromResource(R.drawable.defect_marker_resolved)
-                    }
-                }
-            }
-            Constants.RemarkCategories.ISSUE -> {
-                when (state.state) {
-                    Constants.RemarkStates.NEW -> {
-                        return BitmapDescriptorFactory.fromResource(R.drawable.issue_marker_new)
-                    }
-                    Constants.RemarkStates.PROCESSING -> {
-                        return BitmapDescriptorFactory.fromResource(R.drawable.issue_marker_processing)
-                    }
-                    Constants.RemarkStates.RENEWED -> {
-                        return BitmapDescriptorFactory.fromResource(R.drawable.issue_marker_renewed)
-                    }
-                    Constants.RemarkStates.RESOLVED -> {
-                        return BitmapDescriptorFactory.fromResource(R.drawable.issue_marker_resolved)
-                    }
-                }
-            }
-            Constants.RemarkCategories.SUGGESTION -> {
-                when (state.state) {
-                    Constants.RemarkStates.NEW -> {
-                        return BitmapDescriptorFactory.fromResource(R.drawable.suggestion_marker_new)
-                    }
-                    Constants.RemarkStates.PROCESSING -> {
-                        return BitmapDescriptorFactory.fromResource(R.drawable.suggestion_marker_processing)
-                    }
-                    Constants.RemarkStates.RENEWED -> {
-                        return BitmapDescriptorFactory.fromResource(R.drawable.suggestion_marker__renewed)
-                    }
-                    Constants.RemarkStates.RESOLVED -> {
-                        return BitmapDescriptorFactory.fromResource(R.drawable.suggestion_marker_resolved)
-                    }
-                }
-            }
-            Constants.RemarkCategories.PRAISE -> {
-                when (state.state) {
-                    Constants.RemarkStates.NEW -> {
-                        return BitmapDescriptorFactory.fromResource(R.drawable.praise_marker_new)
-                    }
-                    Constants.RemarkStates.PROCESSING -> {
-                        return BitmapDescriptorFactory.fromResource(R.drawable.praise_marker_processing)
-                    }
-                    Constants.RemarkStates.RENEWED -> {
-                        return BitmapDescriptorFactory.fromResource(R.drawable.praise_marker_renewed)
-                    }
-                    Constants.RemarkStates.RESOLVED -> {
-                        return BitmapDescriptorFactory.fromResource(R.drawable.praise_marker_resolved)
-                    }
-                }
-            }
+    override fun equals(other: Any?): Boolean {
+        if (!(other is Remark)) {
+            return false
+        } else {
+            var remark = other
+            return id.equals(remark.id)
         }
-
-        return BitmapDescriptorFactory.fromResource(R.drawable.praise_marker)
     }
 }
 

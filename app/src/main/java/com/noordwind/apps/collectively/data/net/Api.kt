@@ -36,6 +36,9 @@ interface Api {
             @Query("categories") categories: List<String>,
             @Query("latest") latest: Boolean,
             @Query("orderBy") orderBy: String,
+            @Query("latitude") latitude: String,
+            @Query("longitude") longitude: String,
+            @Query("radius") radius: String,
             @Query("groupId") groupId: String?,
             @Query("sortorder") sortorder: String,
             @Query("results") results: Int): Observable<List<Remark>>

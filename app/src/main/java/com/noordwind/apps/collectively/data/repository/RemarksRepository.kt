@@ -1,12 +1,13 @@
 package com.noordwind.apps.collectively.data.repository
 
+import com.google.android.gms.maps.model.LatLng
 import com.noordwind.apps.collectively.data.model.*
 import io.reactivex.Observable
 
 
 interface RemarksRepository {
     fun loadRemarkCategories(): Observable<List<RemarkCategory>>
-    fun loadRemarks(): Observable<List<Remark>>
+    fun loadRemarks(first: LatLng, second: Int): Observable<List<Remark>>
     fun loadRemarkTags(): Observable<List<RemarkTag>>
     fun saveRemark(remark: NewRemark): Observable<RemarkNotFromList>
     fun loadRemark(id: String): Observable<RemarkPreview>

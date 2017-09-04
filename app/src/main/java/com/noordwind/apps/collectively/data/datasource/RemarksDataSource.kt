@@ -1,5 +1,6 @@
 package com.noordwind.apps.collectively.data.datasource
 
+import com.google.android.gms.maps.model.LatLng
 import com.noordwind.apps.collectively.data.model.*
 import io.reactivex.Observable
 import retrofit2.Response
@@ -7,7 +8,7 @@ import java.io.File
 
 interface RemarksDataSource {
     fun loadRemarkCategories(): Observable<List<RemarkCategory>>
-    fun loadRemarks(authorId: String?, states: List<String>, groupId: String?, categories: List<String>): Observable<List<Remark>>
+    fun loadRemarks(authorId: String?, states: List<String>, groupId: String?, categories: List<String>, center: LatLng, radius: Int): Observable<List<Remark>>
     fun loadRemarkTags(): Observable<List<RemarkTag>>
     fun loadSavedRemark(remarkResourcePath: String): Observable<RemarkNotFromList>
     fun loadRemarkPreview(id: String): Observable<RemarkPreview>

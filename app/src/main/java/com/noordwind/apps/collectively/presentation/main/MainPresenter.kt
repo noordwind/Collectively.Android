@@ -1,5 +1,6 @@
 package com.noordwind.apps.collectively.presentation.main
 
+import com.google.android.gms.maps.model.LatLng
 import com.noordwind.apps.collectively.data.datasource.FiltersTranslationsDataSource
 import com.noordwind.apps.collectively.data.model.Remark
 import com.noordwind.apps.collectively.data.model.RemarkCategory
@@ -17,8 +18,11 @@ class MainPresenter(val view: MainMvp.View,
                     val translationsDataSource: FiltersTranslationsDataSource) : MainMvp.Presenter {
 
     var filtersKey: String = ""
+    var loadedRemarks: List<Remark>? = null
 
-    override fun loadRemarks() {
+    override fun getRemarks(): List<Remark>? = loadedRemarks
+
+    override fun loadRemarks(centerOfMap: LatLng, radiusOfMap: Int) {
         loadRemarksUseCase.dispose()
 
         var observer = object : AppDisposableObserver<List<Remark>>() {
@@ -29,6 +33,7 @@ class MainPresenter(val view: MainMvp.View,
 
             override fun onNext(remarks: List<Remark>) {
                 super.onNext(remarks)
+                loadedRemarks = remarks
                 view.showRemarks(remarks)
             }
 
@@ -41,7 +46,7 @@ class MainPresenter(val view: MainMvp.View,
             }
         }
 
-        loadRemarksUseCase.execute(observer)
+        loadRemarksUseCase.execute(observer, Pair(centerOfMap, radiusOfMap))
     }
 
     override fun loadRemarkCategories() {
@@ -99,7 +104,7 @@ class MainPresenter(val view: MainMvp.View,
             override fun onNext(filters: MapFilters) {
                 var newFiltersKey = keyFromFilters(filters)
                 if (!filtersKey.equals(newFiltersKey, true)) {
-                    loadRemarks()
+//                    loadRemarks(centerOfMap, radiusOfMap)
                     view.showRemarksReloadingProgress()
                 }
                 filtersKey = newFiltersKey
