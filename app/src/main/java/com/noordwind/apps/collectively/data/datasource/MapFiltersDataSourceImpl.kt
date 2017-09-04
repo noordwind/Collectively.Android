@@ -13,8 +13,8 @@ class MapFiltersDataSourceImpl(context: Context) : MapFiltersDataSource, TrayPre
 
     private val gson = Gson()
     private val listType = object : TypeToken<LinkedList<String>>() {}.type
-    private val allCategoryFilters = listOf("defect", "issue", "suggestion", "praise").sortedBy { it }
-    private val allStatusFilters = listOf("new", "processing", "resolved", "renewed").sortedBy { it }
+    private val allCategoryFilters = listOf("praise", "suggestion", "issue", "defect")
+    private val allStatusFilters = listOf("new", "processing", "resolved", "renewed")
 
     override fun addCategoryFilter(filter: String) : Observable<Boolean> {
         return Observable.fromCallable {

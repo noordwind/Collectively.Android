@@ -9,6 +9,8 @@ import android.graphics.Color
 import android.location.Location
 import android.os.Build
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.support.v4.app.ActivityCompat
 import android.support.v4.content.ContextCompat
 import android.support.v4.view.GravityCompat
@@ -337,7 +339,16 @@ class MainActivity : com.noordwind.apps.collectively.presentation.BaseActivity()
 
         remarksMarkers.filter { !newRemarksIds.contains(it.snippet) }.forEach { it.remove() }
 
-        remarks.filter { it.location != null }.forEach { remarksMarkers.add(map!!.addMarker(markerFromRemark(it))) }
+        var x = 0
+        val DELAY: Long = 10
+        var handler = Handler(Looper.getMainLooper());
+        remarks.filter { it.location != null }.forEach {
+            handler.postDelayed(
+                    {
+                        remarksMarkers.add(map!!.addMarker(markerFromRemark(it)))
+                    }, DELAY * x++.toLong())
+        }
+
     }
 
     private fun markerFromRemark(remark: Remark): MarkerOptions {
