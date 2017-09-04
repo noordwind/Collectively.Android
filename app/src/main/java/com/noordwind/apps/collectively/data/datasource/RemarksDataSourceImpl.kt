@@ -1,5 +1,6 @@
 package com.noordwind.apps.collectively.data.datasource
 
+import com.google.android.gms.maps.model.LatLng
 import com.noordwind.apps.collectively.data.model.*
 import com.noordwind.apps.collectively.data.net.Api
 import io.reactivex.Observable
@@ -40,9 +41,19 @@ class RemarksDataSourceImpl(val api: Api) : RemarksDataSource {
 
     override fun saveRemark(remark: NewRemark): Observable<Response<Void>> = api.saveRemark(remark)
 
-    override fun loadRemarks(authorId: String?, states: List<String>, groupId: String?, categories: List<String>): Observable<List<Remark>>
-            = api.remarks(authorId = authorId, states = states, categories = categories, groupId = groupId, latest = true,
-            orderBy = "createdat", sortorder = "descending", results = 1000)
+    override fun loadRemarks(authorId: String?, states: List<String>, groupId: String?, categories: List<String>, center: LatLng, radius: Int): Observable<List<Remark>>
+            = api.remarks(
+            authorId = authorId,
+            states = states,
+            categories = categories,
+            groupId = groupId,
+            latest = true,
+            orderBy = "createdat",
+            sortorder = "descending",
+            results = 1000,
+            latitude = center.latitude.toString(),
+            longitude = center.longitude.toString(),
+            radius = radius.toString())
 
     override fun loadRemarkTags(): Observable<List<RemarkTag>> = api.remarkTags()
 

@@ -99,6 +99,7 @@ dependencies {
     compile 'io.reactivex.rxjava2:rxandroid:2.0.1'
     compile "com.github.akarnokd:rxjava2-interop:0.6.1"
     compile 'pl.charmas.android:android-reactive-location:0.10@aar'
+    compile 'com.sdoward:rxgooglemaps:1.1.1@aar'
 
     //NETWORKING
     compile "com.facebook.android:facebook-android-sdk:4.1.0"

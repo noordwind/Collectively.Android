@@ -31,6 +31,7 @@ import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
+import com.google.android.gms.maps.model.VisibleRegion
 import com.noordwind.apps.collectively.Constants
 import com.noordwind.apps.collectively.R
 import com.noordwind.apps.collectively.TheApp
@@ -50,12 +51,20 @@ import com.noordwind.apps.collectively.presentation.addremark.AddRemarkActivity
 import com.noordwind.apps.collectively.presentation.extension.colorOfCategory
 import com.noordwind.apps.collectively.presentation.extension.iconOfCategory
 import com.noordwind.apps.collectively.presentation.extension.uppercaseFirstLetter
+import com.noordwind.apps.collectively.presentation.rxjava.CameraIdleFunc
 import com.noordwind.apps.collectively.presentation.views.MainScreenRemarkBottomSheetDialog
 import com.noordwind.apps.collectively.presentation.views.dialogs.mapfilters.MapFiltersDialog
 import com.noordwind.apps.collectively.presentation.views.toast.ToastManager
+import io.reactivex.Observable
+import io.reactivex.ObservableOnSubscribe
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.Disposable
+import io.reactivex.schedulers.Schedulers
+import io.reactivex.subjects.BehaviorSubject
 import jonathanfinerty.once.Once
 import kotlinx.android.synthetic.main.activity_main.*
 import java.util.*
+import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 
@@ -77,6 +86,11 @@ class MainActivity : com.noordwind.apps.collectively.presentation.BaseActivity()
     private val remarksMarkers: LinkedList<Marker> = LinkedList<Marker>()
     private var remarks: List<Remark>? = null
     private var initialLocationChanged = true
+
+    private lateinit var remarkMarkerBitmapProvider : RemarkMarkerBitmapProvider
+    private var disposable: Disposable? = null
+
+    private var reloadRemarksList: Boolean = false
 
     @Inject
     lateinit var remarksRepository: RemarksRepository
@@ -104,6 +118,8 @@ class MainActivity : com.noordwind.apps.collectively.presentation.BaseActivity()
 
     private var toast: ToastManager? = null
 
+    private val mapSubject: BehaviorSubject<GoogleMap> = BehaviorSubject.create()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         TheApp[this].appComponent?.inject(this)
@@ -115,11 +131,41 @@ class MainActivity : com.noordwind.apps.collectively.presentation.BaseActivity()
         drawerToggle = ActionBarDrawerToggle(this, drawerLayout, R.string.open, R.string.close)
         drawerLayout.setDrawerListener(drawerToggle)
         drawerToggle.syncState()
+        drawerLayout.addDrawerListener(object : DrawerLayout.DrawerListener {
+            override fun onDrawerStateChanged(newState: Int) {
+            }
+
+            override fun onDrawerSlide(drawerView: View?, slideOffset: Float) {
+            }
+
+            override fun onDrawerClosed(drawerView: View?) {
+            }
+
+            override fun onDrawerOpened(drawerView: View?) {
+                if (drawerView?.id == R.id.right_navigation_view && reloadRemarksList) {
+                    var remarks = mainPresenter.getRemarks()
+                    remarks?.let {
+                        var fragment = supportFragmentManager.findFragmentById(R.id.fragment_view_navigation) as NavigationViewFragment
+                        fragment.onRemarkSelectedListener = this@MainActivity
+                        fragment.setRemarks(remarks)
+                        reloadRemarksList = false
+                    }
+                }
+            }
+
+        })
 
         floatingActionsMenu = findViewById(R.id.actions) as FloatingActionsMenu
 
         val mapFragment = supportFragmentManager.findFragmentById(R.id.map) as SupportMapFragment
         mapFragment.getMapAsync(this)
+
+        Observable.create(ObservableOnSubscribe<GoogleMap> { emitter ->
+            var mapReadyCallback = OnMapReadyCallback {
+                emitter.onNext(it)
+            }
+            mapFragment.getMapAsync(mapReadyCallback)
+        }).subscribe(mapSubject)
 
         mainPresenter = MainPresenter(this, LoadRemarksUseCase(remarksRepository, ioThread, uiThread),
                 LoadRemarkCategoriesUseCase(remarksRepository, translationDataSource, ioThread, uiThread),
@@ -168,10 +214,26 @@ class MainActivity : com.noordwind.apps.collectively.presentation.BaseActivity()
     }
 
     override fun onMapReady(googleMap: GoogleMap) {
-        mainPresenter.loadRemarks()
         map = googleMap
         map?.mapType = GoogleMap.MAP_TYPE_NORMAL
         map?.setOnMarkerClickListener(this)
+
+        remarkMarkerBitmapProvider = RemarkMarkerBitmapProvider(baseContext)
+
+        mapSubject.flatMap(CameraIdleFunc())
+                .throttleWithTimeout(500, TimeUnit.MILLISECONDS)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({
+                        var centerOfMap = map!!.cameraPosition.target
+                        var radiusOfMap = calculateVisibleRadius(map!!.projection.visibleRegion).toInt()
+                        mainPresenter.loadRemarks(centerOfMap, radiusOfMap)
+                })
+
+
+//        map?.setOnCameraIdleListener {
+//            cameraIdleSubject.onNext(Pair<LatLng, Int>(centerOfMap, radiusOfMap))
+//        }
 
         if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
@@ -184,13 +246,39 @@ class MainActivity : com.noordwind.apps.collectively.presentation.BaseActivity()
         }
     }
 
+    private fun calculateVisibleRadius(visibleRegion: VisibleRegion): Float {
+        var distanceWidth = FloatArray(1)
+        var distanceHeight = FloatArray(1)
+
+        var farRight = visibleRegion.farRight;
+        var farLeft = visibleRegion.farLeft;
+        var nearRight = visibleRegion.nearRight;
+        var nearLeft = visibleRegion.nearLeft;
+
+        //calculate the distance width (left <-> right of map on screen)
+        Location.distanceBetween(
+                (farLeft.latitude + nearLeft.latitude) / 2,
+                farLeft.longitude,
+                (farRight.latitude + nearRight.latitude) / 2,
+                farRight.longitude,
+                distanceWidth
+        );
+
+        //calculate the distance height (top <-> bottom of map on screen)
+        Location.distanceBetween(
+                farRight.latitude,
+                (farRight.longitude + farLeft.longitude) / 2,
+                nearRight.latitude,
+                (nearRight.longitude + nearLeft.longitude) / 2,
+                distanceHeight
+        );
+
+        //visible radius is (smaller distance) / 2:
+        return if (distanceWidth[0] < distanceHeight[0]) distanceWidth[0] else distanceHeight[0];
+    }
+
     override fun onStart() {
         super.onStart()
-//        if (map != null) {
-            mainPresenter.loadRemarks()
-//        }
-
-
         if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             checkLocationPermission();
         }
@@ -280,22 +368,26 @@ class MainActivity : com.noordwind.apps.collectively.presentation.BaseActivity()
     }
 
     override fun showRemarks(remarks: List<Remark>) {
+        reloadRemarksList = true
+
+        var newRemarksIds = remarks.map { it.id }
+
         toast?.let {
             it.hide()
             toast = null
             ToastManager(this, getString(R.string.remarks_updated), Toast.LENGTH_LONG).success().show()
         }
 
-        var fragment = supportFragmentManager.findFragmentById(R.id.fragment_view_navigation) as NavigationViewFragment
-        fragment.onRemarkSelectedListener = this
-        fragment.setRemarks(remarks)
-
         if (map == null) {
             return
         }
 
         this.remarks = remarks
-        remarksMarkers.forEach(Marker::remove)
+        remarksMarkers.forEach {
+            if (!newRemarksIds.contains(it.snippet)) {
+                it.remove()
+            }
+        }
         remarks.forEach {
             if (it.location != null) {
                 var latLng = LatLng(it.location.coordinates[1], it.location.coordinates[0]);
@@ -303,7 +395,7 @@ class MainActivity : com.noordwind.apps.collectively.presentation.BaseActivity()
                 markerOptions.position(latLng);
                 markerOptions.snippet(it.id)
                 markerOptions.title(it.description);
-                markerOptions.icon(it.markerBitmapOfCategory());
+                markerOptions.icon(remarkMarkerBitmapProvider.remarkMapMarker(it));
                 remarksMarkers.add(map!!.addMarker(markerOptions))
             }
         }
@@ -362,5 +454,13 @@ class MainActivity : com.noordwind.apps.collectively.presentation.BaseActivity()
                 map?.animateCamera(CameraUpdateFactory.zoomTo(20.0f));
             }
         }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        disposable?.let {
+            disposable?.dispose()
+        }
+        disposable = null
     }
 }

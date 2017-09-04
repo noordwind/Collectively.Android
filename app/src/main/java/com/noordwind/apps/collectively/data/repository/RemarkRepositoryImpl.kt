@@ -2,6 +2,7 @@ package com.noordwind.apps.collectively.data.repository
 
 import android.content.Context
 import android.content.Intent
+import com.google.android.gms.maps.model.LatLng
 import com.noordwind.apps.collectively.Constants
 import com.noordwind.apps.collectively.data.cache.RemarkCategoriesCache
 import com.noordwind.apps.collectively.data.datasource.*
@@ -9,9 +10,9 @@ import com.noordwind.apps.collectively.data.model.*
 import com.noordwind.apps.collectively.data.repository.util.OperationRepository
 import io.reactivex.Observable
 import io.reactivex.functions.BiFunction
+import io.reactivex.functions.Function4
 import java.util.*
 import java.util.concurrent.TimeUnit
-import io.reactivex.functions.Function4
 
 class RemarkRepositoryImpl(
         val context: Context,
@@ -64,7 +65,7 @@ class RemarkRepositoryImpl(
         }
     }
 
-    override fun loadRemarks(): Observable<List<Remark>> {
+    override fun loadRemarks(center: LatLng, radius: Int): Observable<List<Remark>> {
         var authorIdObservable = profileRepository.loadProfile(false).flatMap { Observable.just(it.userId) }
 
         var showOnlyMineIdObservable: Observable<String> = mapFiltersRepository.getShowOnlyMineStatus().flatMap {
@@ -90,6 +91,8 @@ class RemarkRepositoryImpl(
                 remarksDataSource.loadRemarks(authorId = onlyMine,
                         states = it.selectedStatusFilters,
                         categories = it.selectedCategoryFilters,
+                        center = center,
+                        radius = radius,
                         groupId = selectedGroupId).repeatWhen {
                     objectObservable: Observable<Any> ->
                     objectObservable.delay(Constants.RetryTime.LOAD_REMARKS_RETRY_MS, TimeUnit.MILLISECONDS)
