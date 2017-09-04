@@ -45,6 +45,9 @@ class FiltersTranslationsDataSourceImpl(val context: Context) : FiltersTranslati
         fromFilterTypeTranslation.put(context.getString(R.string.remark_state_removed).toLowerCase(),
                 context.getString(R.string.remark_state_removed_name).toLowerCase())
 
+        fromFilterTypeTranslation.put(context.getString(R.string.remark_state_renewed).toLowerCase(),
+                context.getString(R.string.remark_state_renewed_name).toLowerCase())
+
         fromFilterTypeTranslation.put(context.getString(R.string.remark_state_resolved).toLowerCase(),
                 context.getString(R.string.remark_state_resolved_name).toLowerCase())
 
@@ -60,6 +63,9 @@ class FiltersTranslationsDataSourceImpl(val context: Context) : FiltersTranslati
 
         toFilterTypeTranslation.put(context.getString(R.string.remark_state_removed_name).toLowerCase(),
                 context.getString(R.string.remark_state_removed).toLowerCase())
+
+        toFilterTypeTranslation.put(context.getString(R.string.remark_state_renewed_name).toLowerCase(),
+                context.getString(R.string.remark_state_renewed).toLowerCase())
     }
 
     override fun translateFromType(type: String): String {

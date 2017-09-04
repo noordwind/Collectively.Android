@@ -22,7 +22,7 @@ import javax.inject.Inject
 class MainScreenRemarksAdapterDelegate(viewType: Int, val onRemarkSelectedListener: OnRemarkSelectedListener) : AbsAdapterDelegate<List<Any>>(viewType) {
 
     interface OnRemarkSelectedListener {
-        fun onRemarkSelected(remark: Remark)
+        fun onRemarkItemSelected(remark: Remark)
     }
 
     override fun isForViewType(items: List<Any>, position: Int): Boolean {
@@ -54,7 +54,7 @@ class MainScreenRemarksAdapterDelegate(viewType: Int, val onRemarkSelectedListen
 
         init {
             TheApp[itemView.context].appComponent!!.inject(this)
-            itemView.setOnClickListener { onRemarkSelectedListener.onRemarkSelected(remark!!) }
+            itemView.setOnClickListener { onRemarkSelectedListener.onRemarkItemSelected(remark!!) }
             distanceToRemarkLabel = itemView.findViewById(R.id.distanceToRemarkLabel) as TextView
         }
 

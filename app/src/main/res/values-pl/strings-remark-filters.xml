@@ -8,5 +8,6 @@
     <string name="remark_state_new_name">Nowy</string>
     <string name="remark_state_processing_name">Procesowany</string>
     <string name="remark_state_removed_name">Usunięty</string>
+    <string name="remark_state_renewed_name">Przywrócony</string>
     <string name="remark_state_resolved_name">Rozwiązany</string>
 </resources>

@@ -1,6 +1,7 @@
 package com.noordwind.apps.collectively.presentation.views
 
 import android.content.Context
+import android.content.res.ColorStateList
 import android.support.v4.content.ContextCompat
 import android.view.View
 import android.widget.LinearLayout
@@ -37,6 +38,10 @@ class FilterView(context: Context, val filter: String, isChecked: Boolean, showI
         }
         mapFilterCheckbox.isChecked = isChecked
         mapFilterCheckbox.setOnCheckedChangeListener { compoundButton, isSelected -> postFilterSelectionEvent(isSelected)}
+    }
+
+    fun setCheckboxTintColor(color: Int) {
+        mapFilterCheckbox.supportButtonTintList = ColorStateList.valueOf(ContextCompat.getColor(context, color))
     }
 
     fun postFilterSelectionEvent(isSelected: Boolean) {
