@@ -15,13 +15,14 @@ interface MainMvp {
         fun showMapFiltersDialog()
         fun showRemarksReloadingProgress()
         fun showTooltip()
-        fun  centerOfMap(): LatLng?
-        fun  radiusOfMap(): Int?
+        fun centerOfMap(): LatLng?
+        fun radiusOfMap(): Int?
+        fun clearMap()
     }
 
     interface Presenter : BasePresenter {
         fun loadRemarkCategories()
-        fun loadRemarks(centerOfMap: LatLng, radiusOfMap: Int)
+        fun loadRemarks(centerOfMap: LatLng, radiusOfMap: Int, invalidateData: Boolean = false)
         fun loadMapFiltersDialog()
         fun checkIfFiltersHasChanged()
         fun remarkCategoryTranslation(name: String): String

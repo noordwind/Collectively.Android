@@ -11,11 +11,18 @@ import com.github.mikephil.charting.data.BarData
 import com.github.mikephil.charting.data.BarDataSet
 import com.github.mikephil.charting.data.BarEntry
 import com.github.mikephil.charting.interfaces.datasets.IBarDataSet
+import com.noordwind.apps.collectively.TheApp
+import com.noordwind.apps.collectively.data.datasource.FiltersTranslationsDataSource
 import com.noordwind.apps.collectively.data.model.StatisticEntry
-import com.noordwind.apps.collectively.presentation.extension.colorOfCategory
+import com.noordwind.apps.collectively.presentation.extension.colorOfCategoryForStatistics
 import com.noordwind.apps.collectively.presentation.extension.uppercaseFirstLetter
+import javax.inject.Inject
 
 class RemarksByCategoryChart : BarChart {
+
+    @Inject
+    lateinit var translationsDataSource: FiltersTranslationsDataSource
+
     constructor(context: Context?) : super(context) {
         initChart()
     }
@@ -29,6 +36,7 @@ class RemarksByCategoryChart : BarChart {
     }
 
     fun initChart() {
+        context.let {  TheApp[context!!].appComponent!!.inject(this) }
         setDrawBarShadow(false);
         setDrawValueAboveBar(true);
         description.isEnabled = false;
@@ -68,8 +76,14 @@ class RemarksByCategoryChart : BarChart {
         for ((valuePosition, catStatistics) in categoryStatistics.withIndex()) {
             var values = mutableListOf<BarEntry>()
             values.add(BarEntry(valuePosition.toFloat(), catStatistics.reportedCount().toFloat()))
-            var set = BarDataSet(values, catStatistics.name.uppercaseFirstLetter())
-            set.color = Color.parseColor(catStatistics.name.colorOfCategory())
+
+            var categoryName = catStatistics.name
+            translationsDataSource?.let {
+                categoryName = translationsDataSource!!.translateFromType(categoryName)
+            }
+
+            var set = BarDataSet(values, categoryName.uppercaseFirstLetter())
+            set.color = Color.parseColor(catStatistics.name.colorOfCategoryForStatistics())
             dataSets.add(set);
         }
 
