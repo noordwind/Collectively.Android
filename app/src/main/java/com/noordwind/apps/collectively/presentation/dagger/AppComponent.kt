@@ -23,6 +23,7 @@ import com.noordwind.apps.collectively.presentation.statistics.StatisticsActivit
 import com.noordwind.apps.collectively.presentation.users.UsersActivity
 import com.noordwind.apps.collectively.presentation.views.FilterView
 import com.noordwind.apps.collectively.presentation.views.RemarkCommentView
+import com.noordwind.apps.collectively.presentation.views.chart.RemarksByCategoryChart
 import com.noordwind.apps.collectively.presentation.views.dialogs.mapfilters.MapFiltersDialog
 import com.noordwind.apps.collectively.presentation.views.dialogs.mapfilters.RemarkFiltersDialog
 import com.noordwind.apps.collectively.presentation.views.remark.RemarkStateView
@@ -63,6 +64,7 @@ interface AppComponent {
     fun inject(view: RemarkCommentView)
     fun inject(view: MainScreenRemarksAdapterDelegate.RemarkRowHolder)
     fun inject(view: FilterView)
+    fun inject(chart: RemarksByCategoryChart)
 
     //Service
     fun inject(service: UploadRemarkPhotoService)

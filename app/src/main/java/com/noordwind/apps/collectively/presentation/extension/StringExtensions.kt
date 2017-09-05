@@ -69,6 +69,26 @@ fun String.colorOfCategory(): String {
     return "#2C74DA"
 }
 
+fun String.colorOfCategoryForStatistics(): String {
+    when (this) {
+        Constants.RemarkCategories.DEFECT -> {
+            return "#37474F"
+        }
+        Constants.RemarkCategories.ISSUE -> {
+            return "#DD2C00"
+        }
+        Constants.RemarkCategories.SUGGESTION -> {
+            return "#FDD835"
+        }
+        Constants.RemarkCategories.PRAISE -> {
+            return "#66BB6A"
+        }
+        else -> {
+            return "#2C74DA"
+        }
+    }
+}
+
 fun String.iconOfCategory(): Int {
     when (this) {
         Constants.RemarkCategories.DEFECT -> {

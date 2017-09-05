@@ -57,10 +57,8 @@ import io.reactivex.Observable
 import io.reactivex.ObservableOnSubscribe
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
-import io.reactivex.schedulers.Schedulers
 import io.reactivex.subjects.BehaviorSubject
 import kotlinx.android.synthetic.main.activity_main.*
-import java.util.*
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
@@ -79,7 +77,6 @@ class MainActivity : com.noordwind.apps.collectively.presentation.BaseActivity()
     private var locationRequest: LocationRequest? = null
     private var lastLocation: Location? = null
     private val MY_PERMISSIONS_REQUEST_LOCATION = 99
-    private val remarksMarkers: LinkedList<Marker> = LinkedList<Marker>()
     private var initialLocationChanged = true
 
     private lateinit var remarkMarkerBitmapProvider: RemarkMarkerBitmapProvider
@@ -112,8 +109,6 @@ class MainActivity : com.noordwind.apps.collectively.presentation.BaseActivity()
     private val mapSubject: BehaviorSubject<GoogleMap> = BehaviorSubject.create()
 
     private var bottomDialog: MainScreenRemarkBottomSheetDialog? = null
-
-    private var loadedMarkers : LinkedList<Remark> = LinkedList()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -209,7 +204,6 @@ class MainActivity : com.noordwind.apps.collectively.presentation.BaseActivity()
 
         mapSubject.flatMap(CameraIdleFunc())
                 .throttleWithTimeout(500, TimeUnit.MILLISECONDS)
-                .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({
                     var centerOfMap = centerOfMap()!!
@@ -322,6 +316,10 @@ class MainActivity : com.noordwind.apps.collectively.presentation.BaseActivity()
         //You can add here other case statements according to your requirement.
     }
 
+    override fun clearMap() {
+        map?.let { map!!.clear() }
+    }
+
     override fun showRemarks(remarks: List<Remark>) {
         reloadRemarksList = true
 
@@ -329,20 +327,13 @@ class MainActivity : com.noordwind.apps.collectively.presentation.BaseActivity()
             return
         }
 
-        var loadedRemarksIds = loadedMarkers.map { it.id }
-        var newRemarks = remarks.filter { !loadedRemarksIds.contains(it.id) }
-
         toast?.let {
             it.hide()
             toast = null
             ToastManager(this, getString(R.string.remarks_updated), Toast.LENGTH_LONG).success().show()
         }
 
-        newRemarks.filter { it.location != null }.forEach {
-            map!!.addMarker(markerFromRemark(it))
-            loadedMarkers.add(it)
-        }
-
+        remarks.forEach { map!!.addMarker(markerFromRemark(it)) }
     }
 
     private fun markerFromRemark(remark: Remark): MarkerOptions {
