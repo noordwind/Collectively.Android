@@ -9,8 +9,6 @@ import android.graphics.Color
 import android.location.Location
 import android.os.Build
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.support.v4.app.ActivityCompat
 import android.support.v4.content.ContextCompat
 import android.support.v4.view.GravityCompat
@@ -114,6 +112,8 @@ class MainActivity : com.noordwind.apps.collectively.presentation.BaseActivity()
     private val mapSubject: BehaviorSubject<GoogleMap> = BehaviorSubject.create()
 
     private var bottomDialog: MainScreenRemarkBottomSheetDialog? = null
+
+    private var loadedMarkers : LinkedList<Remark> = LinkedList()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -329,7 +329,8 @@ class MainActivity : com.noordwind.apps.collectively.presentation.BaseActivity()
             return
         }
 
-        var newRemarksIds = remarks.map { it.id }
+        var loadedRemarksIds = loadedMarkers.map { it.id }
+        var newRemarks = remarks.filter { !loadedRemarksIds.contains(it.id) }
 
         toast?.let {
             it.hide()
@@ -337,16 +338,9 @@ class MainActivity : com.noordwind.apps.collectively.presentation.BaseActivity()
             ToastManager(this, getString(R.string.remarks_updated), Toast.LENGTH_LONG).success().show()
         }
 
-        remarksMarkers.filter { !newRemarksIds.contains(it.snippet) }.forEach { it.remove() }
-
-        var x = 0
-        val DELAY: Long = 10
-        var handler = Handler(Looper.getMainLooper());
-        remarks.filter { it.location != null }.forEach {
-            handler.postDelayed(
-                    {
-                        remarksMarkers.add(map!!.addMarker(markerFromRemark(it)))
-                    }, DELAY * x++.toLong())
+        newRemarks.filter { it.location != null }.forEach {
+            map!!.addMarker(markerFromRemark(it))
+            loadedMarkers.add(it)
         }
 
     }
