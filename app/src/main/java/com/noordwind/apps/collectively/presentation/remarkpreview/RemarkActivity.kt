@@ -214,6 +214,9 @@ class RemarkActivity : com.noordwind.apps.collectively.presentation.BaseActivity
 
     override fun showRemarkPhotoLoading() {
         processingImage.visibility = View.VISIBLE
+        processingImageProgress.visibility = View.VISIBLE
+        processingImageLabel.text = getString(R.string.remark_image_is_being_processed)
+        processingImageLabel.setOnClickListener {  }
     }
 
     override fun showRemarkPhoto(firstBigPhoto: RemarkPhoto?) {
