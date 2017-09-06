@@ -128,7 +128,7 @@ class MainActivity : com.noordwind.apps.collectively.presentation.BaseActivity()
 
             override fun onDrawerOpened(drawerView: View?) {
                 if (drawerView?.id == R.id.right_navigation_view && reloadRemarksList) {
-                    var remarks = mainPresenter.getRemarks()
+                    var remarks = mainPresenter.getCurrentlyVisibleRemarks()
                     remarks?.let {
                         var fragment = supportFragmentManager.findFragmentById(R.id.fragment_view_navigation) as NavigationViewFragment
                         fragment.onRemarkSelectedListener = this@MainActivity
@@ -322,7 +322,6 @@ class MainActivity : com.noordwind.apps.collectively.presentation.BaseActivity()
 
     override fun showRemarks(remarks: List<Remark>) {
         reloadRemarksList = true
-
         if (map == null) {
             return
         }
@@ -347,7 +346,7 @@ class MainActivity : com.noordwind.apps.collectively.presentation.BaseActivity()
     }
 
     override fun onMarkerClick(marker: Marker?): Boolean {
-        mainPresenter.loadedRemarks?.filter { marker?.snippet.equals(it.id) }?.forEach {
+        mainPresenter.allLoadedRemarks?.filter { marker?.snippet.equals(it.id) }?.forEach {
             var latitude = it.location!!.coordinates[1]
             var longitude = it.location!!.coordinates[0]
 

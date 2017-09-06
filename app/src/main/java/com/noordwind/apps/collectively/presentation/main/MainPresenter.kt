@@ -21,7 +21,8 @@ class MainPresenter(val view: MainMvp.View,
                     val translationsDataSource: FiltersTranslationsDataSource) : MainMvp.Presenter {
 
     var filtersKey: String = ""
-    val loadedRemarks: LinkedList<Remark> = LinkedList()
+    val currentlyVisibleRemarks: LinkedList<Remark> = LinkedList()
+    val allLoadedRemarks: LinkedList<Remark> = LinkedList()
 
     override fun onCreate() {
         if (!Once.beenDone(Once.THIS_APP_INSTALL, Constants.OnceKey.SHOW_SWIPE_LEFT_TOOLTIP_ON_MAIN_SCREEN)) {
@@ -33,7 +34,9 @@ class MainPresenter(val view: MainMvp.View,
         Once.markDone(Constants.OnceKey.SHOW_SWIPE_LEFT_TOOLTIP_ON_MAIN_SCREEN)
     }
 
-    override fun getRemarks(): List<Remark>? = loadedRemarks
+    override fun getRemarks(): List<Remark>? = allLoadedRemarks
+
+    override fun getCurrentlyVisibleRemarks(): List<Remark> = currentlyVisibleRemarks
 
     override fun loadRemarks(centerOfMap: LatLng, radiusOfMap: Int, invalidateData: Boolean) {
         loadRemarksUseCase.dispose()
@@ -48,13 +51,16 @@ class MainPresenter(val view: MainMvp.View,
                 super.onNext(downloadedRemarks)
 
                 if (invalidateData) {
-                    loadedRemarks.clear()
+                    allLoadedRemarks.clear()
                     view.clearMap()
                 }
 
-                var loadedRemarksIds = loadedRemarks.map { it.id }
+                currentlyVisibleRemarks.clear()
+                currentlyVisibleRemarks.addAll(downloadedRemarks)
+
+                var loadedRemarksIds = allLoadedRemarks.map { it.id }
                 var newRemarks = downloadedRemarks.filter { !loadedRemarksIds.contains(it.id) && it.location != null }
-                loadedRemarks.addAll(newRemarks)
+                allLoadedRemarks.addAll(newRemarks)
 
                 view.showRemarks(newRemarks)
             }
@@ -129,7 +135,7 @@ class MainPresenter(val view: MainMvp.View,
                     var radiusOfMap = view.radiusOfMap()
 
                     if (centerOfMap != null && radiusOfMap != null) {
-                        loadedRemarks.clear()
+                        allLoadedRemarks.clear()
                         loadRemarks(centerOfMap = centerOfMap, radiusOfMap = radiusOfMap, invalidateData = true)
                         view.showRemarksReloadingProgress()
                     }
