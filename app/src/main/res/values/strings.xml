@@ -212,4 +212,6 @@
     <string name="remark_photo_uploaded_message">Photo has been added to the remark</string>
     <string name="error_uploading_remark_photo_title">Upload failed</string>
     <string name="error_uploading_remark_photo_message">Photo hasn\'t been added to the remark</string>
+    <string name="remark_image_is_being_processed">Processing image</string>
+    <string name="error_loading_remark_photo">Could not load remark photo</string>
 </resources>

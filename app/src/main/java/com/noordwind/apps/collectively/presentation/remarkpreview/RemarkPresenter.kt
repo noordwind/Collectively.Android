@@ -1,8 +1,10 @@
 package com.noordwind.apps.collectively.presentation.remarkpreview
 
 import com.noordwind.apps.collectively.Constants
+import com.noordwind.apps.collectively.data.model.RemarkPhoto
 import com.noordwind.apps.collectively.data.model.RemarkPreview
 import com.noordwind.apps.collectively.data.model.RemarkVote
+import com.noordwind.apps.collectively.domain.interactor.remark.LoadRemarkPhotoUseCase
 import com.noordwind.apps.collectively.domain.interactor.remark.LoadRemarkViewDataUseCase
 import com.noordwind.apps.collectively.domain.interactor.remark.votes.DeleteRemarkVoteUseCase
 import com.noordwind.apps.collectively.domain.interactor.remark.votes.SubmitRemarkVoteUseCase
@@ -13,7 +15,11 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 
 
-class RemarkPresenter(val view: RemarkPreviewMvp.View, val loadRemarkUseCase: LoadRemarkViewDataUseCase, val submitRemarkVoteUseCase: SubmitRemarkVoteUseCase, val deleteRemarkVoteUseCase: DeleteRemarkVoteUseCase) : RemarkPreviewMvp.Presenter {
+class RemarkPresenter(val view: RemarkPreviewMvp.View,
+                      val loadRemarkPhotoUseCase: LoadRemarkPhotoUseCase,
+                      val loadRemarkUseCase: LoadRemarkViewDataUseCase,
+                      val submitRemarkVoteUseCase: SubmitRemarkVoteUseCase,
+                      val deleteRemarkVoteUseCase: DeleteRemarkVoteUseCase) : RemarkPreviewMvp.Presenter {
 
     private var remarkId : String = ""
     private var userId : String = ""
@@ -53,6 +59,12 @@ class RemarkPresenter(val view: RemarkPreviewMvp.View, val loadRemarkUseCase: Lo
 
                 remarkId = remarkViewData.remarkPreview.id
                 userId = remarkViewData.userId
+
+                if (remarkViewData.remarkPreview.getFirstBigPhoto() != null) {
+                    view.showRemarkPhoto(remarkViewData.remarkPreview.getFirstBigPhoto())
+                } else if (remarkViewData.remarkPreview.isRemarkPhotoBeingProcessed()) {
+                    loadRemarkPhoto(remarkId)
+                }
 
                 view.showLoadedRemark(remarkViewData.remarkPreview)
                 view.showPositiveVotes(remarkViewData.remarkPreview.positiveVotesCount())
@@ -94,6 +106,33 @@ class RemarkPresenter(val view: RemarkPreviewMvp.View, val loadRemarkUseCase: Lo
         loadRemarkUseCase.execute(observer, id)
     }
 
+    override fun loadRemarkPhoto() {
+        loadRemarkPhoto(remarkId)
+    }
+
+    private fun loadRemarkPhoto(remarkId: String) {
+        var observer = object : AppDisposableObserver<RemarkPhoto>() {
+
+            override fun onStart() {
+                super.onStart()
+                view.showRemarkPhotoLoading()
+            }
+
+            override fun onNext(remarkPhoto: RemarkPhoto) {
+                super.onNext(remarkPhoto)
+                view.showRemarkPhoto(remarkPhoto)
+            }
+
+            override fun onError(e: Throwable) {
+                super.onError(e)
+                view.showRemarkPhotoLoadingError()
+            }
+
+        }
+
+        loadRemarkPhotoUseCase.execute(observer, remarkId)
+    }
+
     override fun remarkLatitude(): Double = remark.location.latitude
 
     override fun remarkLongitude(): Double = remark.location.longitude
@@ -119,6 +158,7 @@ class RemarkPresenter(val view: RemarkPreviewMvp.View, val loadRemarkUseCase: Lo
         deleteRemarkVoteUseCase.dispose()
         loadRemarkUseCase.dispose()
         remarksStateChangedDisposable.dispose()
+        loadRemarkPhotoUseCase.dispose()
     }
 
     class VoteChangeObserver(val view: RemarkPreviewMvp.View)  : AppDisposableObserver<RemarkViewData>() {

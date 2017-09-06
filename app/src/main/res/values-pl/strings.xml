@@ -210,4 +210,6 @@
     <string name="remark_photo_uploaded_message">Zdjęcie zostało dodane do zgłoszenia</string>
     <string name="error_uploading_remark_photo_title">Przesyłanie nie powiodło się</string>
     <string name="error_uploading_remark_photo_message">Zdjęcie nie zostało dodane do zgłoszenia</string>
+    <string name="remark_image_is_being_processed">Przetwarzamy zdjęcie</string>
+    <string name="error_loading_remark_photo">Pobieranie zdjęcia nie powiodło się</string>
 </resources>

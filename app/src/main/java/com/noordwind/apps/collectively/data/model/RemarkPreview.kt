@@ -15,6 +15,7 @@ class RemarkPreview(
         val photos: Array<RemarkPhoto>,
         val votes: Array<RemarkVote>,
         val state: RemarkState,
+        val status: String,
         val comments: List<RemarkComment>,
         val states: List<RemarkState>
 ) {
@@ -31,6 +32,7 @@ class RemarkPreview(
     fun isNewRemark() = state.state.equals(Constants.RemarkStates.NEW, true)
     fun isRenewedRemark() = state.state.equals(Constants.RemarkStates.RENEWED, true)
     fun isRemarkBeingProcessed() = state.state.equals(Constants.RemarkStates.PROCESSING, true)
+    fun isRemarkPhotoBeingProcessed() = status.equals(Constants.RemarkStates.PROCESSING_PHOTOS, true)
     fun isRemarkResolved() = state.state.equals(Constants.RemarkStates.RESOLVED, true)
 
     fun positiveVotesCount(): Int = positiveVotes().count()

@@ -21,12 +21,10 @@ import com.like.OnLikeListener
 import com.noordwind.apps.collectively.Constants
 import com.noordwind.apps.collectively.R
 import com.noordwind.apps.collectively.TheApp
-import com.noordwind.apps.collectively.data.model.RemarkComment
-import com.noordwind.apps.collectively.data.model.RemarkPreview
-import com.noordwind.apps.collectively.data.model.RemarkState
-import com.noordwind.apps.collectively.data.model.RemarkTag
+import com.noordwind.apps.collectively.data.model.*
 import com.noordwind.apps.collectively.data.repository.ProfileRepository
 import com.noordwind.apps.collectively.data.repository.RemarksRepository
+import com.noordwind.apps.collectively.domain.interactor.remark.LoadRemarkPhotoUseCase
 import com.noordwind.apps.collectively.domain.interactor.remark.LoadRemarkViewDataUseCase
 import com.noordwind.apps.collectively.domain.interactor.remark.votes.DeleteRemarkVoteUseCase
 import com.noordwind.apps.collectively.domain.interactor.remark.votes.SubmitRemarkVoteUseCase
@@ -88,6 +86,7 @@ class RemarkActivity : com.noordwind.apps.collectively.presentation.BaseActivity
         setContentView(R.layout.activity_remark_preview);
 
         presenter = RemarkPresenter(this,
+                LoadRemarkPhotoUseCase(remarksRepository, ioThread, uiThread),
                 LoadRemarkViewDataUseCase(profileRepository, remarksRepository, ioThread, uiThread),
                 SubmitRemarkVoteUseCase(remarksRepository, profileRepository, ioThread, uiThread),
                 DeleteRemarkVoteUseCase(remarksRepository, profileRepository, ioThread, uiThread))
@@ -213,10 +212,14 @@ class RemarkActivity : com.noordwind.apps.collectively.presentation.BaseActivity
         switcher.showErrorViewsImmediately()
     }
 
-    override fun showLoadedRemark(remark: RemarkPreview) {
-        switcher.showContentViewsImmediately()
+    override fun showRemarkPhotoLoading() {
+        processingImage.visibility = View.VISIBLE
+    }
 
-        remark.getFirstBigPhoto()?.let {
+    override fun showRemarkPhoto(firstBigPhoto: RemarkPhoto?) {
+        processingImage.visibility = View.GONE
+
+        firstBigPhoto?.let {
             var listener = object : RequestListener<String, GlideDrawable> {
                 override fun onResourceReady(resource: GlideDrawable?, model: String?, target: Target<GlideDrawable>?, isFromMemoryCache: Boolean, isFirstResource: Boolean): Boolean {
                     imageView.setOnClickListener {
@@ -239,13 +242,24 @@ class RemarkActivity : com.noordwind.apps.collectively.presentation.BaseActivity
             }
 
             Glide.with(baseContext)
-                    .load(remark.getFirstBigPhoto()?.url)
+                    .load(firstBigPhoto?.url)
                     .listener(listener)
                     .into(imageView)
 
-            Glide.with(baseContext).load(remark.getFirstBigPhoto()?.url).into(expandedRemarkImage)
+            Glide.with(baseContext).load(firstBigPhoto?.url).into(expandedRemarkImage)
         }
+    }
 
+    override fun showRemarkPhotoLoadingError() {
+        processingImage.visibility = View.VISIBLE
+
+        processingImageProgress.visibility = View.GONE
+        processingImageLabel.text = getString(R.string.error_loading_remark_photo)
+        processingImageLabel.setOnClickListener { presenter.loadRemarkPhoto() }
+    }
+
+    override fun showLoadedRemark(remark: RemarkPreview) {
+        switcher.showContentViewsImmediately()
 
         locationLabel.text = remark.location.address
         remarkPhotoTitle.text = Html.fromHtml(getString(R.string.remark_preview_photo_title, remark.category.translation.uppercaseFirstLetter(), remark.author.name))
