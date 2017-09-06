@@ -4,6 +4,7 @@ import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.net.Uri
+import com.noordwind.apps.collectively.presentation.extension.getFilePath
 import io.reactivex.Observable
 import java.io.File
 import java.io.FileInputStream
@@ -59,11 +60,7 @@ class FileDataSourceImpl(val context: Context) : FileDataSource {
     }
 
     private fun inputStreamFromUri(uri: Uri): InputStream {
-        if (uri.path.contains("content")) {
-            return context.contentResolver.openInputStream(uri)
-        } else {
-            return FileInputStream(fileFromUri(uri))
-        }
+        return FileInputStream(File(uri.getFilePath(context, uri)))
     }
 
     override fun fileFromUri(uri: Uri): File = File(uri.path)

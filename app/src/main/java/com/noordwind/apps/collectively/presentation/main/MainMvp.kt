@@ -29,6 +29,7 @@ interface MainMvp {
         fun getRemarks(): List<Remark>?
         fun onCreate()
         fun onTooltipShown()
+        fun getCurrentlyVisibleRemarks(): List<Remark>
     }
 }
 
