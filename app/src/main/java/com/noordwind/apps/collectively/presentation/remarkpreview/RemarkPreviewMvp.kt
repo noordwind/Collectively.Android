@@ -1,10 +1,11 @@
 package com.noordwind.apps.collectively.presentation.remarkpreview
 
-import io.reactivex.disposables.Disposable
 import com.noordwind.apps.collectively.data.model.RemarkComment
+import com.noordwind.apps.collectively.data.model.RemarkPhoto
 import com.noordwind.apps.collectively.data.model.RemarkPreview
 import com.noordwind.apps.collectively.data.model.RemarkState
 import com.noordwind.apps.collectively.presentation.mvp.BasePresenter
+import io.reactivex.disposables.Disposable
 
 interface RemarkPreviewMvp {
 
@@ -20,6 +21,9 @@ interface RemarkPreviewMvp {
         fun showUserVotedNegatively()
         fun showCommentsAndStates(comments: List<RemarkComment>, states: List<RemarkState>)
         fun invalidateLikesProgress()
+        fun showRemarkPhoto(firstBigPhoto: RemarkPhoto?)
+        fun showRemarkPhotoLoading()
+        fun showRemarkPhotoLoadingError()
     }
 
     interface Presenter : BasePresenter {
@@ -34,5 +38,6 @@ interface RemarkPreviewMvp {
         fun remarkLongitude(): Double
         fun onCreate()
         fun onStart()
+        fun loadRemarkPhoto()
     }
 }

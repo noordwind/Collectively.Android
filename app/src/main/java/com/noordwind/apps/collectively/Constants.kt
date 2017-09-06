@@ -81,6 +81,7 @@ interface Constants {
             val RESOLVED = "resolved"
             val RENEWED = "renewed"
             val PROCESSING = "processing"
+            val PROCESSING_PHOTOS = "processing_photos"
         }
     }
 
