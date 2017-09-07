@@ -7,5 +7,6 @@ interface Cache<T> {
     fun putData(data: T)
     fun getData(): Observable<T>
     fun clear()
+    fun getDataSync(): T
 }
 

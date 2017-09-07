@@ -1,6 +1,7 @@
 package com.noordwind.apps.collectively.presentation.profile.remarks.user
 
 import com.noordwind.apps.collectively.Constants
+import com.noordwind.apps.collectively.data.datasource.FiltersTranslationsDataSource
 import com.noordwind.apps.collectively.data.model.Remark
 import com.noordwind.apps.collectively.domain.interactor.remark.LoadUserFavoriteRemarksUseCase
 import com.noordwind.apps.collectively.domain.interactor.remark.LoadUserRemarksUseCase
@@ -21,7 +22,8 @@ class UserRemarksPresenter(
         val loadUserResolvedRemarksUseCase: LoadUserResolvedRemarksUseCase,
         val loadRemarkFiltersUseCase: LoadRemarkFiltersUseCase,
         val loadUserFavoriteRemarksUseCase: LoadUserFavoriteRemarksUseCase,
-        val clearRemarkFiltersUseCase: ClearRemarkFiltersUseCase
+        val clearRemarkFiltersUseCase: ClearRemarkFiltersUseCase,
+        val translationsDataSource: FiltersTranslationsDataSource
 ) : UserRemarksMvp.Presenter {
 
     private var filtersKey: String? = null
@@ -74,13 +76,8 @@ class UserRemarksPresenter(
 
             override fun onNext(remarks: List<Remark>) {
                 super.onNext(remarks)
-                loadedRemarks = remarks
-
-                if (remarks.size > 0) {
-                    view.showLoadedRemarks(remarks)
-                } else {
-                    view.showEmptyScreen()
-                }
+                loadedRemarks = remarks.sortedBy { it.distanceToRemark }
+                showRemarks(loadedRemarks!!)
             }
 
             override fun onError(e: Throwable) {
@@ -121,13 +118,8 @@ class UserRemarksPresenter(
 
             override fun onNext(remarks: List<Remark>) {
                 super.onNext(remarks)
-                loadedRemarks = remarks
-
-                if (remarks.size > 0) {
-                    view.showLoadedRemarks(remarks)
-                } else {
-                    view.showEmptyScreen()
-                }
+                loadedRemarks = remarks.sortedBy { it.distanceToRemark }
+                showRemarks(loadedRemarks!!)
             }
 
             override fun onError(e: Throwable) {
@@ -181,13 +173,8 @@ class UserRemarksPresenter(
 
             override fun onNext(remarks: List<Remark>) {
                 super.onNext(remarks)
-                loadedRemarks = remarks
-
-                if (remarks.size > 0) {
-                    view.showLoadedRemarks(remarks)
-                } else {
-                    view.showEmptyScreen()
-                }
+                loadedRemarks = remarks.sortedBy { it.distanceToRemark }
+                showRemarks(loadedRemarks!!)
             }
 
             override fun onError(e: Throwable) {
@@ -213,6 +200,14 @@ class UserRemarksPresenter(
         initFiltersKey()
 
         clearRemarkFiltersUseCase.execute(null)
+    }
+
+    private fun showRemarks(remarks: List<Remark>) {
+        if (remarks.size > 0) {
+            view.showLoadedRemarks(remarks)
+        } else {
+            view.showEmptyScreen()
+        }
     }
 
     override fun checkIfFiltersHasChanged() {

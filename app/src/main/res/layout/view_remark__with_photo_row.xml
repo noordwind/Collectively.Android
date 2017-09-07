@@ -1,10 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-             android:layout_width="match_parent"
-             android:layout_height="wrap_content"
-             android:background="@android:color/background_light"
-             xmlns:app="http://schemas.android.com/apk/res-auto"
-             android:orientation="vertical">
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:background="#2374da"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              android:orientation="vertical">
+
+    <android.support.v7.widget.AppCompatImageView
+        android:id="@+id/imageView"
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:fitsSystemWindows="true"
+        android:scaleType="centerCrop"/>
+
 
     <FrameLayout
         android:layout_width="wrap_content"
@@ -29,12 +37,11 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@color/black_light_transparent"
         android:layout_gravity="bottom"
         android:orientation="horizontal"
-        android:paddingLeft="4dp"
-        android:paddingRight="4dp"
-        android:paddingTop="24dp"
-        android:paddingBottom="24dp">
+        android:padding="4dp">
+
 
         <FrameLayout
             android:id="@+id/image_section"
@@ -73,7 +80,7 @@
                 android:gravity="left"
                 android:lines="1"
                 android:singleLine="true"
-                android:textColor="@color/black"
+                android:textColor="@color/white"
                 android:textSize="@dimen/font_normal"/>
 
             <TextView
@@ -85,20 +92,20 @@
                 android:gravity="left"
                 android:lines="1"
                 android:singleLine="true"
-                android:textColor="@color/black"
+                android:textColor="@color/white"
                 android:textSize="14sp"/>
 
             <TextView
                 android:id="@+id/distanceLabel"
-                android:visibility="gone"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
+                android:visibility="gone"
                 android:fontFamily="@string/font_condensed"
                 android:gravity="left"
                 android:lines="1"
                 android:singleLine="true"
-                android:textColor="@color/black"
+                android:textColor="@color/white"
                 android:textSize="14sp"/>
 
         </LinearLayout>

@@ -6,5 +6,6 @@ import io.reactivex.Observable
 interface ProfileRepository {
     fun loadProfile(forceRefresh: Boolean): Observable<Profile>
     fun loadProfileFromCache(): Observable<Profile>
+    fun loadProfileFromCacheSync(): Profile
 }
 

@@ -6,9 +6,6 @@ import android.view.View
 import android.widget.ImageView
 import android.widget.LinearLayout
 import com.bumptech.glide.Glide
-import kotlinx.android.synthetic.main.view_remark_comment.view.authorLabel
-import kotlinx.android.synthetic.main.view_remark_comment.view.commentLabel
-import kotlinx.android.synthetic.main.view_remark_comment.view.userImage
 import com.noordwind.apps.collectively.R
 import com.noordwind.apps.collectively.TheApp
 import com.noordwind.apps.collectively.data.model.RemarkComment
@@ -17,6 +14,7 @@ import com.noordwind.apps.collectively.domain.thread.PostExecutionThread
 import com.noordwind.apps.collectively.domain.thread.UseCaseThread
 import com.noordwind.apps.collectively.presentation.rxjava.AppDisposableObserver
 import com.noordwind.apps.collectively.presentation.statistics.LoadUserPictureUrlUseCase
+import kotlinx.android.synthetic.main.view_remark_comment.view.*
 import javax.inject.Inject
 
 
@@ -31,6 +29,8 @@ class RemarkCommentView(context: Context, comment: RemarkComment) : LinearLayout
     @Inject
     lateinit var uiThread: PostExecutionThread
 
+    private var useCase: LoadUserPictureUrlUseCase? = null;
+
     init {
         View.inflate(getContext(), R.layout.view_remark_comment, this)
         TheApp[getContext()].appComponent!!.inject(this)
@@ -39,7 +39,13 @@ class RemarkCommentView(context: Context, comment: RemarkComment) : LinearLayout
         commentLabel.text = comment.text
 
         userImage.setImageDrawable(VectorDrawableCompat.create(context.resources, R.drawable.ic_person_grey_48dp, null))
-        LoadUserPictureUrlUseCase(usersRepository, ioThread, uiThread).execute(UserPictureUrlObserver(context, userImage), comment.user?.name)
+        useCase = LoadUserPictureUrlUseCase(usersRepository, ioThread, uiThread)
+        useCase!!.execute(UserPictureUrlObserver(context, userImage), comment.user?.name)
+    }
+
+    override fun onDetachedFromWindow() {
+        super.onDetachedFromWindow()
+        useCase?.dispose()
     }
 
     class UserPictureUrlObserver(val context: Context, val userImage: ImageView) : AppDisposableObserver<String>() {

@@ -10,13 +10,12 @@ import android.view.ViewGroup
 import com.noordwind.apps.collectively.R
 import com.noordwind.apps.collectively.data.model.Remark
 import com.noordwind.apps.collectively.presentation.adapter.MainScreenRemarksListAdapter
-import com.noordwind.apps.collectively.presentation.adapter.delegates.MainScreenRemarksAdapterDelegate
 
 class NavigationViewFragment : Fragment() {
 
     private lateinit var recyclerView: RecyclerView
 
-    var onRemarkSelectedListener: MainScreenRemarksAdapterDelegate.OnRemarkSelectedListener? = null
+    var onRemarkSelectedListener: MainScreenRemarksListAdapter.OnRemarkSelectedListener? = null
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val layout = inflater?.inflate(R.layout.fragment_view_navigation, container, false)
@@ -36,7 +35,7 @@ class NavigationViewFragment : Fragment() {
 
     fun setRemarks(remarks: List<Remark>) {
         var adapter = MainScreenRemarksListAdapter(onRemarkSelectedListener!!)
-        adapter.setData(remarks)
+        adapter.setData(remarks.sortedBy { it.distanceToRemark })
         adapter.initDelegates()
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(context)

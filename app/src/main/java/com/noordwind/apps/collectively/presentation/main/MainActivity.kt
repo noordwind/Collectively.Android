@@ -43,7 +43,7 @@ import com.noordwind.apps.collectively.domain.interactor.remark.LoadRemarksUseCa
 import com.noordwind.apps.collectively.domain.interactor.remark.filters.map.LoadMapFiltersUseCase
 import com.noordwind.apps.collectively.domain.thread.PostExecutionThread
 import com.noordwind.apps.collectively.domain.thread.UseCaseThread
-import com.noordwind.apps.collectively.presentation.adapter.delegates.MainScreenRemarksAdapterDelegate
+import com.noordwind.apps.collectively.presentation.adapter.MainScreenRemarksListAdapter
 import com.noordwind.apps.collectively.presentation.addremark.AddRemarkActivity
 import com.noordwind.apps.collectively.presentation.extension.colorOfCategory
 import com.noordwind.apps.collectively.presentation.extension.iconOfCategory
@@ -63,7 +63,7 @@ import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 
-class MainActivity : com.noordwind.apps.collectively.presentation.BaseActivity(), MainMvp.View, OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener, MainScreenRemarksAdapterDelegate.OnRemarkSelectedListener, GoogleMap.OnMarkerClickListener {
+class MainActivity : com.noordwind.apps.collectively.presentation.BaseActivity(), MainMvp.View, OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener, MainScreenRemarksListAdapter.OnRemarkSelectedListener, GoogleMap.OnMarkerClickListener {
     companion object {
         fun login(context: Context) {
             val intent = Intent(context, MainActivity::class.java)
@@ -255,6 +255,8 @@ class MainActivity : com.noordwind.apps.collectively.presentation.BaseActivity()
 
     override fun onLocationChanged(location: Location?) {
         lastLocation = location;
+
+        mainPresenter.lastLocation = lastLocation
 
         if (initialLocationChanged) {
             //Place current location marker

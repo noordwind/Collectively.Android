@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <item name="navigate" type="id">navigate</item>
+    <item name="voteUpButton" type="id">voteUpButton</item>
 </resources>

@@ -1,5 +1,6 @@
 package com.noordwind.apps.collectively.presentation.main
 
+import android.location.Location
 import com.google.android.gms.maps.model.LatLng
 import com.noordwind.apps.collectively.Constants
 import com.noordwind.apps.collectively.data.datasource.FiltersTranslationsDataSource
@@ -23,6 +24,7 @@ class MainPresenter(val view: MainMvp.View,
     var filtersKey: String = ""
     val currentlyVisibleRemarks: LinkedList<Remark> = LinkedList()
     val allLoadedRemarks: LinkedList<Remark> = LinkedList()
+    var lastLocation: Location? = null
 
     override fun onCreate() {
         if (!Once.beenDone(Once.THIS_APP_INSTALL, Constants.OnceKey.SHOW_SWIPE_LEFT_TOOLTIP_ON_MAIN_SCREEN)) {
@@ -49,6 +51,22 @@ class MainPresenter(val view: MainMvp.View,
 
             override fun onNext(downloadedRemarks: List<Remark>) {
                 super.onNext(downloadedRemarks)
+
+                downloadedRemarks.forEach {
+                    var latitude = it.location!!.coordinates[1]
+                    var longitude = it.location!!.coordinates[0]
+
+                    var remarkLocation = Location("")
+                    remarkLocation.latitude = latitude
+                    remarkLocation.longitude = longitude
+
+                    var remark = it
+
+                    lastLocation?.let {
+                        val distanceInMeters = lastLocation!!.distanceTo(remarkLocation)
+                        remark.distanceToRemark = distanceInMeters.toInt()
+                    }
+                }
 
                 if (invalidateData) {
                     allLoadedRemarks.clear()

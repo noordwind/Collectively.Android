@@ -25,5 +25,9 @@ class ProfileRepositoryImpl(val profileDataSource: ProfileDataSource, val profil
             Observable.just(it)
         }
     }
+
+    override fun loadProfileFromCacheSync(): Profile {
+        return profileCache.getDataSync()
+    }
 }
 

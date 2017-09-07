@@ -55,11 +55,16 @@
             android:id="@+id/descriptionLabel"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:paddingTop="4dp"
+            android:paddingBottom="4dp"
+            android:ellipsize="end"
+            android:singleLine="true"
+            android:lines="1"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:fontFamily="@string/font_light"
             android:textColor="@color/font_dark"
-            android:textSize="@dimen/font_normal"/>
+            android:textSize="14sp"/>
 
         <TextView
             android:id="@+id/statusLabel"

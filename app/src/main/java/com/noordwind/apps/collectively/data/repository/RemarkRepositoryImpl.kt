@@ -2,11 +2,14 @@ package com.noordwind.apps.collectively.data.repository
 
 import android.content.Context
 import android.content.Intent
+import android.location.Address
+import android.location.Location
 import com.google.android.gms.maps.model.LatLng
 import com.noordwind.apps.collectively.Constants
 import com.noordwind.apps.collectively.data.cache.RemarkCategoriesCache
 import com.noordwind.apps.collectively.data.datasource.*
 import com.noordwind.apps.collectively.data.model.*
+import com.noordwind.apps.collectively.data.repository.util.LocationRepository
 import com.noordwind.apps.collectively.data.repository.util.OperationRepository
 import io.reactivex.Observable
 import io.reactivex.functions.BiFunction
@@ -23,22 +26,55 @@ class RemarkRepositoryImpl(
         val mapFiltersRepository: MapFiltersRepository,
         val translationsDataSource: FiltersTranslationsDataSource,
         val userGroupsRepository: UserGroupsRepository,
+        val locationRepository: LocationRepository,
         val operationRepository: OperationRepository) : RemarksRepository, Constants {
 
     override fun loadUserRemarks(): Observable<List<Remark>> {
-        return profileRepository.loadProfile(false).flatMap { remarksDataSource.loadUserRemarks(it.userId) }
+        return profileRepository.loadProfile(false).flatMap {
+            prepareRemarks(remarksDataSource.loadUserRemarks(it.userId))
+        }
     }
 
-    override fun loadUserRemarks(userId: String): Observable<List<Remark>> = remarksDataSource.loadUserRemarks(userId)
+    private fun prepareRemarks(remarksObs: Observable<List<Remark>>): Observable<List<Remark>> {
+        var lastKnownAddressObs = locationRepository.lastKnownAddress()
+
+        return Observable.zip(remarksObs, lastKnownAddressObs, BiFunction<List<Remark>, List<Address>, List<Remark>> { remarks, lastKnownAddress ->
+            if (!lastKnownAddress.isEmpty()) {
+                remarks.forEach {
+                    var lastLocation = Location("")
+                    lastLocation.latitude = lastKnownAddress[0].latitude
+                    lastLocation.longitude = lastKnownAddress[0].longitude
+
+                    it.distanceToRemark
+
+                    var remarkLocation = Location("")
+                    remarkLocation.latitude = it.location!!.coordinates[1]
+                    remarkLocation.longitude = it.location!!.coordinates[0]
+
+                    val distanceInMeters = lastLocation!!.distanceTo(remarkLocation)
+                    it.distanceToRemark = distanceInMeters.toInt()
+                }
+            }
+
+            remarks
+        }).flatMap {
+            it.forEach { it.category?.translation = translationsDataSource.translateFromType(it.category?.name!!) }
+            Observable.just(it)
+        }
+    }
+
+    override fun loadUserRemarks(userId: String): Observable<List<Remark>> = prepareRemarks(remarksDataSource.loadUserRemarks(userId))
 
     override fun loadUserResolvedRemarks(): Observable<List<Remark>> {
-        return profileRepository.loadProfile(false).flatMap { remarksDataSource.loadUserResolvedRemarks(it.userId) }
+        return profileRepository.loadProfile(false)
+                .flatMap { prepareRemarks(remarksDataSource.loadUserResolvedRemarks(it.userId)) }
     }
 
-    override fun loadUserResolvedRemarks(userId: String): Observable<List<Remark>> = remarksDataSource.loadUserResolvedRemarks(userId)
+    override fun loadUserResolvedRemarks(userId: String): Observable<List<Remark>> = prepareRemarks(remarksDataSource.loadUserResolvedRemarks(userId))
 
     override fun loadUserFavoriteRemarks(): Observable<List<Remark>> {
-        return profileRepository.loadProfile(false).flatMap { remarksDataSource.loadUserFavoriteRemarks(it.userId) }
+        return profileRepository.loadProfile(false)
+                .flatMap { prepareRemarks(remarksDataSource.loadUserFavoriteRemarks(it.userId)) }
     }
 
     override fun loadRemarkComments(id: String): Observable<List<RemarkComment>> {
@@ -98,19 +134,10 @@ class RemarkRepositoryImpl(
                     objectObservable.delay(Constants.RetryTime.LOAD_REMARKS_RETRY_MS, TimeUnit.MILLISECONDS)
                 }
             }
+        }.flatMap {
+            it.forEach { it.category?.translation = translationsDataSource.translateFromType(it.category?.name!!) }
+            Observable.just(it)
         }
-//        return Observable.zip<String, String, List<String>, Triple<String, String, List<String>>>(
-//                showOnlyMineIdObservable, mapFiltersRepository.getSelectRemarkStatus(), mapFiltersRepository.selectedFilters(), Function3 { onlyMine, remarkStatus, filters ->
-//            Triple(onlyMine, remarkStatus, filters)
-//        }).flatMap {
-//            var onlyMine = if (it.first.isEmpty()) null else it.first
-//            var remarkStatus = it.second
-//            var filters = it.third
-//            remarksDataSource.loadRemarks(authorId = onlyMine, state = remarkStatus, categories = filters, groupId =).repeatWhen {
-//                objectObservable: Observable<Any> ->
-//                objectObservable.delay(Constants.RetryTime.LOAD_REMARKS_RETRY_MS, TimeUnit.MILLISECONDS)
-//            }
-//        }
     }
 
     private class LoadRemarkParameters(val authorId: String,

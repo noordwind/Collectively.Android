@@ -3,6 +3,7 @@ package com.noordwind.apps.collectively.presentation.dagger
 import android.app.Application
 import com.noordwind.apps.collectively.data.datasource.UploadRemarkPhotoService
 import com.noordwind.apps.collectively.presentation.adapter.delegates.MainScreenRemarksAdapterDelegate
+import com.noordwind.apps.collectively.presentation.adapter.delegates.MainScreenRemarksWithPhotoAdapterDelegate
 import com.noordwind.apps.collectively.presentation.addremark.AddRemarkActivity
 import com.noordwind.apps.collectively.presentation.addremark.location.PickRemarkLocationActivity
 import com.noordwind.apps.collectively.presentation.authentication.login.LoginActivity
@@ -63,6 +64,7 @@ interface AppComponent {
     fun inject(view: RemarkStateView)
     fun inject(view: RemarkCommentView)
     fun inject(view: MainScreenRemarksAdapterDelegate.RemarkRowHolder)
+    fun inject(view: MainScreenRemarksWithPhotoAdapterDelegate.RemarkRowHolder)
     fun inject(view: FilterView)
     fun inject(chart: RemarksByCategoryChart)
 

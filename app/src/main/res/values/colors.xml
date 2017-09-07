@@ -30,7 +30,13 @@
     <color name="unresolved_remark_color">#D32F2F</color>
     <color name="resolved_remark_color">@color/red_dark_2</color>
 
-    <color name="vote_up_remark_color">@color/red_dark_2</color>
+    <color name="resolved_remark_background_color">#66BB6A</color>
+    <color name="new_remark_background_color">#0277BD
+    </color>
+    <color name="processing_remark_background_color">#f9c42f</color>
+    <color name="renewed_remark_background_color">#75d7ff</color>
+
+    <color name="vote_up_remark_color">#66BB6A</color>
     <color name="vote_down_remark_color">#D32F2F</color>
 
     // FONT COLOR
@@ -46,5 +52,5 @@
     <color name="remark_state_new_color">#4368F8</color>
     <color name="remark_state_processing_color">#E9B72B</color>
     <color name="remark_state_renewed_color">#75D7FF</color>
-    <color name="remark_state_resolved_color">#8EFA6E</color>
+    <color name="remark_state_resolved_color">#66BB6A</color>
 </resources>

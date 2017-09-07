@@ -1,6 +1,7 @@
 package com.noordwind.apps.collectively.data.model
 
 import android.net.Uri
+import java.util.*
 
 class RemarkLocation(
         val address: String,
@@ -11,11 +12,17 @@ class Remark(
         val id: String,
         val category: RemarkCategory? = null,
         val state: RemarkState,
-        val location: RemarkLocation? = null ,
+        val location: RemarkLocation? = null,
         val smallPhotoUrl: String = "",
         val description: String = "",
         val resolved: Boolean? = null,
-        val rating: Int
+        val offering: OfferingForRemark?,
+        val author: RemarkPreviewAuthor?,
+        val photo: RemarkPhotos?,
+        val rating: Int,
+        var distanceToRemark: Int? = 0,
+        val positiveVotesCount: Int = Random().nextInt(1000),
+        val negativeVotesCount: Int = Random().nextInt(1000)
 ) {
 
     override fun equals(other: Any?): Boolean {
@@ -26,7 +33,16 @@ class Remark(
             return id.equals(remark.id)
         }
     }
+
+    fun hasPhoto() = hasSmallPhoto() || hasMediumPhoto() || hasBigPhoto()
+    fun hasSmallPhoto() = photo != null && !photo.small.isNullOrBlank()
+    fun hasMediumPhoto() = photo != null && !photo.medium.isNullOrBlank()
+    fun hasBigPhoto() = photo != null && !photo.big.isNullOrBlank()
 }
+
+class RemarkPhotos(val small: String, val medium: String, val big: String)
+
+class OfferingForRemark
 
 class RemarkNotFromList(
         val id: String,

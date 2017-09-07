@@ -29,8 +29,10 @@ class UserGroupsCache(val sharedPreferences: SharedPreferences, val gson: Gson) 
     }
 
     override fun getData(): Observable<List<UserGroup>> {
-        return Observable.just(gson.fromJson(groupsInJson(), typeToken))
+        return Observable.just(getDataSync())
     }
+
+    override fun getDataSync(): List<UserGroup> = gson.fromJson(groupsInJson(), typeToken)
 
     override fun clear() {
         sharedPreferences.edit().clear().commit()

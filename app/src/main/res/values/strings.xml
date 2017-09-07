@@ -190,7 +190,7 @@
     <string name="remark_state_resolved_long_description">Resolved</string>
     <string name="remark_state_renewed_long_description">Renewed</string>
     <string name="add_remark_group_hint">For group...</string>
-    <string name="add_remark_all_groups_target">Wszystkie</string>
+    <string name="add_remark_all_groups_target">All groups</string>
     <string name="add_remark_category_not_selected">Nie wybrano kategorii</string>
     <string name="filter_remarks_dialog_status_label">Status</string>
     <string name="groups">Group</string>
@@ -214,4 +214,8 @@
     <string name="error_uploading_remark_photo_message">Photo hasn\'t been added to the remark</string>
     <string name="remark_image_is_being_processed">Processing image</string>
     <string name="error_loading_remark_photo">Could not load remark photo</string>
+    <string name="remark_distance_label"><![CDATA[Distance: <b>%1$s</b>]]></string>
+    <string name="remark_preview_photo_title_2" formatted="false"><![CDATA[<b>%1$s</b> added by <font color=\'#0288D1\'><b>%2$s</b></font>]]></string>
+    <string name="autor">Author</string>
+    <string name="click_vote_button_tooltip">Vote up remark if this remarks interests you!</string>
 </resources>

@@ -20,6 +20,9 @@ class RemarkPresenter(val view: RemarkPreviewMvp.View,
                       val loadRemarkUseCase: LoadRemarkViewDataUseCase,
                       val submitRemarkVoteUseCase: SubmitRemarkVoteUseCase,
                       val deleteRemarkVoteUseCase: DeleteRemarkVoteUseCase) : RemarkPreviewMvp.Presenter {
+    override fun positivesVotes() = positiveVotes
+
+    override fun negativeVotes() = negativeVotes
 
     private var remarkId : String = ""
     private var userId : String = ""
@@ -27,6 +30,9 @@ class RemarkPresenter(val view: RemarkPreviewMvp.View,
 
     private lateinit var remarksStateChangedDisposable: Disposable
     private var refreshRemark: Boolean = false
+
+    var negativeVotes = 0
+    var positiveVotes = 0
 
     override fun onCreate() {
         remarksStateChangedDisposable = RxBus.instance
@@ -67,21 +73,25 @@ class RemarkPresenter(val view: RemarkPreviewMvp.View,
                 }
 
                 view.showLoadedRemark(remarkViewData.remarkPreview)
-                view.showPositiveVotes(remarkViewData.remarkPreview.positiveVotesCount())
-                view.showNegativeVotes(remarkViewData.remarkPreview.negativeVotesCount())
-                view.invalidateLikesProgress()
+
+                positiveVotes = remarkViewData.remarkPreview.positiveVotesCount()
+                negativeVotes = remarkViewData.remarkPreview.negativeVotesCount()
 
                 if (remarkViewData.remarkPreview.userVotedPositively(remarkViewData.userId)) {
                     view.showUserVotedPositively()
                 } else if (remarkViewData.remarkPreview.userVotedNegatively(remarkViewData.userId)) {
                     view.showUserVotedNegatively()
+                } else {
+                    view.refreshVotesCountLabel()
                 }
+
+                view.invalidateLikesProgress()
 
                 remarkViewData.comments.forEach { it.remarkId = remarkId }
 
                 var comments = remarkViewData.comments.filter { !it.removed }
                 var states = remarkViewData.states.filter { !it.removed }
-                states = if (states.size > 3) states.subList(0, 3) else states
+                states = if (states.size > 2) states.subList(0, 2) else states
 
                 view.showCommentsAndStates(comments, states)
             }
@@ -138,19 +148,31 @@ class RemarkPresenter(val view: RemarkPreviewMvp.View,
     override fun remarkLongitude(): Double = remark.location.longitude
 
     override fun submitPositiveVote() {
-        submitRemarkVoteUseCase.execute(VoteChangeObserver(view), Pair(remarkId, RemarkVote("", true)))
+        positiveVotes += 1
+        submitRemarkVoteUseCase.execute(VoteChangeObserver(this, view), Pair(remarkId, RemarkVote("", true)))
     }
 
     override fun deletePositiveVote() {
-        deleteRemarkVoteUseCase.execute(VoteChangeObserver(view), remarkId)
+        positiveVotes -= 1
+        deleteRemarkVoteUseCase.execute(VoteChangeObserver(this, view), remarkId)
     }
 
     override fun submitNegativeVote() {
-        submitRemarkVoteUseCase.execute(VoteChangeObserver(view), Pair(remarkId, RemarkVote("", false)))
+        negativeVotes += 1
+        submitRemarkVoteUseCase.execute(VoteChangeObserver(this, view), Pair(remarkId, RemarkVote("", false)))
+    }
+
+    override fun decrementPostiveVote() {
+        positiveVotes -= 1
+    }
+
+    override fun decrementNegativeVote() {
+        negativeVotes -= 1
     }
 
     override fun deleteNegativeVote() {
-        deleteRemarkVoteUseCase.execute(VoteChangeObserver(view), remarkId)
+        negativeVotes -= 1
+        deleteRemarkVoteUseCase.execute(VoteChangeObserver(this, view), remarkId)
     }
 
     override fun destroy() {
@@ -161,26 +183,29 @@ class RemarkPresenter(val view: RemarkPreviewMvp.View,
         loadRemarkPhotoUseCase.dispose()
     }
 
-    class VoteChangeObserver(val view: RemarkPreviewMvp.View)  : AppDisposableObserver<RemarkViewData>() {
+    class VoteChangeObserver(val presenter: RemarkPresenter, val view: RemarkPreviewMvp.View)  : AppDisposableObserver<RemarkViewData>() {
 
         override fun onStart() {
             super.onStart()
+            view.disableVoteButtons()
         }
 
         override fun onNext(remarkViewData: RemarkViewData) {
             super.onNext(remarkViewData)
-            view.showPositiveVotes(remarkViewData.remarkPreview.positiveVotesCount())
-            view.showNegativeVotes(remarkViewData.remarkPreview.negativeVotesCount())
+            presenter.positiveVotes = remarkViewData.remarkPreview.positiveVotesCount()
+            presenter.negativeVotes = remarkViewData.remarkPreview.negativeVotesCount()
 
             if (remarkViewData.remarkPreview.userVotedPositively(remarkViewData.userId)) {
                 view.showUserVotedPositively()
             } else if (remarkViewData.remarkPreview.userVotedNegatively(remarkViewData.userId)) {
                 view.showUserVotedNegatively()
             }
+            view.enableVoteButtons()
         }
 
         override fun onError(e: Throwable) {
             super.onError(e)
+            view.enableVoteButtons()
         }
 
         override fun onServerError(message: String?) {

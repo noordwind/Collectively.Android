@@ -15,15 +15,16 @@ interface RemarkPreviewMvp {
         fun showRemarkLoadingNetworkError()
         fun showRemarkLoadingError(message: String)
         fun showLoadedRemark(remark: RemarkPreview)
-        fun showPositiveVotes(positiveVotesCount: Int)
-        fun showNegativeVotes(negativeVotesCount: Int)
         fun showUserVotedPositively()
         fun showUserVotedNegatively()
         fun showCommentsAndStates(comments: List<RemarkComment>, states: List<RemarkState>)
-        fun invalidateLikesProgress()
         fun showRemarkPhoto(firstBigPhoto: RemarkPhoto?)
         fun showRemarkPhotoLoading()
         fun showRemarkPhotoLoadingError()
+        fun refreshVotesCountLabel()
+        fun enableVoteButtons()
+        fun disableVoteButtons()
+        fun invalidateLikesProgress()
     }
 
     interface Presenter : BasePresenter {
@@ -39,5 +40,9 @@ interface RemarkPreviewMvp {
         fun onCreate()
         fun onStart()
         fun loadRemarkPhoto()
+        fun positivesVotes(): Int
+        fun negativeVotes(): Int
+        fun decrementPostiveVote()
+        fun decrementNegativeVote()
     }
 }
