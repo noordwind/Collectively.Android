@@ -33,7 +33,6 @@ import com.noordwind.apps.collectively.domain.thread.UseCaseThread
 import com.noordwind.apps.collectively.presentation.adapter.RemarkPreviewTabsAdapter
 import com.noordwind.apps.collectively.presentation.extension.expandTouchArea
 import com.noordwind.apps.collectively.presentation.extension.setBackgroundCompat
-import com.noordwind.apps.collectively.presentation.extension.textInInt
 import com.noordwind.apps.collectively.presentation.extension.uppercaseFirstLetter
 import com.noordwind.apps.collectively.presentation.util.RequestErrorDecorator
 import com.noordwind.apps.collectively.presentation.util.Switcher
@@ -108,26 +107,32 @@ class RemarkActivity : com.noordwind.apps.collectively.presentation.BaseActivity
 
         var voteUpButtonLikeListener = object : OnLikeListener {
             override fun liked(p0: LikeButton?) {
-                voteUpLiked()
+                if (votedDown) {
+                    presenter.decrementNegativeVote()
+                }
                 presenter.submitPositiveVote()
+                voteUpLiked()
             }
 
             override fun unLiked(p0: LikeButton?) {
-                voteUpUnliked()
                 presenter.deletePositiveVote()
+                voteUpUnliked()
             }
         }
         voteUpButton.setOnLikeListener(voteUpButtonLikeListener)
 
         var voteDownButtonLikeListener = object : OnLikeListener {
             override fun liked(p0: LikeButton?) {
-                voteDownLiked()
+                if (votedUp) {
+                    presenter.decrementPostiveVote()
+                }
                 presenter.submitNegativeVote()
+                voteDownLiked()
             }
 
             override fun unLiked(p0: LikeButton?) {
-                voteDownUnliked()
                 presenter.deleteNegativeVote()
+                voteDownUnliked()
             }
         }
         voteDownButton.setOnLikeListener(voteDownButtonLikeListener)
@@ -137,13 +142,17 @@ class RemarkActivity : com.noordwind.apps.collectively.presentation.BaseActivity
         mShortAnimationDuration = resources.getInteger(android.R.integer.config_shortAnimTime);
     }
 
+    override fun disableVoteButtons() {
+        voteUpButton.isEnabled = false
+        voteDownButton.isEnabled = false
+    }
+
+    override fun enableVoteButtons() {
+        voteUpButton.isEnabled = true
+        voteDownButton.isEnabled = true
+    }
+
     fun voteUpLiked() {
-        var votesCount = positiveVotesCountLabel.textInInt()
-        positiveVotesCountLabel.text = Integer.toString(votesCount + 1)
-
-        positiveVotesCountLabel.setTextColor(ContextCompat.getColor(baseContext, R.color.vote_up_remark_color))
-        negativeVotesCountLabel.setTextColor(ContextCompat.getColor(baseContext, R.color.font_dark_hint))
-
         if (votedDown) {
             voteDownUnliked()
             voteDownButton.setLiked(false)
@@ -151,27 +160,20 @@ class RemarkActivity : com.noordwind.apps.collectively.presentation.BaseActivity
 
         votedUp = true
         votedDown = false
+
+        refreshVotesCountLabel()
         invalidateLikesProgress()
     }
 
     fun voteUpUnliked() {
-        var votesCount = positiveVotesCountLabel.textInInt()
-        positiveVotesCountLabel.text = Integer.toString(votesCount - 1)
-
-        positiveVotesCountLabel.setTextColor(ContextCompat.getColor(baseContext, R.color.font_dark_hint))
-
         votedUp = false
+        votedDown = false
 
+        refreshVotesCountLabel()
         invalidateLikesProgress()
     }
 
     fun voteDownLiked() {
-        var votesCount = negativeVotesCountLabel.textInInt()
-        negativeVotesCountLabel.text = Integer.toString(votesCount + 1)
-
-        positiveVotesCountLabel.setTextColor(ContextCompat.getColor(baseContext, R.color.font_dark_hint))
-        negativeVotesCountLabel.setTextColor(ContextCompat.getColor(baseContext, R.color.vote_down_remark_color))
-
         if (votedUp) {
             voteUpUnliked()
             voteUpButton.setLiked(false)
@@ -180,17 +182,29 @@ class RemarkActivity : com.noordwind.apps.collectively.presentation.BaseActivity
         votedDown = true
         votedUp = false
 
+        refreshVotesCountLabel()
         invalidateLikesProgress()
     }
 
     fun voteDownUnliked() {
-        var votesCount = negativeVotesCountLabel.textInInt()
-        negativeVotesCountLabel.text = Integer.toString(votesCount - 1)
-
-        negativeVotesCountLabel.setTextColor(ContextCompat.getColor(baseContext, R.color.font_dark_hint))
-
+        votedUp = false
         votedDown = false
+        refreshVotesCountLabel()
         invalidateLikesProgress()
+    }
+
+    override fun showUserVotedPositively() {
+        votedUp = true
+        votedDown = false
+
+        refreshVotesCountLabel()
+    }
+
+    override fun showUserVotedNegatively() {
+        votedDown = true
+        votedUp = false
+
+        refreshVotesCountLabel()
     }
 
 
@@ -265,8 +279,12 @@ class RemarkActivity : com.noordwind.apps.collectively.presentation.BaseActivity
         switcher.showContentViewsImmediately()
 
         locationLabel.text = remark.location.address
-        remarkPhotoTitle.text = Html.fromHtml(getString(R.string.remark_preview_photo_title, remark.category.translation.uppercaseFirstLetter(), remark.author.name))
-        negativeVotesCountLabel.text = remark.negativeVotesCount().toString()
+
+        if (remark.category!!.name.equals(Constants.RemarkCategories.PRAISE, true) || remark.category!!.name.equals(Constants.RemarkCategories.SUGGESTION, true)) {
+            remarkPhotoTitle.text = Html.fromHtml(getString(R.string.remark_preview_photo_title_2, remark.category?.translation?.uppercaseFirstLetter(), remark.author?.name))
+        } else {
+            remarkPhotoTitle.text = Html.fromHtml(getString(R.string.remark_preview_photo_title, remark.category?.translation?.uppercaseFirstLetter(), remark.author?.name))
+        }
 
         remark.tags.forEach {
             val newView = RemarkTagView(this, RemarkTag("", ""), useOnCLickListener = false)
@@ -316,48 +334,43 @@ class RemarkActivity : com.noordwind.apps.collectively.presentation.BaseActivity
         tabsLayout.setupWithViewPager(contentPager)
     }
 
-    override fun showPositiveVotes(positiveVotesCount: Int) {
-        positiveVotesCountLabel.text = positiveVotesCount.toString()
-    }
+    override fun refreshVotesCountLabel() {
+        var positiveVotes = presenter.positivesVotes()
+        var negativeVotes = presenter.negativeVotes()
 
-    override fun showNegativeVotes(negativeVotesCount: Int) {
-        negativeVotesCountLabel.text = negativeVotesCount.toString()
+        if (votedDown) {
+            voteDownButton.setLiked(true)
+            voteUpButton.setLiked(false)
+        } else if (votedUp){
+            voteUpButton.setLiked(true)
+            voteDownButton.setLiked(false)
+        } else {
+            voteUpButton.setLiked(false)
+            voteDownButton.setLiked(false)
+        }
+
+        if (positiveVotes - negativeVotes >= 0) {
+            votesCountLabel.text = "+" + (positiveVotes - negativeVotes)
+            votesCountLabel.setTextColor(ContextCompat.getColor(baseContext, R.color.vote_up_remark_color))
+        } else {
+            votesCountLabel.text = "" + (positiveVotes - negativeVotes)
+            votesCountLabel.setTextColor(ContextCompat.getColor(baseContext, R.color.vote_down_remark_color))
+        }
     }
 
     override fun invalidateLikesProgress() {
-        circularProgressBar.postDelayed(Runnable {
+        circularProgressBar.postDelayed({
             var negativeProgress = 50 // Default to half full circle
 
-            var likes = positiveVotesCountLabel.textInInt()
-            var dislikes = negativeVotesCountLabel.textInInt()
+            var likes = presenter.positivesVotes()
+            var dislikes = presenter.negativeVotes()
 
             if (dislikes > 0 || likes > 0) {
                 negativeProgress = (dislikes / (likes + dislikes).toFloat() * 100).toInt()
             }
+
             circularProgressBar.setProgress(negativeProgress, true)
         }, 500)
-    }
-
-    override fun showUserVotedPositively() {
-        votedUp = true
-        votedDown = false
-
-        voteUpButton.setLiked(true)
-        positiveVotesCountLabel.setTextColor(ContextCompat.getColor(baseContext, R.color.vote_up_remark_color))
-
-        voteDownButton.setLiked(false)
-        negativeVotesCountLabel.setTextColor(ContextCompat.getColor(baseContext, R.color.font_dark_hint))
-    }
-
-    override fun showUserVotedNegatively() {
-        votedDown = true
-        votedUp = false
-
-        voteDownButton.setLiked(true)
-        negativeVotesCountLabel.setTextColor(ContextCompat.getColor(baseContext, R.color.vote_down_remark_color))
-
-        voteUpButton.setLiked(false)
-        positiveVotesCountLabel.setTextColor(ContextCompat.getColor(baseContext, R.color.font_dark_hint))
     }
 
     override fun onStart() {

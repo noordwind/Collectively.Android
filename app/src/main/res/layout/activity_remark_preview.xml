@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-             android:id="@+id/container"
              xmlns:app="http://schemas.android.com/apk/res-auto"
              xmlns:tools="http://schemas.android.com/tools"
+             android:id="@+id/container"
              android:layout_width="match_parent"
              android:layout_height="match_parent">
 
@@ -48,24 +48,24 @@
                     <LinearLayout
                         android:id="@+id/tapToZoomView"
                         android:layout_width="wrap_content"
-                        android:visibility="gone"
+                        android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        android:layout_height="wrap_content">
+                        android:visibility="gone">
 
                         <android.support.v7.widget.AppCompatImageView
-                            app:srcCompat="@drawable/ic_tap_to_zoom_white_24dp"
                             android:layout_width="32dp"
+                            android:layout_height="32dp"
                             android:layout_gravity="center"
-                            android:layout_height="32dp"/>
+                            app:srcCompat="@drawable/ic_tap_to_zoom_white_24dp"/>
 
                         <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
                             android:layout_gravity="center"
-                            android:textColor="#FFFFFFFF"
-                            android:textSize="20sp"
                             android:fontFamily="@string/font_light"
                             android:text="@string/tap_to_zoom"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"/>
+                            android:textColor="#FFFFFFFF"
+                            android:textSize="20sp"/>
 
 
                     </LinearLayout>
@@ -73,26 +73,26 @@
                     <LinearLayout
                         android:id="@+id/processingImage"
                         android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        android:visibility="gone"
-                        android:layout_height="wrap_content">
+                        android:visibility="gone">
 
                         <ProgressBar
                             android:id="@+id/processingImageProgress"
                             android:layout_width="32dp"
-                            android:layout_gravity="center"
-                            android:layout_height="32dp"/>
+                            android:layout_height="32dp"
+                            android:layout_gravity="center"/>
 
                         <TextView
                             android:id="@+id/processingImageLabel"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
                             android:layout_gravity="center"
-                            android:textColor="#FFFFFFFF"
-                            android:textSize="20sp"
                             android:layout_marginLeft="8dp"
                             android:fontFamily="@string/font_light"
                             android:text="@string/remark_image_is_being_processed"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"/>
+                            android:textColor="#FFFFFFFF"
+                            android:textSize="20sp"/>
 
 
                     </LinearLayout>
@@ -143,10 +143,10 @@
 
                 <LinearLayout
                     android:layout_width="wrap_content"
-                    android:layout_marginTop="@dimen/spacing_small"
-                    android:layout_marginLeft="5dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="left"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginTop="@dimen/spacing_small"
                     android:orientation="horizontal">
 
                     <android.support.v7.widget.AppCompatImageView
@@ -185,10 +185,10 @@
 
                     <com.ms.square.android.expandabletextview.ExpandableTextView
                         xmlns:expandableTextView="http://schemas.android.com/apk/res-auto"
-                        android:layout_marginRight="@dimen/spacing_small"
                         android:id="@+id/descriptionLabel"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginRight="@dimen/spacing_small"
                         expandableTextView:animDuration="200"
                         expandableTextView:maxCollapsedLines="2">
 
@@ -212,17 +212,10 @@
                             android:layout_gravity="right|center_vertical"
                             android:layout_marginTop="4dp"
                             android:background="@android:color/transparent"
-                            android:visibility="gone" />
+                            android:visibility="gone"/>
                     </com.ms.square.android.expandabletextview.ExpandableTextView>
 
                 </LinearLayout>
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:layout_marginBottom="@dimen/spacing_medium"
-                    android:layout_marginTop="@dimen/spacing_medium"
-                    android:background="@color/grey"/>
 
                 <LinearLayout
                     android:layout_width="wrap_content"
@@ -231,79 +224,63 @@
                     android:layout_marginTop="-16dp"
                     android:orientation="horizontal">
 
-                    <LinearLayout
+                    <com.like.LikeButton
+                        android:id="@+id/voteUpButton"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="right"
-                        android:orientation="horizontal">
-
-                        <com.like.LikeButton
-                            android:id="@+id/voteUpButton"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center_vertical"
-                            app:anim_scale_factor="2"
-                            app:circle_end_color="@color/vote_up_remark_color"
-                            app:circle_start_color="@color/vote_up_remark_color"
-                            app:dots_primary_color="@color/vote_up_remark_color"
-                            app:dots_secondary_color="@color/vote_up_remark_color"
-                            app:icon_size="30dp"
-                            app:like_drawable="@drawable/ic_thumb_up_active_24dp"
-                            app:liked="false"
-                            app:unlike_drawable="@drawable/ic_thumb_up_not_active_24dp"/>
-
-                        <TextView
-                            android:id="@+id/positiveVotesCountLabel"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center_vertical"
-                            android:fontFamily="@string/font_normal"
-                            android:textColor="@color/font_dark_hint"
-                            android:textSize="@dimen/font_medium"/>
-
-                    </LinearLayout>
-
-                    <com.noordwind.apps.collectively.presentation.views.CircularLikeProgressBar
-                        android:id="@+id/circularProgressBar"
-                        android:layout_height="52dp"
                         android:layout_gravity="center_vertical"
-                        android:layout_marginLeft="16dp"
-                        android:layout_marginRight="16dp"
-                        android:layout_width="52dp"/>
+                        app:anim_scale_factor="2"
+                        app:circle_end_color="@color/vote_up_remark_color"
+                        app:circle_start_color="@color/vote_up_remark_color"
+                        app:dots_primary_color="@color/vote_up_remark_color"
+                        app:dots_secondary_color="@color/vote_up_remark_color"
+                        app:icon_size="40dp"
+                        app:like_drawable="@drawable/ic_add_circle_active_24dp"
+                        app:liked="false"
+                        app:unlike_drawable="@drawable/ic_add_circle_not_active_24dp"/>
 
-                    <LinearLayout
+                    <FrameLayout
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal">
+                        android:layout_gravity="center_vertical"
+                        android:layout_height="wrap_content">
+
+                        <com.noordwind.apps.collectively.presentation.views.CircularLikeProgressBar
+                            android:id="@+id/circularProgressBar"
+                            android:layout_height="64dp"
+                            android:layout_gravity="center"
+                            android:layout_width="64dp"/>
 
                         <TextView
-                            android:id="@+id/negativeVotesCountLabel"
+                            android:id="@+id/votesCountLabel"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_gravity="center_vertical"
+                            android:layout_gravity="center"
+                            android:textStyle="bold"
                             android:fontFamily="@string/font_normal"
                             android:textColor="@color/font_dark_hint"
-                            android:textSize="@dimen/font_medium"/>
+                            android:textSize="@dimen/font_large"/>
 
-                        <com.like.LikeButton
-                            android:id="@+id/voteDownButton"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center_vertical"
-                            app:anim_scale_factor="2"
-                            app:circle_end_color="@color/vote_down_remark_color"
-                            app:circle_start_color="@color/vote_down_remark_color"
-                            app:dots_primary_color="@color/vote_down_remark_color"
-                            app:dots_secondary_color="@color/vote_down_remark_color"
-                            app:icon_size="30dp"
-                            app:like_drawable="@drawable/ic_thumb_down_active_24dp"
-                            app:liked="false"
-                            app:unlike_drawable="@drawable/ic_thumb_down_not_active_24dp"/>
+                    </FrameLayout>
 
-                    </LinearLayout>
+
+                    <com.like.LikeButton
+                        android:id="@+id/voteDownButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        app:anim_scale_factor="2"
+                        app:circle_end_color="@color/vote_down_remark_color"
+                        app:circle_start_color="@color/vote_down_remark_color"
+                        app:dots_primary_color="@color/vote_down_remark_color"
+                        app:dots_secondary_color="@color/vote_down_remark_color"
+                        app:icon_size="40dp"
+                        app:like_drawable="@drawable/ic_remove_circle_active_24dp"
+                        app:liked="false"
+                        app:unlike_drawable="@drawable/ic_remove_circle_not_active_24dp"/>
 
 
                 </LinearLayout>
+
 
                 <android.support.design.widget.TabLayout
                     android:id="@+id/tabsLayout"
@@ -328,18 +305,18 @@
             android:layout_height="wrap_content"
             android:layout_marginRight="@dimen/spacing_medium"
             android:background="@color/red_dark_2"
-            app:srcCompat="@drawable/ic_directions_white_24dp"
             app:layout_anchor="@id/app_bar_layout"
-            app:layout_anchorGravity="bottom|right|end"/>
+            app:layout_anchorGravity="bottom|right|end"
+            app:srcCompat="@drawable/ic_directions_white_24dp"/>
 
     </android.support.design.widget.CoordinatorLayout>
 
     <FrameLayout
         android:id="@+id/expandedRemarkImageContainer"
-        android:background="@color/background_light"
         android:layout_width="match_parent"
-        android:visibility="invisible"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="@color/background_light"
+        android:visibility="invisible">
 
         <android.support.v7.widget.AppCompatImageView
             android:id="@+id/expandedRemarkImage"

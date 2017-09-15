@@ -187,7 +187,7 @@
     <string name="set_user_nickname_failed">Błąd operacji</string>
     <string name="tap_to_zoom">Powiększ</string>
     <string name="add_remark_group_hint">Dla grupy...</string>
-    <string name="add_remark_all_groups_target">Wszystkie</string>
+    <string name="add_remark_all_groups_target">Wszystkie grupy</string>
     <string name="add_remark_category_not_selected">Nie wybrano kategorii</string>
     <string name="filter_remarks_dialog_status_label">Status</string>
     <string name="groups">Grupa</string>
@@ -212,4 +212,7 @@
     <string name="error_uploading_remark_photo_message">Zdjęcie nie zostało dodane do zgłoszenia</string>
     <string name="remark_image_is_being_processed">Przetwarzamy zdjęcie</string>
     <string name="error_loading_remark_photo">Pobieranie zdjęcia nie powiodło się</string>
+    <string name="remark_distance_label"><![CDATA[Odległość: <b>%1$s</b>m]]></string>
+    <string name="remark_preview_photo_title_2" formatted="false"><![CDATA[<b>%1$s</b> zgłoszona przez <font color=\'#0288D1\'><b>%2$s</b></font>]]></string>
+    <string name="autor">Autor</string>
 </resources>

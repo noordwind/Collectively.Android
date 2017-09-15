@@ -13,8 +13,6 @@ import com.noordwind.apps.collectively.domain.model.LoginCredentials
 import com.noordwind.apps.collectively.presentation.extension.isValidEmail
 import com.noordwind.apps.collectively.presentation.extension.isValidPassword
 import com.noordwind.apps.collectively.presentation.rxjava.AppDisposableObserver
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.schedulers.Schedulers
 import jonathanfinerty.once.Once
 
 class LoginPresenter(val view: LoginMvp.View,
@@ -31,17 +29,13 @@ class LoginPresenter(val view: LoginMvp.View,
             view.showWalkthroughScreen()
             view.closeScreen()
         } else if (loginUseCase.isLoggedIn()) {
-            profileRepository.loadProfileFromCache()
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe {
-                        if (it.isAccountIncomplete()) {
-                            view.showSetNicknameScreen()
-                        } else {
-                            view.showMainScreen()
-                            view.closeScreen()
-                        }
-                    }
+            var profile = profileRepository.loadProfileFromCacheSync()
+            if (profile.isAccountIncomplete()) {
+                view.showSetNicknameScreen()
+            } else {
+                view.showMainScreen()
+                view.closeScreen()
+            }
         }
     }
 

@@ -4,12 +4,13 @@ import android.content.SharedPreferences
 import android.text.TextUtils
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
-import io.reactivex.Observable
 import com.noordwind.apps.collectively.Constants
 import com.noordwind.apps.collectively.data.model.RemarkCategory
+import io.reactivex.Observable
 import java.util.concurrent.TimeUnit
 
 class RemarkCategoriesCache(val sharedPreferences: SharedPreferences, val gson: Gson) : Cache<List<RemarkCategory>> {
+
     private val CACHE_EXPIRATION_TIME = TimeUnit.DAYS.toMillis(7)
     private val typeToken = object : TypeToken<List<RemarkCategory>>() {}.type
 
@@ -29,8 +30,10 @@ class RemarkCategoriesCache(val sharedPreferences: SharedPreferences, val gson: 
     }
 
     override fun getData(): Observable<List<RemarkCategory>> {
-        return Observable.just(gson.fromJson(remarksInJson(), typeToken))
+        return Observable.just(getDataSync())
     }
+
+    override fun getDataSync(): List<RemarkCategory> = gson.fromJson(remarksInJson(), typeToken)
 
     override fun clear() {
         sharedPreferences.edit().clear().commit()

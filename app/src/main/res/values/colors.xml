@@ -30,7 +30,13 @@
     <color name="unresolved_remark_color">#D32F2F</color>
     <color name="resolved_remark_color">@color/red_dark_2</color>
 
-    <color name="vote_up_remark_color">@color/red_dark_2</color>
+    <color name="resolved_remark_background_color">#8efa6f</color>
+    <color name="new_remark_background_color">#0277BD
+    </color>
+    <color name="processing_remark_background_color">#f9c42f</color>
+    <color name="renewed_remark_background_color">#75d7ff</color>
+
+    <color name="vote_up_remark_color">#66BB6A</color>
     <color name="vote_down_remark_color">#D32F2F</color>
 
     // FONT COLOR
