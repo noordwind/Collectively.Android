@@ -12,6 +12,7 @@ import android.view.View
 import com.noordwind.apps.collectively.Constants
 import com.noordwind.apps.collectively.R
 import com.noordwind.apps.collectively.TheApp
+import com.noordwind.apps.collectively.data.datasource.FiltersTranslationsDataSource
 import com.noordwind.apps.collectively.data.datasource.RemarkFiltersRepository
 import com.noordwind.apps.collectively.data.model.Remark
 import com.noordwind.apps.collectively.data.repository.RemarksRepository
@@ -22,7 +23,8 @@ import com.noordwind.apps.collectively.domain.interactor.remark.filters.map.Clea
 import com.noordwind.apps.collectively.domain.interactor.remark.filters.map.LoadRemarkFiltersUseCase
 import com.noordwind.apps.collectively.domain.thread.PostExecutionThread
 import com.noordwind.apps.collectively.domain.thread.UseCaseThread
-import com.noordwind.apps.collectively.presentation.adapter.UserRemarksAdapter
+import com.noordwind.apps.collectively.presentation.adapter.MainScreenRemarksListAdapter
+import com.noordwind.apps.collectively.presentation.remarkpreview.RemarkActivity
 import com.noordwind.apps.collectively.presentation.util.RequestErrorDecorator
 import com.noordwind.apps.collectively.presentation.util.Switcher
 import com.noordwind.apps.collectively.presentation.views.dialogs.mapfilters.RemarkFiltersDialog
@@ -35,7 +37,7 @@ import java.util.*
 import javax.inject.Inject
 
 
-class UserRemarksActivity : com.noordwind.apps.collectively.presentation.BaseActivity(), UserRemarksMvp.View {
+class UserRemarksActivity : com.noordwind.apps.collectively.presentation.BaseActivity(), UserRemarksMvp.View, MainScreenRemarksListAdapter.OnRemarkSelectedListener {
     companion object {
         fun start(context: Context, mode: String, userId: String?) {
             val intent = Intent(context, UserRemarksActivity::class.java)
@@ -62,11 +64,14 @@ class UserRemarksActivity : com.noordwind.apps.collectively.presentation.BaseAct
     @Inject
     lateinit var uiThread: PostExecutionThread
 
+    @Inject
+    lateinit var translationDataSource: FiltersTranslationsDataSource
+
     lateinit var presenter: UserRemarksMvp.Presenter
 
     private lateinit var switcher: Switcher
     private lateinit var errorDecorator: RequestErrorDecorator
-    private lateinit var userRemarksAdapter: UserRemarksAdapter
+    private lateinit var userRemarksAdapter: MainScreenRemarksListAdapter
     private var remarksLoaded = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -93,7 +98,8 @@ class UserRemarksActivity : com.noordwind.apps.collectively.presentation.BaseAct
                 LoadUserResolvedRemarksUseCase(remarksRepository, ioThread, uiThread),
                 LoadRemarkFiltersUseCase(filtersRepository, ioThread, uiThread),
                 LoadUserFavoriteRemarksUseCase(remarksRepository, ioThread, uiThread),
-                ClearRemarkFiltersUseCase(filtersRepository, ioThread, uiThread))
+                ClearRemarkFiltersUseCase(filtersRepository, ioThread, uiThread),
+                translationDataSource)
 
         errorDecorator = RequestErrorDecorator(switcherErrorImage, switcherErrorTitle, switcherErrorFooter)
         val contentViews = LinkedList<View>()
@@ -160,7 +166,7 @@ class UserRemarksActivity : com.noordwind.apps.collectively.presentation.BaseAct
     override fun showLoadedRemarks(remarks: List<Remark>) {
         switcher.showContentViews()
 
-        userRemarksAdapter = UserRemarksAdapter().setData(remarks).initDelegates()
+        userRemarksAdapter = MainScreenRemarksListAdapter(this).setData(remarks).initDelegates()
         remarksRecycler.adapter = userRemarksAdapter
         remarksRecycler.layoutManager = LinearLayoutManager(baseContext)
         val dividerItemDecoration = DividerItemDecoration(remarksRecycler.getContext(),
@@ -220,6 +226,10 @@ class UserRemarksActivity : com.noordwind.apps.collectively.presentation.BaseAct
         userRemarksAdapter.notifyDataSetChanged()
         Snackbar.make(findViewById(android.R.id.content), getString(R.string.filetered_remarks_message, remarks.size.toString()),
                 Snackbar.LENGTH_SHORT).show()
+    }
+
+    override fun onRemarkItemSelected(remark: Remark) {
+        RemarkActivity.start(this, remark.id)
     }
 
     override fun onDestroy() {

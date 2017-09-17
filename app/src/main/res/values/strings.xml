@@ -217,4 +217,5 @@
     <string name="remark_distance_label"><![CDATA[Distance: <b>%1$s</b>m]]></string>
     <string name="remark_preview_photo_title_2" formatted="false"><![CDATA[<b>%1$s</b> added by <font color=\'#0288D1\'><b>%2$s</b></font>]]></string>
     <string name="autor">Author</string>
+    <string name="click_vote_button_tooltip">Vote up remark if this remarks interests you!</string>
 </resources>

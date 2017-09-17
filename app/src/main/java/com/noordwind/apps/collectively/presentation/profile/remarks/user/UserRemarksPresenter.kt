@@ -1,6 +1,7 @@
 package com.noordwind.apps.collectively.presentation.profile.remarks.user
 
 import com.noordwind.apps.collectively.Constants
+import com.noordwind.apps.collectively.data.datasource.FiltersTranslationsDataSource
 import com.noordwind.apps.collectively.data.model.Remark
 import com.noordwind.apps.collectively.domain.interactor.remark.LoadUserFavoriteRemarksUseCase
 import com.noordwind.apps.collectively.domain.interactor.remark.LoadUserRemarksUseCase
@@ -21,7 +22,8 @@ class UserRemarksPresenter(
         val loadUserResolvedRemarksUseCase: LoadUserResolvedRemarksUseCase,
         val loadRemarkFiltersUseCase: LoadRemarkFiltersUseCase,
         val loadUserFavoriteRemarksUseCase: LoadUserFavoriteRemarksUseCase,
-        val clearRemarkFiltersUseCase: ClearRemarkFiltersUseCase
+        val clearRemarkFiltersUseCase: ClearRemarkFiltersUseCase,
+        val translationsDataSource: FiltersTranslationsDataSource
 ) : UserRemarksMvp.Presenter {
 
     private var filtersKey: String? = null
@@ -74,6 +76,7 @@ class UserRemarksPresenter(
 
             override fun onNext(remarks: List<Remark>) {
                 super.onNext(remarks)
+                prepareRemarks(remarks)
                 loadedRemarks = remarks
 
                 if (remarks.size > 0) {
@@ -121,6 +124,7 @@ class UserRemarksPresenter(
 
             override fun onNext(remarks: List<Remark>) {
                 super.onNext(remarks)
+                prepareRemarks(remarks)
                 loadedRemarks = remarks
 
                 if (remarks.size > 0) {
@@ -181,6 +185,7 @@ class UserRemarksPresenter(
 
             override fun onNext(remarks: List<Remark>) {
                 super.onNext(remarks)
+                prepareRemarks(remarks)
                 loadedRemarks = remarks
 
                 if (remarks.size > 0) {
@@ -215,6 +220,9 @@ class UserRemarksPresenter(
         clearRemarkFiltersUseCase.execute(null)
     }
 
+    private fun prepareRemarks(remarks: List<Remark>) {
+        remarks.forEach { it.category?.translation = translationsDataSource.translateFromType(it.category?.name!!) }
+    }
     override fun checkIfFiltersHasChanged() {
         var filtersObserver = object : DisposableObserver<RemarkFilters>() {
             override fun onComplete() {}

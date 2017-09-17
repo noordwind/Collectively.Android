@@ -16,6 +16,7 @@ class Remark(
         val smallPhotoUrl: String = "",
         val description: String = "",
         val resolved: Boolean? = null,
+        val offering: OfferingForRemark?,
         val author: RemarkPreviewAuthor?,
         val rating: Int,
         var distanceToRemark: Int? = 0,
@@ -33,6 +34,10 @@ class Remark(
     }
 
     fun hasPhoto() = !smallPhotoUrl.isNullOrBlank()
+}
+
+class OfferingForRemark {
+
 }
 
 class RemarkNotFromList(

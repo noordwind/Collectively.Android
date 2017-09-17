@@ -53,15 +53,20 @@ class MainScreenRemarksWithPhotoAdapterDelegate(viewType: Int, val onRemarkSelec
 
         fun setRemark(remark: Remark) {
             this.remark = remark
-            categoryIcon.setImageDrawable(ContextCompat.getDrawable(itemView.context, remark.category?.name?.iconOfCategory()!!))
-
             if (remark.category!!.name.equals(Constants.RemarkCategories.PRAISE, true) || remark.category!!.name.equals(Constants.RemarkCategories.SUGGESTION, true)) {
                 nameLabel.text = Html.fromHtml(itemView.context.getString(R.string.remark_preview_photo_title_2, remark.category?.translation?.uppercaseFirstLetter(), remark.author?.name))
             } else {
                 nameLabel.text = Html.fromHtml(itemView.context.getString(R.string.remark_preview_photo_title, remark.category?.translation?.uppercaseFirstLetter(), remark.author?.name))
             }
 
-            remarkIconBackgroundImage.setImageResource(remarkIconBackgroundResolver.iconBackgroundForRemark(remark))
+            if (remark.offering != null) {
+                categoryIcon.visibility = View.GONE
+                remarkIconBackgroundImage.setImageDrawable(ContextCompat.getDrawable(itemView.context, R.drawable.bitcoin_small))
+            } else {
+                categoryIcon.visibility = View.VISIBLE
+                categoryIcon.setImageDrawable(ContextCompat.getDrawable(itemView.context, remark.category?.name?.iconOfCategory()!!))
+                remarkIconBackgroundImage.setImageResource(remarkIconBackgroundResolver.iconBackgroundForRemark(remark))
+            }
 
             addressLabel.text = remark.location?.address
 

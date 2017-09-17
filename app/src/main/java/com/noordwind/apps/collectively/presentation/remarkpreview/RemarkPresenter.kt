@@ -91,7 +91,7 @@ class RemarkPresenter(val view: RemarkPreviewMvp.View,
 
                 var comments = remarkViewData.comments.filter { !it.removed }
                 var states = remarkViewData.states.filter { !it.removed }
-                states = if (states.size > 3) states.subList(0, 3) else states
+                states = if (states.size > 2) states.subList(0, 2) else states
 
                 view.showCommentsAndStates(comments, states)
             }

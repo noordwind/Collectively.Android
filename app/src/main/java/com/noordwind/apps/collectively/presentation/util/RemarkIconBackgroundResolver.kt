@@ -3,6 +3,7 @@ package com.noordwind.apps.collectively.presentation.main
 import com.noordwind.apps.collectively.Constants
 import com.noordwind.apps.collectively.R
 import com.noordwind.apps.collectively.data.model.Remark
+import com.noordwind.apps.collectively.data.model.RemarkPreview
 
 
 class RemarkIconBackgroundResolver {
@@ -14,6 +15,10 @@ class RemarkIconBackgroundResolver {
             Pair(Constants.RemarkStates.RESOLVED, R.drawable.resolved_remark_circle_shape_background))
 
     fun iconBackgroundForRemark(remark: Remark): Int {
+        return remarkIconBackgroundsMap[remark.state.state]!!
+    }
+
+    fun iconBackgroundForRemark(remark: RemarkPreview): Int {
         return remarkIconBackgroundsMap[remark.state.state]!!
     }
 }

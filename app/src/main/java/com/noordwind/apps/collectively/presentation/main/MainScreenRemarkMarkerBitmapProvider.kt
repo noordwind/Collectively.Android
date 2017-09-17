@@ -14,6 +14,7 @@ import java.util.*
 class RemarkMarkerBitmapProvider(val context: Context) {
 
     private var remarksMarkerBitmapsMap = HashMap<String, Map<String, BitmapDescriptor>>()
+    private val bitcoinBitmap: BitmapDescriptor
 
     init {
         var defectBitmaps = mapOf(
@@ -43,6 +44,8 @@ class RemarkMarkerBitmapProvider(val context: Context) {
                 Pair(Constants.RemarkStates.RENEWED, getBitmapDescriptorFactory(R.drawable.praise_marker_renewed)),
                 Pair(Constants.RemarkStates.RESOLVED, getBitmapDescriptorFactory(R.drawable.praise_marker_resolved)))
         remarksMarkerBitmapsMap.put(Constants.RemarkCategories.PRAISE, praiseBitmaps)
+
+        bitcoinBitmap = getBitmapDescriptorFactory(R.drawable.bitcoin)
     }
 
     fun getBitmapDescriptorFactory(resource: Int) : BitmapDescriptor {
@@ -52,7 +55,11 @@ class RemarkMarkerBitmapProvider(val context: Context) {
     }
 
     fun remarkMapMarker(remark: Remark): BitmapDescriptor {
-        return remarksMarkerBitmapsMap[remark.category!!.name]!![remark.state.state]!!
+        if (remark.offering != null) {
+            return bitcoinBitmap
+        } else {
+            return remarksMarkerBitmapsMap[remark.category!!.name]!![remark.state.state]!!
+        }
     }
 }
 
