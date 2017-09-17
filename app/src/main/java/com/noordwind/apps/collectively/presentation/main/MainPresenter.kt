@@ -53,8 +53,6 @@ class MainPresenter(val view: MainMvp.View,
                 super.onNext(downloadedRemarks)
 
                 downloadedRemarks.forEach {
-                    it.category!!.translation = translationsDataSource.translateFromType(it.category!!.name)
-
                     var latitude = it.location!!.coordinates[1]
                     var longitude = it.location!!.coordinates[0]
 

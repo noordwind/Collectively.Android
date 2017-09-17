@@ -170,12 +170,19 @@ class AppModule(private val application: Application) : Constants {
 
     @Provides
     @Singleton
-    fun provideRemarkCategoriesRepository(remarkCategoriesCache: RemarkCategoriesCache, remarksDataSource: RemarksDataSource,
-                                          fileDataSource: FileDataSource, profileRepository: ProfileRepository,
-                                          mapFiltersRepository: MapFiltersRepository, translationsDataSource: FiltersTranslationsDataSource, userGroupsRepository: UserGroupsRepository, operationRepository: OperationRepository): RemarksRepository
+    fun provideRemarkCategoriesRepository(remarkCategoriesCache: RemarkCategoriesCache,
+                                          remarksDataSource: RemarksDataSource,
+                                          fileDataSource: FileDataSource,
+                                          profileRepository: ProfileRepository,
+                                          locationRepository: LocationRepository,
+                                          mapFiltersRepository: MapFiltersRepository,
+                                          translationsDataSource: FiltersTranslationsDataSource,
+                                          userGroupsRepository: UserGroupsRepository,
+                                          operationRepository: OperationRepository): RemarksRepository
             = RemarkRepositoryImpl(context = application.baseContext, remarkCategoriesCache = remarkCategoriesCache, remarksDataSource = remarksDataSource,
             fileDataSource = fileDataSource, profileRepository = profileRepository, mapFiltersRepository = mapFiltersRepository,
-            userGroupsRepository = userGroupsRepository, operationRepository = operationRepository, translationsDataSource = translationsDataSource)
+            userGroupsRepository = userGroupsRepository, operationRepository = operationRepository, translationsDataSource = translationsDataSource,
+            locationRepository = locationRepository)
 
     @Provides
     @Singleton

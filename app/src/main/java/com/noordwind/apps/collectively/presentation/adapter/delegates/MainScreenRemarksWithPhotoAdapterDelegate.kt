@@ -14,6 +14,7 @@ import com.noordwind.apps.collectively.Constants
 import com.noordwind.apps.collectively.R
 import com.noordwind.apps.collectively.data.model.Remark
 import com.noordwind.apps.collectively.presentation.adapter.MainScreenRemarksListAdapter
+import com.noordwind.apps.collectively.presentation.extension.formatDistance
 import com.noordwind.apps.collectively.presentation.extension.iconOfCategory
 import com.noordwind.apps.collectively.presentation.extension.uppercaseFirstLetter
 import com.noordwind.apps.collectively.presentation.main.RemarkIconBackgroundResolver
@@ -73,7 +74,7 @@ class MainScreenRemarksWithPhotoAdapterDelegate(viewType: Int, val onRemarkSelec
             distanceLabel.visibility = View.GONE
             remark.distanceToRemark?.let {
                 distanceLabel.visibility = View.VISIBLE
-                distanceLabel.text = Html.fromHtml(itemView.context.getString(R.string.remark_distance_label, remark.distanceToRemark.toString()))
+                distanceLabel.text = Html.fromHtml(itemView.context.getString(R.string.remark_distance_label, remark.distanceToRemark!!.formatDistance()))
             }
 
             var positiveVotes = remark.positiveVotesCount

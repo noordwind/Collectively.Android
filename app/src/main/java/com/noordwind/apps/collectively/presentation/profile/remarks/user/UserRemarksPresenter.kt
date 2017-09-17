@@ -76,14 +76,8 @@ class UserRemarksPresenter(
 
             override fun onNext(remarks: List<Remark>) {
                 super.onNext(remarks)
-                prepareRemarks(remarks)
-                loadedRemarks = remarks
-
-                if (remarks.size > 0) {
-                    view.showLoadedRemarks(remarks)
-                } else {
-                    view.showEmptyScreen()
-                }
+                loadedRemarks = remarks.sortedBy { it.distanceToRemark }
+                showRemarks(loadedRemarks!!)
             }
 
             override fun onError(e: Throwable) {
@@ -124,14 +118,8 @@ class UserRemarksPresenter(
 
             override fun onNext(remarks: List<Remark>) {
                 super.onNext(remarks)
-                prepareRemarks(remarks)
-                loadedRemarks = remarks
-
-                if (remarks.size > 0) {
-                    view.showLoadedRemarks(remarks)
-                } else {
-                    view.showEmptyScreen()
-                }
+                loadedRemarks = remarks.sortedBy { it.distanceToRemark }
+                showRemarks(loadedRemarks!!)
             }
 
             override fun onError(e: Throwable) {
@@ -185,14 +173,8 @@ class UserRemarksPresenter(
 
             override fun onNext(remarks: List<Remark>) {
                 super.onNext(remarks)
-                prepareRemarks(remarks)
-                loadedRemarks = remarks
-
-                if (remarks.size > 0) {
-                    view.showLoadedRemarks(remarks)
-                } else {
-                    view.showEmptyScreen()
-                }
+                loadedRemarks = remarks.sortedBy { it.distanceToRemark }
+                showRemarks(loadedRemarks!!)
             }
 
             override fun onError(e: Throwable) {
@@ -220,9 +202,14 @@ class UserRemarksPresenter(
         clearRemarkFiltersUseCase.execute(null)
     }
 
-    private fun prepareRemarks(remarks: List<Remark>) {
-        remarks.forEach { it.category?.translation = translationsDataSource.translateFromType(it.category?.name!!) }
+    private fun showRemarks(remarks: List<Remark>) {
+        if (remarks.size > 0) {
+            view.showLoadedRemarks(remarks)
+        } else {
+            view.showEmptyScreen()
+        }
     }
+
     override fun checkIfFiltersHasChanged() {
         var filtersObserver = object : DisposableObserver<RemarkFilters>() {
             override fun onComplete() {}
