@@ -12,7 +12,7 @@ fun Int.formatDistance(): String {
 
         return km.toString() + "." + meters.toString() + "km"
     } else if (this >= 100000){
-        return (this % 10000).toString() + "km"
+        return ((this - (this % 1000))/1000).toString() + "km"
     } else {
         return this.toString() + "m"
     }

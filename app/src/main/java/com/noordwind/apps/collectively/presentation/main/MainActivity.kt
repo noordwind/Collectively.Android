@@ -148,8 +148,6 @@ class MainActivity : com.noordwind.apps.collectively.presentation.BaseActivity()
                 translationDataSource)
 
         mainPresenter.onCreate()
-        mainPresenter.loadRemarkCategories()
-
         filtersButton.setOnClickListener { mainPresenter.loadMapFiltersDialog() }
     }
 
@@ -239,6 +237,10 @@ class MainActivity : com.noordwind.apps.collectively.presentation.BaseActivity()
         super.onStart()
         if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             checkLocationPermission()
+        }
+
+        if (floatingMenu.childCount == 0) {
+            mainPresenter.loadRemarkCategories()
         }
     }
 
