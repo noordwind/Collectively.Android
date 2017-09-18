@@ -12,12 +12,13 @@ class Remark(
         val id: String,
         val category: RemarkCategory? = null,
         val state: RemarkState,
-        val location: RemarkLocation? = null ,
+        val location: RemarkLocation? = null,
         val smallPhotoUrl: String = "",
         val description: String = "",
         val resolved: Boolean? = null,
         val offering: OfferingForRemark?,
         val author: RemarkPreviewAuthor?,
+        val photo: RemarkPhotos?,
         val rating: Int,
         var distanceToRemark: Int? = 0,
         val positiveVotesCount: Int = Random().nextInt(1000),
@@ -33,12 +34,15 @@ class Remark(
         }
     }
 
-    fun hasPhoto() = !smallPhotoUrl.isNullOrBlank()
+    fun hasPhoto() = hasSmallPhoto() || hasMediumPhoto() || hasBigPhoto()
+    fun hasSmallPhoto() = photo != null && !photo.small.isNullOrBlank()
+    fun hasMediumPhoto() = photo != null && !photo.medium.isNullOrBlank()
+    fun hasBigPhoto() = photo != null && !photo.big.isNullOrBlank()
 }
 
-class OfferingForRemark {
+class RemarkPhotos(val small: String, val medium: String, val big: String)
 
-}
+class OfferingForRemark
 
 class RemarkNotFromList(
         val id: String,

@@ -23,7 +23,7 @@ class MainScreenRemarksAdapterDelegate(viewType: Int, val onRemarkSelectedListen
 
 
     override fun isForViewType(items: List<Any>, position: Int): Boolean {
-        return items[position] is Remark && !((items[position] as Remark).hasPhoto())
+        return items[position] is Remark && !((items[position] as Remark).hasMediumPhoto())
     }
 
     override fun onBindViewHolder(items: List<Any>, position: Int, holder: RecyclerView.ViewHolder) {

@@ -88,9 +88,11 @@ class MainScreenRemarksWithPhotoAdapterDelegate(viewType: Int, val onRemarkSelec
                 votesCountLabel.setTextColor(ContextCompat.getColor(itemView.context, R.color.vote_down_remark_color))
             }
 
-            Glide.with(itemView.context)
-                    .load(remark.smallPhotoUrl)
-                    .into(imageView)
+            if (remark.hasMediumPhoto()) {
+                Glide.with(itemView.context)
+                        .load(remark.photo!!.medium)
+                        .into(imageView)
+            }
         }
     }
 
