@@ -6,6 +6,8 @@ import android.os.Bundle
 import android.support.design.widget.BottomSheetBehavior
 import android.support.design.widget.Snackbar
 import android.support.v7.widget.LinearLayoutManager
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.MenuItem
 import android.view.View
 import com.noordwind.apps.collectively.Constants
@@ -19,7 +21,6 @@ import com.noordwind.apps.collectively.domain.thread.PostExecutionThread
 import com.noordwind.apps.collectively.domain.thread.UseCaseThread
 import com.noordwind.apps.collectively.presentation.adapter.RemarkCommentsAdapter
 import com.noordwind.apps.collectively.presentation.adapter.delegates.RemarkCommentsLoaderAdapterDelegate
-import com.noordwind.apps.collectively.presentation.extension.dpToPx
 import com.noordwind.apps.collectively.presentation.rxjava.RxBus
 import com.noordwind.apps.collectively.presentation.util.RequestErrorDecorator
 import com.noordwind.apps.collectively.presentation.util.Switcher
@@ -72,7 +73,6 @@ class RemarkCommentsActivity : com.noordwind.apps.collectively.presentation.Base
 
         errorDecorator = RequestErrorDecorator(switcherErrorImage, switcherErrorTitle, switcherErrorFooter)
         val contentViews = LinkedList<View>()
-        contentViews.add(content)
         contentViews.add(remarkCommentsRecycler)
         switcher = Switcher.Builder()
                 .withContentViews(contentViews)
@@ -83,21 +83,10 @@ class RemarkCommentsActivity : com.noordwind.apps.collectively.presentation.Base
 
         switcherErrorButton.setOnClickListener { loadComments() }
 
-        bottomSheetBehavior = BottomSheetBehavior.from(bottomSheet);
-        bottomSheetBehavior.peekHeight = 64f.dpToPx()
-        bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED;
-
         loadComments()
 
-        commentInput.setOnClickListener {
-            if (bottomSheetBehavior.state == BottomSheetBehavior.STATE_COLLAPSED) {
-                bottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
-            }
-        }
-
-        commentButton.setOnClickListener {
-            commentButton.isEnabled = false
-            bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
+        sendCommentButton.setOnClickListener {
+            sendCommentButton.isEnabled = false
             (remarkCommentsRecycler.layoutManager as LinearLayoutManager).scrollToPositionWithOffset(0, 0)
             presenter.submitRemarkComment(commentInput.text.toString())
         }
@@ -109,6 +98,27 @@ class RemarkCommentsActivity : com.noordwind.apps.collectively.presentation.Base
         remarkCommentsRecycler.layoutManager = LinearLayoutManager(baseContext)
 
         emptyButton.visibility = View.GONE
+
+        commentInput.addTextChangedListener(object: TextWatcher {
+            override fun afterTextChanged(p0: Editable?) {
+            }
+
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+            }
+
+            override fun onTextChanged(text: CharSequence?, p1: Int, p2: Int, p3: Int) {
+                text?.let {
+                    if (text?.isNotEmpty()) {
+                        sendCommentButton.isClickable = true
+                        sendCommentButton.setImageResource(R.drawable.ic_send_black_24dp)
+                    } else {
+                        sendCommentButton.isClickable = false
+                        sendCommentButton.setImageResource(R.drawable.ic_send_grey_24dp)
+                    }
+                }
+            }
+
+        })
     }
 
     private fun loadComments() {
@@ -120,24 +130,24 @@ class RemarkCommentsActivity : com.noordwind.apps.collectively.presentation.Base
     }
 
     override fun showCommentsLoadingServerError(error: String) {
-        bottomSheet.visibility = View.GONE
+        commentSection.visibility = View.GONE
         errorDecorator.onServerError(error)
         switcher.showErrorViewsImmediately()
     }
 
     override fun showCommentsLoadingNetworkError() {
-        bottomSheet.visibility = View.GONE
+        commentSection.visibility = View.GONE
         errorDecorator.onNetworkError(getString(R.string.error_loading_remark_comments_no_network))
         switcher.showErrorViewsImmediately()
     }
 
     override fun showEmptyScreen() {
-        bottomSheet.visibility = View.VISIBLE
+        commentSection.visibility = View.VISIBLE
         switcher.showEmptyViews()
     }
 
     override fun showLoadedComments(comments: List<RemarkComment>) {
-        bottomSheet.visibility = View.VISIBLE
+        commentSection.visibility = View.VISIBLE
         switcher.showContentViews()
 
         remarkCommentsAdapter.items = comments
@@ -146,6 +156,11 @@ class RemarkCommentsActivity : com.noordwind.apps.collectively.presentation.Base
 
     override fun showCommentsLoadingError() {
         switcher.showErrorViews()
+    }
+
+    override fun onStart() {
+        super.onStart()
+        appBarLayout.requestFocus()
     }
 
     override fun showSubmitRemarkCommentProgress() {
@@ -164,17 +179,17 @@ class RemarkCommentsActivity : com.noordwind.apps.collectively.presentation.Base
     }
 
     override fun showSubmitRemarkCommentNetworkError() {
-        commentButton.isEnabled = true
+        sendCommentButton.isEnabled = true
         Snackbar.make(findViewById(android.R.id.content), getString(R.string.error_submit_comment_no_network), Snackbar.LENGTH_LONG).show()
     }
 
     override fun showSubmitRemarkCommentServerError(message: String?) {
-        commentButton.isEnabled = true
+        sendCommentButton.isEnabled = true
         Snackbar.make(findViewById(android.R.id.content), message!!, Snackbar.LENGTH_LONG).show()
     }
 
     override fun showSubmittedComment(remarkComment: RemarkComment) {
-        commentButton.isEnabled = true
+        sendCommentButton.isEnabled = true
         var list = LinkedList<Any>(remarkCommentsAdapter.items)
         list.add(0, remarkComment)
         remarkCommentsAdapter.setData(list)
