@@ -1,5 +1,6 @@
 package com.noordwind.apps.collectively.presentation.main
 
+import android.location.Address
 import android.location.Location
 import com.google.android.gms.maps.model.LatLng
 import com.noordwind.apps.collectively.Constants
@@ -11,6 +12,7 @@ import com.noordwind.apps.collectively.domain.interactor.remark.LoadRemarksUseCa
 import com.noordwind.apps.collectively.domain.interactor.remark.filters.map.LoadMapFiltersUseCase
 import com.noordwind.apps.collectively.domain.model.MapFilters
 import com.noordwind.apps.collectively.presentation.rxjava.AppDisposableObserver
+import com.noordwind.apps.collectively.usecases.LoadAddressFromLocationUseCase
 import io.reactivex.observers.DisposableObserver
 import jonathanfinerty.once.Once
 import java.util.*
@@ -19,8 +21,8 @@ class MainPresenter(val view: MainMvp.View,
                     val loadRemarksUseCase: LoadRemarksUseCase,
                     val loadRemarkCategoriesUseCase: LoadRemarkCategoriesUseCase,
                     val loadMapFiltersUseCase: LoadMapFiltersUseCase,
+                    val loadAddressFromLocationUseCase: LoadAddressFromLocationUseCase,
                     val translationsDataSource: FiltersTranslationsDataSource) : MainMvp.Presenter {
-
     var filtersKey: String = ""
     val currentlyVisibleRemarks: LinkedList<Remark> = LinkedList()
     val allLoadedRemarks: LinkedList<Remark> = LinkedList()
@@ -167,7 +169,34 @@ class MainPresenter(val view: MainMvp.View,
         loadMapFiltersUseCase.execute(filtersObserver)
     }
 
+    override fun fetchAddressForInfoWindow(latLng: LatLng) {
+        var observer = object : DisposableObserver<List<Address>>() {
+            override fun onStart() {
+                super.onStart()
+            }
+
+            override fun onError(e: Throwable?) {
+            }
+
+            override fun onComplete() {
+            }
+
+            override fun onNext(addresses: List<Address>?) {
+                var addressPretty: String = ""
+
+                for (i in 0..addresses?.get(0)?.maxAddressLineIndex!!) {
+                    addressPretty += addresses?.get(0)?.getAddressLine(i) + ", "
+                }
+
+                view.updateInfoWindow(addressPretty)
+            }
+        }
+
+        loadAddressFromLocationUseCase!!.execute(observer, latLng)
+    }
+
     override fun destroy() {
+        loadAddressFromLocationUseCase.dispose()
         loadRemarksUseCase.dispose()
         loadRemarkCategoriesUseCase.dispose()
         loadMapFiltersUseCase.dispose()

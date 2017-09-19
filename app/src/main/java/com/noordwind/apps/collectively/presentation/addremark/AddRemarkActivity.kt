@@ -47,6 +47,7 @@ import com.noordwind.apps.collectively.presentation.views.RemarkCategoryFlowLayo
 import com.noordwind.apps.collectively.presentation.views.RemarkTagView
 import com.noordwind.apps.collectively.presentation.views.dialogs.addphoto.AddPhotoDialog
 import com.noordwind.apps.collectively.presentation.views.toast.ToastManager
+import com.noordwind.apps.collectively.usecases.LoadAddressFromLocationUseCase
 import com.noordwind.apps.collectively.usecases.LoadLastKnownLocationUseCase
 import com.wefika.flowlayout.FlowLayout
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -63,6 +64,13 @@ class AddRemarkActivity : com.noordwind.apps.collectively.presentation.BaseActiv
         fun start(activity: Activity, category: String) {
             val intent = Intent(activity, AddRemarkActivity::class.java)
             intent.putExtra(Constants.BundleKey.CATEGORY, category)
+            activity.startActivityForResult(intent, Constants.RequestCodes.ADD_REMARK)
+        }
+
+        fun start(activity: Activity, category: String, latLng: LatLng) {
+            val intent = Intent(activity, AddRemarkActivity::class.java)
+            intent.putExtra(Constants.BundleKey.CATEGORY, category)
+            intent.putExtra(Constants.BundleKey.LOCATION, latLng)
             activity.startActivityForResult(intent, Constants.RequestCodes.ADD_REMARK)
         }
     }
@@ -135,12 +143,19 @@ class AddRemarkActivity : com.noordwind.apps.collectively.presentation.BaseActiv
         presenter = AddRemarkPresenter(this, SaveRemarkUseCase(remarksRepository, ioThread, uiThread),
                 LoadRemarkCategoriesUseCase(remarksRepository, translationDataSource, ioThread, uiThread),
                 LoadLastKnownLocationUseCase(locationRepository, ioThread, uiThread),
+                LoadAddressFromLocationUseCase(locationRepository, ioThread, uiThread),
                 LoadUserGroupsUseCase(userGroupsRepository, ioThread, uiThread),
                 connectivityRepository)
 
         presenter.checkInternetConnection()
         presenter.loadRemarkCategories()
-        presenter.loadLastKnownAddress()
+
+        if (intent.hasExtra(Constants.BundleKey.LOCATION)) {
+            presenter.loadAddressFromLocation(intent.getParcelableExtra(Constants.BundleKey.LOCATION))
+        } else {
+            presenter.loadLastKnownAddress()
+        }
+
         presenter.loadUserGroups()
 
         fab.setOnClickListener { AddPhotoDialog.newInstance().show(supportFragmentManager, AddPhotoDialog::class.java.toString()) }

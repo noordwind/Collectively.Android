@@ -17,6 +17,7 @@ interface MainMvp {
         fun showTooltip()
         fun centerOfMap(): LatLng?
         fun radiusOfMap(): Int?
+        fun updateInfoWindow(address: String)
         fun clearMap()
     }
 
@@ -30,6 +31,7 @@ interface MainMvp {
         fun onCreate()
         fun onTooltipShown()
         fun getCurrentlyVisibleRemarks(): List<Remark>
+        fun fetchAddressForInfoWindow(latLng: LatLng)
     }
 }
 
