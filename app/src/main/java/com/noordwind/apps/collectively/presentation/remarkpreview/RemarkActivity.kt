@@ -36,6 +36,8 @@ import com.noordwind.apps.collectively.presentation.extension.iconOfCategory
 import com.noordwind.apps.collectively.presentation.extension.setBackgroundCompat
 import com.noordwind.apps.collectively.presentation.extension.uppercaseFirstLetter
 import com.noordwind.apps.collectively.presentation.main.RemarkIconBackgroundResolver
+import com.noordwind.apps.collectively.presentation.remarkpreview.activity.RemarkStatesActivity
+import com.noordwind.apps.collectively.presentation.remarkpreview.comments.RemarkCommentsActivity
 import com.noordwind.apps.collectively.presentation.util.RequestErrorDecorator
 import com.noordwind.apps.collectively.presentation.util.Switcher
 import com.noordwind.apps.collectively.presentation.util.ZoomUtil
@@ -233,7 +235,7 @@ class RemarkActivity : com.noordwind.apps.collectively.presentation.BaseActivity
         processingImage.visibility = View.VISIBLE
         processingImageProgress.visibility = View.VISIBLE
         processingImageLabel.text = getString(R.string.remark_image_is_being_processed)
-        processingImageLabel.setOnClickListener {  }
+        processingImageLabel.setOnClickListener { }
     }
 
     override fun showRemarkPhoto(firstBigPhoto: RemarkPhoto?) {
@@ -316,20 +318,24 @@ class RemarkActivity : com.noordwind.apps.collectively.presentation.BaseActivity
         descriptionLabel.text = remark.description
         findViewById(R.id.expand_collapse).expandTouchArea()
 
-        Tooltip.make(this,
-                Tooltip.Builder(101)
-                        .anchor(voteUpButton, Tooltip.Gravity.TOP)
-                        .closePolicy(Tooltip.ClosePolicy()
-                                .insidePolicy(true, false)
-                                .outsidePolicy(true, false), 3000000)
-                        .text(getString(R.string.click_vote_button_tooltip))
-                        .maxWidth(500)
-                        .withArrow(true)
-                        .withOverlay(true)
-                        .floatingAnimation(Tooltip.AnimationBuilder.DEFAULT)
-                        .build()
-        ).show()
 
+        if (!Once.beenDone(Once.THIS_APP_INSTALL, Constants.OnceKey.SHOW_VOTE_TOOLTIP)) {
+            Once.markDone(Constants.OnceKey.SHOW_VOTE_TOOLTIP)
+            Tooltip.make(this,
+                    Tooltip.Builder(101)
+                            .anchor(voteUpButton, Tooltip.Gravity.TOP)
+                            .closePolicy(Tooltip.ClosePolicy()
+                                    .insidePolicy(true, false)
+                                    .outsidePolicy(true, false), 3000000)
+                            .text(getString(R.string.click_vote_button_tooltip))
+                            .maxWidth(500)
+                            .withStyleId(R.style.ToolTipLayoutCustomStyle)
+                            .withArrow(true)
+                            .withOverlay(true)
+                            .floatingAnimation(Tooltip.AnimationBuilder.DEFAULT)
+                            .build()
+            ).show()
+        }
 
         if (remark.offering != null) {
             Tooltip.make(this,
@@ -339,6 +345,7 @@ class RemarkActivity : com.noordwind.apps.collectively.presentation.BaseActivity
                                     .insidePolicy(true, false)
                                     .outsidePolicy(true, false), 3000000)
                             .text("Rozwiąż zgłoszenie aby zyskać Bitcoiny!")
+                            .withStyleId(R.style.ToolTipLayoutCustomStyle)
                             .maxWidth(500)
                             .withArrow(true)
                             .withOverlay(true)
@@ -346,6 +353,16 @@ class RemarkActivity : com.noordwind.apps.collectively.presentation.BaseActivity
                             .build()
             ).show()
         }
+
+        if (remark.group != null) {
+            groupHeaderLabel.visibility = View.VISIBLE
+            groupLabel.visibility = View.VISIBLE
+            groupLabel.text = remark.group.name.trim()
+        } else {
+            groupHeaderLabel.visibility = View.GONE
+            groupLabel.visibility = View.GONE
+        }
+
     }
 
     fun zoomImage() {
@@ -373,6 +390,8 @@ class RemarkActivity : com.noordwind.apps.collectively.presentation.BaseActivity
     override fun showCommentsAndStates(comments: List<RemarkComment>, states: List<RemarkState>) {
         var adapter = RemarkPreviewTabsAdapter(baseContext, supportFragmentManager, comments, states, presenter.userId(), presenter.remarkId())
 
+        historyButton.setOnClickListener { RemarkStatesActivity.start(baseContext, presenter.remarkId(), presenter.userId()) }
+        commentsButton.setOnClickListener { RemarkCommentsActivity.start(baseContext, presenter.remarkId(), presenter.userId())}
         contentPager.adapter = adapter
         tabsLayout.setupWithViewPager(contentPager)
     }
@@ -384,7 +403,7 @@ class RemarkActivity : com.noordwind.apps.collectively.presentation.BaseActivity
         if (votedDown) {
             voteDownButton.setLiked(true)
             voteUpButton.setLiked(false)
-        } else if (votedUp){
+        } else if (votedUp) {
             voteUpButton.setLiked(true)
             voteDownButton.setLiked(false)
         } else {

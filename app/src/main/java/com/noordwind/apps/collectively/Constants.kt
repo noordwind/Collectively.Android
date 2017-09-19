@@ -56,6 +56,7 @@ interface Constants {
             val SHOW_SWIPE_LEFT_TOOLTIP_ON_MAIN_SCREEN = "SHOW_SWIPE_LEFT_TOOLTIP_ON_MAIN_SCREEN"
             val SHOW_PICK_LOCATION_HINT = "SHOW_PICK_LOCATION_HINT"
             val SHOW_TAP_TO_ZOOM_ICON = "show_tap_to_zoom_icon"
+            val SHOW_VOTE_TOOLTIP = "show_vote_tooltip"
         }
     }
 
