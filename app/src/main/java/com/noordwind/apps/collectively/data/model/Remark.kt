@@ -20,9 +20,10 @@ class Remark(
         val author: RemarkPreviewAuthor?,
         val photo: RemarkPhotos?,
         val rating: Int,
+        val group: RemarkGroup?,
         var distanceToRemark: Int? = 0,
-        val positiveVotesCount: Int = Random().nextInt(1000),
-        val negativeVotesCount: Int = Random().nextInt(1000)
+        val positiveVotesCount: Int,
+        val negativeVotesCount: Int
 ) {
 
     override fun equals(other: Any?): Boolean {
@@ -43,6 +44,8 @@ class Remark(
 class RemarkPhotos(val small: String, val medium: String, val big: String)
 
 class OfferingForRemark
+
+class RemarkGroup(val name: String)
 
 class RemarkNotFromList(
         val id: String,

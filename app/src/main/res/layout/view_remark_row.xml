@@ -101,6 +101,19 @@
                 android:textColor="@color/black"
                 android:textSize="14sp"/>
 
+            <TextView
+                android:id="@+id/groupLabel"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:visibility="gone"
+                android:fontFamily="@string/font_condensed"
+                android:gravity="left"
+                android:lines="1"
+                android:singleLine="true"
+                android:textColor="@color/black"
+                android:textSize="14sp"/>
+
         </LinearLayout>
 
 
