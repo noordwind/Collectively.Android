@@ -27,6 +27,7 @@ class MainScreenRemarkBottomSheet(context: Context, remark: Remark, lastLocation
         var distanceLabel: TextView = findViewById(R.id.distanceLabel) as TextView
         var addressLabel: TextView = findViewById(R.id.address) as TextView
         var remarkIconBackgroundImage: ImageView = findViewById(R.id.remarkIconBackground) as ImageView
+        var groupLabel: TextView = findViewById(R.id.groupLabel) as TextView
         var votesCountLabel: TextView = findViewById(R.id.votesCountLabel) as TextView
         val remarkIconBackgroundResolver = RemarkIconBackgroundResolver()
 
@@ -58,6 +59,13 @@ class MainScreenRemarkBottomSheet(context: Context, remark: Remark, lastLocation
         }
 
         addressLabel.text = remark.location?.address
+
+        if (remark.group != null) {
+            groupLabel.visibility = View.VISIBLE
+            groupLabel.text = Html.fromHtml(context.getString(R.string.remark_group_label, remark.group.name))
+        } else {
+            groupLabel.visibility = View.GONE
+        }
 
         setOnClickListener { RemarkActivity.start(context, remark.id) }
     }

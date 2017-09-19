@@ -219,4 +219,5 @@
     <string name="autor">Author</string>
     <string name="click_vote_button_tooltip">Vote up remark if this remarks interests you!</string>
     <string name="submit_remark">Submit remark</string>
+    <string name="remark_group_label"><![CDATA[Group: <b>%1$s</b>]]></string>
 </resources>

@@ -45,6 +45,7 @@ class MainScreenRemarksWithPhotoAdapterDelegate(viewType: Int, val onRemarkSelec
         private var imageView: ImageView = itemView.findViewById(R.id.imageView) as ImageView
         private var remarkIconBackgroundImage: ImageView = itemView.findViewById(R.id.remarkIconBackground) as ImageView
         private var votesCountLabel: TextView = itemView.findViewById(R.id.votesCountLabel) as TextView
+        private var groupLabel: TextView = itemView.findViewById(R.id.groupLabel) as TextView
         private val remarkIconBackgroundResolver = RemarkIconBackgroundResolver()
         private var remark: Remark? = null
 
@@ -86,6 +87,14 @@ class MainScreenRemarksWithPhotoAdapterDelegate(viewType: Int, val onRemarkSelec
             } else {
                 votesCountLabel.text = "" + (positiveVotes - negativeVotes)
                 votesCountLabel.setTextColor(ContextCompat.getColor(itemView.context, R.color.vote_down_remark_color))
+            }
+
+
+            if (remark.group != null) {
+                groupLabel.visibility = View.VISIBLE
+                groupLabel.text = Html.fromHtml(itemView.context.getString(R.string.remark_group_label, remark.group.name))
+            } else {
+                groupLabel.visibility = View.GONE
             }
 
             if (remark.hasMediumPhoto()) {
