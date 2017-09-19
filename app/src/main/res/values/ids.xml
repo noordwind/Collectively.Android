@@ -2,4 +2,5 @@
 <resources>
     <item name="navigate" type="id">navigate</item>
     <item name="voteUpButton" type="id">voteUpButton</item>
+    <item name="sendCommentButton" type="id">sendCommentButton</item>
 </resources>
