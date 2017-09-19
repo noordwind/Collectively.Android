@@ -34,5 +34,6 @@ interface AddRemarkMvp {
         fun setLastKnownAddress(address: String)
         fun setLastKnownLocation(latLng: LatLng)
         fun onInternetEnabled()
+        fun loadAddressFromLocation(latLng: LatLng)
     }
 }

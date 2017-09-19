@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:layout_width="wrap_content"
+              android:padding="8dp"
+              android:background="@color/background_light"
+              android:layout_height="match_parent">
+
+
+    <FrameLayout
+        android:layout_width="240dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_height="32dp">
+
+        <ProgressBar
+            android:id="@+id/progress"
+            android:layout_width="24dp"
+            android:layout_gravity="center"
+            android:layout_height="24dp"/>
+
+        <TextView
+            android:id="@+id/address"
+            android:layout_width="240dp"
+            android:layout_height="32dp"
+            android:layout_gravity="center"
+            android:fontFamily="@string/font_condensed"
+            android:gravity="center"
+            android:ellipsize="end"
+            android:lines="1"
+            android:textColor="@color/black"
+            android:textSize="20sp"/>
+    </FrameLayout>
+
+    <TextView
+        android:id="@+id/submitButton"
+        android:layout_gravity="center_horizontal"
+        android:layout_width="164dp"
+        android:layout_height="32dp"
+        android:layout_marginTop="4dp"
+        android:fontFamily="@string/font_normal"
+        android:gravity="center"
+        android:text="@string/submit_remark"
+        android:textColor="@color/red_dark_2"
+        android:textSize="@dimen/font_medium"
+        android:textStyle="bold"/>
+
+</LinearLayout>

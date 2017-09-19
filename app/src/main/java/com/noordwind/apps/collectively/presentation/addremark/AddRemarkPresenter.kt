@@ -13,6 +13,7 @@ import com.noordwind.apps.collectively.domain.interactor.remark.SaveRemarkUseCas
 import com.noordwind.apps.collectively.presentation.mvp.BasePresenter
 import com.noordwind.apps.collectively.presentation.rxjava.AppDisposableObserver
 import com.noordwind.apps.collectively.presentation.statistics.LoadUserGroupsUseCase
+import com.noordwind.apps.collectively.usecases.LoadAddressFromLocationUseCase
 import com.noordwind.apps.collectively.usecases.LoadLastKnownLocationUseCase
 import io.reactivex.observers.DisposableObserver
 
@@ -20,6 +21,7 @@ class AddRemarkPresenter(val view: AddRemarkMvp.View,
                          val saveRemarkUseCase: SaveRemarkUseCase,
                          val loadRemarkCategoriesUseCase: LoadRemarkCategoriesUseCase,
                          val loadLastKnownLocationUseCase: LoadLastKnownLocationUseCase,
+                         val loadAddressFromLocationUseCase: LoadAddressFromLocationUseCase,
                          val loadUserGroupsUseCase: LoadUserGroupsUseCase,
                          val connectivityRepository: ConnectivityRepository) : BasePresenter, AddRemarkMvp.Presenter {
 
@@ -104,6 +106,37 @@ class AddRemarkPresenter(val view: AddRemarkMvp.View,
     override fun hasAddress() : Boolean = !lastKnownAddress.isNullOrBlank()
 
     override fun getLocation() : LatLng = LatLng(lastKnownLatitude!!, lastKnownLongitude!!)
+
+    override fun loadAddressFromLocation(latLng: LatLng) {
+        lastKnownLatitude = latLng.latitude
+        lastKnownLongitude = latLng.longitude
+
+        var observer = object : DisposableObserver<List<Address>>() {
+            override fun onStart() {
+                super.onStart()
+            }
+
+            override fun onError(e: Throwable?) {
+            }
+
+            override fun onComplete() {
+            }
+
+            override fun onNext(addresses: List<Address>?) {
+                var addressPretty: String = ""
+
+                for (i in 0..addresses?.get(0)?.maxAddressLineIndex!!) {
+                    addressPretty += addresses?.get(0)?.getAddressLine(i) + ", "
+                }
+
+                lastKnownAddress = addressPretty
+
+                view.showAddress(addressPretty)
+            }
+        }
+
+        loadAddressFromLocationUseCase.execute(observer, latLng)
+    }
 
     override fun loadLastKnownAddress() {
         var observer = object : DisposableObserver<List<Address>>() {
@@ -194,6 +227,7 @@ class AddRemarkPresenter(val view: AddRemarkMvp.View,
     }
 
     override fun destroy() {
+        loadAddressFromLocationUseCase.dispose()
         loadRemarkCategoriesUseCase.dispose()
         loadLastKnownLocationUseCase.dispose()
         loadUserGroupsUseCase.dispose()

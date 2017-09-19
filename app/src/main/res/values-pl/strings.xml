@@ -216,4 +216,5 @@
     <string name="remark_preview_photo_title_2" formatted="false"><![CDATA[<b>%1$s</b> zgłoszona przez <font color=\'#0288D1\'><b>%2$s</b></font>]]></string>
     <string name="autor">Autor</string>
     <string name="click_vote_button_tooltip">Zagłosuj jeśli to zgłoszenie jest dla Ciebie ważne!</string>
+    <string name="submit_remark">Dodaj zgłoszenie</string>
 </resources>
