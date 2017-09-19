@@ -5,6 +5,7 @@ import android.content.res.ColorStateList
 import android.support.v4.content.ContextCompat
 import android.view.View
 import android.widget.LinearLayout
+import com.noordwind.apps.collectively.Constants
 import com.noordwind.apps.collectively.R
 import com.noordwind.apps.collectively.TheApp
 import com.noordwind.apps.collectively.data.datasource.FiltersTranslationsDataSource
@@ -38,6 +39,21 @@ class FilterView(context: Context, val filter: String, isChecked: Boolean, showI
         }
         mapFilterCheckbox.isChecked = isChecked
         mapFilterCheckbox.setOnCheckedChangeListener { compoundButton, isSelected -> postFilterSelectionEvent(isSelected)}
+
+        when (filter.toLowerCase())  {
+            Constants.RemarkStates.NEW.toLowerCase() -> {
+                setCheckboxTintColor(R.color.remark_state_new_color)
+            }
+            Constants.RemarkStates.PROCESSING.toLowerCase() -> {
+                setCheckboxTintColor(R.color.remark_state_processing_color)
+            }
+            Constants.RemarkStates.RENEWED.toLowerCase() -> {
+                setCheckboxTintColor(R.color.remark_state_renewed_color)
+            }
+            Constants.RemarkStates.RESOLVED.toLowerCase() -> {
+                setCheckboxTintColor(R.color.remark_state_resolved_color)
+            }
+        }
     }
 
     fun setCheckboxTintColor(color: Int) {
