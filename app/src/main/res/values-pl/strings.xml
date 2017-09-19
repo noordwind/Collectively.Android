@@ -218,4 +218,6 @@
     <string name="click_vote_button_tooltip">Zagłosuj jeśli to zgłoszenie jest dla Ciebie ważne!</string>
     <string name="submit_remark">Dodaj zgłoszenie</string>
     <string name="remark_group_label"><![CDATA[Grupa: <b>%1$s</b>]]></string>
+    <string name="group">Grupa</string>
+    <string name="vote">Głosuj</string>
 </resources>

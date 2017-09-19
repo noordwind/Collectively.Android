@@ -15,6 +15,7 @@ class RemarkPreview(
         val photos: Array<RemarkPhoto>,
         val votes: Array<RemarkVote>,
         val state: RemarkState,
+        val group: RemarkGroup,
         val status: String,
         val offering: OfferingForRemark?,
         val comments: List<RemarkComment>,

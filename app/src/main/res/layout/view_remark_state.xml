@@ -8,11 +8,11 @@
 
     <android.support.v7.widget.AppCompatImageView
         android:id="@+id/stateImage"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
         android:layout_alignParentLeft="true"
         android:layout_centerVertical="true"
-        android:paddingLeft="@dimen/spacing_normal"
+        android:paddingLeft="@dimen/spacing_small"
         android:visibility="invisible"/>
 
     <LinearLayout
@@ -21,7 +21,7 @@
         android:layout_centerVertical="true"
         android:layout_toRightOf="@id/stateImage"
         android:orientation="vertical"
-        android:padding="@dimen/spacing_normal">
+        android:padding="@dimen/spacing_small">
 
         <RelativeLayout
             android:id="@+id/imageSection"
@@ -37,6 +37,8 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
                 android:layout_centerVertical="true"
+                android:textStyle="bold"
+                android:fontFamily="@string/font_condensed"
                 android:textColor="@color/red_dark_2"
                 android:textSize="@dimen/font_small"/>
 
@@ -62,7 +64,7 @@
             android:lines="1"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:fontFamily="@string/font_light"
+            android:fontFamily="@string/font_normal"
             android:textColor="@color/font_dark"
             android:textSize="14sp"/>
 
