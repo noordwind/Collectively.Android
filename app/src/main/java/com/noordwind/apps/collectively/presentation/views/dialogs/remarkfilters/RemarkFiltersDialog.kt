@@ -83,8 +83,10 @@ class RemarkFiltersDialog : DialogFragment(), Constants, FiltersMvp.View {
         presenter.loadFilters()
 
         if (arguments[Constants.BundleKey.STATES] as Boolean) {
+            rootView.findViewById(R.id.statesHeader).visibility = View.VISIBLE
             statesLayout.visibility = View.VISIBLE
         } else {
+            rootView.findViewById(R.id.statesHeader).visibility = View.GONE
             statesLayout.visibility = View.GONE
         }
 
