@@ -1,145 +1,166 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-             xmlns:tools="http://schemas.android.com/tools"
              xmlns:app="http://schemas.android.com/apk/res-auto"
+             xmlns:tools="http://schemas.android.com/tools"
              android:id="@+id/activity_main"
              android:layout_width="match_parent"
-             android:layout_height="match_parent">
+             android:layout_height="match_parent"
+             android:fitsSystemWindows="true">
+
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@android:color/background_light"
+        android:fitsSystemWindows="true"
         tools:context=".presentation.authentication.login.LoginActivity">
 
-        <FrameLayout
-            android:id="@+id/header"
+        <android.support.v7.widget.AppCompatImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="centerCrop"
+            app:srcCompat="@drawable/background_blur"/>
+
+        <TextView
+            android:id="@+id/title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:background="@color/red_dark_1"
-            android:orientation="horizontal">
+            android:layout_marginTop="32dp"
+            android:fontFamily="sans-serif-condensed"
+            android:gravity="center"
+            android:padding="@dimen/spacing_normal"
+            android:shadowColor="@color/black"
+            android:shadowDx="1"
+            android:shadowDy="1"
+            android:shadowRadius="2"
+            android:text="Collectively"
+            android:textColor="@color/white"
+            android:textSize="40sp"
+            android:textStyle="bold"/>
 
-            <FrameLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="left"
-                android:background="@color/red_dark_2"
-                android:padding="@dimen/spacing_medium">
-
-                <android.support.v7.widget.AppCompatImageView
-                    android:layout_width="32dp"
-                    android:layout_height="32dp"
-                    android:layout_gravity="center_vertical"
-                    android:fontFamily="@string/font_light"
-                    app:srcCompat="@drawable/ic_lock_open_white_24dp"
-                    android:text="@string/app_name"
-                    android:textColor="@color/white"
-                    android:textSize="@dimen/font_medium" />
-            </FrameLayout>
-
-            <TextView
-                android:id="@+id/titleLabel"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal|center_vertical"
-                android:fontFamily="@string/font_light"
-                android:padding="@dimen/spacing_medium"
-                android:text="@string/app_name"
-                android:textColor="@color/white"
-                android:textSize="@dimen/font_medium" />
-
-        </FrameLayout>
-
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/title"
+            android:layout_marginBottom="16dp"
+            android:fontFamily="sans-serif-condensed"
+            android:gravity="center"
+            android:shadowColor="@color/black"
+            android:shadowDx="1"
+            android:shadowDy="1"
+            android:shadowRadius="2"
+            android:text="Let's go for the better"
+            android:textAllCaps="true"
+            android:textColor="@color/white"
+            android:textSize="20sp"/>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:layout_marginLeft="@dimen/spacing_xl"
-            android:layout_marginRight="@dimen/spacing_xl"
-            android:orientation="vertical">
+            android:layout_margin="32dp"
+            android:background="#88000000"
+            android:paddingBottom="8dp">
 
-            <EditText
-                android:id="@+id/emailInput"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:fontFamily="@string/font_light"
-                android:hint="@string/email"/>
+                android:orientation="vertical"
+                android:padding="16dp">
 
-            <EditText
-                android:id="@+id/passwordInput"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/spacing_small"
-                android:fontFamily="@string/font_light"
-                android:hint="@string/password"
-                android:inputType="textPassword"/>
-
-            <android.support.v7.widget.CardView
-                android:id="@+id/loginButton"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="right|center_vertical"
-                android:layout_marginTop="@dimen/spacing_small">
-
-                <TextView
+                <android.support.v7.widget.AppCompatEditText
+                    android:id="@+id/emailInput"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/button_selector"
-                    android:fontFamily="@string/font_normal"
-                    android:gravity="center"
-                    android:padding="@dimen/spacing_normal"
-                    android:text="@string/login"
+                    android:fontFamily="@string/font_light"
+                    android:hint="@string/email"
                     android:textColor="@color/white"
-                    android:textSize="@dimen/font_medium"
-                    android:textStyle="bold" />
+                    android:textColorHint="@color/white"
+                    app:backgroundTint="@color/white"/>
 
-            </android.support.v7.widget.CardView>
-
-            <TextView
-                android:id="@+id/retrievePasswordButton"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:fontFamily="@string/font_condensed"
-                android:gravity="center"
-                android:paddingBottom="8dp"
-                android:paddingLeft="16dp"
-                android:paddingRight="16dp"
-                android:paddingTop="@dimen/spacing_normal"
-                android:text="@string/forgot_password"
-                android:textColor="@color/red_dark_2"
-                android:textSize="@dimen/font_medium" />
-
-            <android.support.v7.widget.CardView
-                android:id="@+id/facebookLoginButton"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="right|center_vertical"
-                android:layout_marginTop="@dimen/spacing_large">
-
-                <TextView
+                <android.support.v7.widget.AppCompatEditText
+                    android:id="@+id/passwordInput"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/button_selector"
-                    android:fontFamily="@string/font_normal"
-                    android:gravity="center"
-                    android:padding="@dimen/spacing_normal"
-                    android:text="@string/facebook_login"
+                    android:layout_marginTop="@dimen/spacing_small"
+                    android:fontFamily="@string/font_light"
+                    android:hint="@string/password"
+                    android:inputType="textPassword"
                     android:textColor="@color/white"
-                    android:textSize="@dimen/font_medium"
-                    android:textStyle="bold" />
+                    android:textColorHint="@color/white"
+                    app:backgroundTint="@color/white"/>
 
-            </android.support.v7.widget.CardView>
+                <android.support.v7.widget.CardView
+                    android:id="@+id/loginButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="right|center_vertical"
+                    android:layout_marginTop="@dimen/spacing_small">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/button_selector"
+                        android:fontFamily="@string/font_normal"
+                        android:gravity="center"
+                        android:padding="@dimen/spacing_normal"
+                        android:text="@string/login"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/font_medium"
+                        android:textStyle="bold"/>
+
+                </android.support.v7.widget.CardView>
+
+                <TextView
+                    android:id="@+id/retrievePasswordButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@string/font_condensed"
+                    android:gravity="center"
+                    android:paddingBottom="8dp"
+                    android:paddingLeft="16dp"
+                    android:paddingRight="16dp"
+                    android:paddingTop="@dimen/spacing_normal"
+                    android:text="@string/forgot_password"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/font_medium"/>
+
+                <android.support.v7.widget.CardView
+                    android:id="@+id/facebookLoginButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="right|center_vertical"
+                    android:layout_marginTop="@dimen/spacing_large">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="#3b5998"
+                        android:fontFamily="@string/font_normal"
+                        android:gravity="center"
+                        android:padding="@dimen/spacing_normal"
+                        android:text="@string/facebook_login"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/font_medium"
+                        android:textStyle="bold"/>
+
+                    <android.support.v7.widget.AppCompatImageView
+                        android:layout_width="40dp"
+                        android:layout_gravity="center_vertical"
+                        android:layout_height="40dp"
+                        app:srcCompat="@drawable/ic_facebook"/>
+
+                </android.support.v7.widget.CardView>
 
 
-            <com.facebook.login.widget.LoginButton
-                android:id="@+id/facebookLoginHidden"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:text="Connect with Facebook"
-                android:visibility="gone" />
+                <com.facebook.login.widget.LoginButton
+                    android:id="@+id/facebookLoginHidden"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:text="Connect with Facebook"
+                    android:visibility="gone"/>
+            </LinearLayout>
+
         </LinearLayout>
 
 
@@ -159,29 +180,21 @@
                 android:fontFamily="@string/font_light"
                 android:text="@string/want_new_account"
                 android:textColor="@color/white"
-                android:textSize="@dimen/font_medium" />
+                android:textSize="@dimen/font_medium"/>
 
-            <android.support.v7.widget.CardView
+            <TextView
                 android:id="@+id/signupButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="right|center_vertical">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/button_selector"
-                    android:fontFamily="@string/font_normal"
-                    android:paddingBottom="8dp"
-                    android:paddingLeft="16dp"
-                    android:paddingRight="16dp"
-                    android:paddingTop="8dp"
-                    android:text="@string/sign_up"
-                    android:textColor="@color/white"
-                    android:textSize="@dimen/font_medium"
-                    android:textStyle="bold" />
-
-            </android.support.v7.widget.CardView>
+                android:layout_gravity="right|center_vertical"
+                android:background="@drawable/button_selector"
+                android:fontFamily="@string/font_normal"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp"
+                android:text="@string/sign_up"
+                android:textColor="@color/white"
+                android:textSize="@dimen/font_medium"
+                android:textStyle="bold"/>
 
         </FrameLayout>
 
@@ -189,7 +202,7 @@
             android:layout_width="match_parent"
             android:layout_height="8dp"
             android:layout_alignParentBottom="true"
-            android:background="@color/red_dark_2" />
+            android:background="@color/red_dark_2"/>
     </RelativeLayout>
 
     <include layout="@layout/view_login_progress"/>
