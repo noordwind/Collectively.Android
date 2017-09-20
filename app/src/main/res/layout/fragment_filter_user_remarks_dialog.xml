@@ -38,6 +38,11 @@
             android:textStyle="bold"
             android:textColor="@color/font_dark_hint"/>
 
+        <View
+            android:background="@color/light_grey"
+            android:layout_width="match_parent"
+            android:layout_height="2dp"/>
+
         <LinearLayout
             android:id="@+id/categoriesLayout"
             android:orientation="vertical"
@@ -59,6 +64,11 @@
             android:textStyle="bold"
             android:textColor="@color/font_dark_hint"/>
 
+        <View
+            android:background="@color/light_grey"
+            android:layout_width="match_parent"
+            android:layout_height="2dp"/>
+
         <LinearLayout
             android:id="@+id/statesLayout"
             android:orientation="vertical"
@@ -66,6 +76,37 @@
             android:layout_height="wrap_content">
 
         </LinearLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="@dimen/spacing_small"
+            android:fontFamily="@string/font_condensed"
+            android:gravity="left"
+            android:padding="@dimen/spacing_small"
+            android:text="@string/groups"
+            android:textAllCaps="true"
+            android:textColor="@color/font_dark_hint"
+            android:textStyle="bold"/>
+
+        <View
+            android:background="@color/light_grey"
+            android:layout_width="match_parent"
+            android:layout_height="2dp"/>
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:padding="@dimen/spacing_small">
+
+            <Spinner
+                android:id="@+id/groupsSpinner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:popupBackground="@color/white"/>
+        </FrameLayout>
 
         <android.support.v7.widget.CardView
             android:id="@+id/filter"

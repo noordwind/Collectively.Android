@@ -15,5 +15,8 @@ class RemarkFiltersRepositoryImpl(val filtersDataSource: RemarkFiltersDataSource
     override fun selectedStatusFilters(): Observable<List<String>> = Observable.just(filtersDataSource.selectedStatusFilters())
     override fun clearRemarkFilters(): Observable<Boolean> = filtersDataSource.clearRemarkFilters()
 
+    override fun selectGroup(group: String): Observable<Boolean> = filtersDataSource.selectGroup(group)
+    override fun getSelectedGroup(): Observable<String> = filtersDataSource.getSelectedGroup()
+
 }
 

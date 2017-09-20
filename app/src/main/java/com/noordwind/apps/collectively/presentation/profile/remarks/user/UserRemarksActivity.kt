@@ -16,6 +16,7 @@ import com.noordwind.apps.collectively.data.datasource.FiltersTranslationsDataSo
 import com.noordwind.apps.collectively.data.datasource.RemarkFiltersRepository
 import com.noordwind.apps.collectively.data.model.Remark
 import com.noordwind.apps.collectively.data.repository.RemarksRepository
+import com.noordwind.apps.collectively.data.repository.UserGroupsRepository
 import com.noordwind.apps.collectively.domain.interactor.remark.LoadUserFavoriteRemarksUseCase
 import com.noordwind.apps.collectively.domain.interactor.remark.LoadUserRemarksUseCase
 import com.noordwind.apps.collectively.domain.interactor.remark.LoadUserResolvedRemarksUseCase
@@ -59,6 +60,9 @@ class UserRemarksActivity : com.noordwind.apps.collectively.presentation.BaseAct
     lateinit var filtersRepository: RemarkFiltersRepository
 
     @Inject
+    lateinit var userGroupsRepository: UserGroupsRepository
+
+    @Inject
     lateinit var ioThread: UseCaseThread
 
     @Inject
@@ -93,13 +97,13 @@ class UserRemarksActivity : com.noordwind.apps.collectively.presentation.BaseAct
             toolbarTitleLabel?.text = getString(R.string.user_favorite_remarks_screen_title)
         }
 
-        presenter = UserRemarksPresenter(this,
-                LoadUserRemarksUseCase(remarksRepository, ioThread, uiThread),
-                LoadUserResolvedRemarksUseCase(remarksRepository, ioThread, uiThread),
-                LoadRemarkFiltersUseCase(filtersRepository, ioThread, uiThread),
-                LoadUserFavoriteRemarksUseCase(remarksRepository, ioThread, uiThread),
-                ClearRemarkFiltersUseCase(filtersRepository, ioThread, uiThread),
-                translationDataSource)
+        presenter = UserRemarksPresenter(baseContext, this,
+                loadUserRemarksUseCase = LoadUserRemarksUseCase(remarksRepository, ioThread, uiThread),
+                loadUserResolvedRemarksUseCase = LoadUserResolvedRemarksUseCase(remarksRepository, ioThread, uiThread),
+                loadRemarkFiltersUseCase = LoadRemarkFiltersUseCase(filtersRepository, userGroupsRepository, ioThread, uiThread),
+                loadUserFavoriteRemarksUseCase = LoadUserFavoriteRemarksUseCase(remarksRepository, ioThread, uiThread),
+                clearRemarkFiltersUseCase = ClearRemarkFiltersUseCase(filtersRepository, ioThread, uiThread),
+                translationsDataSource = translationDataSource)
 
         errorDecorator = RequestErrorDecorator(switcherErrorImage, switcherErrorTitle, switcherErrorFooter)
         val contentViews = LinkedList<View>()

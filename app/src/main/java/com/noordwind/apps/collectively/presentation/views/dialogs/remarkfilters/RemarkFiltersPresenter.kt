@@ -1,6 +1,7 @@
 package com.noordwind.apps.collectively.presentation.views.dialogs.mapfilters
 
 import com.noordwind.apps.collectively.domain.interactor.remark.filters.map.*
+import com.noordwind.apps.collectively.domain.interactor.remark.filters.remark.SelectRemarkGroupUseCase
 import com.noordwind.apps.collectively.domain.model.RemarkFilters
 import com.noordwind.apps.collectively.presentation.views.dialogs.remarkfilters.FiltersMvp
 import io.reactivex.observers.DisposableObserver
@@ -10,6 +11,7 @@ class RemarkFiltersPresenter(val view: FiltersMvp.View,
                              val addCategoryFilterUseCase: AddCategoryFilterUseCase,
                              val addStatusFilterUseCase: AddStatusFilterUseCase,
                              val removeCategoryFilterUseCase: RemoveCategoryFilterUseCase,
+                             val selectRemarkGroupUseCase: SelectRemarkGroupUseCase,
                              val removeStatusFilterUseCase: RemoveStatusFilterUseCase) : FiltersMvp.Presenter {
 
     override fun loadFilters() {
@@ -22,6 +24,8 @@ class RemarkFiltersPresenter(val view: FiltersMvp.View,
 
                 view.showRemarkStatusFilters(selectedFilters = filters.selectedStatusFilters,
                         allFilters = filters.allStatusFilters)
+
+                view.showUserGroups(allGroups = filters.allGroups, selectedGroup = filters.selectedGroup)
             }
 
             override fun onError(e: Throwable?) {}
@@ -46,8 +50,17 @@ class RemarkFiltersPresenter(val view: FiltersMvp.View,
         }
     }
 
+    override fun selectGroup(group: String) {
+        selectRemarkGroupUseCase.execute(group)
+    }
+
     override fun destroy() {
         loadRemarkFiltersUseCase.dispose()
+        addCategoryFilterUseCase.dispose()
+        addStatusFilterUseCase.dispose()
+        removeStatusFilterUseCase.dispose()
+        removeCategoryFilterUseCase.dispose()
+        selectRemarkGroupUseCase.dispose()
     }
 
 }

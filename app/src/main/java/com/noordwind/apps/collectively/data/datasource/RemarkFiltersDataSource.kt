@@ -13,5 +13,7 @@ interface RemarkFiltersDataSource {
     fun allStatusFilters(): List<String>
     fun selectedStatusFilters(): List<String>
     fun clearRemarkFilters(): Observable<Boolean>
+    fun selectGroup(group: String): Observable<Boolean>
+    fun getSelectedGroup(): Observable<String>
 }
 
