@@ -2,9 +2,11 @@ package com.noordwind.apps.collectively.presentation.authentication.login
 
 import android.content.Context
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.support.design.widget.Snackbar
 import android.support.v7.app.AppCompatActivity
+import android.view.WindowManager
 import com.facebook.CallbackManager
 import com.facebook.FacebookCallback
 import com.facebook.FacebookException
@@ -76,7 +78,11 @@ class LoginActivity : AppCompatActivity(), LoginMvp.View {
         super.onCreate(savedInstanceState)
         TheApp[this].appComponent?.inject(this)
         setContentView(R.layout.activity_login);
-        titleLabel.text = getString(R.string.app_name)
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            var w = getWindow(); // in Activity's onCreate() for instance
+            w.setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
+        }
 
         loginButton.setOnClickListener { login() }
         signupButton.setOnClickListener { signUp() }
