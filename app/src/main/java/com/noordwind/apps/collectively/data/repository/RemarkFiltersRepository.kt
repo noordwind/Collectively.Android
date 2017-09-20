@@ -13,5 +13,7 @@ interface RemarkFiltersRepository {
     fun allStatusFilters(): Observable<List<String>>
     fun selectedStatusFilters(): Observable<List<String>>
     fun clearRemarkFilters(): Observable<Boolean>
+    fun selectGroup(group: String): Observable<Boolean>
+    fun getSelectedGroup(): Observable<String>
 }
 

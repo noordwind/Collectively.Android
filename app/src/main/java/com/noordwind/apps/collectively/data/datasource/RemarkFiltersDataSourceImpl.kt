@@ -4,6 +4,7 @@ import android.content.Context
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.noordwind.apps.collectively.Constants
+import com.noordwind.apps.collectively.R
 import io.reactivex.Observable
 import net.grandcentrix.tray.TrayPreferences
 import java.util.*
@@ -70,8 +71,21 @@ class RemarkFiltersDataSourceImpl(context: Context) : RemarkFiltersDataSource, T
         return Observable.fromCallable {
             saveStatusFilters(allStatusFilters)
             saveCategoryFilters(allCategoryFilters)
+            saveGroup(context.getString(R.string.add_remark_all_groups_target))
         }.flatMap { Observable.just(true) }
     }
+
+    private fun saveGroup(group: String) {
+        put(Constants.PreferencesKey.REMARK_GROUP, group)
+    }
+
+    override fun selectGroup(group: String): Observable<Boolean> {
+        return Observable.fromCallable {
+            put(Constants.PreferencesKey.REMARK_GROUP, group)
+        }.flatMap { Observable.just(true) }
+    }
+
+    override fun getSelectedGroup(): Observable<String> = Observable.just(getString(Constants.PreferencesKey.REMARK_GROUP, context.getString(R.string.add_remark_all_groups_target)))
 
     override fun onCreate(i: Int) {
 

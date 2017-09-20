@@ -1,6 +1,8 @@
 package com.noordwind.apps.collectively.presentation.profile.remarks.user
 
+import android.content.Context
 import com.noordwind.apps.collectively.Constants
+import com.noordwind.apps.collectively.R
 import com.noordwind.apps.collectively.data.datasource.FiltersTranslationsDataSource
 import com.noordwind.apps.collectively.data.model.Remark
 import com.noordwind.apps.collectively.domain.interactor.remark.LoadUserFavoriteRemarksUseCase
@@ -17,6 +19,7 @@ import io.reactivex.observers.DisposableObserver
 
 
 class UserRemarksPresenter(
+        val context: Context,
         val view: UserRemarksMvp.View,
         val loadUserRemarksUseCase: LoadUserRemarksUseCase,
         val loadUserResolvedRemarksUseCase: LoadUserResolvedRemarksUseCase,
@@ -216,14 +219,11 @@ class UserRemarksPresenter(
 
             override fun onNext(filters: RemarkFilters) {
                 var newFiltersKey = filters.selectedCategoryFilters.sortedBy { it }.toString() +
-                        filters.selectedStatusFilters.sortedBy { it }.toString()
+                        filters.selectedStatusFilters.sortedBy { it }.toString() + filters.selectedGroup
 
                 if (!filtersKey.equals(newFiltersKey, true)) {
                     loadedRemarks.let {
-                        var filteredRemarks = loadedRemarks!!.filter {
-                            filters.selectedCategoryFilters.contains(it.category?.name) &&
-                                    filters.selectedStatusFilters.contains(it.state?.state)
-                        }
+                        var filteredRemarks = loadedRemarks!!.filter { remarkMatchesFilters(it, filters) }
                         view.showFilteredRemarks(filteredRemarks)
                     }
                 }
@@ -234,6 +234,17 @@ class UserRemarksPresenter(
         }
 
         loadRemarkFiltersUseCase.execute(filtersObserver)
+    }
+
+    private fun remarkMatchesFilters(remark: Remark, filters: RemarkFilters) : Boolean {
+        var match = filters.selectedCategoryFilters.contains(remark.category?.name) &&
+                        filters.selectedStatusFilters.contains(remark.state?.state)
+
+        if (filters.selectedGroup.equals(context.getString(R.string.add_remark_all_groups_target))) {
+            return match && remark.group == null
+        } else {
+            return match && remark.group != null && remark.group.name.equals(filters.selectedGroup)
+        }
     }
 
     override fun destroy() {

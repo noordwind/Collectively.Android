@@ -8,18 +8,26 @@ import android.support.v4.app.DialogFragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
 import com.noordwind.apps.collectively.Constants
 import com.noordwind.apps.collectively.R
 import com.noordwind.apps.collectively.TheApp
 import com.noordwind.apps.collectively.data.datasource.RemarkFiltersRepository
+import com.noordwind.apps.collectively.data.model.UserGroup
+import com.noordwind.apps.collectively.data.repository.UserGroupsRepository
 import com.noordwind.apps.collectively.domain.interactor.remark.filters.map.*
+import com.noordwind.apps.collectively.domain.interactor.remark.filters.remark.SelectRemarkGroupUseCase
 import com.noordwind.apps.collectively.domain.thread.PostExecutionThread
 import com.noordwind.apps.collectively.domain.thread.UseCaseThread
+import com.noordwind.apps.collectively.presentation.extension.uppercaseFirstLetter
 import com.noordwind.apps.collectively.presentation.rxjava.RxBus
 import com.noordwind.apps.collectively.presentation.views.FilterView
 import com.noordwind.apps.collectively.presentation.views.dialogs.remarkfilters.FiltersMvp
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
+import kotlinx.android.synthetic.main.activity_add_remark.*
+import java.util.*
 import javax.inject.Inject
 
 class RemarkFiltersDialog : DialogFragment(), Constants, FiltersMvp.View {
@@ -40,6 +48,9 @@ class RemarkFiltersDialog : DialogFragment(), Constants, FiltersMvp.View {
 
     @Inject
     lateinit var filtersRepository: RemarkFiltersRepository
+
+    @Inject
+    lateinit var userGroupsRepository: UserGroupsRepository
 
     @Inject
     lateinit var uiThread: PostExecutionThread
@@ -63,10 +74,11 @@ class RemarkFiltersDialog : DialogFragment(), Constants, FiltersMvp.View {
         setStyle(DialogFragment.STYLE_NO_TITLE, android.R.style.Theme_Holo_Light_Dialog)
         TheApp[context].appComponent?.inject(this)
         presenter = RemarkFiltersPresenter(this,
-                loadRemarkFiltersUseCase = LoadRemarkFiltersUseCase(filtersRepository, ioThread, uiThread),
+                loadRemarkFiltersUseCase = LoadRemarkFiltersUseCase(filtersRepository, userGroupsRepository, ioThread, uiThread),
                 addCategoryFilterUseCase = AddCategoryFilterUseCase(filtersRepository, ioThread, uiThread),
                 addStatusFilterUseCase = AddStatusFilterUseCase(filtersRepository, ioThread, uiThread),
                 removeCategoryFilterUseCase = RemoveCategoryFilterUseCase(filtersRepository, ioThread, uiThread),
+                selectRemarkGroupUseCase = SelectRemarkGroupUseCase(filtersRepository, ioThread, uiThread),
                 removeStatusFilterUseCase = RemoveStatusFilterUseCase(filtersRepository, ioThread, uiThread))
     }
 
@@ -112,6 +124,35 @@ class RemarkFiltersDialog : DialogFragment(), Constants, FiltersMvp.View {
                     isChecked = selectedFilters.contains(it),
                     showIcon = false,
                     type = "state"), statesLayout.childCount)
+        }
+    }
+
+    override fun showUserGroups(allGroups: List<UserGroup>, selectedGroup: String) {
+        val groupNames = LinkedList<String>()
+        var initialSelection = 0
+
+        groupNames.add(getString(R.string.add_remark_all_groups_target))
+        allGroups.forEachIndexed { i, group ->
+            groupNames.add(group.name.uppercaseFirstLetter())
+        }
+
+        groupNames.forEachIndexed { i, group ->
+            if (group.equals(selectedGroup, ignoreCase = true)) {
+                initialSelection = i
+            }
+        }
+
+        val adapter = ArrayAdapter(context, android.R.layout.simple_spinner_item, groupNames)
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        groupsSpinner.adapter = adapter
+        groupsSpinner.setSelection(initialSelection)
+        groupsSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onNothingSelected(p0: AdapterView<*>?) {
+            }
+
+            override fun onItemSelected(p0: AdapterView<*>?, selectedItemView: View?, position: Int, p3: Long) {
+                presenter.selectGroup(groupsSpinner.selectedItem.toString())
+            }
         }
     }
 
