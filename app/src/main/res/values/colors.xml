@@ -7,7 +7,7 @@
     <color name="blue_light_transparent">#880277BD</color>
     <color name="red_light">#0288D1</color>
     <color name="red_dark_1">#0277BD</color>
-    <color name="red_dark_2">#01579B</color>
+    <color name="red_dark_2">#0277BD</color>
     <color name="white">#FFFFFF</color>
     <color name="white_pressed">#f1f1f1</color>
     <color name="half_black">#808080</color>
