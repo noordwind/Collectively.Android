@@ -1,7 +1,6 @@
 package com.noordwind.apps.collectively.data.model
 
 import android.net.Uri
-import java.util.*
 
 class RemarkLocation(
         val address: String,
@@ -22,6 +21,7 @@ class Remark(
         val rating: Int,
         val group: RemarkGroup?,
         var distanceToRemark: Int? = 0,
+        val updatedAt: String,
         val positiveVotesCount: Int,
         val negativeVotesCount: Int
 ) {
