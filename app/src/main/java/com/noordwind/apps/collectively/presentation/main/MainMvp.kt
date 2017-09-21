@@ -5,13 +5,13 @@ import com.noordwind.apps.collectively.data.model.Remark
 import com.noordwind.apps.collectively.data.model.RemarkCategory
 import com.noordwind.apps.collectively.presentation.mvp.BasePresenter
 import io.reactivex.disposables.Disposable
+import java.util.*
 
 interface MainMvp {
 
     interface View {
         fun addDisposable(disposable: Disposable)
         fun showRemarkCategory(category: RemarkCategory)
-        fun showRemarks(remarks: List<Remark>)
         fun showMapFiltersDialog()
         fun showRemarksReloadingProgress()
         fun showTooltip()
@@ -19,6 +19,8 @@ interface MainMvp {
         fun radiusOfMap(): Int?
         fun updateInfoWindow(address: String)
         fun clearMap()
+        fun refreshOldRemarks(oldRemarksToRefresh: LinkedList<Remark>)
+        fun showNewRemarks(remarks: List<Remark>)
     }
 
     interface Presenter : BasePresenter {

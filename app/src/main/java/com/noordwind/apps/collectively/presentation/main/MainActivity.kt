@@ -62,6 +62,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.subjects.BehaviorSubject
 import kotlinx.android.synthetic.main.activity_main.*
+import java.util.*
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
@@ -119,6 +120,7 @@ class MainActivity : com.noordwind.apps.collectively.presentation.BaseActivity()
     private var userMarker: Marker? = null
     private var userMarkerLocation: LatLng? = null
     private var mainScreenInfoWindowAdapter: MainScreenInfoWindowAdapter? = null
+    private val remarkMarkers = LinkedList<Marker>()
 
     private val USER_MARKER_SNIPPET = "user_marker"
 
@@ -380,38 +382,14 @@ class MainActivity : com.noordwind.apps.collectively.presentation.BaseActivity()
 
     override fun clearMap() {
         map?.let { map!!.clear() }
+        remarkMarkers.clear()
     }
 
-    override fun showRemarks(remarks: List<Remark>) {
-        reloadRemarksList = true
-        if (map == null) {
-            return
-        }
-
-        toast?.let {
-            it.hide()
-            toast = null
-            ToastManager(this, getString(R.string.remarks_updated), Toast.LENGTH_LONG).success().show()
-        }
-
-        remarks.forEach { map!!.addMarker(markerFromRemark(it)) }
-    }
-
-    private fun markerFromRemark(remark: Remark): MarkerOptions {
-        var latLng = LatLng(remark.location!!.coordinates[1], remark.location!!.coordinates[0]);
-        var markerOptions = MarkerOptions();
-        markerOptions.position(latLng);
-        markerOptions.snippet(remark.id)
-        markerOptions.title(remark.description);
-        markerOptions.icon(remarkMarkerBitmapProvider.remarkMapMarker(remark));
-        return markerOptions
-    }
 
     override fun onMarkerClick(marker: Marker?): Boolean {
         if (marker?.snippet.equals(USER_MARKER_SNIPPET)) {
-            Toast.makeText(this, "User marker", Toast.LENGTH_SHORT).show()
         } else {
-            mainPresenter.allLoadedRemarks?.filter { marker?.snippet.equals(it.id) }?.forEach {
+            mainPresenter.getRemarks()?.filter { marker?.snippet.equals(it.id) }?.forEach {
                 var latitude = it.location!!.coordinates[1]
                 var longitude = it.location!!.coordinates[0]
 
@@ -425,6 +403,45 @@ class MainActivity : com.noordwind.apps.collectively.presentation.BaseActivity()
             }
         }
         return true
+    }
+
+    override fun refreshOldRemarks(oldRemarksToRefresh: LinkedList<Remark>) {
+        oldRemarksToRefresh.forEach {
+            var remarkToRefresh = it
+            remarkMarkers.find { it.snippet.equals(remarkToRefresh.id) }?.remove()
+        }
+
+        oldRemarksToRefresh.forEach { addRemarkToMap(it) }
+    }
+
+    override fun showNewRemarks(remarks: List<Remark>) {
+        reloadRemarksList = true
+        if (map == null) {
+            return
+        }
+
+        toast?.let {
+            it.hide()
+            toast = null
+            ToastManager(this, getString(R.string.remarks_updated), Toast.LENGTH_LONG).success().show()
+        }
+
+        remarks.forEach { addRemarkToMap(it) }
+    }
+
+    private fun addRemarkToMap(remark: Remark) {
+        var newMarkerOptions = markerFromRemark(remark)
+        remarkMarkers.add(map!!.addMarker(newMarkerOptions))
+    }
+
+    private fun markerFromRemark(remark: Remark): MarkerOptions {
+        var latLng = LatLng(remark.location!!.coordinates[1], remark.location!!.coordinates[0]);
+        var markerOptions = MarkerOptions();
+        markerOptions.position(latLng);
+        markerOptions.snippet(remark.id)
+        markerOptions.title(remark.description);
+        markerOptions.icon(remarkMarkerBitmapProvider.remarkMapMarker(remark));
+        return markerOptions
     }
 
     override fun onRemarkItemSelected(remark: Remark) {

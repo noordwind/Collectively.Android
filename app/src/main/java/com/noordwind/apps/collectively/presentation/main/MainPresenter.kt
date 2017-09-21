@@ -25,7 +25,7 @@ class MainPresenter(val view: MainMvp.View,
                     val translationsDataSource: FiltersTranslationsDataSource) : MainMvp.Presenter {
     var filtersKey: String = ""
     val currentlyVisibleRemarks: LinkedList<Remark> = LinkedList()
-    val allLoadedRemarks: LinkedList<Remark> = LinkedList()
+    val allLoadedRemarks: HashMap<String, Remark> = HashMap()
     var lastLocation: Location? = null
 
     override fun onCreate() {
@@ -38,7 +38,7 @@ class MainPresenter(val view: MainMvp.View,
         Once.markDone(Constants.OnceKey.SHOW_SWIPE_LEFT_TOOLTIP_ON_MAIN_SCREEN)
     }
 
-    override fun getRemarks(): List<Remark>? = allLoadedRemarks
+    override fun getRemarks(): List<Remark>? = allLoadedRemarks.values.toList()
 
     override fun getCurrentlyVisibleRemarks(): List<Remark> = currentlyVisibleRemarks
 
@@ -78,11 +78,26 @@ class MainPresenter(val view: MainMvp.View,
                 currentlyVisibleRemarks.clear()
                 currentlyVisibleRemarks.addAll(downloadedRemarks)
 
-                var loadedRemarksIds = allLoadedRemarks.map { it.id }
-                var newRemarks = downloadedRemarks.filter { !loadedRemarksIds.contains(it.id) && it.location != null }
-                allLoadedRemarks.addAll(newRemarks)
+                var loadedRemarksIds = allLoadedRemarks.keys
 
-                view.showRemarks(newRemarks)
+                var downloadedRemarksThatAreAlreadyStored = downloadedRemarks.filter { loadedRemarksIds.contains(it.id) }
+                var newRemarks = LinkedList(downloadedRemarks.filter { !loadedRemarksIds.contains(it.id) && it.location != null })
+
+
+                var oldRemarksToRefresh = LinkedList<Remark>()
+
+                downloadedRemarksThatAreAlreadyStored.forEach {
+                    allLoadedRemarks.containsKey(it.id)
+                    var storedRemark = allLoadedRemarks[it.id]
+                    if (!storedRemark!!.updatedAt.equals(it.updatedAt)) {
+                        oldRemarksToRefresh.add(it)
+                        allLoadedRemarks.put(it.id, it)
+                    }
+                }
+
+                newRemarks.forEach { allLoadedRemarks.put(it.id, it) }
+                view.refreshOldRemarks(oldRemarksToRefresh)
+                view.showNewRemarks(newRemarks)
             }
 
             override fun onError(e: Throwable) {
