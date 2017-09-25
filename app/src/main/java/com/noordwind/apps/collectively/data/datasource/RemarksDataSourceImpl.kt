@@ -11,6 +11,7 @@ import retrofit2.Response
 import java.io.File
 
 class RemarksDataSourceImpl(val api: Api) : RemarksDataSource {
+
     override fun uploadRemarkPhoto(remarkId: String, photoFile: File): Observable<Response<Void>> {
         var reqFile = RequestBody.create(MediaType.parse("image/*"), photoFile);
         var body = MultipartBody.Part.createFormData("file", photoFile.getName(), reqFile);
@@ -28,6 +29,8 @@ class RemarksDataSourceImpl(val api: Api) : RemarksDataSource {
     override fun resolveRemark(remarkId: String): Observable<Response<Void>> = api.resolveRemark(remarkId, Object())
 
     override fun renewRemark(remarkId: String): Observable<Response<Void>> = api.renewRemark(remarkId, Object())
+
+    override fun processRemark(remarkId: String, message: String): Observable<Response<Void>> = api.processRemark(remarkId, ProcessRemarkDescription(message))
 
     override fun loadUserRemarks(userId: String): Observable<List<Remark>> = api.userRemarks(userId, 1000)
 

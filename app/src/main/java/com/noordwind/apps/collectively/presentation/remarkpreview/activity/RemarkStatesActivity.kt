@@ -3,8 +3,9 @@ package com.noordwind.apps.collectively.presentation.remarkpreview.activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.support.design.widget.BottomSheetBehavior
 import android.support.v7.widget.LinearLayoutManager
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
@@ -12,17 +13,21 @@ import com.noordwind.apps.collectively.Constants
 import com.noordwind.apps.collectively.R
 import com.noordwind.apps.collectively.TheApp
 import com.noordwind.apps.collectively.data.model.RemarkState
+import com.noordwind.apps.collectively.data.repository.ProfileRepository
 import com.noordwind.apps.collectively.data.repository.RemarksRepository
 import com.noordwind.apps.collectively.domain.interactor.remark.states.LoadRemarkStatesUseCase
+import com.noordwind.apps.collectively.domain.interactor.remark.states.ProcessRemarkUseCase
 import com.noordwind.apps.collectively.domain.interactor.remark.states.ReopenRemarkUseCase
 import com.noordwind.apps.collectively.domain.interactor.remark.states.ResolveRemarkUseCase
 import com.noordwind.apps.collectively.domain.thread.PostExecutionThread
 import com.noordwind.apps.collectively.domain.thread.UseCaseThread
 import com.noordwind.apps.collectively.presentation.adapter.RemarkStatesAdapter
 import com.noordwind.apps.collectively.presentation.adapter.delegates.RemarkCommentsLoaderAdapterDelegate
+import com.noordwind.apps.collectively.presentation.adapter.delegates.RemarkStatesDeleteButtonAdapterDelegate
 import com.noordwind.apps.collectively.presentation.adapter.delegates.RemarkStatesReopenButtonAdapterDelegate
 import com.noordwind.apps.collectively.presentation.adapter.delegates.RemarkStatesResolveButtonAdapterDelegate
-import com.noordwind.apps.collectively.presentation.extension.dpToPx
+import com.noordwind.apps.collectively.presentation.extension.showCannotSetStateTooOftenErrorDialog
+import com.noordwind.apps.collectively.presentation.extension.showGroupMemberNotFoundErrorDialog
 import com.noordwind.apps.collectively.presentation.rxjava.RxBus
 import com.noordwind.apps.collectively.presentation.util.RequestErrorDecorator
 import com.noordwind.apps.collectively.presentation.util.Switcher
@@ -50,6 +55,9 @@ class RemarkStatesActivity : com.noordwind.apps.collectively.presentation.BaseAc
     lateinit var remarksRepository: RemarksRepository
 
     @Inject
+    lateinit var profileRepository: ProfileRepository
+
+    @Inject
     lateinit var ioThread: UseCaseThread
 
     @Inject
@@ -63,11 +71,11 @@ class RemarkStatesActivity : com.noordwind.apps.collectively.presentation.BaseAc
 
     private lateinit var userId: String
 
-    private lateinit var bottomSheetBehavior: BottomSheetBehavior<View>
     private var submitRemarkProgress: RemarkCommentsLoaderAdapterDelegate.Progress = RemarkCommentsLoaderAdapterDelegate.Progress()
 
     var resolvingRemarkToast : ToastManager? = null
     var reopeningRemarkToast : ToastManager? = null
+    var processingRemarkToast : ToastManager? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -78,7 +86,6 @@ class RemarkStatesActivity : com.noordwind.apps.collectively.presentation.BaseAc
 
         errorDecorator = RequestErrorDecorator(switcherErrorImage, switcherErrorTitle, switcherErrorFooter)
         val contentViews = LinkedList<View>()
-        contentViews.add(content)
         contentViews.add(remarkStatesRecycler)
         switcher = Switcher.Builder()
                 .withContentViews(contentViews)
@@ -88,20 +95,46 @@ class RemarkStatesActivity : com.noordwind.apps.collectively.presentation.BaseAc
 
         switcherErrorButton.setOnClickListener { loadStates() }
 
-        bottomSheetBehavior = BottomSheetBehavior.from(bottomSheet);
-        bottomSheetBehavior.peekHeight = 64f.dpToPx()
-        bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED;
-
         presenter = RemarkStatesPresenter(this,
-                LoadRemarkStatesUseCase(remarksRepository, ioThread, uiThread),
-                ResolveRemarkUseCase(remarksRepository, ioThread, uiThread),
-                ReopenRemarkUseCase(remarksRepository, ioThread, uiThread))
+                LoadRemarkStatesUseCase(remarksRepository, profileRepository, ioThread, uiThread),
+                ProcessRemarkUseCase(remarksRepository, profileRepository, ioThread, uiThread),
+                ResolveRemarkUseCase(remarksRepository, profileRepository, ioThread, uiThread),
+                ReopenRemarkUseCase(remarksRepository, profileRepository, ioThread, uiThread))
 
         loadStates()
 
         userId = intent.getStringExtra(Constants.BundleKey.USER_ID)
 
         presenter.onCreate()
+
+        actInput.addTextChangedListener(object: TextWatcher {
+            override fun afterTextChanged(p0: Editable?) {
+            }
+
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+            }
+
+            override fun onTextChanged(text: CharSequence?, p1: Int, p2: Int, p3: Int) {
+                text?.let {
+                    if (text?.isNotEmpty()) {
+                        actButton.isClickable = true
+                        actButton.setImageResource(R.drawable.ic_send_black_24dp)
+                    } else {
+                        actButton.isClickable = false
+                        actButton.setImageResource(R.drawable.ic_send_grey_24dp)
+                    }
+                }
+            }
+
+        })
+
+        actButton.setOnClickListener { RxBus.instance.postEvent(Constants.RxBusEvent.PROCESS_REMARK)}
+    }
+
+    override fun activityMessage(): String = actInput.text.toString()
+
+    override fun showActButton(showActButton: Boolean) {
+        actButtonSection.visibility = if (showActButton) View.VISIBLE else View.GONE
     }
 
     override fun showResolvingRemarkMessage() {
@@ -112,12 +145,20 @@ class RemarkStatesActivity : com.noordwind.apps.collectively.presentation.BaseAc
         reopeningRemarkToast = ToastManager(this, getString(R.string.reopening_remark), Toast.LENGTH_LONG).progress().show()
     }
 
+    override fun showProcessingRemarkMessage() {
+        processingRemarkToast = ToastManager(this, getString(R.string.processing_remark), Toast.LENGTH_LONG).progress().show()
+    }
+
     override fun hideResolvingRemarkMessage() {
         resolvingRemarkToast?.let { resolvingRemarkToast!!.hide() }
     }
 
     override fun hideReopeningRemarkMessage() {
         reopeningRemarkToast?.let { reopeningRemarkToast!!.hide() }
+    }
+
+    override fun hideProcessingRemarkMessage() {
+        processingRemarkToast?.let { processingRemarkToast!!.hide() }
     }
 
     override fun showRemarkResolvedMessage() {
@@ -127,6 +168,11 @@ class RemarkStatesActivity : com.noordwind.apps.collectively.presentation.BaseAc
 
     override fun showRemarkReopenedMessage() {
         ToastManager(this, getString(R.string.remark_reopened), Toast.LENGTH_SHORT).success().show()
+        RxBus.instance.postEvent(Constants.RxBusEvent.REMARK_STATE_CHANGED_EVENT)
+    }
+
+    override fun showRemarkProcessedMessage() {
+        ToastManager(this, getString(R.string.remark_processed), Toast.LENGTH_SHORT).success().show()
         RxBus.instance.postEvent(Constants.RxBusEvent.REMARK_STATE_CHANGED_EVENT)
     }
 
@@ -143,13 +189,11 @@ class RemarkStatesActivity : com.noordwind.apps.collectively.presentation.BaseAc
     }
 
     override fun showStatesLoadingServerError(error: String) {
-        bottomSheet.visibility = View.GONE
         errorDecorator.onServerError(error)
         switcher.showErrorViewsImmediately()
     }
 
-    override fun showLoadedStates(states: List<RemarkState>, showResolveButton: Boolean) {
-        bottomSheet.visibility = View.GONE
+    override fun showLoadedStates(states: List<RemarkState>, showResolveButton: Boolean, showDeleteButton: Boolean) {
         switcher.showContentViews()
 
         var list = LinkedList<Any>(states)
@@ -159,6 +203,10 @@ class RemarkStatesActivity : com.noordwind.apps.collectively.presentation.BaseAc
             list.add(0, RemarkStatesReopenButtonAdapterDelegate.RemarkReopenButton())
         }
 
+        if (showDeleteButton) {
+            list.add(1, RemarkStatesDeleteButtonAdapterDelegate.RemarkDeleteButton())
+        }
+
         remarkStatesAdapter = RemarkStatesAdapter().setData(list).addSpacing().initDelegates()
         remarkStatesRecycler.adapter = remarkStatesAdapter
         remarkStatesRecycler.layoutManager = LinearLayoutManager(baseContext)
@@ -166,9 +214,20 @@ class RemarkStatesActivity : com.noordwind.apps.collectively.presentation.BaseAc
     }
 
     override fun showStatesLoadingNetworkError() {
-        bottomSheet.visibility = View.GONE
         errorDecorator.onNetworkError(getString(R.string.error_loading_remark_states_no_network))
         switcher.showErrorViewsImmediately()
+    }
+
+    override fun hideStatesLoading() {
+        switcher.showContentViews()
+    }
+
+    override fun showGroupMemberNotFoundError() {
+        showGroupMemberNotFoundErrorDialog()
+    }
+
+    override fun showCannotSetStateTooOftenError() {
+        showCannotSetStateTooOftenErrorDialog()
     }
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {

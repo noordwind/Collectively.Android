@@ -103,6 +103,24 @@ fun Activity.showResetPasswordErrorDialog(message: String) {
     builder.show()
 }
 
+fun Activity.showGroupMemberNotFoundErrorDialog() {
+    val builder = AlertDialog.Builder(this)
+    builder
+            .setTitle(this.getString(R.string.operation_failed))
+            .setMessage(this.getString(R.string.group_member_not_found_title))
+            .setPositiveButton(this.getString(R.string.ok_button), null)
+    builder.show()
+}
+
+fun Activity.showCannotSetStateTooOftenErrorDialog() {
+    val builder = AlertDialog.Builder(this)
+    builder
+            .setTitle(this.getString(R.string.operation_failed))
+            .setMessage(this.getString(R.string.operation_performed_too_often))
+            .setPositiveButton(this.getString(R.string.ok_button), null)
+    builder.show()
+}
+
 fun Activity.showAddressNotSpecifiedDialogError() {
     val builder = AlertDialog.Builder(this)
     builder

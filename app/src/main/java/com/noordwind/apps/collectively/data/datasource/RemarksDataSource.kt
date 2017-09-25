@@ -28,4 +28,5 @@ interface RemarksDataSource {
 
     fun resolveRemark(remarkId: String): Observable<Response<Void>>
     fun renewRemark(remarkId: String): Observable<Response<Void>>
+    fun processRemark(remarkId: String, message: String): Observable<Response<Void>>
 }

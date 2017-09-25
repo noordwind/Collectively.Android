@@ -61,3 +61,5 @@ class NewRemark(
         val imageUri: Uri?
 )
 
+class ProcessRemarkDescription(val description: String)
+
