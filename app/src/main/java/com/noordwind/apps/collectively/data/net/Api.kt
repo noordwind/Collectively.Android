@@ -51,6 +51,10 @@ interface Api {
     @PUT("remarks/{remarkId}/renew")
     fun renewRemark(@Path("remarkId") remarkId: String, @Body emptyBody: Object): Observable<Response<Void>>
 
+    @Headers(Constants.ApiHeader.ACCEPT_HEADER, Constants.ApiHeader.CONTENT_TYPE_HEADER)
+    @PUT("remarks/{remarkId}/process")
+    fun processRemark(@Path("remarkId") remarkId: String, @Body body: ProcessRemarkDescription): Observable<Response<Void>>
+
     @Multipart
     @PUT("remarks/{remarkId}/photo")
     fun uploadRemarkPhoto(@Path("remarkId") remarkId: String, @Part image: MultipartBody.Part, @Part("name") name: RequestBody): Observable<Response<Void>>

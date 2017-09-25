@@ -222,4 +222,9 @@
     <string name="remark_group_label"><![CDATA[Group: <b>%1$s</b>]]></string>
     <string name="group">Group</string>
     <string name="vote">Vote</string>
+    <string name="delete_remark">Delete remark</string>
+    <string name="group_member_not_found_title">Only group members can alter remark</string>
+    <string name="processing_remark">Processing remark</string>
+    <string name="remark_processed">Action added</string>
+    <string name="operation_performed_too_often">Operation performed too often</string>
 </resources>

@@ -11,7 +11,7 @@
         android:layout_height="48dp"
         android:background="@color/red_dark_2"
         android:gravity="center"
-        android:text="@string/delete"
+        android:text="@string/delete_remark"
         android:textColor="@color/white"
         android:textSize="@dimen/font_normal" />
 

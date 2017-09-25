@@ -3,4 +3,5 @@
     <item name="navigate" type="id">navigate</item>
     <item name="voteUpButton" type="id">voteUpButton</item>
     <item name="sendCommentButton" type="id">sendCommentButton</item>
+    <item name="actButton" type="id">actButton</item>
 </resources>

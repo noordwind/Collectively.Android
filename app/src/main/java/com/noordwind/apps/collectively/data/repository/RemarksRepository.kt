@@ -16,6 +16,7 @@ interface RemarksRepository {
     fun submitRemarkComment(remarkId: String, remarkComment: RemarkComment) : Observable<RemarkComment>
     fun resolveRemark(remarkId: String): Observable<Boolean>
     fun renewRemark(remarkId: String): Observable<Boolean>
+    fun processRemark(remarkId: String, message: String): Observable<Boolean>
     fun submitRemarkVote(remarkId: String, remarkVote: RemarkVote) : Observable<RemarkPreview>
     fun deleteRemarkVote(remarkId: String) : Observable<RemarkPreview>
 

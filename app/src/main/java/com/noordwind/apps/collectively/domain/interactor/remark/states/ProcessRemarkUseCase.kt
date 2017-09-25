@@ -9,19 +9,21 @@ import com.noordwind.apps.collectively.domain.interactor.UseCase
 import com.noordwind.apps.collectively.domain.thread.PostExecutionThread
 import com.noordwind.apps.collectively.domain.thread.UseCaseThread
 import io.reactivex.Observable
-import io.reactivex.functions.BiFunction
 import io.reactivex.functions.Function3
 
-class ReopenRemarkUseCase(val remarksRepository: RemarksRepository,
-                          val profileRepository: ProfileRepository,
-                          useCaseThread: UseCaseThread,
-                          postExecutionThread: PostExecutionThread) : UseCase<RemarkStateData, String>(useCaseThread, postExecutionThread) {
+class ProcessRemarkUseCase(val remarksRepository: RemarksRepository,
+                           val profileRepository: ProfileRepository,
+                           useCaseThread: UseCaseThread,
+                           postExecutionThread: PostExecutionThread) : UseCase<RemarkStateData, Pair<String, String>>(useCaseThread, postExecutionThread) {
 
-    override fun buildUseCaseObservable(id: String?): Observable<RemarkStateData> {
-        return remarksRepository.renewRemark(id!!).flatMap {
+    override fun buildUseCaseObservable(params: Pair<String, String>?): Observable<RemarkStateData> {
+        var id = params!!.first
+        var message = params.second
+
+        return remarksRepository.processRemark(id, message).flatMap {
             var userProfileRepository = profileRepository.loadProfile(false)
-            var remarkPreviewObs = remarksRepository.loadRemark(id!!)
-            var remarkStatesObs = remarksRepository.loadRemarkStates(id!!)
+            var remarkPreviewObs = remarksRepository.loadRemark(id)
+            var remarkStatesObs = remarksRepository.loadRemarkStates(id)
 
             Observable.zip(userProfileRepository, remarkPreviewObs, remarkStatesObs,
                     Function3<Profile, RemarkPreview, List<RemarkState>, RemarkStateData>

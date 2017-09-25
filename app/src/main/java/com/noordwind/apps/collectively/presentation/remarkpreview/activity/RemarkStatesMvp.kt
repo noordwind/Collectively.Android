@@ -11,7 +11,7 @@ interface RemarkStatesMvp {
         fun showStatesLoading()
         fun showStatesLoadingError()
         fun showStatesLoadingServerError(message: String)
-        fun showLoadedStates(states: List<RemarkState>, showResolveButton: Boolean)
+        fun showLoadedStates(states: List<RemarkState>, showResolveButton: Boolean, showDeleteButton: Boolean)
         fun showStatesLoadingNetworkError()
         fun showResolvingRemarkMessage()
         fun hideResolvingRemarkMessage()
@@ -19,6 +19,14 @@ interface RemarkStatesMvp {
         fun hideReopeningRemarkMessage()
         fun showRemarkReopenedMessage()
         fun showReopeningRemarkMessage()
+        fun showActButton(showActButton: Boolean)
+        fun hideStatesLoading()
+        fun showGroupMemberNotFoundError()
+        fun hideProcessingRemarkMessage()
+        fun showRemarkProcessedMessage()
+        fun showProcessingRemarkMessage()
+        fun activityMessage(): String
+        fun showCannotSetStateTooOftenError()
     }
 
     interface Presenter : BasePresenter {

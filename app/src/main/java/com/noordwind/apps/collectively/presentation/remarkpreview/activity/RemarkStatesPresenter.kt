@@ -1,11 +1,8 @@
 package com.noordwind.apps.collectively.presentation.remarkpreview.activity
 
 import com.noordwind.apps.collectively.Constants
-import com.noordwind.apps.collectively.data.model.RemarkPreview
-import com.noordwind.apps.collectively.data.model.RemarkState
-import com.noordwind.apps.collectively.domain.interactor.remark.states.LoadRemarkStatesUseCase
-import com.noordwind.apps.collectively.domain.interactor.remark.states.ReopenRemarkUseCase
-import com.noordwind.apps.collectively.domain.interactor.remark.states.ResolveRemarkUseCase
+import com.noordwind.apps.collectively.data.model.OperationError
+import com.noordwind.apps.collectively.domain.interactor.remark.states.*
 import com.noordwind.apps.collectively.presentation.rxjava.AppDisposableObserver
 import com.noordwind.apps.collectively.presentation.rxjava.RxBus
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -14,6 +11,7 @@ import io.reactivex.disposables.Disposable
 class RemarkStatesPresenter(
         val view: RemarkStatesMvp.View,
         val loadRemarkStatesUseCase: LoadRemarkStatesUseCase,
+        val processRemarkUseCase: ProcessRemarkUseCase,
         val resolveRemarkUseCase: ResolveRemarkUseCase,
         val reopenRemarkUseCase: ReopenRemarkUseCase) : RemarkStatesMvp.Presenter {
 
@@ -21,6 +19,7 @@ class RemarkStatesPresenter(
 
     private lateinit var resolveRemarkEventDisposable: Disposable
     private lateinit var renewRemarkEventDisposable: Disposable
+    private lateinit var processRemarkEventDisposable: Disposable
 
     override fun onCreate() {
         resolveRemarkEventDisposable = RxBus.instance
@@ -34,10 +33,16 @@ class RemarkStatesPresenter(
                 .filter { it.equals(Constants.RxBusEvent.REOPEN_REMARK_EVENT) }
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({ renewRemark() })
+
+        processRemarkEventDisposable = RxBus.instance
+                .getEvents(String::class.java)
+                .filter { it.equals(Constants.RxBusEvent.PROCESS_REMARK) }
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({ processRemark(view.activityMessage()) })
     }
 
     private fun resolveRemark() {
-        var observer = object : AppDisposableObserver<Pair<RemarkPreview, List<RemarkState>>>() {
+        var observer = object : AppDisposableObserver<RemarkStateData>() {
 
             override fun onStart() {
                 super.onStart()
@@ -45,33 +50,18 @@ class RemarkStatesPresenter(
                 view.showStatesLoading()
             }
 
-            override fun onNext(data: Pair<RemarkPreview, List<RemarkState>>) {
+            override fun onNext(data: RemarkStateData) {
                 super.onNext(data)
                 view.hideResolvingRemarkMessage()
                 view.showRemarkResolvedMessage()
-
-                var showResolveButton = true
-
-                if (data.first.isNewRemark() || data.first.isRemarkBeingProcessed() || data.first.isRenewedRemark()) {
-                    showResolveButton = true
-                } else if (data.first.isRemarkResolved()) {
-                    showResolveButton = false
-                }
-
-                view.showLoadedStates(data.second, showResolveButton)
+                showRemarkData(data)
             }
 
             override fun onError(e: Throwable) {
                 super.onError(e)
                 view.hideResolvingRemarkMessage()
-                view.showStatesLoadingError()
-            }
-
-            override fun onServerError(message: String?) {
-                super.onServerError(message)
-                if (message != null) {
-                    view.showStatesLoadingServerError(message)
-                }
+                view.hideStatesLoading()
+                showServerError(e)
             }
 
             override fun onNetworkError() {
@@ -84,7 +74,7 @@ class RemarkStatesPresenter(
     }
 
     private fun renewRemark() {
-        var observer = object : AppDisposableObserver<Pair<RemarkPreview, List<RemarkState>>>() {
+        var observer = object : AppDisposableObserver<RemarkStateData>() {
 
             override fun onStart() {
                 super.onStart()
@@ -92,33 +82,18 @@ class RemarkStatesPresenter(
                 view.showStatesLoading()
             }
 
-            override fun onNext(data: Pair<RemarkPreview, List<RemarkState>>) {
+            override fun onNext(data: RemarkStateData) {
                 super.onNext(data)
                 view.hideReopeningRemarkMessage()
                 view.showRemarkReopenedMessage()
-
-                var showResolveButton = true
-
-                if (data.first.isNewRemark() || data.first.isRemarkBeingProcessed() || data.first.isRenewedRemark()) {
-                    showResolveButton = true
-                } else if (data.first.isRemarkResolved()) {
-                    showResolveButton = false
-                }
-
-                view.showLoadedStates(data.second, showResolveButton)
+                showRemarkData(data)
             }
 
             override fun onError(e: Throwable) {
                 super.onError(e)
                 view.hideReopeningRemarkMessage()
-                view.showStatesLoadingError()
-            }
-
-            override fun onServerError(message: String?) {
-                super.onServerError(message)
-                if (message != null) {
-                    view.showStatesLoadingServerError(message)
-                }
+                view.hideStatesLoading()
+                showServerError(e)
             }
 
             override fun onNetworkError() {
@@ -130,40 +105,94 @@ class RemarkStatesPresenter(
         reopenRemarkUseCase.execute(observer, remarkId)
     }
 
+    private fun processRemark(message: String) {
+        var observer = object : AppDisposableObserver<RemarkStateData>() {
+
+            override fun onStart() {
+                super.onStart()
+                view.showProcessingRemarkMessage()
+                view.showStatesLoading()
+            }
+
+            override fun onNext(data: RemarkStateData) {
+                super.onNext(data)
+                view.hideProcessingRemarkMessage()
+                view.showRemarkProcessedMessage()
+                showRemarkData(data)
+            }
+
+            override fun onError(e: Throwable) {
+                super.onError(e)
+                view.hideProcessingRemarkMessage()
+                view.hideStatesLoading()
+                showServerError(e)
+            }
+
+            override fun onNetworkError() {
+                super.onNetworkError()
+                view.showStatesLoadingNetworkError()
+            }
+        }
+
+        processRemarkUseCase.execute(observer, Pair(remarkId, message))
+    }
+
+    private fun showServerError(error: Throwable) {
+        if (error is OperationError) {
+            if (error.operation.code != null) {
+                if (error.operation.code.equals(Constants.ErrorCode.GROUP_MEMBER_NOT_FOUND)) {
+                    view.showGroupMemberNotFoundError()
+                } else if (error.operation.code.equals(Constants.ErrorCode.CANNOT_SET_STATE_TOO_OFTEN)) {
+                    view.showCannotSetStateTooOftenError()
+                }
+            } else {
+                view.showStatesLoadingServerError(error.operation.message)
+            }
+        }
+    }
+
+    private fun showRemarkData(remarkStateData: RemarkStateData) {
+        var remarkPreview = remarkStateData.remarkPreview
+        var states = remarkStateData.states
+        var showDeleteButton = remarkStateData.userId.equals(remarkStateData.remarkPreview.author.userId)
+        var showResolveButton = true
+        var showActButton = true
+
+        if (remarkPreview.isNewRemark() || remarkPreview.isRemarkBeingProcessed() || remarkPreview.isRenewedRemark()) {
+            showResolveButton = true
+            showActButton = true
+        } else if (remarkPreview.isRemarkResolved()) {
+            showResolveButton = false
+            showActButton = false
+        }
+
+        view.showActButton(showActButton)
+        view.showLoadedStates(states, showResolveButton, showDeleteButton)
+    }
+
     override fun loadStates(id: String) {
         remarkId = id
 
-        var observer = object : AppDisposableObserver<Pair<RemarkPreview, List<RemarkState>>>() {
+        var observer = object : AppDisposableObserver<RemarkStateData>() {
 
             override fun onStart() {
                 super.onStart()
                 view.showStatesLoading()
             }
 
-            override fun onNext(data: Pair<RemarkPreview, List<RemarkState>>) {
+            override fun onNext(data: RemarkStateData) {
                 super.onNext(data)
-
-                var showResolveButton = true
-
-                if (data.first.isNewRemark() || data.first.isRemarkBeingProcessed() || data.first.isRenewedRemark()) {
-                    showResolveButton = true
-                } else if (data.first.isRemarkResolved()) {
-                    showResolveButton = false
-                }
-
-                view.showLoadedStates(data.second, showResolveButton)
+                showRemarkData(data)
             }
 
             override fun onError(e: Throwable) {
                 super.onError(e)
                 view.showStatesLoadingError()
+                view.showActButton(false)
             }
 
             override fun onServerError(message: String?) {
                 super.onServerError(message)
-                if (message != null) {
-                    view.showStatesLoadingServerError(message)
-                }
             }
 
             override fun onNetworkError() {
@@ -176,8 +205,14 @@ class RemarkStatesPresenter(
     }
 
     override fun destroy() {
+        loadRemarkStatesUseCase.dispose()
+
+        processRemarkEventDisposable.dispose()
         resolveRemarkEventDisposable.dispose()
         renewRemarkEventDisposable.dispose()
-        loadRemarkStatesUseCase.dispose()
+
+        processRemarkUseCase.dispose()
+        resolveRemarkUseCase.dispose()
+        reopenRemarkUseCase.dispose()
     }
 }

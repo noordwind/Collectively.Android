@@ -179,6 +179,11 @@ class RemarkRepositoryImpl(
         return operationRepository.pollOperation(remarksDataSource.resolveRemark(remarkId)).flatMap { Observable.just(true) }
     }
 
+    override fun processRemark(remarkId: String, message: String): Observable<Boolean> {
+        return operationRepository.pollOperation(remarksDataSource.processRemark(remarkId, message))
+                .flatMap { Observable.just(true) }
+    }
+
     override fun renewRemark(remarkId: String): Observable<Boolean> {
         return operationRepository.pollOperation(remarksDataSource.renewRemark(remarkId)).flatMap { Observable.just(true) }
     }

@@ -220,4 +220,9 @@
     <string name="remark_group_label"><![CDATA[Grupa: <b>%1$s</b>]]></string>
     <string name="group">Grupa</string>
     <string name="vote">Głosuj</string>
+    <string name="delete_remark">Usuń zgłoszenie</string>
+    <string name="group_member_not_found_title">Tylko członkowie grupy ZZM Kraków mogą zmieniać to zgłoszenie</string>
+    <string name="processing_remark">Przetwarzanie zgłoszenia</string>
+    <string name="remark_processed">Dodano akcje</string>
+    <string name="operation_performed_too_often">Tej akcji nie można wykonywać zbyt często</string>
 </resources>

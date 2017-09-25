@@ -10,6 +10,13 @@ interface Constants {
         }
     }
 
+    interface ErrorCode {
+        companion object {
+            val CANNOT_SET_STATE_TOO_OFTEN = "cannot_set_state_too_often"
+            val GROUP_MEMBER_NOT_FOUND = "group_member_not_found"
+        }
+    }
+
     interface PreferencesKey {
         companion object {
             val SESSION_TOKEN = "session_token"
@@ -152,7 +159,9 @@ interface Constants {
             const val INTERNET_CONNECTION_ENABLED = "internet_connection_enabled"
             const val RESOLVE_REMARK_EVENT = "resolve_remark_event"
             const val REOPEN_REMARK_EVENT = "reopen_remark_event"
+            const val DELETE_REMARK_EVENT = "delete_remark_event"
             const val REMARK_STATE_CHANGED_EVENT = "remark_changed_disposable"
+            const val PROCESS_REMARK = "process_remark"
         }
     }
 }
