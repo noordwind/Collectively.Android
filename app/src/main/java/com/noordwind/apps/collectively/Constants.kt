@@ -14,6 +14,7 @@ interface Constants {
         companion object {
             val CANNOT_SET_STATE_TOO_OFTEN = "cannot_set_state_too_often"
             val GROUP_MEMBER_NOT_FOUND = "group_member_not_found"
+            val UNAUTHORIZED_ERROR = "unauthorized_error"
         }
     }
 
