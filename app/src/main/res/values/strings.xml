@@ -227,4 +227,7 @@
     <string name="processing_remark">Processing remark</string>
     <string name="remark_processed">Action added</string>
     <string name="operation_performed_too_often">Operation performed too often</string>
+    <string name="error_user_unauthorized_error">Not authorized</string>
+    <string name="error_user_unauthorized_error_message">Your account was not confirmed. Check your inbox and activate it.</string>
+    <string name="cancel">Cancel</string>
 </resources>

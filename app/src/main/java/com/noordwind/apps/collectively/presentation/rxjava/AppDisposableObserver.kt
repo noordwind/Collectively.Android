@@ -1,8 +1,10 @@
 package com.noordwind.apps.collectively.presentation.rxjava
 
-import io.reactivex.observers.DisposableObserver
-import com.noordwind.apps.collectively.data.repository.util.ConnectivityRepository
+import com.noordwind.apps.collectively.Constants
 import com.noordwind.apps.collectively.data.model.OperationError
+import com.noordwind.apps.collectively.data.repository.util.ConnectivityRepository
+import io.reactivex.observers.DisposableObserver
+import retrofit2.HttpException
 import java.io.IOException
 import java.net.SocketException
 import java.net.SocketTimeoutException
@@ -35,6 +37,8 @@ open class AppDisposableObserver<T>(val connectivityRepository: ConnectivityRepo
         } else if (e is UnknownHostException || e is IOException ||
                 e is SocketException || e is SocketTimeoutException) {
             onNetworkError()
+        } else if (e is HttpException && e.code() == 403) {
+            onUnAuthorizedError()
         }
     }
 
@@ -44,6 +48,10 @@ open class AppDisposableObserver<T>(val connectivityRepository: ConnectivityRepo
 
     open fun onNetworkError() {
 
+    }
+
+    open fun onUnAuthorizedError() {
+        RxBus.instance.postEvent(Constants.ErrorCode.UNAUTHORIZED_ERROR)
     }
 
     override fun onComplete() {
