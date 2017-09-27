@@ -227,4 +227,5 @@
     <string name="operation_performed_too_often">Tej akcji nie można wykonywać zbyt często</string>
     <string name="error_user_unauthorized_error">Brak uprawnień</string>
     <string name="error_user_unauthorized_error_message">Twoje konto nie zostało jeszcze aktywowane. Sprawdź skrzynkę pocztową i dokończ proces rejestracji.</string>
+    <string name="cancel">Anuluj</string>
 </resources>
