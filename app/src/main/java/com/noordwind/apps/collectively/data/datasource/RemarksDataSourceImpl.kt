@@ -66,7 +66,7 @@ class RemarksDataSourceImpl(val api: Api) : RemarksDataSource {
 
     override fun submitRemarkVote(remarkId: String, remarkVote: RemarkVote): Observable<Response<Void>> = api.submitRemarkVote(remarkId, remarkVote)
 
-    override fun submitRemarkComment(remarkId: String, remarkComment: RemarkComment): Observable<Response<Void>> = api.submitRemarkComment(remarkId, RemarkCommentPostRequest(remarkComment.text))
+    override fun submitRemarkComment(remarkId: String, remarkComment: RemarkComment): Observable<Response<Void>> = api.submitRemarkComment(remarkId, RemarkComment(remarkComment.text))
 
     override fun submitRemarkCommentVote(remarkId: String, commentId: String, remarkVote: RemarkVote): Observable<Response<Void>> = api.submitRemarkCommentVote(remarkId, commentId, remarkVote)
 

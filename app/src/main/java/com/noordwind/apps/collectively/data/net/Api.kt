@@ -147,7 +147,7 @@ interface Api {
 
     @Headers(Constants.ApiHeader.ACCEPT_HEADER, Constants.ApiHeader.CONTENT_TYPE_HEADER)
     @POST("remarks/{id}/comments")
-    fun submitRemarkComment(@Path("id") remarkId: String, @Body remarkComment: RemarkCommentPostRequest): Observable<Response<Void>>
+    fun submitRemarkComment(@Path("id") remarkId: String, @Body remarkComment: RemarkComment): Observable<Response<Void>>
 
     //PUT
     @Headers(Constants.ApiHeader.ACCEPT_HEADER, Constants.ApiHeader.CONTENT_TYPE_HEADER)
