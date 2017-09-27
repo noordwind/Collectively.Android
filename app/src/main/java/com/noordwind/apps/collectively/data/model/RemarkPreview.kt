@@ -7,7 +7,7 @@ import java.util.*
 
 class RemarkPreview(
         val id: String,
-        val author: RemarkPreviewAuthor,
+        val author: RemarkAuthor,
         val category: RemarkCategory,
         val description: String,
         val location: Location,
@@ -50,7 +50,7 @@ class RemarkPreview(
             negativeVotes().filter { it.userId.equals(userId) }.count() > 0
 }
 
-class RemarkPreviewAuthor(
+class RemarkAuthor(
         val userId: String,
         val name: String
 ) : Serializable
@@ -67,10 +67,12 @@ class RemarkVote(
 
 class RemarkState(
         var state: String,
-        val user: RemarkPreviewAuthor,
+        val user: RemarkAuthor,
         val description: String,
         val createdAt: String,
         val removed: Boolean
 ) : Serializable {
     fun creationDate(): Date = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'").parse(createdAt)
 }
+
+class RemarkTag(val id: String, val name: String)
