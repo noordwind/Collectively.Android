@@ -48,7 +48,7 @@ class RemarkPhotos(val small: String, val medium: String, val big: String)
 
 class OfferingForRemark
 
-class RemarkGroup(val name: String)
+class RemarkGroup(val name: String, val memberRole: String, val memberCriteria: List<String>)
 
 class RemarkNotFromList(
         val id: String,

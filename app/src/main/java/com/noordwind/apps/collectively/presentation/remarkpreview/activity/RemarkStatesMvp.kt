@@ -11,7 +11,7 @@ interface RemarkStatesMvp {
         fun showStatesLoading()
         fun showStatesLoadingError()
         fun showStatesLoadingServerError(message: String)
-        fun showLoadedStates(states: List<RemarkState>, showResolveButton: Boolean, showDeleteButton: Boolean)
+        fun showLoadedStates(states: List<RemarkState>, showResolveButton: Boolean, showReopenButton: Boolean, showDeleteButton: Boolean)
         fun showStatesLoadingNetworkError()
         fun showResolvingRemarkMessage()
         fun hideResolvingRemarkMessage()
