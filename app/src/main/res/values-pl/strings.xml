@@ -63,7 +63,7 @@
     <string name="logout">Wyloguj</string>
     <string name="comments">Komentarze</string>
     <string name="remark_comments_screen_title">Komentarze</string>
-    <string name="remark_states_screen_title">Historia zgłoszenia</string>
+    <string name="remark_states_screen_title">Akcje</string>
     <string name="empty_screen_no_comments_footer">Zgłoszenie nie ma żadnych komentarzy.</string>
     <string name="empty_screen_no_comments_button">Dodaj komentarz</string>
     <string name="send">Wyślij</string>
@@ -74,7 +74,6 @@
     <string name="show_comments">Pokaż komentarze</string>
     <string name="show_more_comments">Więcej</string>
     <string name="show_activity">Działaj!</string>
-    <string name="activity_with_remark">Historia zgłoszenia</string>
     <string name="resolve">Rozwiąż zgłoszenie</string>
     <string name="reopen">Przywróć zgłoszenie</string>
     <string name="delete">Usuń</string>
@@ -164,7 +163,7 @@
     <string name="remarks_updated">Zgłoszenia zaktualizowane</string>
 
     <string name="remark_statistics_chart_label"><![CDATA[Rozwiązano <b>%1$s</b> zgłoszeń spośród <b>%2$s</b>]]></string>
-    <string name="history">Historia</string>
+    <string name="history">Akcje</string>
     <string name="filter">Filtruj</string>
     <string name="filetered_remarks_message">Znaleziono %1$s zgłoszeń</string>
     <string name="users">Użytkownicy</string>
