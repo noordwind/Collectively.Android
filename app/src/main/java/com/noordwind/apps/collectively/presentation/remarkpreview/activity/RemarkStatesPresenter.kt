@@ -155,19 +155,36 @@ class RemarkStatesPresenter(
         var remarkPreview = remarkStateData.remarkPreview
         var states = remarkStateData.states
         var showDeleteButton = remarkStateData.userId.equals(remarkStateData.remarkPreview.author.userId)
-        var showResolveButton = true
-        var showActButton = true
+        var showResolveButton = false
+        var showReopenButton = false
+        var showActButton = false
 
         if (remarkPreview.isNewRemark() || remarkPreview.isRemarkBeingProcessed() || remarkPreview.isRenewedRemark()) {
-            showResolveButton = true
-            showActButton = true
+            if (remarkPreview.group == null) {
+                showResolveButton = true
+                showActButton = true
+                showReopenButton = false
+            } else {
+                //Handle group
+                showResolveButton = false
+                showReopenButton = false
+                showActButton = false
+            }
         } else if (remarkPreview.isRemarkResolved()) {
-            showResolveButton = false
-            showActButton = false
+            if (remarkPreview.group == null) {
+                showResolveButton = false
+                showActButton = false
+                showReopenButton = true
+            } else {
+                //Handle group
+                showResolveButton = false
+                showReopenButton = false
+                showActButton = false
+            }
         }
 
         view.showActButton(showActButton)
-        view.showLoadedStates(states, showResolveButton, showDeleteButton)
+        view.showLoadedStates(states, showResolveButton, showReopenButton, showDeleteButton)
     }
 
     override fun loadStates(id: String) {

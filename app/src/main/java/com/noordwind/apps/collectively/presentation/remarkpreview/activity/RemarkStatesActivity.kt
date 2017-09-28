@@ -193,13 +193,13 @@ class RemarkStatesActivity : com.noordwind.apps.collectively.presentation.BaseAc
         switcher.showErrorViewsImmediately()
     }
 
-    override fun showLoadedStates(states: List<RemarkState>, showResolveButton: Boolean, showDeleteButton: Boolean) {
+    override fun showLoadedStates(states: List<RemarkState>, showResolveButton: Boolean, showReopenButton: Boolean, showDeleteButton: Boolean) {
         switcher.showContentViews()
 
         var list = LinkedList<Any>(states)
         if (showResolveButton) {
             list.add(0, RemarkStatesResolveButtonAdapterDelegate.RemarkResolveButton())
-        } else  {
+        } else if (showReopenButton){
             list.add(0, RemarkStatesReopenButtonAdapterDelegate.RemarkReopenButton())
         }
 
