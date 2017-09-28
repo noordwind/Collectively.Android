@@ -3,6 +3,7 @@ package com.noordwind.apps.collectively.presentation.dagger
 import android.app.Activity
 import android.app.Application
 import android.content.Context
+import android.location.LocationManager
 import android.net.ConnectivityManager
 import android.os.Build
 import android.util.Log
@@ -190,7 +191,9 @@ class AppModule(private val application: Application) : Constants {
 
     @Provides
     @Singleton
-    fun provideLocationRepository(reactiveLocationProvider: ReactiveLocationProvider): LocationRepository = LocationRepositoryImpl(reactiveLocationProvider)
+    fun provideLocationRepository(reactiveLocationProvider: ReactiveLocationProvider): LocationRepository
+            = LocationRepositoryImpl(application.applicationContext.getSystemService(Context.LOCATION_SERVICE) as LocationManager,
+            reactiveLocationProvider)
 
     @Provides
     @Singleton

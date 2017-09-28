@@ -123,6 +123,11 @@ class AddRemarkPresenter(val view: AddRemarkMvp.View,
             }
 
             override fun onNext(addresses: List<Address>?) {
+                if (addresses?.isEmpty()!!) {
+                    view.showAddress("")
+                    return
+                }
+
                 var addressPretty: String = ""
 
                 for (i in 0..addresses?.get(0)?.maxAddressLineIndex!!) {
@@ -151,6 +156,11 @@ class AddRemarkPresenter(val view: AddRemarkMvp.View,
             }
 
             override fun onNext(addresses: List<Address>?) {
+                if (addresses?.isEmpty()!!) {
+                    view.showAddress("")
+                    return
+                }
+
                 var addressPretty: String = ""
 
                 for (i in 0..addresses?.get(0)?.maxAddressLineIndex!!) {
