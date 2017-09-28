@@ -18,6 +18,13 @@ interface Constants {
         }
     }
 
+    interface GroupPermissions {
+        companion object {
+            val RESOLVE_REMARK = "remark_resolve"
+            val RENEW_REMARK = "remark_renew"
+        }
+    }
+
     interface PreferencesKey {
         companion object {
             val SESSION_TOKEN = "session_token"
