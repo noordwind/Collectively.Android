@@ -204,7 +204,11 @@ class RemarkStatesActivity : com.noordwind.apps.collectively.presentation.BaseAc
         }
 
         if (showDeleteButton) {
-            list.add(1, RemarkStatesDeleteButtonAdapterDelegate.RemarkDeleteButton())
+            if (showResolveButton || showReopenButton) {
+                list.add(1, RemarkStatesDeleteButtonAdapterDelegate.RemarkDeleteButton())
+            } else {
+                list.add(0, RemarkStatesDeleteButtonAdapterDelegate.RemarkDeleteButton())
+            }
         }
 
         remarkStatesAdapter = RemarkStatesAdapter().setData(list).addSpacing().initDelegates()

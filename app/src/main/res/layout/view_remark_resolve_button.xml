@@ -6,7 +6,9 @@
     <TextView
         android:id="@+id/resolveButton"
         android:layout_width="match_parent"
-        android:layout_margin="@dimen/spacing_small"
+        android:layout_marginLeft="@dimen/spacing_small"
+        android:layout_marginRight="@dimen/spacing_small"
+        android:layout_marginBottom="@dimen/spacing_small"
         android:layout_height="48dp"
         android:background="@color/red_dark_2"
         android:gravity="center"

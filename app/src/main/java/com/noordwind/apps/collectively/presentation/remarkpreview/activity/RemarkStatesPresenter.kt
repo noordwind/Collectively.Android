@@ -155,31 +155,29 @@ class RemarkStatesPresenter(
         var remarkPreview = remarkStateData.remarkPreview
         var states = remarkStateData.states
         var showDeleteButton = remarkStateData.userId.equals(remarkStateData.remarkPreview.author.userId)
+
+
         var showResolveButton = false
         var showReopenButton = false
         var showActButton = false
 
         if (remarkPreview.isNewRemark() || remarkPreview.isRemarkBeingProcessed() || remarkPreview.isRenewedRemark()) {
+            showActButton = true
+            showReopenButton = false
+
             if (remarkPreview.group == null) {
                 showResolveButton = true
-                showActButton = true
-                showReopenButton = false
-            } else {
-                //Handle group
-                showResolveButton = false
-                showReopenButton = false
-                showActButton = false
+            } else if (remarkPreview.group != null && !(remarkPreview.group?.memberRole.isNullOrBlank())) {
+                showResolveButton = remarkPreview.group?.memberCriteria?.contains(Constants.GroupPermissions.RESOLVE_REMARK)!!
             }
         } else if (remarkPreview.isRemarkResolved()) {
+            showActButton = false
+            showResolveButton = false
+
             if (remarkPreview.group == null) {
-                showResolveButton = false
-                showActButton = false
                 showReopenButton = true
-            } else {
-                //Handle group
-                showResolveButton = false
-                showReopenButton = false
-                showActButton = false
+            } else if (remarkPreview.group != null && !remarkPreview.group?.memberRole.isNullOrBlank()) {
+                showReopenButton = remarkPreview.group?.memberCriteria?.contains(Constants.GroupPermissions.RENEW_REMARK)!!
             }
         }
 
