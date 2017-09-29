@@ -163,6 +163,7 @@
     <string name="remarks_updated">Zgłoszenia zaktualizowane</string>
 
     <string name="remark_statistics_chart_label"><![CDATA[Rozwiązano <b>%1$s</b> zgłoszeń spośród <b>%2$s</b>]]></string>
+    <string name="activity_with_remark">Akcje</string>
     <string name="history">Akcje</string>
     <string name="filter">Filtruj</string>
     <string name="filetered_remarks_message">Znaleziono %1$s zgłoszeń</string>
