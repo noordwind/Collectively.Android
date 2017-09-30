@@ -2,12 +2,11 @@ package com.noordwind.apps.collectively.presentation.views.remark.comment
 
 import android.support.v4.content.ContextCompat
 import android.support.v7.widget.RecyclerView
+import android.text.Html
 import android.view.View
 import android.widget.TextView
 import com.like.LikeButton
 import com.like.OnLikeListener
-import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.disposables.Disposable
 import com.noordwind.apps.collectively.R
 import com.noordwind.apps.collectively.TheApp
 import com.noordwind.apps.collectively.data.model.RemarkComment
@@ -17,6 +16,8 @@ import com.noordwind.apps.collectively.domain.interactor.remark.comments.SubmitR
 import com.noordwind.apps.collectively.domain.thread.PostExecutionThread
 import com.noordwind.apps.collectively.domain.thread.UseCaseThread
 import com.noordwind.apps.collectively.presentation.extension.textInInt
+import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.disposables.Disposable
 import java.text.SimpleDateFormat
 import javax.inject.Inject
 
@@ -60,7 +61,7 @@ class RemarkCommentRowHolder(val userId: String, itemView: View) : RecyclerView.
                 DeleteRemarkCommentVoteUseCase(remarksRepository, ioThread, uiThread))
 
         authorLabel.text = remarkComment.user?.name
-        commentLabel.text = remarkComment.text
+        commentLabel.text = Html.fromHtml(remarkComment.text)
         dateLabel.text = dateFormat.format(remarkComment.creationDate())
 
         showPositiveVotes(remarkComment.positiveVotesCount())

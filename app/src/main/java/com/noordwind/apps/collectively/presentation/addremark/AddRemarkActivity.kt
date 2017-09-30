@@ -277,10 +277,10 @@ class AddRemarkActivity : com.noordwind.apps.collectively.presentation.BaseActiv
         val groupNames = LinkedList<String>()
         var initialSelection = 0
 
-        groupNames.add(getString(R.string.add_remark_all_groups_target))
         userGroups.forEachIndexed { i, group ->
             groupNames.add(group.name.uppercaseFirstLetter())
         }
+        groupNames.add(getString(R.string.add_remark_all_groups_target))
 
         val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, groupNames)
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)

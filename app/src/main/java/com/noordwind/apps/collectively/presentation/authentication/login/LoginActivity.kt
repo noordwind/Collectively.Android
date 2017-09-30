@@ -135,7 +135,7 @@ class LoginActivity : AppCompatActivity(), LoginMvp.View {
         Snackbar.make(findViewById(android.R.id.content), getString(R.string.error_login_general), Snackbar.LENGTH_LONG).show()
     }
 
-    fun login() = loginPresenter.loginWithEmail(emailInput.textInString(), passwordInput.textInString());
+    fun login() = loginPresenter.loginWithEmail(emailInput.textInString().trim(), passwordInput.textInString().trim());
 
     fun signUp() = SignUpActivity.launch(this)
 
