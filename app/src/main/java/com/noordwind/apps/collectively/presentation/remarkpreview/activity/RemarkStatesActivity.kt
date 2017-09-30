@@ -23,7 +23,6 @@ import com.noordwind.apps.collectively.domain.thread.PostExecutionThread
 import com.noordwind.apps.collectively.domain.thread.UseCaseThread
 import com.noordwind.apps.collectively.presentation.adapter.RemarkStatesAdapter
 import com.noordwind.apps.collectively.presentation.adapter.delegates.RemarkCommentsLoaderAdapterDelegate
-import com.noordwind.apps.collectively.presentation.adapter.delegates.RemarkStatesDeleteButtonAdapterDelegate
 import com.noordwind.apps.collectively.presentation.adapter.delegates.RemarkStatesReopenButtonAdapterDelegate
 import com.noordwind.apps.collectively.presentation.adapter.delegates.RemarkStatesResolveButtonAdapterDelegate
 import com.noordwind.apps.collectively.presentation.extension.showCannotSetStateTooOftenErrorDialog
@@ -203,13 +202,13 @@ class RemarkStatesActivity : com.noordwind.apps.collectively.presentation.BaseAc
             list.add(0, RemarkStatesReopenButtonAdapterDelegate.RemarkReopenButton())
         }
 
-        if (showDeleteButton) {
-            if (showResolveButton || showReopenButton) {
-                list.add(1, RemarkStatesDeleteButtonAdapterDelegate.RemarkDeleteButton())
-            } else {
-                list.add(0, RemarkStatesDeleteButtonAdapterDelegate.RemarkDeleteButton())
-            }
-        }
+//        if (showDeleteButton) {
+//            if (showResolveButton || showReopenButton) {
+//                list.add(1, RemarkStatesDeleteButtonAdapterDelegate.RemarkDeleteButton())
+//            } else {
+//                list.add(0, RemarkStatesDeleteButtonAdapterDelegate.RemarkDeleteButton())
+//            }
+//        }
 
         remarkStatesAdapter = RemarkStatesAdapter().setData(list).addSpacing().initDelegates()
         remarkStatesRecycler.adapter = remarkStatesAdapter

@@ -122,10 +122,10 @@ class MapFiltersDialog : DialogFragment(), Constants, MapFiltersMvp.View {
         val groupNames = LinkedList<String>()
         var initialSelection = 0
 
-        groupNames.add(getString(R.string.add_remark_all_groups_target))
         allGroups.forEachIndexed { i, group ->
             groupNames.add(group.name.uppercaseFirstLetter())
         }
+        groupNames.add(getString(R.string.add_remark_all_groups_target))
 
         groupNames.forEachIndexed { i, group ->
             if (group.equals(selectedGroup, ignoreCase = true)) {

@@ -1,6 +1,7 @@
 package com.noordwind.apps.collectively.presentation.views.remark.states
 
 import android.support.v7.widget.RecyclerView
+import android.text.Html
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
@@ -23,7 +24,7 @@ class RemarkStateRowHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
 
     fun setRemarkState(remarkState: RemarkState) {
         authorLabel.text = remarkState.user?.name
-        descriptionLabel.text = remarkState.description
+        descriptionLabel.text = Html.fromHtml(remarkState.description)
         descriptionLabel.hideIfEmptyText()
         dateLabel.text = dateFormat.format(remarkState.creationDate())
         statusLabel.text = remarkState.state.getLongRemarkStateTranslation(itemView.context).uppercaseFirstLetter()

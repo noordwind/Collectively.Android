@@ -5,8 +5,6 @@ import android.content.Intent
 import android.os.Bundle
 import android.support.design.widget.Snackbar
 import android.support.v7.app.AppCompatActivity
-import kotlinx.android.synthetic.main.activity_signup.*
-import kotlinx.android.synthetic.main.view_login_progress.*
 import com.noordwind.apps.collectively.R
 import com.noordwind.apps.collectively.TheApp
 import com.noordwind.apps.collectively.data.repository.AuthenticationRepository
@@ -19,6 +17,8 @@ import com.noordwind.apps.collectively.presentation.extension.setGone
 import com.noordwind.apps.collectively.presentation.extension.setVisible
 import com.noordwind.apps.collectively.presentation.extension.showLoginErrorDialog
 import com.noordwind.apps.collectively.presentation.main.MainActivity
+import kotlinx.android.synthetic.main.activity_signup.*
+import kotlinx.android.synthetic.main.view_login_progress.*
 import javax.inject.Inject
 
 class SignUpActivity : AppCompatActivity(), SignUpMvp.View {
@@ -63,7 +63,8 @@ class SignUpActivity : AppCompatActivity(), SignUpMvp.View {
     }
 
     fun signUp() {
-        presenter.signUp(usernameInput.text.toString(), emailInput.text.toString(), passwordInput.text.toString());
+        presenter.signUp(usernameInput.text.toString().trim(),
+                emailInput.text.toString().trim(), passwordInput.text.toString().trim());
     }
 
     override fun showInvalidNameError() = Snackbar.make(findViewById(android.R.id.content), getString(R.string.error_invalid_username), Snackbar.LENGTH_LONG).show();

@@ -315,7 +315,7 @@ class RemarkActivity : com.noordwind.apps.collectively.presentation.BaseActivity
 
         descriptionLabel.visibility = if (remark.description.isEmpty()) View.GONE else View.VISIBLE
         descriptionHeader.visibility = if (remark.description.isEmpty()) View.GONE else View.VISIBLE
-        descriptionLabel.text = remark.description
+        descriptionLabel.text = Html.fromHtml(remark.description)
         findViewById(R.id.expand_collapse).expandTouchArea()
 
 

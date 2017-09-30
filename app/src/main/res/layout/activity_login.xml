@@ -24,7 +24,7 @@
             android:id="@+id/title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="32dp"
+            android:layout_marginTop="16dp"
             android:fontFamily="sans-serif-condensed"
             android:gravity="center"
             android:padding="@dimen/spacing_normal"
@@ -38,6 +38,7 @@
             android:textStyle="bold"/>
 
         <TextView
+            android:id="@+id/subtitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/title"
@@ -54,11 +55,12 @@
             android:textSize="20sp"/>
 
         <LinearLayout
+            android:layout_below="@id/subtitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:layout_margin="32dp"
-            android:background="#88000000"
+            android:layout_margin="8dp"
+            android:background="#AA000000"
             android:paddingBottom="8dp">
 
             <LinearLayout
@@ -151,6 +153,27 @@
 
                 </android.support.v7.widget.CardView>
 
+                <android.support.v7.widget.CardView
+                    android:id="@+id/signupButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="right|center_vertical"
+                    android:layout_marginTop="@dimen/spacing_large">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/button_selector"
+                        android:fontFamily="@string/font_normal"
+                        android:gravity="center"
+                        android:padding="@dimen/spacing_normal"
+                        android:text="@string/sign_up"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/font_medium"
+                        android:textStyle="bold"/>
+
+                </android.support.v7.widget.CardView>
+
 
                 <com.facebook.login.widget.LoginButton
                     android:id="@+id/facebookLoginHidden"
@@ -163,40 +186,6 @@
 
         </LinearLayout>
 
-
-        <FrameLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_marginBottom="2dp"
-            android:background="@color/red_dark_1"
-            android:orientation="horizontal"
-            android:padding="@dimen/spacing_medium">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="left|center_vertical"
-                android:fontFamily="@string/font_light"
-                android:text="@string/want_new_account"
-                android:textColor="@color/white"
-                android:textSize="@dimen/font_medium"/>
-
-            <TextView
-                android:id="@+id/signupButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="right|center_vertical"
-                android:background="@drawable/button_selector"
-                android:fontFamily="@string/font_normal"
-                android:paddingLeft="16dp"
-                android:paddingRight="16dp"
-                android:text="@string/sign_up"
-                android:textColor="@color/white"
-                android:textSize="@dimen/font_medium"
-                android:textStyle="bold"/>
-
-        </FrameLayout>
 
         <View
             android:layout_width="match_parent"
