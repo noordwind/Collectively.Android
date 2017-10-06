@@ -61,7 +61,7 @@ class RemarkCommentRowHolder(val userId: String, itemView: View) : RecyclerView.
                 DeleteRemarkCommentVoteUseCase(remarksRepository, ioThread, uiThread))
 
         authorLabel.text = remarkComment.user?.name
-        commentLabel.text = Html.fromHtml(remarkComment.text)
+        commentLabel.text = Html.fromHtml(remarkComment.text);
         dateLabel.text = dateFormat.format(remarkComment.creationDate())
 
         showPositiveVotes(remarkComment.positiveVotesCount())

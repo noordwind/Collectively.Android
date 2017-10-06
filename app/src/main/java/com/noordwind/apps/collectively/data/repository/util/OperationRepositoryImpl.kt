@@ -32,7 +32,7 @@ class OperationRepositoryImpl(val operationDataSource: OperationDataSource) : Op
                             .takeUntil { operation: Operation -> operation.isFinished() || counter++ >= MAX_RETRIES }
                             .filter { operation: Operation -> operation.isFinished() || counter >= MAX_RETRIES }
                             .flatMap { operation: Operation ->
-                                if (operation.isFinished() && operation.isCompleted()) {
+                                if (operation.isFinished()) {
                                     Observable.just(operation)
                                 } else {
                                     throw OperationError(operation)
