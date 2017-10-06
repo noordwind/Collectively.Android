@@ -73,7 +73,7 @@ class SetNickNameActivity : AppCompatActivity(), SetNickNameMvp.View {
                 SetNickNameUseCase(authenticationRepository, ioThread, uiThread),
                 connectivityRepository)
 
-        mSetNickName.setOnClickListener { presenter.setNickName(nickNameInput.text.toString()) }
+        mSetNickName.setOnClickListener { presenter.setNickName(nickNameInput.text.toString().trim()) }
     }
 
     override fun showLoading() {
