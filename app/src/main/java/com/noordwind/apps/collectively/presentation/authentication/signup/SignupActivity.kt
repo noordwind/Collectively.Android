@@ -7,16 +7,12 @@ import android.support.design.widget.Snackbar
 import android.support.v7.app.AppCompatActivity
 import com.noordwind.apps.collectively.R
 import com.noordwind.apps.collectively.TheApp
-import com.noordwind.apps.collectively.data.repository.AuthenticationRepository
-import com.noordwind.apps.collectively.data.repository.SessionRepository
-import com.noordwind.apps.collectively.data.repository.util.ConnectivityRepository
-import com.noordwind.apps.collectively.domain.interactor.authentication.SignUpUseCase
-import com.noordwind.apps.collectively.domain.thread.PostExecutionThread
-import com.noordwind.apps.collectively.domain.thread.UseCaseThread
+import com.noordwind.apps.collectively.presentation.authentication.signup.mvp.SignUpMvp
 import com.noordwind.apps.collectively.presentation.extension.setGone
 import com.noordwind.apps.collectively.presentation.extension.setVisible
 import com.noordwind.apps.collectively.presentation.extension.showLoginErrorDialog
 import com.noordwind.apps.collectively.presentation.main.MainActivity
+import com.noordwind.apps.collectively.presentation.settings.dagger.SignUpScreenModule
 import kotlinx.android.synthetic.main.activity_signup.*
 import kotlinx.android.synthetic.main.view_login_progress.*
 import javax.inject.Inject
@@ -31,34 +27,14 @@ class SignUpActivity : AppCompatActivity(), SignUpMvp.View {
     }
 
     @Inject
-    lateinit var authenticationRepository: AuthenticationRepository
-
-    @Inject
-    lateinit var sessionRepository: SessionRepository
-
-    @Inject
-    lateinit var connectivityRepository: ConnectivityRepository
-
-    @Inject
-    lateinit var ioThread: UseCaseThread
-
-    @Inject
-    lateinit var uiThread: PostExecutionThread
-
     lateinit var presenter: SignUpMvp.Presenter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        TheApp[this].appComponent?.inject(this);
+        TheApp[this].appComponent!!.plusSignUpScreenComponent(SignUpScreenModule(this)).inject(this)
         setContentView(R.layout.activity_signup);
 
         titleLabel.text = getString(R.string.signup_screen_title)
-
-        presenter = SignUpPresenter(this,
-                SignUpUseCase(authenticationRepository, sessionRepository, ioThread, uiThread),
-                connectivityRepository)
-
         registerButton.setOnClickListener { signUp() }
     }
 

@@ -13,15 +13,10 @@ import android.widget.ArrayAdapter
 import com.noordwind.apps.collectively.Constants
 import com.noordwind.apps.collectively.R
 import com.noordwind.apps.collectively.TheApp
-import com.noordwind.apps.collectively.data.datasource.RemarkFiltersRepository
 import com.noordwind.apps.collectively.data.model.UserGroup
-import com.noordwind.apps.collectively.data.repository.UserGroupsRepository
-import com.noordwind.apps.collectively.domain.interactor.remark.filters.map.*
-import com.noordwind.apps.collectively.domain.interactor.remark.filters.remark.SelectRemarkGroupUseCase
-import com.noordwind.apps.collectively.domain.thread.PostExecutionThread
-import com.noordwind.apps.collectively.domain.thread.UseCaseThread
 import com.noordwind.apps.collectively.presentation.extension.uppercaseFirstLetter
 import com.noordwind.apps.collectively.presentation.rxjava.RxBus
+import com.noordwind.apps.collectively.presentation.settings.dagger.RemarkFiltersDialogModule
 import com.noordwind.apps.collectively.presentation.views.FilterView
 import com.noordwind.apps.collectively.presentation.views.dialogs.remarkfilters.FiltersMvp
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -47,18 +42,7 @@ class RemarkFiltersDialog : DialogFragment(), Constants, FiltersMvp.View {
     }
 
     @Inject
-    lateinit var filtersRepository: RemarkFiltersRepository
-
-    @Inject
-    lateinit var userGroupsRepository: UserGroupsRepository
-
-    @Inject
-    lateinit var uiThread: PostExecutionThread
-
-    @Inject
-    lateinit var ioThread: UseCaseThread
-
-    private lateinit var presenter: FiltersMvp.Presenter
+    lateinit var presenter: FiltersMvp.Presenter
 
     private lateinit var categoriesLayout: ViewGroup
     private lateinit var statesLayout: ViewGroup
@@ -72,14 +56,7 @@ class RemarkFiltersDialog : DialogFragment(), Constants, FiltersMvp.View {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setStyle(DialogFragment.STYLE_NO_TITLE, android.R.style.Theme_Holo_Light_Dialog)
-        TheApp[context].appComponent?.inject(this)
-        presenter = RemarkFiltersPresenter(this,
-                loadRemarkFiltersUseCase = LoadRemarkFiltersUseCase(filtersRepository, userGroupsRepository, ioThread, uiThread),
-                addCategoryFilterUseCase = AddCategoryFilterUseCase(filtersRepository, ioThread, uiThread),
-                addStatusFilterUseCase = AddStatusFilterUseCase(filtersRepository, ioThread, uiThread),
-                removeCategoryFilterUseCase = RemoveCategoryFilterUseCase(filtersRepository, ioThread, uiThread),
-                selectRemarkGroupUseCase = SelectRemarkGroupUseCase(filtersRepository, ioThread, uiThread),
-                removeStatusFilterUseCase = RemoveStatusFilterUseCase(filtersRepository, ioThread, uiThread))
+        TheApp[context].appComponent!!.plusRemarkFiltersDialogComponent(RemarkFiltersDialogModule(this)).inject(this)
     }
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,

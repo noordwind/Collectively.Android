@@ -8,39 +8,24 @@ import android.view.ViewGroup
 import com.bumptech.glide.Glide
 import com.noordwind.apps.collectively.R
 import com.noordwind.apps.collectively.TheApp
-import com.noordwind.apps.collectively.data.repository.ProfileRepository
-import com.noordwind.apps.collectively.data.repository.util.LocationRepository
-import com.noordwind.apps.collectively.domain.interactor.profile.LoadProfileUseCase
-import com.noordwind.apps.collectively.domain.thread.PostExecutionThread
-import com.noordwind.apps.collectively.domain.thread.UseCaseThread
+import com.noordwind.apps.collectively.presentation.main.navigation.mvp.NavigationMvp
 import com.noordwind.apps.collectively.presentation.profile.ProfileActivity
 import com.noordwind.apps.collectively.presentation.settings.SettingsActivity
+import com.noordwind.apps.collectively.presentation.settings.dagger.MainNavigationMenuModule
 import com.noordwind.apps.collectively.presentation.statistics.StatisticsActivity
 import com.noordwind.apps.collectively.presentation.users.UsersActivity
 import com.noordwind.apps.collectively.presentation.util.FacebookUtils
-import com.noordwind.apps.collectively.usecases.LoadLastKnownLocationUseCase
 import kotlinx.android.synthetic.main.fragment_main_navigation.*
 import javax.inject.Inject
 
-
 class MainNavigationFragment : Fragment(), NavigationMvp.View {
-    @Inject
-    lateinit var profileRepository: ProfileRepository
 
     @Inject
-    lateinit var locationRepository: LocationRepository
-
-    @Inject
-    lateinit var ioThread: UseCaseThread
-
-    @Inject
-    lateinit var uiThread: PostExecutionThread
-
-    private lateinit var presenter: NavigationMvp.Presenter
+    lateinit var presenter: NavigationMvp.Presenter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        TheApp[context].appComponent?.inject(this)
+        TheApp[context].appComponent!!.plusMainNavigationMenuComponent(MainNavigationMenuModule(this)).inject(this)
     }
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -57,9 +42,6 @@ class MainNavigationFragment : Fragment(), NavigationMvp.View {
         mSettingsOptionView.setOnClickListener { openSettings() }
         mFanpageOptionView.setOnClickListener { openFanPage() }
 
-        presenter = NavigationPresenter(this,
-                LoadProfileUseCase(profileRepository, ioThread, uiThread),
-                LoadLastKnownLocationUseCase(locationRepository, ioThread, uiThread))
     }
 
     override fun onStart() {

@@ -15,15 +15,12 @@ import android.widget.CheckBox
 import com.noordwind.apps.collectively.Constants
 import com.noordwind.apps.collectively.R
 import com.noordwind.apps.collectively.TheApp
-import com.noordwind.apps.collectively.data.datasource.MapFiltersRepository
 import com.noordwind.apps.collectively.data.model.UserGroup
-import com.noordwind.apps.collectively.data.repository.UserGroupsRepository
-import com.noordwind.apps.collectively.domain.interactor.remark.filters.map.*
-import com.noordwind.apps.collectively.domain.thread.PostExecutionThread
-import com.noordwind.apps.collectively.domain.thread.UseCaseThread
 import com.noordwind.apps.collectively.presentation.extension.uppercaseFirstLetter
 import com.noordwind.apps.collectively.presentation.rxjava.RxBus
+import com.noordwind.apps.collectively.presentation.settings.dagger.MapFiltersDialogModule
 import com.noordwind.apps.collectively.presentation.views.FilterView
+import com.noordwind.apps.collectively.presentation.views.dialogs.mapfilters.mvp.MapFiltersMvp
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import kotlinx.android.synthetic.main.activity_add_remark.*
@@ -37,18 +34,7 @@ class MapFiltersDialog : DialogFragment(), Constants, MapFiltersMvp.View {
     }
 
     @Inject
-    lateinit var mapFiltersRepository: MapFiltersRepository
-
-    @Inject
-    lateinit var userGroupsRepository: UserGroupsRepository
-
-    @Inject
-    lateinit var uiThread: PostExecutionThread
-
-    @Inject
-    lateinit var ioThread: UseCaseThread
-
-    private lateinit var presenter: MapFiltersMvp.Presenter
+    lateinit var presenter: MapFiltersMvp.Presenter
 
     private lateinit var categoriesLayout: ViewGroup
     private lateinit var statesLayout: ViewGroup
@@ -60,16 +46,7 @@ class MapFiltersDialog : DialogFragment(), Constants, MapFiltersMvp.View {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setStyle(DialogFragment.STYLE_NO_TITLE, android.R.style.Theme_Holo_Light_Dialog)
-        TheApp[context].appComponent?.inject(this)
-
-        presenter = MapFiltersPresenter(this,
-                LoadMapFiltersUseCase(mapFiltersRepository, userGroupsRepository, ioThread, uiThread),
-                AddMapCategoryFilterUseCase(mapFiltersRepository, ioThread, uiThread),
-                RemoveMapCategoryFilterUseCase(mapFiltersRepository, ioThread, uiThread),
-                AddMapStatusFilterUseCase(mapFiltersRepository, ioThread, uiThread),
-                RemoveMapStatusFilterUseCase(mapFiltersRepository, ioThread, uiThread),
-                SelectShowOnlyMyRemarksUseCase(mapFiltersRepository, ioThread, uiThread),
-                SelectRemarkGroupUseCase(mapFiltersRepository, ioThread, uiThread))
+        TheApp[context].appComponent!!.plusMapFiltersDialogComponent(MapFiltersDialogModule(this)).inject(this)
     }
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,

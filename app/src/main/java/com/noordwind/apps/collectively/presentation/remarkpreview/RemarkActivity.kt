@@ -22,14 +22,6 @@ import com.noordwind.apps.collectively.Constants
 import com.noordwind.apps.collectively.R
 import com.noordwind.apps.collectively.TheApp
 import com.noordwind.apps.collectively.data.model.*
-import com.noordwind.apps.collectively.data.repository.ProfileRepository
-import com.noordwind.apps.collectively.data.repository.RemarksRepository
-import com.noordwind.apps.collectively.domain.interactor.remark.LoadRemarkPhotoUseCase
-import com.noordwind.apps.collectively.domain.interactor.remark.LoadRemarkViewDataUseCase
-import com.noordwind.apps.collectively.domain.interactor.remark.votes.DeleteRemarkVoteUseCase
-import com.noordwind.apps.collectively.domain.interactor.remark.votes.SubmitRemarkVoteUseCase
-import com.noordwind.apps.collectively.domain.thread.PostExecutionThread
-import com.noordwind.apps.collectively.domain.thread.UseCaseThread
 import com.noordwind.apps.collectively.presentation.adapter.RemarkPreviewTabsAdapter
 import com.noordwind.apps.collectively.presentation.extension.expandTouchArea
 import com.noordwind.apps.collectively.presentation.extension.iconOfCategory
@@ -38,6 +30,8 @@ import com.noordwind.apps.collectively.presentation.extension.uppercaseFirstLett
 import com.noordwind.apps.collectively.presentation.main.RemarkIconBackgroundResolver
 import com.noordwind.apps.collectively.presentation.remarkpreview.activity.RemarkStatesActivity
 import com.noordwind.apps.collectively.presentation.remarkpreview.comments.RemarkCommentsActivity
+import com.noordwind.apps.collectively.presentation.remarkpreview.mvp.RemarkPreviewMvp
+import com.noordwind.apps.collectively.presentation.settings.dagger.RemarkScreenModule
 import com.noordwind.apps.collectively.presentation.util.RequestErrorDecorator
 import com.noordwind.apps.collectively.presentation.util.Switcher
 import com.noordwind.apps.collectively.presentation.util.ZoomUtil
@@ -63,17 +57,6 @@ class RemarkActivity : com.noordwind.apps.collectively.presentation.BaseActivity
     }
 
     @Inject
-    lateinit var remarksRepository: RemarksRepository
-
-    @Inject
-    lateinit var ioThread: UseCaseThread
-
-    @Inject
-    lateinit var uiThread: PostExecutionThread
-
-    @Inject
-    lateinit var profileRepository: ProfileRepository
-
     lateinit var presenter: RemarkPreviewMvp.Presenter
 
     private lateinit var switcher: Switcher
@@ -86,14 +69,8 @@ class RemarkActivity : com.noordwind.apps.collectively.presentation.BaseActivity
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        TheApp[this].appComponent?.inject(this)
+        TheApp[this].appComponent!!.plusRemarkScreenComponent(RemarkScreenModule(this)).inject(this)
         setContentView(R.layout.activity_remark_preview);
-
-        presenter = RemarkPresenter(this,
-                LoadRemarkPhotoUseCase(remarksRepository, ioThread, uiThread),
-                LoadRemarkViewDataUseCase(profileRepository, remarksRepository, ioThread, uiThread),
-                SubmitRemarkVoteUseCase(remarksRepository, profileRepository, ioThread, uiThread),
-                DeleteRemarkVoteUseCase(remarksRepository, profileRepository, ioThread, uiThread))
 
         presenter.onCreate()
 

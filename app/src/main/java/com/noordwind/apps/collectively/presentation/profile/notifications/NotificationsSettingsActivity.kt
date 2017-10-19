@@ -6,24 +6,20 @@ import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
-import kotlinx.android.synthetic.main.notifications_activity.*
-import kotlinx.android.synthetic.main.view_error.*
-import kotlinx.android.synthetic.main.view_progress.*
-import kotlinx.android.synthetic.main.view_toolbar_with_title.*
 import com.noordwind.apps.collectively.R
 import com.noordwind.apps.collectively.TheApp
-import com.noordwind.apps.collectively.data.repository.SettingsRepository
-import com.noordwind.apps.collectively.data.repository.util.NotificationOptionNameRepository
-import com.noordwind.apps.collectively.domain.interactor.LoadSettingsUseCase
-import com.noordwind.apps.collectively.domain.interactor.SaveSettingsUseCase
-import com.noordwind.apps.collectively.domain.thread.PostExecutionThread
-import com.noordwind.apps.collectively.domain.thread.UseCaseThread
 import com.noordwind.apps.collectively.presentation.extension.getChildViewsWithType
 import com.noordwind.apps.collectively.presentation.model.NotificationOption
+import com.noordwind.apps.collectively.presentation.profile.notifications.mvp.NotificationsSettingsMvp
+import com.noordwind.apps.collectively.presentation.settings.dagger.NotificationsSettingsScreenModule
 import com.noordwind.apps.collectively.presentation.util.RequestErrorDecorator
 import com.noordwind.apps.collectively.presentation.util.Switcher
 import com.noordwind.apps.collectively.presentation.views.profile.NotificationOptionView
 import com.noordwind.apps.collectively.presentation.views.toast.ToastManager
+import kotlinx.android.synthetic.main.notifications_activity.*
+import kotlinx.android.synthetic.main.view_error.*
+import kotlinx.android.synthetic.main.view_progress.*
+import kotlinx.android.synthetic.main.view_toolbar_with_title.*
 import java.util.*
 import javax.inject.Inject
 
@@ -38,17 +34,6 @@ class NotificationsSettingsActivity : com.noordwind.apps.collectively.presentati
     }
 
     @Inject
-    lateinit var settingsRepository: SettingsRepository
-
-    @Inject
-    lateinit var notificationOptionNameRepository: NotificationOptionNameRepository
-
-    @Inject
-    lateinit var ioThread: UseCaseThread
-
-    @Inject
-    lateinit var uiThread: PostExecutionThread
-
     lateinit var presenter: NotificationsSettingsMvp.Presenter
 
     private lateinit var switcher: Switcher
@@ -58,7 +43,7 @@ class NotificationsSettingsActivity : com.noordwind.apps.collectively.presentati
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        TheApp[this].appComponent?.inject(this)
+        TheApp[this].appComponent!!.plusNotificationsSettingsScreenComponent(NotificationsSettingsScreenModule(this)).inject(this)
         setContentView(R.layout.notifications_activity);
 
         toolbarTitleLabel?.text = getString(R.string.notifications_settings_screen_title)
@@ -82,10 +67,6 @@ class NotificationsSettingsActivity : com.noordwind.apps.collectively.presentati
                 .withProgressViews(listOf<View>(switcherProgress))
                 .build(this)
 
-        presenter = NotificationsSettingsPresenter(this,
-                LoadSettingsUseCase(settingsRepository, ioThread, uiThread),
-                SaveSettingsUseCase(settingsRepository, ioThread, uiThread),
-                notificationOptionNameRepository)
         presenter.loadSettings()
 
         switcherErrorButton.setOnClickListener { presenter.loadSettings() }

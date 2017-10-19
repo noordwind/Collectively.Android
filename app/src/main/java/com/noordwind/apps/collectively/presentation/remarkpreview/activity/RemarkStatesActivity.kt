@@ -13,11 +13,6 @@ import com.noordwind.apps.collectively.Constants
 import com.noordwind.apps.collectively.R
 import com.noordwind.apps.collectively.TheApp
 import com.noordwind.apps.collectively.data.model.RemarkState
-import com.noordwind.apps.collectively.data.repository.ProfileRepository
-import com.noordwind.apps.collectively.data.repository.RemarksRepository
-import com.noordwind.apps.collectively.domain.interactor.remark.states.*
-import com.noordwind.apps.collectively.domain.thread.PostExecutionThread
-import com.noordwind.apps.collectively.domain.thread.UseCaseThread
 import com.noordwind.apps.collectively.presentation.adapter.RemarkStatesAdapter
 import com.noordwind.apps.collectively.presentation.adapter.delegates.RemarkCommentsLoaderAdapterDelegate
 import com.noordwind.apps.collectively.presentation.adapter.delegates.RemarkStatesDeleteButtonAdapterDelegate
@@ -25,8 +20,10 @@ import com.noordwind.apps.collectively.presentation.adapter.delegates.RemarkStat
 import com.noordwind.apps.collectively.presentation.adapter.delegates.RemarkStatesResolveButtonAdapterDelegate
 import com.noordwind.apps.collectively.presentation.extension.showCannotSetStateTooOftenErrorDialog
 import com.noordwind.apps.collectively.presentation.extension.showGroupMemberNotFoundErrorDialog
+import com.noordwind.apps.collectively.presentation.remarkpreview.activity.mvp.RemarkStatesMvp
 import com.noordwind.apps.collectively.presentation.rxjava.RemarkDeletedEvent
 import com.noordwind.apps.collectively.presentation.rxjava.RxBus
+import com.noordwind.apps.collectively.presentation.settings.dagger.RemarkStatesScreenModule
 import com.noordwind.apps.collectively.presentation.util.RequestErrorDecorator
 import com.noordwind.apps.collectively.presentation.util.Switcher
 import com.noordwind.apps.collectively.presentation.views.toast.ToastManager
@@ -50,17 +47,6 @@ class RemarkStatesActivity : com.noordwind.apps.collectively.presentation.BaseAc
     }
 
     @Inject
-    lateinit var remarksRepository: RemarksRepository
-
-    @Inject
-    lateinit var profileRepository: ProfileRepository
-
-    @Inject
-    lateinit var ioThread: UseCaseThread
-
-    @Inject
-    lateinit var uiThread: PostExecutionThread
-
     lateinit var presenter: RemarkStatesMvp.Presenter
 
     private lateinit var switcher: Switcher
@@ -78,7 +64,7 @@ class RemarkStatesActivity : com.noordwind.apps.collectively.presentation.BaseAc
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        TheApp[this].appComponent?.inject(this)
+        TheApp[this].appComponent!!.plusRemarkStatesScreenComponent(RemarkStatesScreenModule(this)).inject(this)
         setContentView(R.layout.activity_remark_states);
 
         toolbarTitleLabel?.text = getString(R.string.remark_states_screen_title)
@@ -93,13 +79,6 @@ class RemarkStatesActivity : com.noordwind.apps.collectively.presentation.BaseAc
                 .build(this)
 
         switcherErrorButton.setOnClickListener { loadStates() }
-
-        presenter = RemarkStatesPresenter(this,
-                LoadRemarkStatesUseCase(remarksRepository, profileRepository, ioThread, uiThread),
-                DeleteRemarkUseCase(remarksRepository, ioThread, uiThread),
-                ProcessRemarkUseCase(remarksRepository, profileRepository, ioThread, uiThread),
-                ResolveRemarkUseCase(remarksRepository, profileRepository, ioThread, uiThread),
-                ReopenRemarkUseCase(remarksRepository, profileRepository, ioThread, uiThread))
 
         loadStates()
 

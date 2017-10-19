@@ -6,8 +6,8 @@ import com.noordwind.apps.collectively.domain.interactor.profile.LoadCurrentUser
 import com.noordwind.apps.collectively.domain.interactor.profile.LoadUserProfileDataUseCase
 import com.noordwind.apps.collectively.domain.thread.PostExecutionThread
 import com.noordwind.apps.collectively.domain.thread.UseCaseThread
-import com.noordwind.apps.collectively.presentation.profile.ProfileMvp
-import com.noordwind.apps.collectively.presentation.profile.ProfilePresenter
+import com.noordwind.apps.collectively.presentation.profile.mvp.ProfileMvp
+import com.noordwind.apps.collectively.presentation.profile.mvp.ProfilePresenter
 import dagger.Module
 import dagger.Provides
 
