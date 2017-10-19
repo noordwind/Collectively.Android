@@ -5,7 +5,6 @@ import com.noordwind.apps.collectively.data.datasource.UploadRemarkPhotoService
 import com.noordwind.apps.collectively.presentation.adapter.delegates.MainScreenRemarksAdapterDelegate
 import com.noordwind.apps.collectively.presentation.adapter.delegates.MainScreenRemarksWithPhotoAdapterDelegate
 import com.noordwind.apps.collectively.presentation.addremark.AddRemarkActivity
-import com.noordwind.apps.collectively.presentation.addremark.location.PickRemarkLocationActivity
 import com.noordwind.apps.collectively.presentation.authentication.login.LoginActivity
 import com.noordwind.apps.collectively.presentation.authentication.retrievepassword.ResetPasswordActivity
 import com.noordwind.apps.collectively.presentation.authentication.setnickname.SetNickNameActivity
@@ -13,15 +12,12 @@ import com.noordwind.apps.collectively.presentation.authentication.signup.SignUp
 import com.noordwind.apps.collectively.presentation.changepassword.ChangePasswordActivity
 import com.noordwind.apps.collectively.presentation.main.MainActivity
 import com.noordwind.apps.collectively.presentation.main.navigation.MainNavigationFragment
-import com.noordwind.apps.collectively.presentation.profile.ProfileActivity
 import com.noordwind.apps.collectively.presentation.profile.notifications.NotificationsSettingsActivity
 import com.noordwind.apps.collectively.presentation.profile.remarks.user.UserRemarksActivity
 import com.noordwind.apps.collectively.presentation.remarkpreview.RemarkActivity
 import com.noordwind.apps.collectively.presentation.remarkpreview.activity.RemarkStatesActivity
 import com.noordwind.apps.collectively.presentation.remarkpreview.comments.RemarkCommentsActivity
-import com.noordwind.apps.collectively.presentation.settings.SettingsActivity
-import com.noordwind.apps.collectively.presentation.statistics.StatisticsActivity
-import com.noordwind.apps.collectively.presentation.users.UsersActivity
+import com.noordwind.apps.collectively.presentation.settings.dagger.*
 import com.noordwind.apps.collectively.presentation.views.FilterView
 import com.noordwind.apps.collectively.presentation.views.RemarkCommentView
 import com.noordwind.apps.collectively.presentation.views.chart.RemarksByCategoryChart
@@ -43,18 +39,13 @@ interface AppComponent {
     fun inject(activity: SignUpActivity)
     fun inject(mainActivity: MainActivity)
     fun inject(activity: AddRemarkActivity)
-    fun inject(activity: StatisticsActivity)
-    fun inject(activity: ProfileActivity)
     fun inject(activity: RemarkActivity)
-    fun inject(activity: SettingsActivity)
     fun inject(activity: RemarkCommentsActivity)
     fun inject(activity: RemarkStatesActivity)
     fun inject(activity: UserRemarksActivity)
     fun inject(activity: NotificationsSettingsActivity)
     fun inject(activity: ChangePasswordActivity)
-    fun inject(activity: UsersActivity)
     fun inject(activity: SetNickNameActivity)
-    fun inject(activity: PickRemarkLocationActivity)
 
     //Views
     fun inject(remarkCommentRowHolder: RemarkCommentRowHolder)
@@ -70,4 +61,16 @@ interface AppComponent {
 
     //Service
     fun inject(service: UploadRemarkPhotoService)
+
+//    fun session(): Session
+//    fun profileCache(): ProfileCache
+//    fun authenticationRepository(): AuthenticationRepository
+//    fun ioThread(): UseCaseThread
+//    fun uiThread(): PostExecutionThread
+
+    fun plusSettingsComponent(settingsModule: SettingsModule) : SettingsComponent
+    fun plusStatisticsComponent(statisticsModule: StatisticsModule) : StatisticsComponent
+    fun plusUsersComponent(usersModule: UsersModule) : UsersComponent
+    fun plusProfileScreenComponent(profileScreenModule: ProfileScreenModule) : ProfileScreenComponent
+    fun plusPickRemarkLocationScreenComponent(pickRemarkLocationScreenModule: PickRemarkLocationScreenModule) : PickRemarkLocationScreenComponent
 }

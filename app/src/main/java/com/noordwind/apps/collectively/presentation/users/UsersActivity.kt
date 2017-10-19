@@ -10,12 +10,8 @@ import android.view.View
 import com.noordwind.apps.collectively.R
 import com.noordwind.apps.collectively.TheApp
 import com.noordwind.apps.collectively.data.model.User
-import com.noordwind.apps.collectively.data.repository.UsersRepository
-import com.noordwind.apps.collectively.domain.thread.PostExecutionThread
-import com.noordwind.apps.collectively.domain.thread.UseCaseThread
 import com.noordwind.apps.collectively.presentation.adapter.UsersAdapter
-import com.noordwind.apps.collectively.presentation.profile.remarks.user.UsersPresenter
-import com.noordwind.apps.collectively.presentation.statistics.LoadUsersUseCase
+import com.noordwind.apps.collectively.presentation.settings.dagger.UsersModule
 import com.noordwind.apps.collectively.presentation.util.RequestErrorDecorator
 import com.noordwind.apps.collectively.presentation.util.Switcher
 import kotlinx.android.synthetic.main.users_activity.*
@@ -36,14 +32,6 @@ class UsersActivity : com.noordwind.apps.collectively.presentation.BaseActivity(
     }
 
     @Inject
-    lateinit var usersRepository: UsersRepository
-
-    @Inject
-    lateinit var ioThread: UseCaseThread
-
-    @Inject
-    lateinit var uiThread: PostExecutionThread
-
     lateinit var presenter: UsersMvp.Presenter
 
     private lateinit var switcher: Switcher
@@ -52,10 +40,8 @@ class UsersActivity : com.noordwind.apps.collectively.presentation.BaseActivity(
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        TheApp[this].appComponent?.inject(this)
+        TheApp[this].appComponent!!.plusUsersComponent(UsersModule(this)).inject(this)
         setContentView(R.layout.users_activity);
-
-        presenter = UsersPresenter(this, LoadUsersUseCase(usersRepository, ioThread, uiThread))
 
         errorDecorator = RequestErrorDecorator(switcherErrorImage, switcherErrorTitle, switcherErrorFooter)
         val contentViews = LinkedList<View>()

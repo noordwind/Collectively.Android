@@ -9,6 +9,7 @@ import com.facebook.FacebookSdk
 import com.noordwind.apps.collectively.presentation.dagger.AppComponent
 import com.noordwind.apps.collectively.presentation.dagger.AppModule
 import com.noordwind.apps.collectively.presentation.dagger.DaggerAppComponent
+import com.noordwind.apps.collectively.presentation.settings.dagger.SettingsComponent
 import io.fabric.sdk.android.Fabric
 import jonathanfinerty.once.Once
 

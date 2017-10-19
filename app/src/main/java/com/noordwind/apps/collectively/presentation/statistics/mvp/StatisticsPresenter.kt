@@ -1,7 +1,8 @@
-package com.noordwind.apps.collectively.presentation.statistics
+package com.noordwind.apps.collectively.presentation.statistics.mvp
 
 import com.noordwind.apps.collectively.data.model.Statistics
 import com.noordwind.apps.collectively.presentation.rxjava.AppDisposableObserver
+import com.noordwind.apps.collectively.presentation.statistics.LoadStatisticsUseCase
 
 class StatisticsPresenter(val view: StatisticsMvp.View, val loadStatisticsUseCase: LoadStatisticsUseCase) : StatisticsMvp.Presenter {
     override fun loadStatistics() {

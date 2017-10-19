@@ -32,6 +32,7 @@ import com.noordwind.apps.collectively.domain.thread.PostExecutionThread
 import com.noordwind.apps.collectively.domain.thread.UseCaseThread
 import com.noordwind.apps.collectively.presentation.addremark.PickRemarkLocationMvp
 import com.noordwind.apps.collectively.presentation.addremark.PickRemarkLocationPresenter
+import com.noordwind.apps.collectively.presentation.settings.dagger.PickRemarkLocationScreenModule
 import com.noordwind.apps.collectively.usecases.LoadAddressFromLocationUseCase
 import jonathanfinerty.once.Once
 import kotlinx.android.synthetic.main.activity_pick_location.*
@@ -49,15 +50,7 @@ class PickRemarkLocationActivity : com.noordwind.apps.collectively.presentation.
     }
 
     @Inject
-    lateinit var locationRepository: LocationRepository
-
-    @Inject
-    lateinit var ioThread: UseCaseThread
-
-    @Inject
-    lateinit var uiThread: PostExecutionThread
-
-    private lateinit var presenter: PickRemarkLocationMvp.Presenter
+    lateinit var presenter: PickRemarkLocationMvp.Presenter
 
     private var map: GoogleMap? = null
     private var googleApiClient: GoogleApiClient? = null
@@ -67,7 +60,7 @@ class PickRemarkLocationActivity : com.noordwind.apps.collectively.presentation.
     private var selectedLocation: LatLng? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        TheApp[baseContext].appComponent!!.inject(this)
+        TheApp[this].appComponent!!.plusPickRemarkLocationScreenComponent(PickRemarkLocationScreenModule(this)).inject(this)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_pick_location)
         toolbarTitleLabel.text = getString(R.string.picki_location_screen_title)
@@ -76,8 +69,6 @@ class PickRemarkLocationActivity : com.noordwind.apps.collectively.presentation.
 
         val mapFragment = supportFragmentManager.findFragmentById(R.id.map) as SupportMapFragment
         mapFragment.getMapAsync(this)
-
-        presenter = PickRemarkLocationPresenter(this, LoadAddressFromLocationUseCase(locationRepository, ioThread, uiThread))
 
         if (!Once.beenDone(Once.THIS_APP_INSTALL, Constants.OnceKey.SHOW_PICK_LOCATION_HINT)) {
             tooltipBackground.visibility = View.VISIBLE
