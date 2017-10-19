@@ -5,18 +5,20 @@ import android.content.Intent
 import android.os.Bundle
 import android.support.design.widget.Snackbar
 import android.support.v7.app.AppCompatActivity
-import kotlinx.android.synthetic.main.activity_reset_password.*
-import kotlinx.android.synthetic.main.view_login_progress.*
 import com.noordwind.apps.collectively.R
 import com.noordwind.apps.collectively.TheApp
 import com.noordwind.apps.collectively.data.repository.AuthenticationRepository
 import com.noordwind.apps.collectively.data.repository.util.ConnectivityRepository
-import com.noordwind.apps.collectively.domain.interactor.authentication.RetrievePasswordUseCase
 import com.noordwind.apps.collectively.domain.thread.PostExecutionThread
 import com.noordwind.apps.collectively.domain.thread.UseCaseThread
+import com.noordwind.apps.collectively.presentation.authentication.retrievepassword.mvp.ResetPasswordMvp
+import com.noordwind.apps.collectively.presentation.authentication.retrievepassword.mvp.ResetPasswordPresenter
 import com.noordwind.apps.collectively.presentation.extension.setGone
 import com.noordwind.apps.collectively.presentation.extension.setVisible
 import com.noordwind.apps.collectively.presentation.extension.showResetPasswordErrorDialog
+import com.noordwind.apps.collectively.presentation.settings.dagger.ResetPasswordScreenModule
+import kotlinx.android.synthetic.main.activity_reset_password.*
+import kotlinx.android.synthetic.main.view_login_progress.*
 import javax.inject.Inject
 
 class ResetPasswordActivity : AppCompatActivity(), ResetPasswordMvp.View {
@@ -29,28 +31,13 @@ class ResetPasswordActivity : AppCompatActivity(), ResetPasswordMvp.View {
     }
 
     @Inject
-    lateinit var authenticationRepository: AuthenticationRepository
-
-    @Inject
-    lateinit var connectivityRepository: ConnectivityRepository
-
-    @Inject
-    lateinit var ioThread: UseCaseThread
-
-    @Inject
-    lateinit var uiThread: PostExecutionThread
-
     lateinit var presenter : ResetPasswordPresenter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        TheApp[this].appComponent?.inject(this)
+        TheApp[this].appComponent!!.plusResetPasswordScreenComponent(ResetPasswordScreenModule(this)).inject(this)
         setContentView(R.layout.activity_reset_password)
         titleLabel.text = getString(R.string.retrieve_password_screen_title)
-
-        presenter = ResetPasswordPresenter(this,
-                RetrievePasswordUseCase(authenticationRepository, ioThread, uiThread),
-                connectivityRepository)
 
         mResetPasswordButton.setOnClickListener { presenter.resetPassword(emailInput.text.toString()) }
     }

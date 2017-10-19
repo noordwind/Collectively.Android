@@ -14,16 +14,8 @@ import com.facebook.login.LoginManager
 import com.facebook.login.LoginResult
 import com.noordwind.apps.collectively.R
 import com.noordwind.apps.collectively.TheApp
-import com.noordwind.apps.collectively.data.repository.AuthenticationRepository
-import com.noordwind.apps.collectively.data.repository.FacebookTokenRepository
-import com.noordwind.apps.collectively.data.repository.ProfileRepository
-import com.noordwind.apps.collectively.data.repository.SessionRepository
-import com.noordwind.apps.collectively.data.repository.util.ConnectivityRepository
-import com.noordwind.apps.collectively.domain.interactor.GetFacebookTokenUseCase
-import com.noordwind.apps.collectively.domain.interactor.authentication.FacebookLoginUseCase
-import com.noordwind.apps.collectively.domain.interactor.authentication.LoginUseCase
-import com.noordwind.apps.collectively.domain.thread.PostExecutionThread
-import com.noordwind.apps.collectively.domain.thread.UseCaseThread
+import com.noordwind.apps.collectively.presentation.authentication.login.mvp.LoginMvp
+import com.noordwind.apps.collectively.presentation.authentication.login.mvp.LoginPresenter
 import com.noordwind.apps.collectively.presentation.authentication.retrievepassword.ResetPasswordActivity
 import com.noordwind.apps.collectively.presentation.authentication.setnickname.SetNickNameActivity
 import com.noordwind.apps.collectively.presentation.authentication.signup.SignUpActivity
@@ -32,6 +24,7 @@ import com.noordwind.apps.collectively.presentation.extension.setVisible
 import com.noordwind.apps.collectively.presentation.extension.showLoginErrorDialog
 import com.noordwind.apps.collectively.presentation.extension.textInString
 import com.noordwind.apps.collectively.presentation.main.MainActivity
+import com.noordwind.apps.collectively.presentation.settings.dagger.LoginScreenModule
 import com.noordwind.apps.collectively.presentation.walkthrough.WalkthroughActivity
 import kotlinx.android.synthetic.main.activity_login.*
 import kotlinx.android.synthetic.main.view_login_progress.*
@@ -50,33 +43,13 @@ class LoginActivity : AppCompatActivity(), LoginMvp.View {
     }
 
     @Inject
-    lateinit var authenticationRepository: AuthenticationRepository
-
-    @Inject
-    lateinit var connectivityRepository: ConnectivityRepository
-
-    @Inject
-    lateinit var sessionRepository: SessionRepository
-
-    @Inject
-    lateinit var facebookRepository: FacebookTokenRepository
-
-    @Inject
-    lateinit var profileRepository: ProfileRepository
-
-    @Inject
-    lateinit var ioThread: UseCaseThread
-
-    @Inject
-    lateinit var uiThread: PostExecutionThread
-
-    private lateinit var loginPresenter: LoginPresenter
+    lateinit var loginPresenter: LoginPresenter
 
     private lateinit var callbackManager: CallbackManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        TheApp[this].appComponent?.inject(this)
+        TheApp[this].appComponent!!.plusLoginScreenComponent(LoginScreenModule(this)).inject(this)
         setContentView(R.layout.activity_login);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
@@ -107,13 +80,6 @@ class LoginActivity : AppCompatActivity(), LoginMvp.View {
                         }
                     }
                 })
-
-        loginPresenter = LoginPresenter(this,
-                LoginUseCase(authenticationRepository, sessionRepository, ioThread, uiThread),
-                FacebookLoginUseCase(authenticationRepository, ioThread, uiThread),
-                GetFacebookTokenUseCase(facebookRepository, ioThread, uiThread),
-                profileRepository,
-                connectivityRepository);
 
         loginPresenter.onCreate();
 

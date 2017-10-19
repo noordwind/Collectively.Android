@@ -14,14 +14,11 @@ import com.noordwind.apps.collectively.Constants
 import com.noordwind.apps.collectively.R
 import com.noordwind.apps.collectively.TheApp
 import com.noordwind.apps.collectively.data.model.RemarkComment
-import com.noordwind.apps.collectively.data.repository.RemarksRepository
-import com.noordwind.apps.collectively.domain.interactor.remark.comments.LoadRemarkCommentsUseCase
-import com.noordwind.apps.collectively.domain.interactor.remark.comments.SubmitRemarkCommentUseCase
-import com.noordwind.apps.collectively.domain.thread.PostExecutionThread
-import com.noordwind.apps.collectively.domain.thread.UseCaseThread
 import com.noordwind.apps.collectively.presentation.adapter.RemarkCommentsAdapter
 import com.noordwind.apps.collectively.presentation.adapter.delegates.RemarkCommentsLoaderAdapterDelegate
+import com.noordwind.apps.collectively.presentation.remarkpreview.comments.mvp.RemarkCommentsMvp
 import com.noordwind.apps.collectively.presentation.rxjava.RxBus
+import com.noordwind.apps.collectively.presentation.settings.dagger.RemarkCommentsScreenModule
 import com.noordwind.apps.collectively.presentation.util.RequestErrorDecorator
 import com.noordwind.apps.collectively.presentation.util.Switcher
 import kotlinx.android.synthetic.main.activity_remark_comments.*
@@ -44,14 +41,6 @@ class RemarkCommentsActivity : com.noordwind.apps.collectively.presentation.Base
     }
 
     @Inject
-    lateinit var remarksRepository: RemarksRepository
-
-    @Inject
-    lateinit var ioThread: UseCaseThread
-
-    @Inject
-    lateinit var uiThread: PostExecutionThread
-
     lateinit var presenter: RemarkCommentsMvp.Presenter
 
     private lateinit var switcher: Switcher
@@ -63,13 +52,10 @@ class RemarkCommentsActivity : com.noordwind.apps.collectively.presentation.Base
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        TheApp[this].appComponent?.inject(this)
+        TheApp[this].appComponent!!.plusRemarkCommentsScreenComponent(RemarkCommentsScreenModule(this)).inject(this)
         setContentView(R.layout.activity_remark_comments);
 
         toolbarTitleLabel?.text = getString(R.string.remark_comments_screen_title)
-
-        presenter = RemarkCommentsPresenter(this, LoadRemarkCommentsUseCase(remarksRepository, ioThread, uiThread),
-                SubmitRemarkCommentUseCase(remarksRepository, ioThread, uiThread))
 
         errorDecorator = RequestErrorDecorator(switcherErrorImage, switcherErrorTitle, switcherErrorFooter)
         val contentViews = LinkedList<View>()

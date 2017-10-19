@@ -52,6 +52,8 @@ import com.noordwind.apps.collectively.presentation.extension.colorOfCategory
 import com.noordwind.apps.collectively.presentation.extension.iconOfCategory
 import com.noordwind.apps.collectively.presentation.extension.uppercaseFirstLetter
 import com.noordwind.apps.collectively.presentation.extension.visibleRadius
+import com.noordwind.apps.collectively.presentation.main.mvp.MainMvp
+import com.noordwind.apps.collectively.presentation.main.mvp.MainPresenter
 import com.noordwind.apps.collectively.presentation.rxjava.CameraIdleFunc
 import com.noordwind.apps.collectively.presentation.util.RemarkClusterRenderer
 import com.noordwind.apps.collectively.presentation.views.MainScreenRemarkBottomSheetDialog

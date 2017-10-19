@@ -17,6 +17,7 @@ import com.noordwind.apps.collectively.R
 import com.noordwind.apps.collectively.TheApp
 import com.noordwind.apps.collectively.data.model.User
 import com.noordwind.apps.collectively.domain.model.UserProfileData
+import com.noordwind.apps.collectively.presentation.profile.mvp.ProfileMvp
 import com.noordwind.apps.collectively.presentation.profile.notifications.NotificationsSettingsActivity
 import com.noordwind.apps.collectively.presentation.profile.remarks.user.UserRemarksActivity
 import com.noordwind.apps.collectively.presentation.settings.dagger.ProfileScreenModule

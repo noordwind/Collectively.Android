@@ -29,26 +29,17 @@ import com.noordwind.apps.collectively.data.datasource.FiltersTranslationsDataSo
 import com.noordwind.apps.collectively.data.model.RemarkCategory
 import com.noordwind.apps.collectively.data.model.RemarkNotFromList
 import com.noordwind.apps.collectively.data.model.UserGroup
-import com.noordwind.apps.collectively.data.repository.RemarksRepository
-import com.noordwind.apps.collectively.data.repository.UserGroupsRepository
-import com.noordwind.apps.collectively.data.repository.util.ConnectivityRepository
-import com.noordwind.apps.collectively.data.repository.util.LocationRepository
-import com.noordwind.apps.collectively.domain.interactor.remark.LoadRemarkCategoriesUseCase
-import com.noordwind.apps.collectively.domain.interactor.remark.SaveRemarkUseCase
-import com.noordwind.apps.collectively.domain.thread.PostExecutionThread
-import com.noordwind.apps.collectively.domain.thread.UseCaseThread
 import com.noordwind.apps.collectively.presentation.addremark.location.PickRemarkLocationActivity
+import com.noordwind.apps.collectively.presentation.addremark.mvp.AddRemarkMvp
 import com.noordwind.apps.collectively.presentation.extension.*
 import com.noordwind.apps.collectively.presentation.receiver.NetworkChangeReceiver
 import com.noordwind.apps.collectively.presentation.rxjava.RxBus
-import com.noordwind.apps.collectively.presentation.statistics.LoadUserGroupsUseCase
+import com.noordwind.apps.collectively.presentation.settings.dagger.AddRemarkScreenModule
 import com.noordwind.apps.collectively.presentation.util.ZoomUtil
 import com.noordwind.apps.collectively.presentation.views.RemarkCategoryFlowLayoutView
 import com.noordwind.apps.collectively.presentation.views.RemarkTagView
 import com.noordwind.apps.collectively.presentation.views.dialogs.addphoto.AddPhotoDialog
 import com.noordwind.apps.collectively.presentation.views.toast.ToastManager
-import com.noordwind.apps.collectively.usecases.LoadAddressFromLocationUseCase
-import com.noordwind.apps.collectively.usecases.LoadLastKnownLocationUseCase
 import com.wefika.flowlayout.FlowLayout
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
@@ -76,26 +67,9 @@ class AddRemarkActivity : com.noordwind.apps.collectively.presentation.BaseActiv
     }
 
     @Inject
-    lateinit var remarksRepository: RemarksRepository
-
-    @Inject
-    lateinit var locationRepository: LocationRepository
-
-    @Inject
-    lateinit var userGroupsRepository: UserGroupsRepository
-
-    @Inject
-    lateinit var connectivityRepository: ConnectivityRepository
-
-    @Inject
     lateinit var translationDataSource: FiltersTranslationsDataSource
 
     @Inject
-    lateinit var ioThread: UseCaseThread
-
-    @Inject
-    lateinit var uiThread: PostExecutionThread
-
     lateinit var presenter: AddRemarkMvp.Presenter
 
     internal var titleLabel: TextView? = null
@@ -119,7 +93,7 @@ class AddRemarkActivity : com.noordwind.apps.collectively.presentation.BaseActiv
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        TheApp[this].appComponent?.inject(this)
+        TheApp[this].appComponent!!.plusAddRemarkScreenComponent(AddRemarkScreenModule(this)).inject(this)
         setContentView(R.layout.activity_add_remark);
 
         tagsLayout = findViewById(R.id.tags_layout) as FlowLayout
@@ -139,13 +113,6 @@ class AddRemarkActivity : com.noordwind.apps.collectively.presentation.BaseActiv
                 presenter.saveRemark(getGroupName(), getCategory(), getDescription(), getSelectedTags(), capturedImageUri)
             }
         }
-
-        presenter = AddRemarkPresenter(this, SaveRemarkUseCase(remarksRepository, ioThread, uiThread),
-                LoadRemarkCategoriesUseCase(remarksRepository, translationDataSource, ioThread, uiThread),
-                LoadLastKnownLocationUseCase(locationRepository, ioThread, uiThread),
-                LoadAddressFromLocationUseCase(locationRepository, ioThread, uiThread),
-                LoadUserGroupsUseCase(userGroupsRepository, ioThread, uiThread),
-                connectivityRepository)
 
         presenter.checkInternetConnection()
         presenter.loadRemarkCategories()
