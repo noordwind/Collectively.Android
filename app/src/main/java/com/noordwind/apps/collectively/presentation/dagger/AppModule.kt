@@ -115,7 +115,6 @@ class AppModule(private val application: Application) : Constants {
     }
 
     @Provides
-    @Singleton
     fun provideAuthenticationDataSource(api: Api): AuthDataSource {
         return AuthDataSourceImpl(api)
     }
@@ -127,19 +126,16 @@ class AppModule(private val application: Application) : Constants {
     }
 
     @Provides
-    @Singleton
     fun providerUserGroupsSource(api: Api): UserGroupsDataSource {
         return UserGroupsDataSourceImpl(api)
     }
 
     @Provides
-    @Singleton
     fun providerUserGroupsRepository(dataCache: UserGroupsCache, dataSource: UserGroupsDataSource): UserGroupsRepository {
         return UserGroupsRepositoryImpl(dataSource, dataCache)
     }
 
     @Provides
-    @Singleton
     fun provideAuthenticationRepository(authDataSource: AuthDataSource,
                                         profileRepository: ProfileRepository,
                                         mapFiltersRepository: MapFiltersRepository,
@@ -154,7 +150,6 @@ class AppModule(private val application: Application) : Constants {
     fun provideSession(): Session = Session(application.baseContext)
 
     @Provides
-    @Singleton
     fun provideSessionRepository(session: Session): SessionRepository = SessionRepositoryImpl(session)
 
     @Provides
@@ -162,15 +157,12 @@ class AppModule(private val application: Application) : Constants {
     fun provideRemarkCategoriesCache(): RemarkCategoriesCache = RemarkCategoriesCache(application.getSharedPreferences("shared_preferences_remark_categories", Activity.MODE_PRIVATE), Gson())
 
     @Provides
-    @Singleton
     fun provideRemarksDataSource(api: Api): RemarksDataSource = RemarksDataSourceImpl(api)
 
     @Provides
-    @Singleton
     fun provideFileDataSource(): FileDataSource = FileDataSourceImpl(application.applicationContext)
 
     @Provides
-    @Singleton
     fun provideRemarkCategoriesRepository(remarkCategoriesCache: RemarkCategoriesCache,
                                           remarksDataSource: RemarksDataSource,
                                           fileDataSource: FileDataSource,
@@ -186,33 +178,26 @@ class AppModule(private val application: Application) : Constants {
             locationRepository = locationRepository)
 
     @Provides
-    @Singleton
     fun provideReactiveLocationProvider(): ReactiveLocationProvider = ReactiveLocationProvider(application.applicationContext)
 
     @Provides
-    @Singleton
     fun provideLocationRepository(reactiveLocationProvider: ReactiveLocationProvider): LocationRepository
             = LocationRepositoryImpl(application.applicationContext.getSystemService(Context.LOCATION_SERVICE) as LocationManager,
             reactiveLocationProvider)
 
     @Provides
-    @Singleton
     fun provideOperationDataSource(api: Api): OperationDataSource = OperationDataSourceImpl(api)
 
     @Provides
-    @Singleton
     fun provideOperationRepository(operationDataSource: OperationDataSource): OperationRepository = OperationRepositoryImpl(operationDataSource)
 
     @Provides
-    @Singleton
     fun provideStatisticsDataSource(api: Api): StatisticsDataSource = StatisticsDataSourceImpl(api)
 
     @Provides
-    @Singleton
     fun provideStatisticsRepository(statisticsDataSource: StatisticsDataSource): StatisticsRepository = StatisticsRepositoryImpl(statisticsDataSource)
 
     @Provides
-    @Singleton
     fun provideProfileDataSource(api: Api): ProfileDataSource = ProfileDataSourceImpl(api)
 
     @Provides
@@ -220,74 +205,54 @@ class AppModule(private val application: Application) : Constants {
     fun provideProfileCache(): ProfileCache = ProfileCache(application.getSharedPreferences("shared_preferences_profile", Activity.MODE_PRIVATE), Gson())
 
     @Provides
-    @Singleton
     fun provideProfileRepository(profileDataSource: ProfileDataSource, profileCache: ProfileCache): ProfileRepository = ProfileRepositoryImpl(profileDataSource, profileCache)
 
     @Provides
-    @Singleton
     fun provideMapFiltersDataSource(): MapFiltersDataSource = MapFiltersDataSourceImpl(application.applicationContext)
 
     @Provides
-    @Singleton
     fun provideMapFiltersRepository(filtersDataSource: MapFiltersDataSource): MapFiltersRepository = MapFiltersRepositoryImpl(filtersDataSource, application.applicationContext)
 
     @Provides
-    @Singleton
     fun provideRemarkFiltersDataSource(): RemarkFiltersDataSource = RemarkFiltersDataSourceImpl(application.applicationContext)
 
     @Provides
-    @Singleton
     fun provideRemarkFiltersRepository(filtersDataSource: RemarkFiltersDataSource): RemarkFiltersRepository = RemarkFiltersRepositoryImpl(filtersDataSource, application.applicationContext)
 
     @Provides
-    @Singleton
     fun provideUsersDataSource(api: Api): UserDataSource = UserDataSourceImpl(api)
 
     @Provides
-    @Singleton
     fun provideUsersRepository(userDataSource: UserDataSource): UsersRepository = UsersRepositoryImpl(userDataSource)
 
     @Provides
-    @Singleton
     fun provideSettingsDataSource(api: Api): SettingsDataSource = SettingsDataSourceImpl(api)
 
     @Provides
-    @Singleton
     fun provideSettingsRepository(operationRepository: OperationRepository, settingsDataSource: SettingsDataSource): SettingsRepository = SettingsRepositoryImpl(settingsDataSource, operationRepository)
 
     @Provides
-    @Singleton
     fun provideFacebookRepository(): FacebookTokenRepository = FacebookTokenRepositoryImpl()
 
     @Provides
-    @Singleton
     fun provideTranslationsDataSource(): FiltersTranslationsDataSource = FiltersTranslationsDataSourceImpl(application.applicationContext)
 
     @Provides
-    @Singleton
     fun provideConnectivityRepository(): ConnectivityRepository {
         var connectivityManager = application.applicationContext.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
         return ConnectivityRepositoryImpl(connectivityManager)
     }
 
     @Provides
-    @Singleton
-    fun providerNotificationOptionNameRepository(): NotificationOptionNameRepository {
-        return NotificationOptionNameRepositoryImpl(application.applicationContext)
-    }
+    fun providerNotificationOptionNameRepository(): NotificationOptionNameRepository = NotificationOptionNameRepositoryImpl(application.applicationContext)
 
     @Provides
-    @Singleton
-    fun providerBarNotificationRepository(): BarNotificationRepository {
-        return BarNotificationRepositoryImpl(application.applicationContext)
-    }
+    fun providerBarNotificationRepository(): BarNotificationRepository = BarNotificationRepositoryImpl(application.applicationContext)
 
     @Provides
-    @Singleton
     fun useCaseThread(): UseCaseThread = IOThread()
 
     @Provides
-    @Singleton
     fun postExecutionThread(): PostExecutionThread = UIThread()
 
     class Tls12SocketFactory(internal val delegate: SSLSocketFactory) : SSLSocketFactory() {
