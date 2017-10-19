@@ -1,4 +1,4 @@
-package com.noordwind.apps.collectively.presentation.settings
+package com.noordwind.apps.collectively.presentation.settings.mvp
 
 import com.noordwind.apps.collectively.presentation.mvp.BasePresenter
 
@@ -14,7 +14,7 @@ interface SettingsMvp {
         fun hideChangePasswordButton()
     }
 
-    interface Presenter : BasePresenter{
+    interface Presenter : BasePresenter {
         fun onCreate()
         fun logout()
         fun removeAccount()

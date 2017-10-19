@@ -1,4 +1,4 @@
-package com.noordwind.apps.collectively.presentation.statistics
+package com.noordwind.apps.collectively.presentation.statistics.mvp
 
 import io.reactivex.disposables.Disposable
 import com.noordwind.apps.collectively.data.model.Statistics

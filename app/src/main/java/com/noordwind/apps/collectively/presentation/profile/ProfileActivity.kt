@@ -16,15 +16,10 @@ import com.noordwind.apps.collectively.Constants
 import com.noordwind.apps.collectively.R
 import com.noordwind.apps.collectively.TheApp
 import com.noordwind.apps.collectively.data.model.User
-import com.noordwind.apps.collectively.data.repository.ProfileRepository
-import com.noordwind.apps.collectively.data.repository.RemarksRepository
-import com.noordwind.apps.collectively.domain.interactor.profile.LoadCurrentUserProfileDataUseCase
-import com.noordwind.apps.collectively.domain.interactor.profile.LoadUserProfileDataUseCase
 import com.noordwind.apps.collectively.domain.model.UserProfileData
-import com.noordwind.apps.collectively.domain.thread.PostExecutionThread
-import com.noordwind.apps.collectively.domain.thread.UseCaseThread
 import com.noordwind.apps.collectively.presentation.profile.notifications.NotificationsSettingsActivity
 import com.noordwind.apps.collectively.presentation.profile.remarks.user.UserRemarksActivity
+import com.noordwind.apps.collectively.presentation.settings.dagger.ProfileScreenModule
 import com.noordwind.apps.collectively.presentation.util.RequestErrorDecorator
 import com.noordwind.apps.collectively.presentation.util.Switcher
 import kotlinx.android.synthetic.main.activity_profile.*
@@ -46,17 +41,6 @@ class ProfileActivity : com.noordwind.apps.collectively.presentation.BaseActivit
     }
 
     @Inject
-    lateinit var profileRepository: ProfileRepository
-
-    @Inject
-    lateinit var remarksRepository: RemarksRepository
-
-    @Inject
-    lateinit var ioThread: UseCaseThread
-
-    @Inject
-    lateinit var uiThread: PostExecutionThread
-
     lateinit var presenter: ProfileMvp.Presenter
 
     private val PERCENTAGE_TO_SHOW_TITLE_AT_TOOLBAR = 0.9f
@@ -71,7 +55,7 @@ class ProfileActivity : com.noordwind.apps.collectively.presentation.BaseActivit
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        TheApp[this].appComponent?.inject(this)
+        TheApp[this].appComponent!!.plusProfileScreenComponent(ProfileScreenModule(this)).inject(this)
         setContentView(R.layout.activity_profile);
 
         appBar.addOnOffsetChangedListener(this);
@@ -81,10 +65,6 @@ class ProfileActivity : com.noordwind.apps.collectively.presentation.BaseActivit
         setupSwitcher()
 
         profileImage.setImageResource(R.drawable.ic_person_grey_48dp)
-
-        presenter = ProfilePresenter(this,
-                LoadCurrentUserProfileDataUseCase(remarksRepository, profileRepository, ioThread, uiThread),
-                LoadUserProfileDataUseCase(remarksRepository, ioThread, uiThread))
 
         var user = intent.getSerializableExtra(Constants.BundleKey.USER) as User?
         setupButtons(user)

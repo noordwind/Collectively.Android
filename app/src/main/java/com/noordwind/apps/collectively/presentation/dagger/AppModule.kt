@@ -244,15 +244,21 @@ class AppModule(private val application: Application) : Constants {
     }
 
     @Provides
-    fun providerNotificationOptionNameRepository(): NotificationOptionNameRepository = NotificationOptionNameRepositoryImpl(application.applicationContext)
+    fun providerNotificationOptionNameRepository(): NotificationOptionNameRepository {
+        return NotificationOptionNameRepositoryImpl(application.applicationContext)
+    }
 
     @Provides
-    fun providerBarNotificationRepository(): BarNotificationRepository = BarNotificationRepositoryImpl(application.applicationContext)
+    fun providerBarNotificationRepository(): BarNotificationRepository {
+        return BarNotificationRepositoryImpl(application.applicationContext)
+    }
 
     @Provides
+    @Singleton
     fun useCaseThread(): UseCaseThread = IOThread()
 
     @Provides
+    @Singleton
     fun postExecutionThread(): PostExecutionThread = UIThread()
 
     class Tls12SocketFactory(internal val delegate: SSLSocketFactory) : SSLSocketFactory() {

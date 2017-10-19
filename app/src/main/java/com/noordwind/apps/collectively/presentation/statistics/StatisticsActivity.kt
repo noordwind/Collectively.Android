@@ -5,20 +5,18 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
+import com.noordwind.apps.collectively.R
+import com.noordwind.apps.collectively.TheApp
+import com.noordwind.apps.collectively.data.model.Statistics
+import com.noordwind.apps.collectively.presentation.adapter.StatisticsTabsAdapter
+import com.noordwind.apps.collectively.presentation.settings.dagger.StatisticsModule
+import com.noordwind.apps.collectively.presentation.statistics.mvp.StatisticsMvp
+import com.noordwind.apps.collectively.presentation.util.RequestErrorDecorator
+import com.noordwind.apps.collectively.presentation.util.Switcher
 import kotlinx.android.synthetic.main.activity_statistics.*
 import kotlinx.android.synthetic.main.view_error.*
 import kotlinx.android.synthetic.main.view_progress.*
 import kotlinx.android.synthetic.main.view_toolbar_with_title.*
-import com.noordwind.apps.collectively.R
-import com.noordwind.apps.collectively.TheApp
-import com.noordwind.apps.collectively.data.model.Statistics
-import com.noordwind.apps.collectively.data.repository.StatisticsRepository
-import com.noordwind.apps.collectively.domain.thread.PostExecutionThread
-import com.noordwind.apps.collectively.domain.thread.UseCaseThread
-import com.noordwind.apps.collectively.presentation.BaseActivity
-import com.noordwind.apps.collectively.presentation.adapter.StatisticsTabsAdapter
-import com.noordwind.apps.collectively.presentation.util.RequestErrorDecorator
-import com.noordwind.apps.collectively.presentation.util.Switcher
 import java.util.*
 import javax.inject.Inject
 
@@ -33,15 +31,7 @@ class StatisticsActivity : com.noordwind.apps.collectively.presentation.BaseActi
     }
 
     @Inject
-    lateinit var statisticsRepository: StatisticsRepository
-
-    @Inject
-    lateinit var ioThread: UseCaseThread
-
-    @Inject
-    lateinit var uiThread: PostExecutionThread
-
-    private lateinit var presenter: StatisticsMvp.Presenter
+    lateinit var presenter: StatisticsMvp.Presenter
 
     private lateinit var switcher: Switcher
 
@@ -49,14 +39,13 @@ class StatisticsActivity : com.noordwind.apps.collectively.presentation.BaseActi
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        TheApp[this].appComponent?.inject(this)
+        TheApp[this].appComponent!!.plusStatisticsComponent(StatisticsModule(this)).inject(this)
         setContentView(R.layout.activity_statistics);
 
         toolbarTitleLabel.text = getString(R.string.statistics_screen_title)
 
         setupSwitcher()
 
-        presenter = StatisticsPresenter(this, LoadStatisticsUseCase(statisticsRepository, ioThread, uiThread))
         presenter.loadStatistics()
 
         errorDecorator = RequestErrorDecorator(switcherErrorImage, switcherErrorTitle, switcherErrorFooter)

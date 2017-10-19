@@ -1,4 +1,4 @@
-package com.noordwind.apps.collectively.presentation.settings
+package com.noordwind.apps.collectively.presentation.settings.mvp
 
 import com.facebook.AccessToken
 import com.noordwind.apps.collectively.Constants
@@ -9,10 +9,11 @@ import com.noordwind.apps.collectively.presentation.rxjava.AppDisposableObserver
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 
-class SettingsPresenter(val view: SettingsMvp.View,
-                        val session: Session,
-                        val profileCache: ProfileCache,
-                        val deleteAccountUseCase: DeleteAccountUseCase) : SettingsMvp.Presenter {
+class SettingsPresenter(
+        val view: SettingsMvp.View,
+        val session: Session,
+        val profileCache: ProfileCache,
+        val deleteAccountUseCase: DeleteAccountUseCase) : SettingsMvp.Presenter {
 
     override fun onCreate() {
         profileCache.getData().subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe({
