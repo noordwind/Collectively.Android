@@ -87,7 +87,7 @@ class RemarkCommentsPresenter(
             }
         }
 
-        submitRemarkCommentUseCase.execute(observer, Pair<String, RemarkComment>(remarkId, RemarkComment(text)))
+        submitRemarkCommentUseCase.execute(observer, Pair<String, RemarkComment>(remarkId, RemarkComment(text, remarkId)))
     }
 
     override fun destroy() {

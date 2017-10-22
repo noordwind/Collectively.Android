@@ -74,7 +74,7 @@ class RemarkComment(var id: String,
                     val createdAt: String,
                     val votes: List<RemarkVote>?) : Serializable {
 
-    constructor(text: String) : this("", "", null, false, text, "", null)
+    constructor(text: String, remarkId: String) : this("", remarkId, null, false, text, "", null)
 
     fun creationDate(): Date = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'").parse(createdAt)
 
