@@ -52,6 +52,7 @@ interface AppComponent {
     fun plusUserRemarksScreenComponent(userRemarksScreenModule: UserRemarksScreenModule): UserRemarksScreenComponent
     fun plusNotificationsSettingsScreenComponent(notificationsSettingsScreenModule: NotificationsSettingsScreenModule): NotificationsSettingsScreenComponent
     fun plusMainNavigationMenuComponent(mainNavigationMenuModule: MainNavigationMenuModule): MainNavigationMenuComponent
+
     fun plusMapFiltersDialogComponent(mapFiltersDialogModule: MapFiltersDialogModule): MapFiltersDialogComponent
     fun plusRemarkFiltersDialogComponent(remarkFiltersDialogModule: RemarkFiltersDialogModule): RemarkFiltersDialogComponent
 }
