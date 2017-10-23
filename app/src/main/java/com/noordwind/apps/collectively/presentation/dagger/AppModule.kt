@@ -18,9 +18,6 @@ import com.noordwind.apps.collectively.data.datasource.*
 import com.noordwind.apps.collectively.data.net.Api
 import com.noordwind.apps.collectively.data.repository.*
 import com.noordwind.apps.collectively.data.repository.util.*
-import com.noordwind.apps.collectively.domain.interactor.GetFacebookTokenUseCase
-import com.noordwind.apps.collectively.domain.interactor.LoadSettingsUseCase
-import com.noordwind.apps.collectively.domain.interactor.SaveSettingsUseCase
 import com.noordwind.apps.collectively.domain.interactor.authentication.*
 import com.noordwind.apps.collectively.domain.interactor.profile.LoadCurrentUserProfileDataUseCase
 import com.noordwind.apps.collectively.domain.interactor.profile.LoadProfileUseCase
@@ -38,6 +35,8 @@ import com.noordwind.apps.collectively.domain.interactor.remark.states.ReopenRem
 import com.noordwind.apps.collectively.domain.interactor.remark.states.ResolveRemarkUseCase
 import com.noordwind.apps.collectively.domain.interactor.remark.votes.DeleteRemarkVoteUseCase
 import com.noordwind.apps.collectively.domain.interactor.remark.votes.SubmitRemarkVoteUseCase
+import com.noordwind.apps.collectively.domain.interactor.settings.LoadSettingsUseCase
+import com.noordwind.apps.collectively.domain.interactor.settings.SaveSettingsUseCase
 import com.noordwind.apps.collectively.domain.repository.*
 import com.noordwind.apps.collectively.domain.thread.PostExecutionThread
 import com.noordwind.apps.collectively.domain.thread.UseCaseThread

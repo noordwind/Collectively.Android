@@ -1,8 +1,8 @@
 package com.noordwind.apps.collectively.presentation.settings.dagger
 
 import com.noordwind.apps.collectively.domain.repository.NotificationOptionNameRepository
-import com.noordwind.apps.collectively.domain.interactor.LoadSettingsUseCase
-import com.noordwind.apps.collectively.domain.interactor.SaveSettingsUseCase
+import com.noordwind.apps.collectively.domain.interactor.settings.LoadSettingsUseCase
+import com.noordwind.apps.collectively.domain.interactor.settings.SaveSettingsUseCase
 import com.noordwind.apps.collectively.presentation.profile.notifications.mvp.NotificationsSettingsMvp
 import com.noordwind.apps.collectively.presentation.profile.notifications.mvp.NotificationsSettingsPresenter
 import dagger.Module
