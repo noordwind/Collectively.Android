@@ -58,7 +58,7 @@ android {
             applicationId "com.noordwind.apps.collectively.dev"
             minSdkVersion 21
             buildConfigField "String", "SERVER_URL", "\"https://api-dev.becollective.ly/\""
-	    resConfigs ("pl", "xxhdpi")
+            resConfigs("pl", "xxhdpi")
         }
     }
     kapt {
@@ -67,7 +67,7 @@ android {
 
 
     packagingOptions {
-        pickFirst  'META-INF/rxjava.properties'
+        pickFirst 'META-INF/rxjava.properties'
     }
 }
 
@@ -127,9 +127,10 @@ dependencies {
     }
 
     //UI
-compile 'com.theartofdev.edmodo:android-image-cropper:2.4.+'
-compile 'fr.avianey.com.viewpagerindicator:library:2.4.1.1@aar'
-    compile 'com.muddzdev:styleabletoast:1.0.7'  
+    compile 'com.google.maps.android:android-maps-utils:0.5+'
+    compile 'com.theartofdev.edmodo:android-image-cropper:2.4.+'
+    compile 'fr.avianey.com.viewpagerindicator:library:2.4.1.1@aar'
+    compile 'com.muddzdev:styleabletoast:1.0.7'
     compile 'com.github.PhilJay:MPAndroidChart:v3.0.1'
     compile "com.pnikosis:materialish-progress:1.5"
     compile("com.wefika:flowlayout:0.4.1") {

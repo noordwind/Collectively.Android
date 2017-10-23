@@ -29,6 +29,7 @@ import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
+import com.google.maps.android.clustering.ClusterManager
 import com.noordwind.apps.collectively.Constants
 import com.noordwind.apps.collectively.R
 import com.noordwind.apps.collectively.TheApp
@@ -52,6 +53,7 @@ import com.noordwind.apps.collectively.presentation.extension.iconOfCategory
 import com.noordwind.apps.collectively.presentation.extension.uppercaseFirstLetter
 import com.noordwind.apps.collectively.presentation.extension.visibleRadius
 import com.noordwind.apps.collectively.presentation.rxjava.CameraIdleFunc
+import com.noordwind.apps.collectively.presentation.util.RemarkClusterRenderer
 import com.noordwind.apps.collectively.presentation.views.MainScreenRemarkBottomSheetDialog
 import com.noordwind.apps.collectively.presentation.views.dialogs.mapfilters.MapFiltersDialog
 import com.noordwind.apps.collectively.presentation.views.toast.ToastManager
@@ -83,7 +85,6 @@ class MainActivity : com.noordwind.apps.collectively.presentation.BaseActivity()
     private val MY_PERMISSIONS_REQUEST_LOCATION = 99
     private var initialLocationChanged = true
 
-    private lateinit var remarkMarkerBitmapProvider: RemarkMarkerBitmapProvider
     private var disposable: Disposable? = null
 
     private var reloadRemarksList: Boolean = false
@@ -120,9 +121,11 @@ class MainActivity : com.noordwind.apps.collectively.presentation.BaseActivity()
     private var userMarker: Marker? = null
     private var userMarkerLocation: LatLng? = null
     private var mainScreenInfoWindowAdapter: MainScreenInfoWindowAdapter? = null
-    private val remarkMarkers = LinkedList<Marker>()
+//    private val remarkMarkers = LinkedList<Marker>()
 
     private val USER_MARKER_SNIPPET = "user_marker"
+
+    private lateinit var remarksClusterManager : ClusterManager<Remark>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -224,15 +227,21 @@ class MainActivity : com.noordwind.apps.collectively.presentation.BaseActivity()
         map?.setOnMarkerClickListener(this)
         map?.setOnMapLongClickListener(this)
         mainScreenInfoWindowAdapter = MainScreenInfoWindowAdapter(baseContext)
+        map?.setMinZoomPreference(10f)
         map?.setInfoWindowAdapter(mainScreenInfoWindowAdapter)
         map?.setOnInfoWindowClickListener { AddRemarkActivity.start(MainActivity@this, Constants.RemarkCategories.PRAISE, userMarkerLocation!!) }
 
-        remarkMarkerBitmapProvider = RemarkMarkerBitmapProvider(baseContext)
+        remarksClusterManager = ClusterManager<Remark>(this, googleMap)
+        remarksClusterManager.renderer = RemarkClusterRenderer(this, googleMap, remarksClusterManager)
+//        googleMap.setOnCameraIdleListener(remarksClusterManager);
+//        googleMap.setOnMarkerClickListener(remarksClusterManager);
+//        googleMap.setOnInfoWindowClickListener(remarksClusterManager);
 
         mapSubject.flatMap(CameraIdleFunc())
                 .throttleWithTimeout(500, TimeUnit.MILLISECONDS)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({
+                    remarksClusterManager.onCameraIdle()
                     var centerOfMap = centerOfMap()!!
                     var radiusOfMap = radiusOfMap()!!
                     mainPresenter.loadRemarks(centerOfMap, radiusOfMap)
@@ -382,7 +391,7 @@ class MainActivity : com.noordwind.apps.collectively.presentation.BaseActivity()
 
     override fun clearMap() {
         map?.let { map!!.clear() }
-        remarkMarkers.clear()
+        remarksClusterManager.clearItems()
     }
 
 
@@ -407,11 +416,11 @@ class MainActivity : com.noordwind.apps.collectively.presentation.BaseActivity()
 
     override fun refreshOldRemarks(oldRemarksToRefresh: LinkedList<Remark>) {
         oldRemarksToRefresh.forEach {
-            var remarkToRefresh = it
-            remarkMarkers.find { it.snippet.equals(remarkToRefresh.id) }?.remove()
+            remarksClusterManager.removeItem(it)
         }
 
         oldRemarksToRefresh.forEach { addRemarkToMap(it) }
+        remarksClusterManager.cluster()
     }
 
     override fun showNewRemarks(remarks: List<Remark>) {
@@ -427,22 +436,24 @@ class MainActivity : com.noordwind.apps.collectively.presentation.BaseActivity()
         }
 
         remarks.forEach { addRemarkToMap(it) }
+        remarksClusterManager.cluster()
     }
 
     private fun addRemarkToMap(remark: Remark) {
-        var newMarkerOptions = markerFromRemark(remark)
-        remarkMarkers.add(map!!.addMarker(newMarkerOptions))
+//        var newMarkerOptions = markerFromRemark(remark)
+        remarksClusterManager.addItem(remark)
+//        remarkMarkers.add(map!!.addMarker(newMarkerOptions))
     }
 
-    private fun markerFromRemark(remark: Remark): MarkerOptions {
-        var latLng = LatLng(remark.location!!.coordinates[1], remark.location!!.coordinates[0]);
-        var markerOptions = MarkerOptions();
-        markerOptions.position(latLng);
-        markerOptions.snippet(remark.id)
-        markerOptions.title(remark.description);
-        markerOptions.icon(remarkMarkerBitmapProvider.remarkMapMarker(remark));
-        return markerOptions
-    }
+//    private fun markerFromRemark(remark: Remark): MarkerOptions {
+//        var latLng = LatLng(remark.location!!.coordinates[1], remark.location!!.coordinates[0]);
+//        var markerOptions = MarkerOptions();
+//        markerOptions.position(latLng);
+//        markerOptions.snippet(remark.id)
+//        markerOptions.title(remark.description);
+//        markerOptions.icon(remarkMarkerBitmapProvider.remarkMapMarker(remark));
+//        return markerOptions
+//    }
 
     override fun onRemarkItemSelected(remark: Remark) {
         drawerLayout.closeDrawer(Gravity.RIGHT)

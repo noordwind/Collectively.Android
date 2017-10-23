@@ -1,6 +1,8 @@
 package com.noordwind.apps.collectively.data.model
 
 import android.net.Uri
+import com.google.android.gms.maps.model.LatLng
+import com.google.maps.android.clustering.ClusterItem
 import java.io.Serializable
 import java.text.SimpleDateFormat
 import java.util.*
@@ -27,7 +29,13 @@ class Remark(
         val updatedAt: String,
         val positiveVotesCount: Int,
         val negativeVotesCount: Int
-) {
+) : ClusterItem {
+
+    override fun getPosition(): LatLng = LatLng(location!!.coordinates[1], location!!.coordinates[0])
+
+    override fun getSnippet(): String = description
+
+    override fun getTitle(): String = description
 
     override fun equals(other: Any?): Boolean {
         if (!(other is Remark)) {
