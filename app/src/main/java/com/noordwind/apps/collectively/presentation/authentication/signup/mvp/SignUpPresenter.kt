@@ -1,6 +1,6 @@
 package com.noordwind.apps.collectively.presentation.authentication.signup.mvp
 
-import com.noordwind.apps.collectively.data.repository.util.ConnectivityRepository
+import com.noordwind.apps.collectively.domain.repository.ConnectivityRepository
 import com.noordwind.apps.collectively.domain.interactor.authentication.SignUpUseCase
 import com.noordwind.apps.collectively.domain.model.SignUpCredentials
 import com.noordwind.apps.collectively.presentation.extension.isValidEmail

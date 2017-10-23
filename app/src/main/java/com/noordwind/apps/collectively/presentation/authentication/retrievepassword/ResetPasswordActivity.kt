@@ -8,7 +8,7 @@ import android.support.v7.app.AppCompatActivity
 import com.noordwind.apps.collectively.R
 import com.noordwind.apps.collectively.TheApp
 import com.noordwind.apps.collectively.data.repository.AuthenticationRepository
-import com.noordwind.apps.collectively.data.repository.util.ConnectivityRepository
+import com.noordwind.apps.collectively.domain.repository.ConnectivityRepository
 import com.noordwind.apps.collectively.domain.thread.PostExecutionThread
 import com.noordwind.apps.collectively.domain.thread.UseCaseThread
 import com.noordwind.apps.collectively.presentation.authentication.retrievepassword.mvp.ResetPasswordMvp

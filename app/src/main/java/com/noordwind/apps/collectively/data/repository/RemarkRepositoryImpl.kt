@@ -9,7 +9,7 @@ import com.noordwind.apps.collectively.Constants
 import com.noordwind.apps.collectively.data.cache.RemarkCategoriesCache
 import com.noordwind.apps.collectively.data.datasource.*
 import com.noordwind.apps.collectively.data.model.*
-import com.noordwind.apps.collectively.data.repository.util.LocationRepository
+import com.noordwind.apps.collectively.domain.repository.LocationRepository
 import com.noordwind.apps.collectively.data.repository.util.OperationRepository
 import io.reactivex.Observable
 import io.reactivex.functions.BiFunction

@@ -3,6 +3,7 @@ package com.noordwind.apps.collectively.data.repository.util
 import android.location.Address
 import android.location.LocationManager
 import com.google.android.gms.maps.model.LatLng
+import com.noordwind.apps.collectively.domain.repository.LocationRepository
 import com.noordwind.apps.collectively.presentation.extension.lastKnownAddressObservable
 import hu.akarnokd.rxjava.interop.RxJavaInterop
 import io.reactivex.Observable

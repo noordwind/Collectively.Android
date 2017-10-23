@@ -7,7 +7,7 @@ import com.noordwind.apps.collectively.Constants
 import com.noordwind.apps.collectively.R
 import com.noordwind.apps.collectively.TheApp
 import com.noordwind.apps.collectively.data.model.Operation
-import com.noordwind.apps.collectively.data.repository.util.BarNotificationRepository
+import com.noordwind.apps.collectively.domain.repository.BarNotificationRepository
 import com.noordwind.apps.collectively.data.repository.util.OperationRepository
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable

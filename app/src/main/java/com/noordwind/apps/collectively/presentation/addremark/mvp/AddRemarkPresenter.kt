@@ -7,7 +7,7 @@ import com.noordwind.apps.collectively.data.model.NewRemark
 import com.noordwind.apps.collectively.data.model.RemarkCategory
 import com.noordwind.apps.collectively.data.model.RemarkNotFromList
 import com.noordwind.apps.collectively.data.model.UserGroup
-import com.noordwind.apps.collectively.data.repository.util.ConnectivityRepository
+import com.noordwind.apps.collectively.domain.repository.ConnectivityRepository
 import com.noordwind.apps.collectively.domain.interactor.remark.LoadRemarkCategoriesUseCase
 import com.noordwind.apps.collectively.domain.interactor.remark.SaveRemarkUseCase
 import com.noordwind.apps.collectively.presentation.mvp.BasePresenter

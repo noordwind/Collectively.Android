@@ -1,4 +1,4 @@
-package com.noordwind.apps.collectively.data.repository
+package com.noordwind.apps.collectively.domain.repository
 
 interface SessionRepository {
     val isLoggedIn: Boolean

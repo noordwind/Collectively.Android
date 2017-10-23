@@ -5,7 +5,7 @@ import io.reactivex.Observable
 import com.noordwind.apps.collectively.domain.thread.PostExecutionThread
 import com.noordwind.apps.collectively.domain.thread.UseCaseThread
 import com.noordwind.apps.collectively.domain.interactor.UseCase
-import com.noordwind.apps.collectively.data.repository.util.LocationRepository
+import com.noordwind.apps.collectively.domain.repository.LocationRepository
 
 class LoadLastKnownLocationUseCase(val locationRepository: LocationRepository,
                                    useCaseThread: UseCaseThread,

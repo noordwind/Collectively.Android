@@ -1,4 +1,4 @@
-package com.noordwind.apps.collectively.data.repository.util
+package com.noordwind.apps.collectively.domain.repository
 
 import android.location.Address
 import com.google.android.gms.maps.model.LatLng

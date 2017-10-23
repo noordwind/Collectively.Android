@@ -39,7 +39,7 @@ import com.noordwind.apps.collectively.data.model.Remark
 import com.noordwind.apps.collectively.data.model.RemarkCategory
 import com.noordwind.apps.collectively.data.repository.RemarksRepository
 import com.noordwind.apps.collectively.data.repository.UserGroupsRepository
-import com.noordwind.apps.collectively.data.repository.util.LocationRepository
+import com.noordwind.apps.collectively.domain.repository.LocationRepository
 import com.noordwind.apps.collectively.domain.interactor.remark.LoadRemarkCategoriesUseCase
 import com.noordwind.apps.collectively.domain.interactor.remark.LoadRemarksUseCase
 import com.noordwind.apps.collectively.domain.interactor.remark.filters.map.LoadMapFiltersUseCase
