@@ -38,6 +38,7 @@ import com.noordwind.apps.collectively.domain.interactor.remark.states.ReopenRem
 import com.noordwind.apps.collectively.domain.interactor.remark.states.ResolveRemarkUseCase
 import com.noordwind.apps.collectively.domain.interactor.remark.votes.DeleteRemarkVoteUseCase
 import com.noordwind.apps.collectively.domain.interactor.remark.votes.SubmitRemarkVoteUseCase
+import com.noordwind.apps.collectively.domain.repository.*
 import com.noordwind.apps.collectively.domain.thread.PostExecutionThread
 import com.noordwind.apps.collectively.domain.thread.UseCaseThread
 import com.noordwind.apps.collectively.presentation.IOThread

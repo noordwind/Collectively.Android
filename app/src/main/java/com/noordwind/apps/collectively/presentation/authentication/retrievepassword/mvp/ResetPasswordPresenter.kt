@@ -2,7 +2,7 @@ package com.noordwind.apps.collectively.presentation.authentication.retrievepass
 
 import com.noordwind.apps.collectively.domain.interactor.authentication.RetrievePasswordUseCase
 import com.noordwind.apps.collectively.presentation.rxjava.AppDisposableObserver
-import com.noordwind.apps.collectively.data.repository.util.ConnectivityRepository
+import com.noordwind.apps.collectively.domain.repository.ConnectivityRepository
 import com.noordwind.apps.collectively.presentation.extension.isValidEmail
 
 class ResetPasswordPresenter(val view: ResetPasswordMvp.View, val useCase: RetrievePasswordUseCase, val connectivityRepository: ConnectivityRepository) : ResetPasswordMvp.Presenter {

@@ -1,7 +1,7 @@
 package com.noordwind.apps.collectively.presentation.settings.dagger
 
 import com.noordwind.apps.collectively.data.repository.ProfileRepository
-import com.noordwind.apps.collectively.data.repository.util.ConnectivityRepository
+import com.noordwind.apps.collectively.domain.repository.ConnectivityRepository
 import com.noordwind.apps.collectively.domain.interactor.GetFacebookTokenUseCase
 import com.noordwind.apps.collectively.domain.interactor.authentication.FacebookLoginUseCase
 import com.noordwind.apps.collectively.domain.interactor.authentication.LoginUseCase

@@ -5,7 +5,7 @@ import com.noordwind.apps.collectively.Constants
 import com.noordwind.apps.collectively.data.model.Optional
 import com.noordwind.apps.collectively.data.model.Profile
 import com.noordwind.apps.collectively.data.repository.ProfileRepository
-import com.noordwind.apps.collectively.data.repository.util.ConnectivityRepository
+import com.noordwind.apps.collectively.domain.repository.ConnectivityRepository
 import com.noordwind.apps.collectively.domain.interactor.GetFacebookTokenUseCase
 import com.noordwind.apps.collectively.domain.interactor.authentication.FacebookLoginUseCase
 import com.noordwind.apps.collectively.domain.interactor.authentication.LoginUseCase

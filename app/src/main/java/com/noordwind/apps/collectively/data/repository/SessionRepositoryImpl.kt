@@ -1,6 +1,7 @@
 package com.noordwind.apps.collectively.data.repository
 
 import com.noordwind.apps.collectively.data.datasource.Session
+import com.noordwind.apps.collectively.domain.repository.SessionRepository
 
 class SessionRepositoryImpl(val session: Session) : SessionRepository {
 

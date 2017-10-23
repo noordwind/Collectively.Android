@@ -2,7 +2,7 @@ package com.noordwind.apps.collectively.presentation.profile.notifications.mvp
 
 import com.noordwind.apps.collectively.data.model.Settings
 import com.noordwind.apps.collectively.data.model.SettingsEntry
-import com.noordwind.apps.collectively.data.repository.util.NotificationOptionNameRepository
+import com.noordwind.apps.collectively.domain.repository.NotificationOptionNameRepository
 import com.noordwind.apps.collectively.domain.interactor.LoadSettingsUseCase
 import com.noordwind.apps.collectively.domain.interactor.SaveSettingsUseCase
 import com.noordwind.apps.collectively.presentation.model.NotificationOption

@@ -2,7 +2,7 @@ package com.noordwind.apps.collectively.presentation.rxjava
 
 import com.noordwind.apps.collectively.Constants
 import com.noordwind.apps.collectively.data.model.OperationError
-import com.noordwind.apps.collectively.data.repository.util.ConnectivityRepository
+import com.noordwind.apps.collectively.domain.repository.ConnectivityRepository
 import io.reactivex.observers.DisposableObserver
 import retrofit2.HttpException
 import java.io.IOException

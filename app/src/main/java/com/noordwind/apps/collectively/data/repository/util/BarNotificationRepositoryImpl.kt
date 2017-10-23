@@ -5,6 +5,7 @@ import android.app.NotificationManager
 import android.content.Context
 import android.os.Build
 import android.support.v4.app.NotificationCompat
+import com.noordwind.apps.collectively.domain.repository.BarNotificationRepository
 
 
 class BarNotificationRepositoryImpl(val context: Context) : BarNotificationRepository {

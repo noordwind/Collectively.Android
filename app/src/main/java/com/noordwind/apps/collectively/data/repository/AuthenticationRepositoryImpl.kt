@@ -5,6 +5,7 @@ import com.noordwind.apps.collectively.data.datasource.AuthDataSource
 import com.noordwind.apps.collectively.data.datasource.MapFiltersRepository
 import com.noordwind.apps.collectively.data.model.*
 import com.noordwind.apps.collectively.data.repository.util.OperationRepository
+import com.noordwind.apps.collectively.domain.repository.SessionRepository
 import io.reactivex.Observable
 import io.reactivex.functions.BiFunction
 

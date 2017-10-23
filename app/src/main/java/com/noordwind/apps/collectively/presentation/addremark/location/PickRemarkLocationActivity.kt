@@ -27,7 +27,7 @@ import com.google.android.gms.maps.model.MarkerOptions
 import com.noordwind.apps.collectively.Constants
 import com.noordwind.apps.collectively.R
 import com.noordwind.apps.collectively.TheApp
-import com.noordwind.apps.collectively.data.repository.util.LocationRepository
+import com.noordwind.apps.collectively.domain.repository.LocationRepository
 import com.noordwind.apps.collectively.domain.thread.PostExecutionThread
 import com.noordwind.apps.collectively.domain.thread.UseCaseThread
 import com.noordwind.apps.collectively.presentation.addremark.PickRemarkLocationMvp

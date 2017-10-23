@@ -3,7 +3,7 @@ package com.noordwind.apps.collectively.presentation.authentication.setnickname.
 import com.facebook.AccessToken
 import com.noordwind.apps.collectively.data.cache.ProfileCache
 import com.noordwind.apps.collectively.data.datasource.Session
-import com.noordwind.apps.collectively.data.repository.util.ConnectivityRepository
+import com.noordwind.apps.collectively.domain.repository.ConnectivityRepository
 import com.noordwind.apps.collectively.domain.interactor.authentication.SetNickNameUseCase
 import com.noordwind.apps.collectively.presentation.rxjava.AppDisposableObserver
 
