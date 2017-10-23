@@ -3,8 +3,8 @@ package com.noordwind.apps.collectively.presentation.profile.notifications.mvp
 import com.noordwind.apps.collectively.data.model.Settings
 import com.noordwind.apps.collectively.data.model.SettingsEntry
 import com.noordwind.apps.collectively.domain.repository.NotificationOptionNameRepository
-import com.noordwind.apps.collectively.domain.interactor.LoadSettingsUseCase
-import com.noordwind.apps.collectively.domain.interactor.SaveSettingsUseCase
+import com.noordwind.apps.collectively.domain.interactor.settings.LoadSettingsUseCase
+import com.noordwind.apps.collectively.domain.interactor.settings.SaveSettingsUseCase
 import com.noordwind.apps.collectively.presentation.model.NotificationOption
 import com.noordwind.apps.collectively.presentation.profile.notifications.mvp.NotificationsSettingsMvp
 import com.noordwind.apps.collectively.presentation.rxjava.AppDisposableObserver
