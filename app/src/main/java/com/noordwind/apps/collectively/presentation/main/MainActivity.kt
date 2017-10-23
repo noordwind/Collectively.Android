@@ -230,6 +230,8 @@ class MainActivity : com.noordwind.apps.collectively.presentation.BaseActivity()
         map?.setMinZoomPreference(10f)
         map?.setInfoWindowAdapter(mainScreenInfoWindowAdapter)
         map?.setOnInfoWindowClickListener { AddRemarkActivity.start(MainActivity@this, Constants.RemarkCategories.PRAISE, userMarkerLocation!!) }
+        map?.moveCamera(CameraUpdateFactory.newLatLng(LatLng(50.0614300, 19.9365800)))
+        map?.animateCamera(CameraUpdateFactory.zoomTo(10.0f))
 
         remarksClusterManager = ClusterManager<Remark>(this, googleMap)
         remarksClusterManager.renderer = RemarkClusterRenderer(this, googleMap, remarksClusterManager)
