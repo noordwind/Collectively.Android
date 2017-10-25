@@ -36,6 +36,8 @@ class TheApp : MultiDexApplication() {
     private fun initAppComponent() {
         appComponent = DaggerAppComponent.builder()
                 .appModule(AppModule(this))
+                .dataCacheModule(DataCacheModule())
+                .dataSourceModule(DataSourceModule())
                 .networkModule(NetworkModule())
                 .repositoryModule(RepositoryModule())
                 .useCasesModule(UseCasesModule())
