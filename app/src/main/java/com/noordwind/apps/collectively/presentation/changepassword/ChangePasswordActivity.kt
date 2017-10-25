@@ -10,7 +10,6 @@ import android.widget.Toast
 import com.noordwind.apps.collectively.R
 import com.noordwind.apps.collectively.TheApp
 import com.noordwind.apps.collectively.presentation.changepassword.mvp.ChangePasswordMvp
-import com.noordwind.apps.collectively.presentation.changepassword.mvp.ChangePasswordPresenter
 import com.noordwind.apps.collectively.presentation.extension.showChangePasswordErrorDialog
 import com.noordwind.apps.collectively.presentation.extension.textInString
 import com.noordwind.apps.collectively.presentation.settings.dagger.ChangePasswordScreenModule
@@ -31,7 +30,7 @@ class ChangePasswordActivity : com.noordwind.apps.collectively.presentation.Base
     private var toast: ToastManager? = null
 
     @Inject
-    lateinit var presenter: ChangePasswordPresenter
+    lateinit var presenter: ChangePasswordMvp.Presenter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

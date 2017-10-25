@@ -15,7 +15,6 @@ import com.facebook.login.LoginResult
 import com.noordwind.apps.collectively.R
 import com.noordwind.apps.collectively.TheApp
 import com.noordwind.apps.collectively.presentation.authentication.login.mvp.LoginMvp
-import com.noordwind.apps.collectively.presentation.authentication.login.mvp.LoginPresenter
 import com.noordwind.apps.collectively.presentation.authentication.retrievepassword.ResetPasswordActivity
 import com.noordwind.apps.collectively.presentation.authentication.setnickname.SetNickNameActivity
 import com.noordwind.apps.collectively.presentation.authentication.signup.SignUpActivity
@@ -43,7 +42,7 @@ class LoginActivity : AppCompatActivity(), LoginMvp.View {
     }
 
     @Inject
-    lateinit var loginPresenter: LoginPresenter
+    lateinit var loginPresenter: LoginMvp.Presenter
 
     private lateinit var callbackManager: CallbackManager
 

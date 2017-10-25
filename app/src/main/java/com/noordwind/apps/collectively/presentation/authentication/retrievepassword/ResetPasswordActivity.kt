@@ -7,12 +7,7 @@ import android.support.design.widget.Snackbar
 import android.support.v7.app.AppCompatActivity
 import com.noordwind.apps.collectively.R
 import com.noordwind.apps.collectively.TheApp
-import com.noordwind.apps.collectively.data.repository.AuthenticationRepository
-import com.noordwind.apps.collectively.domain.repository.ConnectivityRepository
-import com.noordwind.apps.collectively.domain.thread.PostExecutionThread
-import com.noordwind.apps.collectively.domain.thread.UseCaseThread
 import com.noordwind.apps.collectively.presentation.authentication.retrievepassword.mvp.ResetPasswordMvp
-import com.noordwind.apps.collectively.presentation.authentication.retrievepassword.mvp.ResetPasswordPresenter
 import com.noordwind.apps.collectively.presentation.extension.setGone
 import com.noordwind.apps.collectively.presentation.extension.setVisible
 import com.noordwind.apps.collectively.presentation.extension.showResetPasswordErrorDialog
@@ -31,7 +26,7 @@ class ResetPasswordActivity : AppCompatActivity(), ResetPasswordMvp.View {
     }
 
     @Inject
-    lateinit var presenter : ResetPasswordPresenter
+    lateinit var presenter : ResetPasswordMvp.Presenter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
