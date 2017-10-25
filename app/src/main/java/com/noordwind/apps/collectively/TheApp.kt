@@ -6,10 +6,7 @@ import android.support.multidex.MultiDexApplication
 import android.support.v7.app.AppCompatDelegate
 import com.crashlytics.android.Crashlytics
 import com.facebook.FacebookSdk
-import com.noordwind.apps.collectively.presentation.dagger.AppComponent
-import com.noordwind.apps.collectively.presentation.dagger.AppModule
-import com.noordwind.apps.collectively.presentation.dagger.DaggerAppComponent
-import com.noordwind.apps.collectively.presentation.settings.dagger.SettingsComponent
+import com.noordwind.apps.collectively.presentation.dagger.*
 import io.fabric.sdk.android.Fabric
 import jonathanfinerty.once.Once
 
@@ -39,6 +36,9 @@ class TheApp : MultiDexApplication() {
     private fun initAppComponent() {
         appComponent = DaggerAppComponent.builder()
                 .appModule(AppModule(this))
+                .networkModule(NetworkModule())
+                .repositoryModule(RepositoryModule())
+                .useCasesModule(UseCasesModule())
                 .build()
     }
 }

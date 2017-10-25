@@ -5,7 +5,7 @@ import com.noordwind.apps.collectively.presentation.views.dialogs.mapfilters.Map
 import dagger.Subcomponent
 
 @ActivityScope
-@Subcomponent(modules = arrayOf(MainNavigationMenuModule::class))
+@Subcomponent(modules = arrayOf(MapFiltersDialogModule::class))
 interface MapFiltersDialogComponent {
     fun inject(dialog: MapFiltersDialog)
 }

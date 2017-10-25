@@ -9,7 +9,6 @@ import com.noordwind.apps.collectively.R
 import com.noordwind.apps.collectively.TheApp
 import com.noordwind.apps.collectively.presentation.authentication.login.LoginActivity
 import com.noordwind.apps.collectively.presentation.authentication.setnickname.mvp.SetNickNameMvp
-import com.noordwind.apps.collectively.presentation.authentication.setnickname.mvp.SetNickNamePresenter
 import com.noordwind.apps.collectively.presentation.extension.setGone
 import com.noordwind.apps.collectively.presentation.extension.setVisible
 import com.noordwind.apps.collectively.presentation.extension.showSetNicknameErrorDialog
@@ -29,7 +28,7 @@ class SetNickNameActivity : AppCompatActivity(), SetNickNameMvp.View {
     }
 
     @Inject
-    lateinit var presenter : SetNickNamePresenter
+    lateinit var presenter : SetNickNameMvp.Presenter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
