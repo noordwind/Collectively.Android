@@ -29,7 +29,7 @@ class NetworkModule : Constants {
 
     @Provides
     @Singleton
-    fun provideOkHttpClient(sessionRepository: SessionRepository): OkHttpClient {
+    fun okHttpClient(sessionRepository: SessionRepository): OkHttpClient {
         val builder = enableTls12OnPreLollipop(OkHttpClient.Builder())
         builder.writeTimeout(30, TimeUnit.SECONDS)
         builder.readTimeout(30, TimeUnit.SECONDS)
@@ -82,7 +82,7 @@ class NetworkModule : Constants {
 
     @Provides
     @Singleton
-    fun provideApi(client: OkHttpClient): Api {
+    fun api(client: OkHttpClient): Api {
         val builder = Retrofit.Builder()
                 .client(client)
                 .baseUrl(BuildConfig.SERVER_URL)

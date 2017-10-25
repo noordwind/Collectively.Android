@@ -15,7 +15,8 @@ import dagger.Component
 import javax.inject.Singleton
 
 @Singleton
-@Component(modules = arrayOf(AppModule::class, NetworkModule::class, RepositoryModule::class, UseCasesModule::class))
+@Component(modules = arrayOf(AppModule::class, NetworkModule::class, RepositoryModule::class,
+        DataCacheModule::class, DataSourceModule::class, UseCasesModule::class))
 interface AppComponent {
     fun application(): Application
 
