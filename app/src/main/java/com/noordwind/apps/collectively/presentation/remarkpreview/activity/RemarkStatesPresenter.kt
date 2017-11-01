@@ -11,6 +11,7 @@ import io.reactivex.disposables.Disposable
 class RemarkStatesPresenter(
         val view: RemarkStatesMvp.View,
         val loadRemarkStatesUseCase: LoadRemarkStatesUseCase,
+        val deleteRemarkUseCase: DeleteRemarkUseCase,
         val processRemarkUseCase: ProcessRemarkUseCase,
         val resolveRemarkUseCase: ResolveRemarkUseCase,
         val reopenRemarkUseCase: ReopenRemarkUseCase) : RemarkStatesMvp.Presenter {
@@ -18,6 +19,7 @@ class RemarkStatesPresenter(
     private var remarkId: String = ""
 
     private lateinit var resolveRemarkEventDisposable: Disposable
+    private lateinit var deleteRemarkEventDisposable: Disposable
     private lateinit var renewRemarkEventDisposable: Disposable
     private lateinit var processRemarkEventDisposable: Disposable
 
@@ -34,11 +36,48 @@ class RemarkStatesPresenter(
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({ renewRemark() })
 
+        deleteRemarkEventDisposable = RxBus.instance
+                .getEvents(String::class.java)
+                .filter { it.equals(Constants.RxBusEvent.DELETE_REMARK_EVENT) }
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({ deleteRemark() })
+
         processRemarkEventDisposable = RxBus.instance
                 .getEvents(String::class.java)
                 .filter { it.equals(Constants.RxBusEvent.PROCESS_REMARK) }
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({ processRemark(view.activityMessage()) })
+    }
+
+    private fun deleteRemark() {
+        var observer = object : AppDisposableObserver<Boolean>() {
+
+            override fun onStart() {
+                super.onStart()
+                view.showRemovingRemarkMessage()
+                view.showStatesLoading()
+            }
+
+            override fun onNext(status: Boolean) {
+                super.onNext(status)
+                view.hideRemovingRemarkMessage()
+                view.showRemarkRemovedMessage()
+            }
+
+            override fun onError(e: Throwable) {
+                super.onError(e)
+                view.hideRemovingRemarkMessage()
+                view.hideStatesLoading()
+                showServerError(e)
+            }
+
+            override fun onNetworkError() {
+                super.onNetworkError()
+                view.showActionNetworkError()
+            }
+        }
+
+        deleteRemarkUseCase.execute(observer, remarkId)
     }
 
     private fun resolveRemark() {
@@ -66,7 +105,7 @@ class RemarkStatesPresenter(
 
             override fun onNetworkError() {
                 super.onNetworkError()
-                view.showStatesLoadingNetworkError()
+                view.showActionNetworkError()
             }
         }
 
@@ -98,7 +137,7 @@ class RemarkStatesPresenter(
 
             override fun onNetworkError() {
                 super.onNetworkError()
-                view.showStatesLoadingNetworkError()
+                view.showActionNetworkError()
             }
         }
 
@@ -130,7 +169,7 @@ class RemarkStatesPresenter(
 
             override fun onNetworkError() {
                 super.onNetworkError()
-                view.showStatesLoadingNetworkError()
+                view.showActionNetworkError()
             }
         }
 
@@ -155,7 +194,6 @@ class RemarkStatesPresenter(
         var remarkPreview = remarkStateData.remarkPreview
         var states = remarkStateData.states
         var showDeleteButton = remarkStateData.userId.equals(remarkStateData.remarkPreview.author.userId)
-
 
         var showResolveButton = false
         var showReopenButton = false
@@ -225,6 +263,7 @@ class RemarkStatesPresenter(
         processRemarkEventDisposable.dispose()
         resolveRemarkEventDisposable.dispose()
         renewRemarkEventDisposable.dispose()
+        deleteRemarkEventDisposable.dispose()
 
         processRemarkUseCase.dispose()
         resolveRemarkUseCase.dispose()

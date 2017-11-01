@@ -30,6 +30,8 @@ class RemarksDataSourceImpl(val api: Api) : RemarksDataSource {
 
     override fun renewRemark(remarkId: String): Observable<Response<Void>> = api.renewRemark(remarkId, Object())
 
+    override fun deleteRemark(remarkId: String): Observable<Response<Void>> = api.deleteRemark(remarkId)
+
     override fun processRemark(remarkId: String, message: String): Observable<Response<Void>> = api.processRemark(remarkId, ProcessRemarkDescription(message))
 
     override fun loadUserRemarks(userId: String): Observable<List<Remark>> = api.userRemarks(userId, 1000)

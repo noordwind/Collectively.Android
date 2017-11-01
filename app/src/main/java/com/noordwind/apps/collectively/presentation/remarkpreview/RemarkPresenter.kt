@@ -1,5 +1,6 @@
 package com.noordwind.apps.collectively.presentation.remarkpreview
 
+import com.jakewharton.retrofit2.adapter.rxjava2.HttpException
 import com.noordwind.apps.collectively.Constants
 import com.noordwind.apps.collectively.data.model.RemarkPhoto
 import com.noordwind.apps.collectively.data.model.RemarkPreview
@@ -98,6 +99,10 @@ class RemarkPresenter(val view: RemarkPreviewMvp.View,
 
             override fun onError(e: Throwable) {
                 super.onError(e)
+
+                if (e is HttpException && e.code() == 404) {
+                    view.showRemarkNotFoundError();
+                }
             }
 
             override fun onServerError(message: String?) {

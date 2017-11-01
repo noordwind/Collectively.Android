@@ -23,7 +23,7 @@
     <string name="main_screen_title">Mapa</string>
     <string name="username">Nazwa użytkownika</string>
     <string name="add_remark_screen_title">Dodaj zgłoszenie</string>
-    <string name="description_hint">Description (optional)</string>
+    <string name="description_hint">Description (min 10 characters)</string>
     <string name="add_remark_category_hint">I would like to report a...</string>
     <string name="add_remark_tags_hint">Tags (optional)</string>
     <string name="location">Location</string>
@@ -230,4 +230,8 @@
     <string name="error_user_unauthorized_error">Not authorized</string>
     <string name="error_user_unauthorized_error_message">Your account was not confirmed. Check your inbox and activate it.</string>
     <string name="cancel">Cancel</string>
+    <string name="error_remark_not_found">Remark doesn\'t exist anymore</string>
+    <string name="add_remark_description_too_short">Description is too short</string>
+    <string name="removing_remark">Removing remark</string>
+    <string name="remark_removed">Remark removed</string>
 </resources>

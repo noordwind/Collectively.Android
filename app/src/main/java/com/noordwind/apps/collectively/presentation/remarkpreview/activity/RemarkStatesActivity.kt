@@ -15,14 +15,12 @@ import com.noordwind.apps.collectively.TheApp
 import com.noordwind.apps.collectively.data.model.RemarkState
 import com.noordwind.apps.collectively.data.repository.ProfileRepository
 import com.noordwind.apps.collectively.data.repository.RemarksRepository
-import com.noordwind.apps.collectively.domain.interactor.remark.states.LoadRemarkStatesUseCase
-import com.noordwind.apps.collectively.domain.interactor.remark.states.ProcessRemarkUseCase
-import com.noordwind.apps.collectively.domain.interactor.remark.states.ReopenRemarkUseCase
-import com.noordwind.apps.collectively.domain.interactor.remark.states.ResolveRemarkUseCase
+import com.noordwind.apps.collectively.domain.interactor.remark.states.*
 import com.noordwind.apps.collectively.domain.thread.PostExecutionThread
 import com.noordwind.apps.collectively.domain.thread.UseCaseThread
 import com.noordwind.apps.collectively.presentation.adapter.RemarkStatesAdapter
 import com.noordwind.apps.collectively.presentation.adapter.delegates.RemarkCommentsLoaderAdapterDelegate
+import com.noordwind.apps.collectively.presentation.adapter.delegates.RemarkStatesDeleteButtonAdapterDelegate
 import com.noordwind.apps.collectively.presentation.adapter.delegates.RemarkStatesReopenButtonAdapterDelegate
 import com.noordwind.apps.collectively.presentation.adapter.delegates.RemarkStatesResolveButtonAdapterDelegate
 import com.noordwind.apps.collectively.presentation.extension.showCannotSetStateTooOftenErrorDialog
@@ -75,6 +73,7 @@ class RemarkStatesActivity : com.noordwind.apps.collectively.presentation.BaseAc
     var resolvingRemarkToast : ToastManager? = null
     var reopeningRemarkToast : ToastManager? = null
     var processingRemarkToast : ToastManager? = null
+    var removingRemarkToast : ToastManager? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -96,6 +95,7 @@ class RemarkStatesActivity : com.noordwind.apps.collectively.presentation.BaseAc
 
         presenter = RemarkStatesPresenter(this,
                 LoadRemarkStatesUseCase(remarksRepository, profileRepository, ioThread, uiThread),
+                DeleteRemarkUseCase(remarksRepository, ioThread, uiThread),
                 ProcessRemarkUseCase(remarksRepository, profileRepository, ioThread, uiThread),
                 ResolveRemarkUseCase(remarksRepository, profileRepository, ioThread, uiThread),
                 ReopenRemarkUseCase(remarksRepository, profileRepository, ioThread, uiThread))
@@ -148,6 +148,10 @@ class RemarkStatesActivity : com.noordwind.apps.collectively.presentation.BaseAc
         processingRemarkToast = ToastManager(this, getString(R.string.processing_remark), Toast.LENGTH_LONG).progress().show()
     }
 
+    override fun showRemovingRemarkMessage() {
+        removingRemarkToast = ToastManager(this, getString(R.string.removing_remark), Toast.LENGTH_LONG).progress().show()
+    }
+
     override fun hideResolvingRemarkMessage() {
         resolvingRemarkToast?.let { resolvingRemarkToast!!.hide() }
     }
@@ -158,6 +162,10 @@ class RemarkStatesActivity : com.noordwind.apps.collectively.presentation.BaseAc
 
     override fun hideProcessingRemarkMessage() {
         processingRemarkToast?.let { processingRemarkToast!!.hide() }
+    }
+
+    override fun hideRemovingRemarkMessage() {
+        removingRemarkToast?.let { removingRemarkToast!!.hide() }
     }
 
     override fun showRemarkResolvedMessage() {
@@ -175,6 +183,11 @@ class RemarkStatesActivity : com.noordwind.apps.collectively.presentation.BaseAc
         RxBus.instance.postEvent(Constants.RxBusEvent.REMARK_STATE_CHANGED_EVENT)
     }
 
+    override fun showRemarkRemovedMessage() {
+        ToastManager(this, getString(R.string.remark_removed), Toast.LENGTH_SHORT).success().show()
+        RxBus.instance.postEvent(Constants.RxBusEvent.REMARK_STATE_CHANGED_EVENT)
+    }
+
     private fun loadStates() {
         presenter.loadStates(intent.getStringExtra(Constants.BundleKey.ID))
     }
@@ -185,6 +198,10 @@ class RemarkStatesActivity : com.noordwind.apps.collectively.presentation.BaseAc
 
     override fun showStatesLoadingError() {
         switcher.showErrorViewsImmediately()
+    }
+
+    override fun showActionNetworkError() {
+        ToastManager(this, getString(R.string.no_internet_connection), Toast.LENGTH_SHORT).networkError().show()
     }
 
     override fun showStatesLoadingServerError(error: String) {
@@ -202,13 +219,13 @@ class RemarkStatesActivity : com.noordwind.apps.collectively.presentation.BaseAc
             list.add(0, RemarkStatesReopenButtonAdapterDelegate.RemarkReopenButton())
         }
 
-//        if (showDeleteButton) {
-//            if (showResolveButton || showReopenButton) {
-//                list.add(1, RemarkStatesDeleteButtonAdapterDelegate.RemarkDeleteButton())
-//            } else {
-//                list.add(0, RemarkStatesDeleteButtonAdapterDelegate.RemarkDeleteButton())
-//            }
-//        }
+        if (showDeleteButton) {
+            if (showResolveButton || showReopenButton) {
+                list.add(1, RemarkStatesDeleteButtonAdapterDelegate.RemarkDeleteButton())
+            } else {
+                list.add(0, RemarkStatesDeleteButtonAdapterDelegate.RemarkDeleteButton())
+            }
+        }
 
         remarkStatesAdapter = RemarkStatesAdapter().setData(list).addSpacing().initDelegates()
         remarkStatesRecycler.adapter = remarkStatesAdapter

@@ -231,6 +231,11 @@ class RemarkActivity : com.noordwind.apps.collectively.presentation.BaseActivity
         switcher.showErrorViewsImmediately()
     }
 
+    override fun showRemarkNotFoundError() {
+        errorDecorator.onServerError(getString(R.string.error_remark_not_found))
+        switcher.showErrorViewsImmediately()
+    }
+
     override fun showRemarkPhotoLoading() {
         processingImage.visibility = View.VISIBLE
         processingImageProgress.visibility = View.VISIBLE

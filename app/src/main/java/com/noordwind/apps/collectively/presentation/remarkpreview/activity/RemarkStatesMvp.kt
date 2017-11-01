@@ -27,6 +27,10 @@ interface RemarkStatesMvp {
         fun showProcessingRemarkMessage()
         fun activityMessage(): String
         fun showCannotSetStateTooOftenError()
+        fun showRemovingRemarkMessage()
+        fun hideRemovingRemarkMessage()
+        fun showRemarkRemovedMessage()
+        fun showActionNetworkError()
     }
 
     interface Presenter : BasePresenter {
