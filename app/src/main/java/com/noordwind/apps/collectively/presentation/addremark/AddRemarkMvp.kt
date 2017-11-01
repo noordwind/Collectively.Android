@@ -21,6 +21,7 @@ interface AddRemarkMvp {
         fun showSaveRemarkError(message: String?)
         fun showAddressNotSpecifiedDialog()
         fun showNetworkError()
+        fun showDescriptionIsTooShortDialogError()
     }
 
     interface Presenter : BasePresenter{

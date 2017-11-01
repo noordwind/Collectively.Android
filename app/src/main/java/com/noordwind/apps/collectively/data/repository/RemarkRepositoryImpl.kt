@@ -191,6 +191,10 @@ class RemarkRepositoryImpl(
         return operationRepository.pollOperation(remarksDataSource.renewRemark(remarkId)).flatMap { Observable.just(true) }
     }
 
+    override fun deleteRemark(remarkId: String): Observable<Boolean> {
+        return operationRepository.pollOperation(remarksDataSource.deleteRemark(remarkId)).flatMap { Observable.just(true) }
+    }
+
     override fun loadRemarkTags(): Observable<List<RemarkTag>> = remarksDataSource.loadRemarkTags()
 
     override fun submitRemarkVote(remarkId: String, remarkVote: RemarkVote): Observable<RemarkPreview> {

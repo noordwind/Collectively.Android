@@ -28,6 +28,7 @@ interface RemarksRepository {
     fun loadUserResolvedRemarks(userId: String): Observable<List<Remark>>
     fun loadUserResolvedRemarks(): Observable<List<Remark>>
     fun loadUserFavoriteRemarks(): Observable<List<Remark>>
+    fun deleteRemark(remarkId: String): Observable<Boolean>
 }
 
 

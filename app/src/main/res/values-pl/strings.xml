@@ -19,7 +19,7 @@
     <string name="main_screen_title">Mapa</string>
     <string name="username">Nazwa użytkownika</string>
     <string name="add_remark_screen_title">Dodaj zgłoszenie</string>
-    <string name="description_hint">Opis (nieobowiązkowany)</string>
+    <string name="description_hint">Opis (minimum 10 znaków)</string>
     <string name="add_remark_category_hint">Zgłaszam...</string>
     <string name="add_remark_tags_hint">Tagi (nieobowiązkowe)</string>
     <string name="location">Lokalizacja</string>
@@ -228,4 +228,8 @@
     <string name="error_user_unauthorized_error">Brak uprawnień</string>
     <string name="error_user_unauthorized_error_message">Twoje konto nie zostało jeszcze aktywowane. Sprawdź skrzynkę pocztową i dokończ proces rejestracji.</string>
     <string name="cancel">Anuluj</string>
+    <string name="error_remark_not_found">Wybrane zgłoszenie nie istnieje.</string>
+    <string name="add_remark_description_too_short">Podany opis jest zbyt krótki</string>
+    <string name="removing_remark">Usuwanie zgłoszenia</string>
+    <string name="remark_removed">Zgłoszenie usunięte</string>
 </resources>

@@ -184,6 +184,11 @@ class AddRemarkPresenter(val view: AddRemarkMvp.View,
             return
         }
 
+        if (description.isNullOrBlank() || description.length < 10) {
+            view.showDescriptionIsTooShortDialogError()
+            return
+        }
+
         var observer = object : AppDisposableObserver<RemarkNotFromList>() {
             override fun onStart() {
                 super.onStart()

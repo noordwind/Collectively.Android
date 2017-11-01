@@ -212,6 +212,10 @@ class AddRemarkActivity : com.noordwind.apps.collectively.presentation.BaseActiv
         showAddressNotSpecifiedDialogError()
     }
 
+    override fun showDescriptionIsTooShortDialogError() {
+        ToastManager(this, getString(R.string.add_remark_description_too_short), Toast.LENGTH_SHORT).error().show()
+    }
+
     fun selectCategory(category: RemarkCategory, isSelected: Boolean) {
         if (isSelected) {
             selectedCategory = category.name
