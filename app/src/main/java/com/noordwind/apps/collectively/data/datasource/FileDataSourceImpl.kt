@@ -3,14 +3,15 @@ package com.noordwind.apps.collectively.data.datasource
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.graphics.Matrix
 import android.net.Uri
+import android.os.Build
+import android.support.media.ExifInterface
 import com.noordwind.apps.collectively.presentation.extension.getFilePath
 import io.reactivex.Observable
-import java.io.File
-import java.io.FileInputStream
-import java.io.FileOutputStream
-import java.io.InputStream
+import java.io.*
 import java.util.*
+
 
 class FileDataSourceImpl(val context: Context) : FileDataSource {
     override fun scaledImageFile(uri: Uri): Observable<File> {
@@ -50,6 +51,7 @@ class FileDataSourceImpl(val context: Context) : FileDataSource {
                 var outputStream = FileOutputStream(file);
 
                 selectedBitmap.compress(Bitmap.CompressFormat.JPEG, 75, outputStream);
+                selectedBitmap.recycle()
 
                 it.onNext(file)
                 it.onComplete()
@@ -57,6 +59,33 @@ class FileDataSourceImpl(val context: Context) : FileDataSource {
                 it.onError(e)
             }
         }
+    }
+
+    @Throws(IOException::class)
+    private fun rotateImageIfRequired(context: Context, img: Bitmap, selectedImage: Uri): Bitmap {
+        val input = context.contentResolver.openInputStream(selectedImage)
+        val ei: ExifInterface
+        if (Build.VERSION.SDK_INT > 23)
+            ei = ExifInterface(input)
+        else
+            ei = ExifInterface(selectedImage.path)
+
+        val orientation = ei.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL)
+
+        when (orientation) {
+            ExifInterface.ORIENTATION_ROTATE_90 -> return rotateImage(img, 90)
+            ExifInterface.ORIENTATION_ROTATE_180 -> return rotateImage(img, 180)
+            ExifInterface.ORIENTATION_ROTATE_270 -> return rotateImage(img, 270)
+            else -> return img
+        }
+    }
+
+    private fun rotateImage(img: Bitmap, degree: Int): Bitmap {
+        val matrix = Matrix()
+        matrix.postRotate(degree.toFloat())
+        val rotatedImg = Bitmap.createBitmap(img, 0, 0, img.width, img.height, matrix, true)
+        img.recycle()
+        return rotatedImg
     }
 
     private fun inputStreamFromUri(uri: Uri): InputStream {
