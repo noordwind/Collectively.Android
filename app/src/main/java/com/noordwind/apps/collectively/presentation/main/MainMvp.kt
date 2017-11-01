@@ -21,6 +21,7 @@ interface MainMvp {
         fun clearMap()
         fun refreshOldRemarks(oldRemarksToRefresh: LinkedList<Remark>)
         fun showNewRemarks(remarks: List<Remark>)
+        fun removeRemark(lastSelectedRemark: Remark)
     }
 
     interface Presenter : BasePresenter {
@@ -34,6 +35,8 @@ interface MainMvp {
         fun onTooltipShown()
         fun getCurrentlyVisibleRemarks(): List<Remark>
         fun fetchAddressForInfoWindow(latLng: LatLng)
+        fun setLastOpenedRemark(remark: Remark)
+        fun onStart()
     }
 }
 

@@ -12,7 +12,11 @@ import com.noordwind.apps.collectively.domain.interactor.remark.LoadRemarksUseCa
 import com.noordwind.apps.collectively.domain.interactor.remark.filters.map.LoadMapFiltersUseCase
 import com.noordwind.apps.collectively.domain.model.MapFilters
 import com.noordwind.apps.collectively.presentation.rxjava.AppDisposableObserver
+import com.noordwind.apps.collectively.presentation.rxjava.RemarkDeletedEvent
+import com.noordwind.apps.collectively.presentation.rxjava.RxBus
 import com.noordwind.apps.collectively.usecases.LoadAddressFromLocationUseCase
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.Disposable
 import io.reactivex.observers.DisposableObserver
 import jonathanfinerty.once.Once
 import java.util.*
@@ -27,11 +31,34 @@ class MainPresenter(val view: MainMvp.View,
     val currentlyVisibleRemarks: LinkedList<Remark> = LinkedList()
     val allLoadedRemarks: HashMap<String, Remark> = HashMap()
     var lastLocation: Location? = null
+    var remarksRemovedDisposable: Disposable? = null
+    var remarkRemoved = false
+    var removedRemarkId: String? = null
 
     override fun onCreate() {
+        remarksRemovedDisposable = RxBus.instance
+                .getEvents(RemarkDeletedEvent::class.java)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({
+                    removedRemarkId = it.removedRemarkId
+                    remarkRemoved = true
+                })
+
         if (!Once.beenDone(Once.THIS_APP_INSTALL, Constants.OnceKey.SHOW_SWIPE_LEFT_TOOLTIP_ON_MAIN_SCREEN)) {
             view.showTooltip()
         }
+    }
+
+    override fun onStart() {
+        if (remarkRemoved) {
+            removedRemarkId?.let {
+                var remark = allLoadedRemarks.remove(removedRemarkId!!)
+                remark?.let { view.removeRemark(remark) }
+            }
+        }
+    }
+
+    override fun setLastOpenedRemark(remark: Remark) {
     }
 
     override fun onTooltipShown() {
@@ -215,5 +242,7 @@ class MainPresenter(val view: MainMvp.View,
         loadRemarksUseCase.dispose()
         loadRemarkCategoriesUseCase.dispose()
         loadMapFiltersUseCase.dispose()
+
+        remarksRemovedDisposable?.dispose()
     }
 }
