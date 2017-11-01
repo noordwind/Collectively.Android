@@ -2,7 +2,6 @@ package com.noordwind.apps.collectively.data.datasource
 
 import android.app.Service
 import android.content.Intent
-import android.net.Uri
 import android.os.IBinder
 import com.noordwind.apps.collectively.Constants
 import com.noordwind.apps.collectively.R
@@ -13,6 +12,7 @@ import com.noordwind.apps.collectively.data.repository.util.OperationRepository
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
+import java.io.File
 import javax.inject.Inject
 
 class UploadRemarkPhotoService : Service() {
@@ -43,12 +43,9 @@ class UploadRemarkPhotoService : Service() {
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         intent?.let {
             var id = intent.getStringExtra(Constants.BundleKey.REMARK_ID)
-            var imageUri = intent.getParcelableExtra<Uri>(Constants.BundleKey.REMARK_PHOTO_URI)
+            var imageFile = intent.getSerializableExtra(Constants.BundleKey.REMARK_PHOTO_FILE) as File
 
-            var scaleImageObservable = fileDataSource.scaledImageFile(imageUri)
-            var uploadImageObservable = scaleImageObservable.flatMap {
-                remarksDataSource.uploadRemarkPhoto(id, it)
-            }
+            var uploadImageObservable = remarksDataSource.uploadRemarkPhoto(id, imageFile)
 
             barNotificationRepository.showProgressNotification(
                     tag = id,

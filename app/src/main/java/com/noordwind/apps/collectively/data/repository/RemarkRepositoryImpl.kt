@@ -14,6 +14,7 @@ import com.noordwind.apps.collectively.data.repository.util.OperationRepository
 import io.reactivex.Observable
 import io.reactivex.functions.BiFunction
 import io.reactivex.functions.Function4
+import java.io.File
 import java.util.*
 import java.util.concurrent.TimeUnit
 
@@ -161,14 +162,16 @@ class RemarkRepositoryImpl(
         if (remark.imageUri != null) {
             return operationRepository.pollOperation(remarksDataSource.saveRemark(remark))
                     .flatMap {
-                        remarksDataSource.loadSavedRemark(it.resource)
-                    }
-                    .doOnNext {
-                        var uploadPhotoService = Intent()
-                        uploadPhotoService.setClass(context, UploadRemarkPhotoService::class.java)
-                        uploadPhotoService.putExtra(Constants.BundleKey.REMARK_ID, it.id)
-                        uploadPhotoService.putExtra(Constants.BundleKey.REMARK_PHOTO_URI, remark.imageUri);
-                        context.startService(uploadPhotoService);
+                        Observable.zip(remarksDataSource.loadSavedRemark(it.resource), fileDataSource.scaledImageFile(remark.imageUri),
+                                BiFunction<RemarkNotFromList, File, RemarkNotFromList>
+                                { remark, scaledImageFile ->
+                                    var uploadPhotoService = Intent()
+                                    uploadPhotoService.setClass(context, UploadRemarkPhotoService::class.java)
+                                    uploadPhotoService.putExtra(Constants.BundleKey.REMARK_ID, remark.id)
+                                    uploadPhotoService.putExtra(Constants.BundleKey.REMARK_PHOTO_FILE, scaledImageFile);
+                                    context.startService(uploadPhotoService);
+                                    remark
+                                })
                     }
         } else {
             return operationRepository.pollOperation(remarksDataSource.saveRemark(remark)).flatMap { remarksDataSource.loadSavedRemark(it.resource) }
