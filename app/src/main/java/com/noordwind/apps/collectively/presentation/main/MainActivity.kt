@@ -310,6 +310,8 @@ class MainActivity : com.noordwind.apps.collectively.presentation.BaseActivity()
             checkLocationPermission()
         }
 
+        mainPresenter.onStart()
+
         if (floatingMenu.childCount == 1) {
             mainPresenter.loadRemarkCategories()
         }
@@ -425,6 +427,13 @@ class MainActivity : com.noordwind.apps.collectively.presentation.BaseActivity()
         remarksClusterManager.cluster()
     }
 
+    override fun removeRemark(lastSelectedRemark: Remark) {
+        remarksClusterManager.removeItem(lastSelectedRemark)
+        bottomDialog?.let {
+            bottomDialog?.hide()
+        }
+    }
+
     override fun showNewRemarks(remarks: List<Remark>) {
         reloadRemarksList = true
         if (map == null) {
@@ -470,6 +479,7 @@ class MainActivity : com.noordwind.apps.collectively.presentation.BaseActivity()
 
             map?.moveCamera(CameraUpdateFactory.newLatLng(LatLng(latitude, longitude)));
             map?.animateCamera(CameraUpdateFactory.zoomTo(20.0f));
+
             bottomDialog = MainScreenRemarkBottomSheetDialog(this, remark, lastLocation, remarkLocation).show()
         }
     }
@@ -500,13 +510,10 @@ class MainActivity : com.noordwind.apps.collectively.presentation.BaseActivity()
         }
     }
 
-    override fun onStop() {
-        super.onStop()
-        mainPresenter.destroy()
-    }
-
     override fun onDestroy() {
         super.onDestroy()
+        mainPresenter.destroy()
+
         disposable?.let {
             disposable?.dispose()
         }

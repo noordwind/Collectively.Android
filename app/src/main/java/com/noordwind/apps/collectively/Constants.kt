@@ -142,6 +142,8 @@ interface Constants {
             const val ADDRESS = "address"
             const val REMARK_PHOTO_URI = "remark_photo_uri"
             const val REMARK_PHOTO_FILE = "remark_photo_file"
+            const val FINISH_ACTIVITY_AFTER_REMARK_REMOVAL = "finish_activity"
+            const val GO_TO_MAIN_AFTER_REMARK_REMOVAL = "go_to_main"
         }
     }
 
@@ -171,6 +173,7 @@ interface Constants {
             const val DELETE_REMARK_EVENT = "delete_remark_event"
             const val REMARK_STATE_CHANGED_EVENT = "remark_changed_disposable"
             const val PROCESS_REMARK = "process_remark"
+            const val REMARK_DELETED_EVENT = "remark_deleted_event"
         }
     }
 }

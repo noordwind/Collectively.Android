@@ -25,6 +25,7 @@ import com.noordwind.apps.collectively.presentation.adapter.delegates.RemarkStat
 import com.noordwind.apps.collectively.presentation.adapter.delegates.RemarkStatesResolveButtonAdapterDelegate
 import com.noordwind.apps.collectively.presentation.extension.showCannotSetStateTooOftenErrorDialog
 import com.noordwind.apps.collectively.presentation.extension.showGroupMemberNotFoundErrorDialog
+import com.noordwind.apps.collectively.presentation.rxjava.RemarkDeletedEvent
 import com.noordwind.apps.collectively.presentation.rxjava.RxBus
 import com.noordwind.apps.collectively.presentation.util.RequestErrorDecorator
 import com.noordwind.apps.collectively.presentation.util.Switcher
@@ -36,7 +37,7 @@ import kotlinx.android.synthetic.main.view_toolbar_with_title.*
 import java.util.*
 import javax.inject.Inject
 
-class RemarkStatesActivity : com.noordwind.apps.collectively.presentation.BaseActivity(), RemarkStatesMvp.View{
+class RemarkStatesActivity : com.noordwind.apps.collectively.presentation.BaseActivity(), RemarkStatesMvp.View {
 
     companion object {
         fun start(context: Context, id: String, userId: String) {
@@ -70,10 +71,10 @@ class RemarkStatesActivity : com.noordwind.apps.collectively.presentation.BaseAc
 
     private var submitRemarkProgress: RemarkCommentsLoaderAdapterDelegate.Progress = RemarkCommentsLoaderAdapterDelegate.Progress()
 
-    var resolvingRemarkToast : ToastManager? = null
-    var reopeningRemarkToast : ToastManager? = null
-    var processingRemarkToast : ToastManager? = null
-    var removingRemarkToast : ToastManager? = null
+    var resolvingRemarkToast: ToastManager? = null
+    var reopeningRemarkToast: ToastManager? = null
+    var processingRemarkToast: ToastManager? = null
+    var removingRemarkToast: ToastManager? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -106,7 +107,7 @@ class RemarkStatesActivity : com.noordwind.apps.collectively.presentation.BaseAc
 
         presenter.onCreate()
 
-        actInput.addTextChangedListener(object: TextWatcher {
+        actInput.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(p0: Editable?) {
             }
 
@@ -127,7 +128,7 @@ class RemarkStatesActivity : com.noordwind.apps.collectively.presentation.BaseAc
 
         })
 
-        actButton.setOnClickListener { RxBus.instance.postEvent(Constants.RxBusEvent.PROCESS_REMARK)}
+        actButton.setOnClickListener { RxBus.instance.postEvent(Constants.RxBusEvent.PROCESS_REMARK) }
     }
 
     override fun activityMessage(): String = actInput.text.toString()
@@ -186,6 +187,9 @@ class RemarkStatesActivity : com.noordwind.apps.collectively.presentation.BaseAc
     override fun showRemarkRemovedMessage() {
         ToastManager(this, getString(R.string.remark_removed), Toast.LENGTH_SHORT).success().show()
         RxBus.instance.postEvent(Constants.RxBusEvent.REMARK_STATE_CHANGED_EVENT)
+        RxBus.instance.postEvent(Constants.RxBusEvent.REMARK_DELETED_EVENT)
+        RxBus.instance.postEvent(RemarkDeletedEvent(intent.getStringExtra(Constants.BundleKey.ID)))
+        finish()
     }
 
     private fun loadStates() {
@@ -215,7 +219,7 @@ class RemarkStatesActivity : com.noordwind.apps.collectively.presentation.BaseAc
         var list = LinkedList<Any>(states)
         if (showResolveButton) {
             list.add(0, RemarkStatesResolveButtonAdapterDelegate.RemarkResolveButton())
-        } else if (showReopenButton){
+        } else if (showReopenButton) {
             list.add(0, RemarkStatesReopenButtonAdapterDelegate.RemarkReopenButton())
         }
 
@@ -251,7 +255,7 @@ class RemarkStatesActivity : com.noordwind.apps.collectively.presentation.BaseAc
     }
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
-        when(item?.itemId) {
+        when (item?.itemId) {
             android.R.id.home -> {
                 onBackPressed()
                 return true;

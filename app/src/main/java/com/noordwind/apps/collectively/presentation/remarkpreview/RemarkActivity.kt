@@ -212,6 +212,9 @@ class RemarkActivity : com.noordwind.apps.collectively.presentation.BaseActivity
         refreshVotesCountLabel()
     }
 
+    override fun closeScreen() {
+        finish()
+    }
 
     private fun loadRemark() {
         presenter.loadRemark(intent.getStringExtra(Constants.BundleKey.ID))

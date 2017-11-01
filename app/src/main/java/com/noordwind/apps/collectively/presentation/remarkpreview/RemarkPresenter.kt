@@ -30,12 +30,20 @@ class RemarkPresenter(val view: RemarkPreviewMvp.View,
     private lateinit var remark: RemarkPreview
 
     private lateinit var remarksStateChangedDisposable: Disposable
+    private lateinit var remarksRemovedDisposable: Disposable
     private var refreshRemark: Boolean = false
+    private var remarkRemoved: Boolean = false
 
     var negativeVotes = 0
     var positiveVotes = 0
 
     override fun onCreate() {
+        remarksRemovedDisposable = RxBus.instance
+                .getEvents(String::class.java)
+                .filter { it.equals(Constants.RxBusEvent.REMARK_DELETED_EVENT) }
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({ remarkRemoved = true })
+
         remarksStateChangedDisposable = RxBus.instance
                 .getEvents(String::class.java)
                 .filter { it.equals(Constants.RxBusEvent.REMARK_STATE_CHANGED_EVENT) }
@@ -44,10 +52,13 @@ class RemarkPresenter(val view: RemarkPreviewMvp.View,
     }
 
     override fun onStart() {
+        if (remarkRemoved) {
+            view.closeScreen()
+        }
+
         if (refreshRemark) {
             loadRemark(remarkId)
             refreshRemark = false
-
         }
     }
 
@@ -184,8 +195,10 @@ class RemarkPresenter(val view: RemarkPreviewMvp.View,
         submitRemarkVoteUseCase.dispose()
         deleteRemarkVoteUseCase.dispose()
         loadRemarkUseCase.dispose()
-        remarksStateChangedDisposable.dispose()
         loadRemarkPhotoUseCase.dispose()
+
+        remarksStateChangedDisposable.dispose()
+        remarksRemovedDisposable.dispose()
     }
 
     class VoteChangeObserver(val presenter: RemarkPresenter, val view: RemarkPreviewMvp.View)  : AppDisposableObserver<RemarkViewData>() {

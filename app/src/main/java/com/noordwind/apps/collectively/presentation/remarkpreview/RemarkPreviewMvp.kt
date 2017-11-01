@@ -26,6 +26,7 @@ interface RemarkPreviewMvp {
         fun disableVoteButtons()
         fun invalidateLikesProgress()
         fun showRemarkNotFoundError()
+        fun closeScreen()
     }
 
     interface Presenter : BasePresenter {
