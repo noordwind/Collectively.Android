@@ -9,6 +9,7 @@ import android.os.Build
 import android.os.Environment
 import android.provider.DocumentsContract
 import android.provider.MediaStore
+import java.io.*
 
 
 /**
@@ -71,7 +72,8 @@ fun Uri.getFilePath(context: Context, uri: Uri): String? {
         }// MediaProvider
         // DownloadsProvider
     } else if ("content".equals(uri.getScheme(), ignoreCase = true)) {
-        return getDataColumn(context, uri, null, null)
+//        return getDataColumn(context, uri, null, null)
+        return getImagePathFromInputStreamUri(context, uri)
     } else if ("file".equals(uri.getScheme(), ignoreCase = true)) {
         return uri.getPath()
     }// File
@@ -140,4 +142,65 @@ fun isDownloadsDocument(uri: Uri): Boolean {
  */
 fun isMediaDocument(uri: Uri): Boolean {
     return "com.android.providers.media.documents" == uri.getAuthority()
+}
+
+
+fun getImagePathFromInputStreamUri(context: Context, uri: Uri): String? {
+    var inputStream: InputStream? = null
+    var filePath: String? = null
+
+    if (uri.authority != null) {
+        try {
+            inputStream = context.getContentResolver().openInputStream(uri) // context needed
+            val photoFile = createTemporalFileFrom(context, inputStream)
+
+            filePath = photoFile?.getPath()
+        } catch (e: FileNotFoundException) {
+            // log
+        } catch (e: IOException) {
+            // log
+        } finally {
+            try {
+                inputStream!!.close()
+            } catch (e: IOException) {
+                e.printStackTrace()
+            }
+
+        }
+    }
+
+    return filePath
+}
+
+@Throws(IOException::class)
+private fun createTemporalFileFrom(context: Context, inputStream: InputStream?): File? {
+    var targetFile: File? = null
+
+    if (inputStream != null) {
+        var read: Int = 0
+        val buffer = ByteArray(8 * 1024)
+
+        targetFile = createTemporalFile(context)
+        val outputStream = FileOutputStream(targetFile)
+
+        read = inputStream!!.read(buffer)
+        while ((read) != -1) {
+            outputStream.write(buffer, 0, read)
+            read = inputStream!!.read(buffer)
+        }
+        outputStream.flush()
+
+        try {
+            outputStream.close()
+        } catch (e: IOException) {
+            e.printStackTrace()
+        }
+
+    }
+
+    return targetFile
+}
+
+private fun createTemporalFile(context: Context): File {
+    return File(context.getExternalCacheDir(), "tempFile.jpg") // context needed
 }

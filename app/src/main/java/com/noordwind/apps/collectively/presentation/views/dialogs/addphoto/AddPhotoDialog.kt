@@ -7,7 +7,6 @@ import android.support.v4.app.DialogFragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import com.noordwind.apps.collectively.Constants
 import com.noordwind.apps.collectively.R
 import com.noordwind.apps.collectively.presentation.rxjava.RxBus
@@ -30,10 +29,9 @@ class AddPhotoDialog : DialogFragment(), Constants {
             dialog.dismiss()
         }
         rootView.findViewById(R.id.galleryButton).setOnClickListener {
-            Toast.makeText(context, "Funkcjonalność niedostępna", Toast.LENGTH_SHORT).show()
-//            RxBus.instance.postEvent(Constants.RxBusEvent.GALLERY_EVENT)
-//
-//            dialog.dismiss()
+//            Toast.makeText(context, "Funkcjonalność niedostępna", Toast.LENGTH_SHORT).show()
+            RxBus.instance.postEvent(Constants.RxBusEvent.GALLERY_EVENT)
+            dialog.dismiss()
         }
         return rootView
     }
