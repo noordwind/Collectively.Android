@@ -16,10 +16,7 @@ import com.noordwind.apps.collectively.domain.interactor.remark.comments.LoadRem
 import com.noordwind.apps.collectively.domain.interactor.remark.comments.SubmitRemarkCommentUseCase
 import com.noordwind.apps.collectively.domain.interactor.remark.comments.SubmitRemarkCommentVoteUseCase
 import com.noordwind.apps.collectively.domain.interactor.remark.filters.map.*
-import com.noordwind.apps.collectively.domain.interactor.remark.states.LoadRemarkStatesUseCase
-import com.noordwind.apps.collectively.domain.interactor.remark.states.ProcessRemarkUseCase
-import com.noordwind.apps.collectively.domain.interactor.remark.states.ReopenRemarkUseCase
-import com.noordwind.apps.collectively.domain.interactor.remark.states.ResolveRemarkUseCase
+import com.noordwind.apps.collectively.domain.interactor.remark.states.*
 import com.noordwind.apps.collectively.domain.interactor.remark.votes.DeleteRemarkVoteUseCase
 import com.noordwind.apps.collectively.domain.interactor.remark.votes.SubmitRemarkVoteUseCase
 import com.noordwind.apps.collectively.domain.interactor.settings.LoadSettingsUseCase
@@ -201,6 +198,10 @@ class UseCasesModule : Constants {
     @Provides
     fun loadRemarkStatesUseCase(remarksRepository: RemarksRepository, profileRepository: ProfileRepository, useCaseThread: UseCaseThread, postExecutionThread: PostExecutionThread)
             = LoadRemarkStatesUseCase(remarksRepository, profileRepository, useCaseThread, postExecutionThread)
+
+    @Provides
+    fun deleteRemarkUseCase(remarksRepository: RemarksRepository, useCaseThread: UseCaseThread, postExecutionThread: PostExecutionThread)
+            = DeleteRemarkUseCase(remarksRepository, useCaseThread, postExecutionThread)
 
     @Provides
     fun processRemarkUseCase(remarksRepository: RemarksRepository, profileRepository: ProfileRepository, useCaseThread: UseCaseThread, postExecutionThread: PostExecutionThread)
