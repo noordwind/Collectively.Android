@@ -7,10 +7,11 @@ import android.location.Location
 import com.google.android.gms.maps.model.LatLng
 import com.noordwind.apps.collectively.Constants
 import com.noordwind.apps.collectively.data.cache.RemarkCategoriesCache
+import com.noordwind.apps.collectively.data.cache.RemarkTagsCache
 import com.noordwind.apps.collectively.data.datasource.*
 import com.noordwind.apps.collectively.data.model.*
-import com.noordwind.apps.collectively.domain.repository.LocationRepository
 import com.noordwind.apps.collectively.data.repository.util.OperationRepository
+import com.noordwind.apps.collectively.domain.repository.LocationRepository
 import io.reactivex.Observable
 import io.reactivex.functions.BiFunction
 import io.reactivex.functions.Function4
@@ -21,6 +22,7 @@ import java.util.concurrent.TimeUnit
 class RemarkRepositoryImpl(
         val context: Context,
         val remarkCategoriesCache: RemarkCategoriesCache,
+        val remarkTagsCache: RemarkTagsCache,
         val remarksDataSource: RemarksDataSource,
         val fileDataSource: FileDataSource,
         val profileRepository: ProfileRepository,
@@ -99,6 +101,14 @@ class RemarkRepositoryImpl(
             return remarksDataSource.loadRemarkCategories().doOnNext { remarkCategoriesCache.putData(it) }
         } else {
             return remarkCategoriesCache.getData()
+        }
+    }
+
+    override fun loadRemarkTags(): Observable<List<RemarkTag>> {
+        if (remarkTagsCache.isExpired()) {
+            return remarksDataSource.loadRemarkTags().doOnNext { remarkTagsCache.putData(it) }
+        } else {
+            return remarkTagsCache.getData()
         }
     }
 
@@ -194,8 +204,6 @@ class RemarkRepositoryImpl(
     override fun deleteRemark(remarkId: String): Observable<Boolean> {
         return operationRepository.pollOperation(remarksDataSource.deleteRemark(remarkId)).flatMap { Observable.just(true) }
     }
-
-    override fun loadRemarkTags(): Observable<List<RemarkTag>> = remarksDataSource.loadRemarkTags()
 
     override fun submitRemarkVote(remarkId: String, remarkVote: RemarkVote): Observable<RemarkPreview> {
         return operationRepository.pollOperation(remarksDataSource.submitRemarkVote(remarkId, remarkVote))

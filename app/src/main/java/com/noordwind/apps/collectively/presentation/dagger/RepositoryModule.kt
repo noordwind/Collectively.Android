@@ -6,6 +6,7 @@ import android.net.ConnectivityManager
 import com.noordwind.apps.collectively.Constants
 import com.noordwind.apps.collectively.data.cache.ProfileCache
 import com.noordwind.apps.collectively.data.cache.RemarkCategoriesCache
+import com.noordwind.apps.collectively.data.cache.RemarkTagsCache
 import com.noordwind.apps.collectively.data.cache.UserGroupsCache
 import com.noordwind.apps.collectively.data.datasource.*
 import com.noordwind.apps.collectively.data.repository.*
@@ -23,12 +24,14 @@ class RepositoryModule : Constants {
 
     @Provides
     fun authenticationRepository(authDataSource: AuthDataSource,
+                                 remarksRepository: RemarksRepository,
                                  profileRepository: ProfileRepository,
                                  mapFiltersRepository: MapFiltersRepository,
                                  userGroupsRepository: UserGroupsRepository,
                                  operationRepository: OperationRepository,
                                  sessionRepository: SessionRepository): AuthenticationRepository {
-        return AuthenticationRepositoryImpl(authDataSource, mapFiltersRepository, profileRepository, userGroupsRepository, operationRepository, sessionRepository)
+        return AuthenticationRepositoryImpl(authDataSource, remarksRepository, mapFiltersRepository,
+                profileRepository, userGroupsRepository, operationRepository, sessionRepository)
     }
 
     @Provides
@@ -37,6 +40,7 @@ class RepositoryModule : Constants {
     @Provides
     fun remarkCategoriesRepository(
             context: Context,
+            remarkTagsCache: RemarkTagsCache,
             remarkCategoriesCache: RemarkCategoriesCache,
             remarksDataSource: RemarksDataSource,
             fileDataSource: FileDataSource,
@@ -47,9 +51,17 @@ class RepositoryModule : Constants {
             userGroupsRepository: UserGroupsRepository,
             operationRepository: OperationRepository): RemarksRepository
 
-            = RemarkRepositoryImpl(context = context, remarkCategoriesCache = remarkCategoriesCache, remarksDataSource = remarksDataSource,
-            fileDataSource = fileDataSource, profileRepository = profileRepository, mapFiltersRepository = mapFiltersRepository,
-            userGroupsRepository = userGroupsRepository, operationRepository = operationRepository, translationsDataSource = translationsDataSource,
+            = RemarkRepositoryImpl(
+            context = context,
+            remarkCategoriesCache = remarkCategoriesCache,
+            remarksDataSource = remarksDataSource,
+            remarkTagsCache = remarkTagsCache,
+            fileDataSource = fileDataSource,
+            profileRepository = profileRepository,
+            mapFiltersRepository = mapFiltersRepository,
+            userGroupsRepository = userGroupsRepository,
+            operationRepository = operationRepository,
+            translationsDataSource = translationsDataSource,
             locationRepository = locationRepository)
 
     @Provides

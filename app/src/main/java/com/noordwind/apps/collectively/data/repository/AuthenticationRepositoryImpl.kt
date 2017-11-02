@@ -7,9 +7,10 @@ import com.noordwind.apps.collectively.data.model.*
 import com.noordwind.apps.collectively.data.repository.util.OperationRepository
 import com.noordwind.apps.collectively.domain.repository.SessionRepository
 import io.reactivex.Observable
-import io.reactivex.functions.BiFunction
+import io.reactivex.functions.Function3
 
 class AuthenticationRepositoryImpl(val authDataSource: AuthDataSource,
+                                   val remarksRepository: RemarksRepository,
                                    val mapFiltersRepository: MapFiltersRepository,
                                    val profileRepository: ProfileRepository,
                                    val userGroupsRepository: UserGroupsRepository,
@@ -35,9 +36,10 @@ class AuthenticationRepositoryImpl(val authDataSource: AuthDataSource,
 
                     var profileObs = profileRepository.loadProfile(true)
                     var userGroupsObs = userGroupsRepository.loadGroups(true)
+                    var tagsObs = remarksRepository.loadRemarkTags()
 
-                    Observable.zip(profileObs, userGroupsObs,
-                            BiFunction<Profile, List<UserGroup>, String> { t1, t2 -> authResponse })
+                    Observable.zip(profileObs, userGroupsObs, tagsObs,
+                            Function3<Profile, List<UserGroup>, List<RemarkTag>, String> { t1, t2, t3 -> authResponse })
                 }
     }
 
@@ -53,9 +55,10 @@ class AuthenticationRepositoryImpl(val authDataSource: AuthDataSource,
 
                     var profileObs = profileRepository.loadProfile(true)
                     var userGroupsObs = userGroupsRepository.loadGroups(true)
+                    var tagsObs = remarksRepository.loadRemarkTags()
 
-                    Observable.zip(profileObs, userGroupsObs,
-                            BiFunction<Profile, List<UserGroup>, Pair<Profile, String>> { t1, t2 -> Pair(t1, authResponse.token) })
+                    Observable.zip(profileObs, userGroupsObs, tagsObs,
+                            Function3<Profile, List<UserGroup>, List<RemarkTag>, Pair<Profile, String>> { t1, t2, t3 -> Pair(t1, authResponse.token) })
                 }
     }
 

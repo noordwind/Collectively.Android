@@ -25,6 +25,15 @@ interface Constants {
         }
     }
 
+    interface PreferencesType {
+        companion object {
+            val USER_GROUPS = "shared_preferences_user_groups"
+            val USER_PROFILE = "shared_preferences_profile"
+            val REMARK_CATEGORIES = "shared_preferences_remark_categories"
+            val REMARK_TAGS = "shared_preferences_remark_tags"
+        }
+    }
+
     interface PreferencesKey {
         companion object {
             val SESSION_TOKEN = "session_token"
@@ -33,6 +42,7 @@ interface Constants {
             val PROFILE_CACHE_TIME = "profile_cache_time"
             val GROUPS_CACHE_TIME = "groups_cache_time"
             val REMARK_CATEGORIES = "remark_categories"
+            val REMARK_TAGS = "remark_tags"
             val USER_GROUPS = "user_groups"
             val PROFILE = "profile"
             val MAP_FILTERS = "map_filters"

@@ -98,3 +98,4 @@ class RemarkComment(var id: String,
     fun userVotedNegatively(userId: String): Boolean =
             negativeVotes().filter { it.userId.equals(userId) }.count() > 0
 }
+
