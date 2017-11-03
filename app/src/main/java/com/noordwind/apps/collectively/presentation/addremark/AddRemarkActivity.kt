@@ -30,6 +30,7 @@ import com.noordwind.apps.collectively.data.model.RemarkCategory
 import com.noordwind.apps.collectively.data.model.RemarkNotFromList
 import com.noordwind.apps.collectively.presentation.addremark.location.PickRemarkLocationActivity
 import com.noordwind.apps.collectively.presentation.addremark.mvp.AddRemarkMvp
+import com.noordwind.apps.collectively.presentation.addremark.tags.TagsListActivity
 import com.noordwind.apps.collectively.presentation.extension.*
 import com.noordwind.apps.collectively.presentation.receiver.NetworkChangeReceiver
 import com.noordwind.apps.collectively.presentation.rxjava.RxBus
@@ -179,6 +180,8 @@ class AddRemarkActivity : com.noordwind.apps.collectively.presentation.BaseActiv
 //        chipText.setOnItemClickListener(ItemClickListener);
 //        chipText.addLayoutTextChangedListener(TextChangedListener);
 //        chipText.setOnFocusChangeListener(FocusChangeListener);
+
+        availableTagsButton.setOnClickListener { TagsListActivity.start(AddRemarkActivity@this) }
     }
 
     override fun showAddressNotSpecifiedDialog() {

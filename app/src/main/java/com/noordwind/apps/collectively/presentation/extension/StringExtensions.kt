@@ -15,6 +15,10 @@ fun String.isValidPassword(): Boolean = !TextUtils.isEmpty(this) && this.length 
 
 fun String.isValidName(): Boolean = !TextUtils.isEmpty(this)
 
+fun String.firstLetter(): String? {
+    return if (this.length > 0) this.trim().first().toString() else null
+}
+
 fun String.uppercaseFirstLetter(): String {
     if (this.length == 0) {
         return this

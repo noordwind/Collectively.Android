@@ -69,6 +69,7 @@ interface AppComponent {
     fun plusNotificationsSettingsScreenComponent(notificationsSettingsScreenModule: NotificationsSettingsScreenModule): NotificationsSettingsScreenComponent
 
     fun plusMainNavigationMenuComponent(mainNavigationMenuModule: MainNavigationMenuModule): MainNavigationMenuComponent
+    fun plusTagsListScreenComponent(tagsListScreenModule: TagsListScreenModule): TagsListScreenComponent
 
     fun plusMapFiltersDialogComponent(mapFiltersDialogModule: MapFiltersDialogModule): MapFiltersDialogComponent
 

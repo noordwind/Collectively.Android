@@ -104,8 +104,10 @@
         <activity android:name=".presentation.authentication.setnickname.SetNickNameActivity">
         </activity>
 
-
         <activity android:name=".presentation.addremark.location.PickRemarkLocationActivity">
+        </activity>
+
+        <activity android:name=".presentation.addremark.tags.TagsListActivity">
         </activity>
 
         <activity

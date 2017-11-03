@@ -36,12 +36,19 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             signingConfig signingConfigs.release
         }
+        debug {
+            testCoverageEnabled false
+            jackOptions {
+                enabled false
+            }
+        }
     }
 
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+
 
     retrolambda {
         jdk "/Library/Java/JavaVirtualMachines/jdk1.8.0_101.jdk/Contents/Home"
@@ -72,10 +79,10 @@ android {
                                     FABRIC_KEY    : project.property("collectivelyFabricKey")]
         }
     }
+
     kapt {
         generateStubs = true
     }
-
 
     packagingOptions {
         pickFirst 'META-INF/rxjava.properties'
