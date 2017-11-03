@@ -146,6 +146,7 @@ dependencies {
 
     //UI
     compile 'com.google.maps.android:android-maps-utils:0.5'
+    compile 'org.zakariya.stickyheaders:stickyheaders:0.7.6'
     compile 'com.libaml.android.view.chip:AndroidChipLayout:1.0.6'
     compile 'com.theartofdev.edmodo:android-image-cropper:2.4.+'
     compile 'fr.avianey.com.viewpagerindicator:library:2.4.1.1@aar'
