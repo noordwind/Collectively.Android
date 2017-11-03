@@ -28,7 +28,6 @@ import com.noordwind.apps.collectively.TheApp
 import com.noordwind.apps.collectively.data.datasource.FiltersTranslationsDataSource
 import com.noordwind.apps.collectively.data.model.RemarkCategory
 import com.noordwind.apps.collectively.data.model.RemarkNotFromList
-import com.noordwind.apps.collectively.data.model.UserGroup
 import com.noordwind.apps.collectively.presentation.addremark.location.PickRemarkLocationActivity
 import com.noordwind.apps.collectively.presentation.addremark.mvp.AddRemarkMvp
 import com.noordwind.apps.collectively.presentation.extension.*
@@ -106,11 +105,11 @@ class AddRemarkActivity : com.noordwind.apps.collectively.presentation.BaseActiv
 
         submitButton.setOnClickListener {
             if (!presenter.checkInternetConnection()) {
-               // skip, and the error will be shown
+                // skip, and the error will be shown
             } else if (getCategory().equals("")) {
                 ToastManager(this, getString(R.string.add_remark_category_not_selected), Toast.LENGTH_SHORT).error().show()
             } else {
-                presenter.saveRemark(getGroupName(), getCategory(), getDescription(), getSelectedTags(), capturedImageUri)
+                presenter.saveRemark(getCategory(), getDescription(), getSelectedTags(), capturedImageUri)
             }
         }
 
@@ -122,8 +121,6 @@ class AddRemarkActivity : com.noordwind.apps.collectively.presentation.BaseActiv
         } else {
             presenter.loadLastKnownAddress()
         }
-
-        presenter.loadUserGroups()
 
         fab.setOnClickListener { AddPhotoDialog.newInstance().show(supportFragmentManager, AddPhotoDialog::class.java.toString()) }
 
@@ -173,6 +170,15 @@ class AddRemarkActivity : com.noordwind.apps.collectively.presentation.BaseActiv
         var intentFilter = IntentFilter();
         intentFilter.addAction(ConnectivityManager.CONNECTIVITY_ACTION);
         registerReceiver(networkChangeReceiver, intentFilter);
+
+        var countries = arrayOf("india", "australia1", "australia1", "australia1", "australia1", "australia1", "australia1", "australia1",
+                "australia1", "australia1" ,"australia1", "austria", "indonesia", "canada")
+        var adapter = ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, countries);
+        chipText.adapter = adapter;
+//        chipText.setOnClickListener(ClickListener);
+//        chipText.setOnItemClickListener(ItemClickListener);
+//        chipText.addLayoutTextChangedListener(TextChangedListener);
+//        chipText.setOnFocusChangeListener(FocusChangeListener);
     }
 
     override fun showAddressNotSpecifiedDialog() {
@@ -198,18 +204,6 @@ class AddRemarkActivity : com.noordwind.apps.collectively.presentation.BaseActiv
     }
 
     fun getCategory() = translationDataSource.translateToType(selectedCategory)
-
-    fun getGroupName() : String? {
-        if (groupsSpinner.adapter.isEmpty) {
-            return null
-        }
-
-        var groupName = groupsSpinner.selectedItem.toString()
-        if (groupName.equals(getString(R.string.add_remark_all_groups_target))) {
-            return null
-        }
-        return groupName
-    }
 
     fun getDescription() = descriptionLabel.text.toString()
 
@@ -242,21 +236,6 @@ class AddRemarkActivity : com.noordwind.apps.collectively.presentation.BaseActiv
 
             remarkCategoriesLayout.addView(newView)
         }
-    }
-
-    override fun showAvailableUserGroups(userGroups: List<UserGroup>) {
-        val groupNames = LinkedList<String>()
-        var initialSelection = 0
-
-        userGroups.forEachIndexed { i, group ->
-            groupNames.add(group.name.uppercaseFirstLetter())
-        }
-        groupNames.add(getString(R.string.add_remark_all_groups_target))
-
-        val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, groupNames)
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        groupsSpinner.adapter = adapter
-        groupsSpinner.setSelection(initialSelection)
     }
 
     override fun showAddress(addressPretty: String) {

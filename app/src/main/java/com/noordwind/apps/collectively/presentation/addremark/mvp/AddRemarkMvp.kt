@@ -4,7 +4,6 @@ import android.net.Uri
 import com.google.android.gms.maps.model.LatLng
 import com.noordwind.apps.collectively.data.model.RemarkCategory
 import com.noordwind.apps.collectively.data.model.RemarkNotFromList
-import com.noordwind.apps.collectively.data.model.UserGroup
 import com.noordwind.apps.collectively.presentation.mvp.BasePresenter
 import io.reactivex.disposables.Disposable
 
@@ -17,7 +16,6 @@ interface AddRemarkMvp {
         fun showSaveRemarkLoading()
         fun showSaveRemarkError()
         fun showSaveRemarkSuccess(newRemark: RemarkNotFromList)
-        fun showAvailableUserGroups(userGroup: List<UserGroup>)
         fun showSaveRemarkError(message: String?)
         fun showAddressNotSpecifiedDialog()
         fun showNetworkError()
@@ -28,8 +26,7 @@ interface AddRemarkMvp {
         fun checkInternetConnection(): Boolean
         fun loadRemarkCategories()
         fun loadLastKnownAddress()
-        fun loadUserGroups()
-        fun saveRemark(groupName: String?, category: String, description: String, selectedTags: List<String>, capturedImageUri: Uri?)
+        fun saveRemark(category: String, description: String, selectedTags: List<String>, capturedImageUri: Uri?)
         fun hasAddress(): Boolean
         fun getLocation(): LatLng
         fun setLastKnownAddress(address: String)

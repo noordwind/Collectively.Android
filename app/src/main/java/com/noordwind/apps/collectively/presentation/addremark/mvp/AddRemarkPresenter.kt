@@ -7,9 +7,9 @@ import com.noordwind.apps.collectively.data.model.NewRemark
 import com.noordwind.apps.collectively.data.model.RemarkCategory
 import com.noordwind.apps.collectively.data.model.RemarkNotFromList
 import com.noordwind.apps.collectively.data.model.UserGroup
-import com.noordwind.apps.collectively.domain.repository.ConnectivityRepository
 import com.noordwind.apps.collectively.domain.interactor.remark.LoadRemarkCategoriesUseCase
 import com.noordwind.apps.collectively.domain.interactor.remark.SaveRemarkUseCase
+import com.noordwind.apps.collectively.domain.repository.ConnectivityRepository
 import com.noordwind.apps.collectively.presentation.mvp.BasePresenter
 import com.noordwind.apps.collectively.presentation.rxjava.AppDisposableObserver
 import com.noordwind.apps.collectively.presentation.statistics.LoadUserGroupsUseCase
@@ -40,10 +40,6 @@ class AddRemarkPresenter(val view: AddRemarkMvp.View,
     }
 
     override fun onInternetEnabled() {
-        if (groups == null) {
-            loadUserGroups()
-        }
-
         if (categories == null) {
             loadRemarkCategories()
         }
@@ -76,31 +72,6 @@ class AddRemarkPresenter(val view: AddRemarkMvp.View,
         }
 
         loadRemarkCategoriesUseCase.execute(observer, null)
-    }
-
-    override fun loadUserGroups() {
-        var observer = object : AppDisposableObserver<List<UserGroup>>() {
-
-            override fun onStart() {
-                super.onStart()
-            }
-
-            override fun onNext(userGroups: List<UserGroup>) {
-                super.onNext(userGroups)
-                groups = userGroups
-                view.showAvailableUserGroups(userGroups)
-            }
-
-            override fun onError(e: Throwable) {
-                super.onError(e)
-            }
-
-            override fun onNetworkError() {
-                super.onNetworkError()
-            }
-        }
-
-        loadUserGroupsUseCase.execute(observer, true)
     }
 
     override fun hasAddress() : Boolean = !lastKnownAddress.isNullOrBlank()
@@ -178,7 +149,7 @@ class AddRemarkPresenter(val view: AddRemarkMvp.View,
         loadLastKnownLocationUseCase.execute(observer)
     }
 
-    override fun saveRemark(groupName: String?, category: String, description: String, selectedTags: List<String>, capturedImageUri: Uri?) {
+    override fun saveRemark(category: String, description: String, selectedTags: List<String>, capturedImageUri: Uri?) {
         if (lastKnownAddress.isNullOrBlank()) {
             view.showAddressNotSpecifiedDialog()
             return
@@ -213,16 +184,7 @@ class AddRemarkPresenter(val view: AddRemarkMvp.View,
             }
         }
 
-        var groupId: String? = null
-
-        if (groups != null && groupName != null) {
-            groups!!.find { it.name.equals(groupName, true) }.let {
-                groupId = it!!.id
-            }
-        }
-
         var newRemark = NewRemark(
-                groupId = groupId,
                 category = category.toLowerCase(),
                 latitude = lastKnownLatitude!!,
                 longitude = lastKnownLongitude!!,

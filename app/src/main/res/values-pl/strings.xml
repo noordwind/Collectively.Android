@@ -21,7 +21,7 @@
     <string name="add_remark_screen_title">Dodaj zgłoszenie</string>
     <string name="description_hint">Opis (minimum 10 znaków)</string>
     <string name="add_remark_category_hint">Zgłaszam...</string>
-    <string name="add_remark_tags_hint">Tagi (nieobowiązkowe)</string>
+    <string name="add_remark_tags_hint">Tagi (np. śmieci, las, ulica)</string>
     <string name="location">Lokalizacja</string>
     <string name="list">Lista</string>
     <string name="open">Otwórz</string>
@@ -231,4 +231,5 @@
     <string name="add_remark_description_too_short">Podany opis jest zbyt krótki</string>
     <string name="removing_remark">Usuwanie zgłoszenia</string>
     <string name="remark_removed">Zgłoszenie usunięte</string>
+    <string name="available_tags">Dostępne tagi</string>
 </resources>

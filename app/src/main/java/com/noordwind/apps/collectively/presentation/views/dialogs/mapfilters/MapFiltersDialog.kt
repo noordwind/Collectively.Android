@@ -23,7 +23,7 @@ import com.noordwind.apps.collectively.presentation.views.FilterView
 import com.noordwind.apps.collectively.presentation.views.dialogs.mapfilters.mvp.MapFiltersMvp
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
-import kotlinx.android.synthetic.main.activity_add_remark.*
+import kotlinx.android.synthetic.main.fragment_filter_remarks_dialog.*
 import java.util.*
 import javax.inject.Inject
 
