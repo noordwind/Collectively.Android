@@ -3,11 +3,9 @@ package com.noordwind.apps.collectively.presentation.addremark.mvp
 import android.location.Address
 import android.net.Uri
 import com.google.android.gms.maps.model.LatLng
-import com.noordwind.apps.collectively.data.model.NewRemark
-import com.noordwind.apps.collectively.data.model.RemarkCategory
-import com.noordwind.apps.collectively.data.model.RemarkNotFromList
-import com.noordwind.apps.collectively.data.model.UserGroup
+import com.noordwind.apps.collectively.data.model.*
 import com.noordwind.apps.collectively.domain.interactor.remark.LoadRemarkCategoriesUseCase
+import com.noordwind.apps.collectively.domain.interactor.remark.LoadRemarkTagsUseCase
 import com.noordwind.apps.collectively.domain.interactor.remark.SaveRemarkUseCase
 import com.noordwind.apps.collectively.domain.repository.ConnectivityRepository
 import com.noordwind.apps.collectively.presentation.mvp.BasePresenter
@@ -19,6 +17,7 @@ import io.reactivex.observers.DisposableObserver
 
 class AddRemarkPresenter(val view: AddRemarkMvp.View,
                          val saveRemarkUseCase: SaveRemarkUseCase,
+                         val loadRemarkTagsUseCase: LoadRemarkTagsUseCase,
                          val loadRemarkCategoriesUseCase: LoadRemarkCategoriesUseCase,
                          val loadLastKnownLocationUseCase: LoadLastKnownLocationUseCase,
                          val loadAddressFromLocationUseCase: LoadAddressFromLocationUseCase,
@@ -72,6 +71,30 @@ class AddRemarkPresenter(val view: AddRemarkMvp.View,
         }
 
         loadRemarkCategoriesUseCase.execute(observer, null)
+    }
+
+    override fun loadRemarkTags() {
+        var observer = object : AppDisposableObserver<List<RemarkTag>>() {
+
+            override fun onStart() {
+                super.onStart()
+            }
+
+            override fun onNext(tags: List<RemarkTag>) {
+                super.onNext(tags)
+                view.showTags(tags)
+            }
+
+            override fun onError(e: Throwable) {
+                super.onError(e)
+            }
+
+            override fun onNetworkError() {
+                super.onNetworkError()
+            }
+        }
+
+        loadRemarkTagsUseCase.execute(observer, null)
     }
 
     override fun hasAddress() : Boolean = !lastKnownAddress.isNullOrBlank()
@@ -206,6 +229,7 @@ class AddRemarkPresenter(val view: AddRemarkMvp.View,
     override fun destroy() {
         loadAddressFromLocationUseCase.dispose()
         loadRemarkCategoriesUseCase.dispose()
+        loadRemarkTagsUseCase.dispose()
         loadLastKnownLocationUseCase.dispose()
         loadUserGroupsUseCase.dispose()
         saveRemarkUseCase.dispose()

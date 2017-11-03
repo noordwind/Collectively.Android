@@ -4,6 +4,7 @@ import android.net.Uri
 import com.google.android.gms.maps.model.LatLng
 import com.noordwind.apps.collectively.data.model.RemarkCategory
 import com.noordwind.apps.collectively.data.model.RemarkNotFromList
+import com.noordwind.apps.collectively.data.model.RemarkTag
 import com.noordwind.apps.collectively.presentation.mvp.BasePresenter
 import io.reactivex.disposables.Disposable
 
@@ -20,6 +21,7 @@ interface AddRemarkMvp {
         fun showAddressNotSpecifiedDialog()
         fun showNetworkError()
         fun showDescriptionIsTooShortDialogError()
+        fun showTags(tags: List<RemarkTag>)
     }
 
     interface Presenter : BasePresenter {
@@ -33,5 +35,6 @@ interface AddRemarkMvp {
         fun setLastKnownLocation(latLng: LatLng)
         fun onInternetEnabled()
         fun loadAddressFromLocation(latLng: LatLng)
+        fun loadRemarkTags()
     }
 }

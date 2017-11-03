@@ -13,21 +13,20 @@ import android.view.Gravity
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ArrayAdapter
-import android.widget.EditText
-import android.widget.TextView
-import android.widget.Toast
+import android.widget.*
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.GlideDrawable
 import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.target.Target
 import com.google.android.gms.maps.model.LatLng
+import com.libaml.android.view.chip.ChipLayout
 import com.noordwind.apps.collectively.Constants
 import com.noordwind.apps.collectively.R
 import com.noordwind.apps.collectively.TheApp
 import com.noordwind.apps.collectively.data.datasource.FiltersTranslationsDataSource
 import com.noordwind.apps.collectively.data.model.RemarkCategory
 import com.noordwind.apps.collectively.data.model.RemarkNotFromList
+import com.noordwind.apps.collectively.data.model.RemarkTag
 import com.noordwind.apps.collectively.presentation.addremark.location.PickRemarkLocationActivity
 import com.noordwind.apps.collectively.presentation.addremark.mvp.AddRemarkMvp
 import com.noordwind.apps.collectively.presentation.addremark.tags.TagsListActivity
@@ -115,6 +114,7 @@ class AddRemarkActivity : com.noordwind.apps.collectively.presentation.BaseActiv
         }
 
         presenter.checkInternetConnection()
+        presenter.loadRemarkTags()
         presenter.loadRemarkCategories()
 
         if (intent.hasExtra(Constants.BundleKey.LOCATION)) {
@@ -172,16 +172,35 @@ class AddRemarkActivity : com.noordwind.apps.collectively.presentation.BaseActiv
         intentFilter.addAction(ConnectivityManager.CONNECTIVITY_ACTION);
         registerReceiver(networkChangeReceiver, intentFilter);
 
-        var countries = arrayOf("india", "australia1", "australia1", "australia1", "australia1", "australia1", "australia1", "australia1",
-                "australia1", "australia1" ,"australia1", "austria", "indonesia", "canada")
-        var adapter = ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, countries);
-        chipText.adapter = adapter;
-//        chipText.setOnClickListener(ClickListener);
-//        chipText.setOnItemClickListener(ItemClickListener);
-//        chipText.addLayoutTextChangedListener(TextChangedListener);
-//        chipText.setOnFocusChangeListener(FocusChangeListener);
 
-        availableTagsButton.setOnClickListener { TagsListActivity.start(AddRemarkActivity@this) }
+        availableTagsButton.setOnClickListener { TagsListActivity.start(AddRemarkActivity@ this) }
+    }
+
+
+    override fun showTags(tags: List<RemarkTag>) {
+        var tagNames = tags.map { it.name }.toTypedArray()
+        var adapter = ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, tagNames);
+        chipText.adapter = adapter;
+
+        setupChipLayoutTextInputs()
+
+        chipText.onChipItemChangeListener = object : ChipLayout.ChipItemChangeListener {
+            override fun onChipAdded(pos: Int, txt: String?) {
+                setupChipLayoutTextInputs()
+            }
+
+            override fun onChipRemoved(pos: Int, txt: String?) {
+                setupChipLayoutTextInputs()
+            }
+        }
+    }
+
+    fun setupChipLayoutTextInputs() {
+        chipText.getChildViewsWithType(LinearLayout::class.java).forEach {
+            it.getChildViewsWithType(AutoCompleteTextView::class.java).forEach {
+                it.threshold = 1
+            }
+        }
     }
 
     override fun showAddressNotSpecifiedDialog() {
