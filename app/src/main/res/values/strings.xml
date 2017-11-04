@@ -96,7 +96,6 @@
     <string name="user_favorite_remarks_screen_title">Favorite remarks</string>
     <string name="user_resolved_remarks_screen_title">Resolved remarks</string>
     <string name="facebook_login">Facebook</string>
-    <string name="facebook_app_id">1827531987461765</string>
     <string name="error_login_general">Could not login. Please try again</string>
     <string name="error_invalid_email">Invalid email</string>
     <string name="error_invalid_password">Password must have at least 4 characters</string>

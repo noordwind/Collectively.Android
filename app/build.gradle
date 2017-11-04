@@ -23,10 +23,10 @@ android {
 
     signingConfigs {
         release {
-            keyAlias 'collectively'
-            keyPassword 'collectively'
-            storeFile file('/Users/adriankremski/.keys/collectively.keystore')
-            storePassword 'collectively'
+            storeFile file(project.property("collectivelyStoreFilePath"))
+            keyAlias project.property("collectivelyKeyAlias")
+            storePassword project.property("collectivelyStorePassword")
+            keyPassword project.property("collectivelyKeyPassword")
         }
     }
 
@@ -53,12 +53,21 @@ android {
         prod {
             applicationId "com.noordwind.apps.collectively"
             buildConfigField "String", "SERVER_URL", "\"https://api.becollective.ly/\""
+
+            manifestPlaceholders = [GOOGLE_MAP_KEY: project.property("collectivelyGoogleMapKey"),
+                                    FACEBOOK_KEY  : project.property("collectivelyFacebookKey"),
+                                    FABRIC_KEY    : project.property("collectivelyFabricKey")]
+
         }
         dev {
             applicationId "com.noordwind.apps.collectively.dev"
             minSdkVersion 21
             buildConfigField "String", "SERVER_URL", "\"https://api-dev.becollective.ly/\""
             resConfigs("pl", "xxhdpi")
+
+            manifestPlaceholders = [GOOGLE_MAP_KEY: project.property("collectivelyGoogleMapKey"),
+                                    FACEBOOK_KEY  : project.property("collectivelyFacebookKey"),
+                                    FABRIC_KEY    : project.property("collectivelyFabricKey")]
         }
     }
     kapt {
