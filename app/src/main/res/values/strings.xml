@@ -234,4 +234,5 @@
     <string name="removing_remark">Removing remark</string>
     <string name="remark_removed">Remark removed</string>
     <string name="available_tags">Available tags</string>
+    <string name="add_remarks_tags_not_selected">Select at least one tag</string>
 </resources>

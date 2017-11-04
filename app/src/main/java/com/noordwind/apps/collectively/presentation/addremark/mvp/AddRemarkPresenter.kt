@@ -3,7 +3,10 @@ package com.noordwind.apps.collectively.presentation.addremark.mvp
 import android.location.Address
 import android.net.Uri
 import com.google.android.gms.maps.model.LatLng
-import com.noordwind.apps.collectively.data.model.*
+import com.noordwind.apps.collectively.data.model.NewRemark
+import com.noordwind.apps.collectively.data.model.RemarkCategory
+import com.noordwind.apps.collectively.data.model.RemarkNotFromList
+import com.noordwind.apps.collectively.data.model.RemarkTag
 import com.noordwind.apps.collectively.domain.interactor.remark.LoadRemarkCategoriesUseCase
 import com.noordwind.apps.collectively.domain.interactor.remark.LoadRemarkTagsUseCase
 import com.noordwind.apps.collectively.domain.interactor.remark.SaveRemarkUseCase
@@ -14,6 +17,7 @@ import com.noordwind.apps.collectively.presentation.statistics.LoadUserGroupsUse
 import com.noordwind.apps.collectively.usecases.LoadAddressFromLocationUseCase
 import com.noordwind.apps.collectively.usecases.LoadLastKnownLocationUseCase
 import io.reactivex.observers.DisposableObserver
+import java.util.*
 
 class AddRemarkPresenter(val view: AddRemarkMvp.View,
                          val saveRemarkUseCase: SaveRemarkUseCase,
@@ -27,10 +31,11 @@ class AddRemarkPresenter(val view: AddRemarkMvp.View,
     private var lastKnownLatitude: Double? = null
     private var lastKnownLongitude: Double? = null
     private var lastKnownAddress: String? = null
-    private var groups: List<UserGroup>? = null
+    private var allTags: List<RemarkTag>? = null
+    private var chosenTags: HashMap<String, RemarkTag> = HashMap()
     private var categories: List<RemarkCategory>? = null
 
-    override fun checkInternetConnection() : Boolean {
+    override fun checkInternetConnection(): Boolean {
         if (!connectivityRepository.isOnline()) {
             view.showNetworkError()
             return false
@@ -82,6 +87,7 @@ class AddRemarkPresenter(val view: AddRemarkMvp.View,
 
             override fun onNext(tags: List<RemarkTag>) {
                 super.onNext(tags)
+                allTags = tags
                 view.showTags(tags)
             }
 
@@ -97,9 +103,20 @@ class AddRemarkPresenter(val view: AddRemarkMvp.View,
         loadRemarkTagsUseCase.execute(observer, null)
     }
 
-    override fun hasAddress() : Boolean = !lastKnownAddress.isNullOrBlank()
+    override fun addTag(tagName: String) {
+        if (!chosenTags.containsKey(tagName)) {
+            var tag = allTags?.filter { it.name.equals(tagName, true) }?.first()
+            tag?.let { chosenTags.put(tagName, tag) }
+        }
+    }
 
-    override fun getLocation() : LatLng = LatLng(lastKnownLatitude!!, lastKnownLongitude!!)
+    override fun removeTag(tagName: String) {
+        chosenTags.remove(tagName)
+    }
+
+    override fun hasAddress(): Boolean = !lastKnownAddress.isNullOrBlank()
+
+    override fun getLocation(): LatLng = LatLng(lastKnownLatitude!!, lastKnownLongitude!!)
 
     override fun loadAddressFromLocation(latLng: LatLng) {
         lastKnownLatitude = latLng.latitude
@@ -173,6 +190,11 @@ class AddRemarkPresenter(val view: AddRemarkMvp.View,
     }
 
     override fun saveRemark(category: String, description: String, selectedTags: List<String>, capturedImageUri: Uri?) {
+        if (chosenTags.isEmpty()) {
+            view.showTagsNotSelectedDialog()
+            return
+        }
+
         if (lastKnownAddress.isNullOrBlank()) {
             view.showAddressNotSpecifiedDialog()
             return

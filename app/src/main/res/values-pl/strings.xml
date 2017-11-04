@@ -232,4 +232,5 @@
     <string name="removing_remark">Usuwanie zgłoszenia</string>
     <string name="remark_removed">Zgłoszenie usunięte</string>
     <string name="available_tags">Dostępne tagi</string>
+    <string name="add_remarks_tags_not_selected">Wybierz conajmniej jeden tag</string>
 </resources>

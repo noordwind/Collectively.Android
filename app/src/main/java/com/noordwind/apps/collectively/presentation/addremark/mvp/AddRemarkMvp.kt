@@ -22,6 +22,7 @@ interface AddRemarkMvp {
         fun showNetworkError()
         fun showDescriptionIsTooShortDialogError()
         fun showTags(tags: List<RemarkTag>)
+        fun showTagsNotSelectedDialog()
     }
 
     interface Presenter : BasePresenter {
@@ -36,5 +37,7 @@ interface AddRemarkMvp {
         fun onInternetEnabled()
         fun loadAddressFromLocation(latLng: LatLng)
         fun loadRemarkTags()
+        fun addTag(tag: String)
+        fun removeTag(tag: String)
     }
 }

@@ -185,11 +185,13 @@ class AddRemarkActivity : com.noordwind.apps.collectively.presentation.BaseActiv
         setupChipLayoutTextInputs()
 
         chipText.onChipItemChangeListener = object : ChipLayout.ChipItemChangeListener {
-            override fun onChipAdded(pos: Int, txt: String?) {
+            override fun onChipAdded(position: Int, tag: String?) {
+                tag?.let { presenter.addTag(tag) }
                 setupChipLayoutTextInputs()
             }
 
-            override fun onChipRemoved(pos: Int, txt: String?) {
+            override fun onChipRemoved(position: Int, tag: String?) {
+                tag?.let { presenter.removeTag(tag) }
                 setupChipLayoutTextInputs()
             }
         }
@@ -201,6 +203,10 @@ class AddRemarkActivity : com.noordwind.apps.collectively.presentation.BaseActiv
                 it.threshold = 1
             }
         }
+    }
+
+    override fun showTagsNotSelectedDialog() {
+        ToastManager(this, getString(R.string.add_remarks_tags_not_selected), Toast.LENGTH_SHORT).error().show()
     }
 
     override fun showAddressNotSpecifiedDialog() {
