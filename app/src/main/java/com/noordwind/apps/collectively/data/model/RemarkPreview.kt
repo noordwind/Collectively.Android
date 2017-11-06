@@ -75,4 +75,6 @@ class RemarkState(
     fun creationDate(): Date = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'").parse(createdAt)
 }
 
-class RemarkTag(val id: String, val name: String)
+class RemarkTag(val id: String, val name: String, val default: String, val translations: Array<RemarkTagTranslation>)
+
+class RemarkTagTranslation(val id: String, val name: String, val culture: String)

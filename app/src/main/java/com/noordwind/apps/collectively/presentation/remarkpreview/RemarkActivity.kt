@@ -8,10 +8,8 @@ import android.net.Uri
 import android.os.Bundle
 import android.support.v4.content.ContextCompat
 import android.text.Html
-import android.view.Gravity
 import android.view.MenuItem
 import android.view.View
-import android.view.ViewGroup
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.GlideDrawable
 import com.bumptech.glide.request.RequestListener
@@ -21,11 +19,13 @@ import com.like.OnLikeListener
 import com.noordwind.apps.collectively.Constants
 import com.noordwind.apps.collectively.R
 import com.noordwind.apps.collectively.TheApp
-import com.noordwind.apps.collectively.data.model.*
+import com.noordwind.apps.collectively.data.model.RemarkComment
+import com.noordwind.apps.collectively.data.model.RemarkPhoto
+import com.noordwind.apps.collectively.data.model.RemarkPreview
+import com.noordwind.apps.collectively.data.model.RemarkState
 import com.noordwind.apps.collectively.presentation.adapter.RemarkPreviewTabsAdapter
 import com.noordwind.apps.collectively.presentation.extension.expandTouchArea
 import com.noordwind.apps.collectively.presentation.extension.iconOfCategory
-import com.noordwind.apps.collectively.presentation.extension.setBackgroundCompat
 import com.noordwind.apps.collectively.presentation.extension.uppercaseFirstLetter
 import com.noordwind.apps.collectively.presentation.main.RemarkIconBackgroundResolver
 import com.noordwind.apps.collectively.presentation.remarkpreview.activity.RemarkStatesActivity
@@ -35,8 +35,6 @@ import com.noordwind.apps.collectively.presentation.settings.dagger.RemarkScreen
 import com.noordwind.apps.collectively.presentation.util.RequestErrorDecorator
 import com.noordwind.apps.collectively.presentation.util.Switcher
 import com.noordwind.apps.collectively.presentation.util.ZoomUtil
-import com.noordwind.apps.collectively.presentation.views.RemarkTagView
-import com.wefika.flowlayout.FlowLayout
 import it.sephiroth.android.library.tooltip.Tooltip
 import jonathanfinerty.once.Once
 import kotlinx.android.synthetic.main.activity_remark_preview.*
@@ -284,19 +282,19 @@ class RemarkActivity : com.noordwind.apps.collectively.presentation.BaseActivity
             remarkPhotoTitle.text = Html.fromHtml(getString(R.string.remark_preview_photo_title, remark.category?.translation?.uppercaseFirstLetter(), remark.author?.name))
         }
 
-        remark.tags.forEach {
-            val newView = RemarkTagView(this, RemarkTag("", ""), useOnCLickListener = false)
-            newView.setBackgroundCompat(R.drawable.remark_tag_selected_background)
-            newView.text = it
-            newView.gravity = Gravity.CENTER
-            newView.setTextColor(ContextCompat.getColor(baseContext, R.color.white))
-            newView.setPadding(30, 10, 30, 10)
-            val params = FlowLayout.LayoutParams(ViewGroup.MarginLayoutParams.WRAP_CONTENT, 100)
-            params.rightMargin = 10
-            params.bottomMargin = 10
-            newView.layoutParams = params
-//            tagsLayout?.addView(newView)
-        }
+//        remark.tags.forEach {
+//            val newView = RemarkTagView(this, RemarkTag("", ""), useOnCLickListener = false)
+//            newView.setBackgroundCompat(R.drawable.remark_tag_selected_background)
+//            newView.text = it
+//            newView.gravity = Gravity.CENTER
+//            newView.setTextColor(ContextCompat.getColor(baseContext, R.color.white))
+//            newView.setPadding(30, 10, 30, 10)
+//            val params = FlowLayout.LayoutParams(ViewGroup.MarginLayoutParams.WRAP_CONTENT, 100)
+//            params.rightMargin = 10
+//            params.bottomMargin = 10
+//            newView.layoutParams = params
+////            tagsLayout?.addView(newView)
+//        }
 
         descriptionLabel.visibility = if (remark.description.isEmpty()) View.GONE else View.VISIBLE
         descriptionHeader.visibility = if (remark.description.isEmpty()) View.GONE else View.VISIBLE

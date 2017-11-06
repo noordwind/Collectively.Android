@@ -90,7 +90,7 @@ interface Api {
 
     //REMARK TAGS
     @Headers(Constants.ApiHeader.ACCEPT_HEADER, Constants.ApiHeader.CONTENT_TYPE_HEADER)
-    @GET("remarks/tags")
+    @GET("tags")
     fun remarkTags(): Observable<List<RemarkTag>>
 
     //OPERATIONS

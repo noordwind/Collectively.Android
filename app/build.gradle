@@ -120,7 +120,7 @@ dependencies {
     compile 'com.sdoward:rxgooglemaps:1.1.1@aar'
 
     //NETWORKING
-    compile "com.facebook.android:facebook-android-sdk:4.1.0"
+    compile 'com.facebook.android:facebook-android-sdk:4.+'
     compile 'com.squareup.retrofit2:retrofit:2.3.0'
     compile 'com.squareup.retrofit2:converter-gson:2.3.0'
     compile 'com.jakewharton.retrofit:retrofit2-rxjava2-adapter:1.0.0'

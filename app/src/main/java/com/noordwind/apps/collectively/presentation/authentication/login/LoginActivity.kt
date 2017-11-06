@@ -47,21 +47,7 @@ class LoginActivity : AppCompatActivity(), LoginMvp.View {
     private lateinit var callbackManager: CallbackManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        TheApp[this].appComponent!!.plusLoginScreenComponent(LoginScreenModule(this)).inject(this)
-        setContentView(R.layout.activity_login);
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            var w = getWindow(); // in Activity's onCreate() for instance
-            w.setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
-        }
-
-        loginButton.setOnClickListener { login() }
-        signupButton.setOnClickListener { signUp() }
-        retrievePasswordButton.setOnClickListener { retrievePassword() }
-
         callbackManager = CallbackManager.Factory.create()
-
         LoginManager.getInstance().registerCallback(callbackManager,
                 object : FacebookCallback<LoginResult> {
                     private val activityWeakReference = WeakReference<LoginActivity>(this@LoginActivity)
@@ -79,6 +65,20 @@ class LoginActivity : AppCompatActivity(), LoginMvp.View {
                         }
                     }
                 })
+
+        super.onCreate(savedInstanceState)
+        TheApp[this].appComponent!!.plusLoginScreenComponent(LoginScreenModule(this)).inject(this)
+        setContentView(R.layout.activity_login);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            var w = getWindow(); // in Activity's onCreate() for instance
+            w.setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
+        }
+
+        loginButton.setOnClickListener { login() }
+        signupButton.setOnClickListener { signUp() }
+        retrievePasswordButton.setOnClickListener { retrievePassword() }
+
 
         loginPresenter.onCreate();
 

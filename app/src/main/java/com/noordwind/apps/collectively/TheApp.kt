@@ -2,6 +2,7 @@ package com.noordwind.apps.collectively
 
 import android.content.Context
 import android.os.StrictMode
+import android.support.multidex.MultiDex
 import android.support.multidex.MultiDexApplication
 import android.support.v7.app.AppCompatDelegate
 import com.crashlytics.android.Crashlytics
@@ -23,6 +24,7 @@ class TheApp : MultiDexApplication() {
     override fun onCreate() {
         super.onCreate()
         initAppComponent()
+        MultiDex.install(baseContext)
         Fabric.with(this, Crashlytics())
         FacebookSdk.sdkInitialize(applicationContext)
         Once.initialise(this);
