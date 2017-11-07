@@ -117,7 +117,7 @@
 
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
-            android:value="${FACEBOOK_KEY}"></meta-data>
+            android:value="@string/facebook_key"></meta-data>
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"

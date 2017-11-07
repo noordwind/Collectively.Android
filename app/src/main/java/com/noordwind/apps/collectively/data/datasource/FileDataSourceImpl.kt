@@ -4,9 +4,9 @@ import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Matrix
+import android.media.ExifInterface
 import android.net.Uri
 import android.os.Build
-import android.support.media.ExifInterface
 import com.noordwind.apps.collectively.presentation.extension.getFilePath
 import io.reactivex.Observable
 import java.io.*
