@@ -54,8 +54,9 @@ android {
             applicationId "com.noordwind.apps.collectively"
             buildConfigField "String", "SERVER_URL", "\"https://api.becollective.ly/\""
 
+            resValue "string", "facebook_key", project.property("collectivelyFacebookKey")
+
             manifestPlaceholders = [GOOGLE_MAP_KEY: project.property("collectivelyGoogleMapKey"),
-                                    FACEBOOK_KEY  : project.property("collectivelyFacebookKey"),
                                     FABRIC_KEY    : project.property("collectivelyFabricKey")]
 
         }
@@ -65,8 +66,9 @@ android {
             buildConfigField "String", "SERVER_URL", "\"https://api-dev.becollective.ly/\""
             resConfigs("pl", "xxhdpi")
 
+            resValue "string", "facebook_key", project.property("collectivelyFacebookKey")
+
             manifestPlaceholders = [GOOGLE_MAP_KEY: project.property("collectivelyGoogleMapKey"),
-                                    FACEBOOK_KEY  : project.property("collectivelyFacebookKey"),
                                     FABRIC_KEY    : project.property("collectivelyFabricKey")]
         }
     }
@@ -98,10 +100,10 @@ dependencies {
     compile "com.android.support:palette-v7:$rootProject.supportLibraryVersion"
 
     //DEPENDENCY INJECTION
-    compile 'com.google.dagger:dagger:2.4'
-    compile 'com.google.dagger:dagger-producers:2.4'
-    apt 'com.google.dagger:dagger-compiler:2.4'
-    kapt 'com.google.dagger:dagger-compiler:2.4'
+    compile "com.google.dagger:dagger:$rootProject.daggerVersion"
+    compile "com.google.dagger:dagger-producers:$rootProject.daggerVersion"
+    apt "com.google.dagger:dagger-compiler:$rootProject.daggerVersion"
+    kapt "com.google.dagger:dagger-compiler:$rootProject.daggerVersion"
 
     //RX JAVA
     compile "io.reactivex.rxjava2:rxjava:2.0.0"
@@ -136,8 +138,7 @@ dependencies {
     }
 
     //UI
-    compile 'com.google.maps.android:android-maps-utils:0.5+'
-    compile 'com.theartofdev.edmodo:android-image-cropper:2.4.+'
+    compile 'com.google.maps.android:android-maps-utils:0.5'
     compile 'fr.avianey.com.viewpagerindicator:library:2.4.1.1@aar'
     compile 'com.muddzdev:styleabletoast:1.0.7'
     compile 'com.github.PhilJay:MPAndroidChart:v3.0.1'
