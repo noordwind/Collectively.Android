@@ -37,23 +37,42 @@ interface AppComponent {
     fun inject(service: UploadRemarkPhotoService)
 
     fun plusSettingsComponent(settingsModule: SettingsModule): SettingsComponent
+
     fun plusStatisticsComponent(statisticsModule: StatisticsModule): StatisticsComponent
+
     fun plusUsersComponent(usersModule: UsersModule): UsersComponent
+
     fun plusProfileScreenComponent(profileScreenModule: ProfileScreenModule): ProfileScreenComponent
+
     fun plusPickRemarkLocationScreenComponent(pickRemarkLocationScreenModule: PickRemarkLocationScreenModule): PickRemarkLocationScreenComponent
+
     fun plusRemarkCommentsScreenComponent(remarkCommentsScreenModule: RemarkCommentsScreenModule): RemarkCommentsScreenComponent
+
     fun plusRemarkStatesScreenComponent(remarkStatesScreenModule: RemarkStatesScreenModule): RemarkStatesScreenComponent
+
     fun plusRemarkScreenComponent(remarkScreenModule: RemarkScreenModule): RemarkScreenComponent
+
     fun plusSetNicknameScreenComponent(setNicknameScreenModule: SetNicknameScreenModule): SetNicknameScreenComponent
+
     fun plusResetPasswordScreenComponent(resetPasswordScreenModule: ResetPasswordScreenModule): ResetPasswordScreenComponent
+
     fun plusSignUpScreenComponent(signUpScreenModule: SignUpScreenModule): SignUpScreenComponent
+
     fun plusLoginScreenComponent(loginScreenModule: LoginScreenModule): LoginScreenComponent
+
     fun plusAddRemarkScreenComponent(addRemarkScreenModule: AddRemarkScreenModule): AddRemarkScreenComponent
+
     fun plusChangePasswordScreenComponent(changePasswordScreenModule: ChangePasswordScreenModule): ChangePasswordScreenComponent
+
     fun plusUserRemarksScreenComponent(userRemarksScreenModule: UserRemarksScreenModule): UserRemarksScreenComponent
+
     fun plusNotificationsSettingsScreenComponent(notificationsSettingsScreenModule: NotificationsSettingsScreenModule): NotificationsSettingsScreenComponent
+
     fun plusMainNavigationMenuComponent(mainNavigationMenuModule: MainNavigationMenuModule): MainNavigationMenuComponent
 
     fun plusMapFiltersDialogComponent(mapFiltersDialogModule: MapFiltersDialogModule): MapFiltersDialogComponent
+
     fun plusRemarkFiltersDialogComponent(remarkFiltersDialogModule: RemarkFiltersDialogModule): RemarkFiltersDialogComponent
+
+    fun plusMainScreenComponent(mainScreenModule: MainScreenModule): MainScreenComponent
 }

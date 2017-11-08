@@ -10,8 +10,6 @@ import com.noordwind.apps.collectively.presentation.dagger.*
 import io.fabric.sdk.android.Fabric
 import jonathanfinerty.once.Once
 
-
-
 class TheApp : MultiDexApplication() {
 
     companion object {
@@ -20,7 +18,7 @@ class TheApp : MultiDexApplication() {
         }
     }
 
-    var appComponent: AppComponent? = null
+    lateinit var appComponent: AppComponent
 
     override fun onCreate() {
         super.onCreate()
