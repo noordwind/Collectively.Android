@@ -20,7 +20,7 @@ open class AppDisposableObserver<T>(val connectivityRepository: ConnectivityRepo
         super.onStart()
 
         connectivityRepository?.let {
-            if (checkConnectivityOnStart() && !connectivityRepository.isOnline()) {
+            if (checkConnectivityOnStart() && !it.isOnline()) {
                 onError(IOException())
                 dispose()
             }

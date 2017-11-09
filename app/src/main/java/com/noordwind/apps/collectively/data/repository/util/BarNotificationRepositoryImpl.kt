@@ -20,9 +20,7 @@ class BarNotificationRepositoryImpl(val context: Context) : BarNotificationRepos
             notificationBuilder.setContentTitle(title).setSmallIcon(smallIconResource)
         }
 
-        message?.let {
-            notificationBuilder.setContentText(message)
-        }
+        message?.let { notificationBuilder.setContentText(it) }
 
         notificationManager.notify(tag, 0, notificationBuilder.build())
     }
@@ -36,9 +34,7 @@ class BarNotificationRepositoryImpl(val context: Context) : BarNotificationRepos
             notificationBuilder.setContentTitle(title).setSmallIcon(smallIconResource)
         }
 
-        message?.let {
-            notificationBuilder.setContentText(message)
-        }
+        message?.let { notificationBuilder.setContentText(it) }
 
         if (isHeadsUp) {
             notificationBuilder

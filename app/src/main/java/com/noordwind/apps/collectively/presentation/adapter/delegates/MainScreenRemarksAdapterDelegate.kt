@@ -67,7 +67,7 @@ class MainScreenRemarksAdapterDelegate(viewType: Int, val onRemarkSelectedListen
             distanceLabel.visibility = View.GONE
             remark.distanceToRemark?.let {
                 distanceLabel.visibility = View.VISIBLE
-                distanceLabel.text = Html.fromHtml(itemView.context.getString(R.string.remark_distance_label, remark.distanceToRemark!!.formatDistance()))
+                distanceLabel.text = Html.fromHtml(itemView.context.getString(R.string.remark_distance_label, it.formatDistance()))
             }
 
             var positiveVotes = remark.positiveVotesCount

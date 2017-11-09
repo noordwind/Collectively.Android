@@ -52,7 +52,7 @@ android {
     productFlavors {
         prod {
             applicationId "com.noordwind.apps.collectively"
-            buildConfigField "String", "SERVER_URL", "\"https://api.becollective.ly/\""
+            buildConfigField "String", "SERVER_URL", "\"https://api-dev.becollective.ly/\""
 
             resValue "string", "facebook_key", project.property("collectivelyFacebookKey")
 

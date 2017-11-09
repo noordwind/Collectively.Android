@@ -95,7 +95,7 @@ class RemarkStatesActivity : com.noordwind.apps.collectively.presentation.BaseAc
 
             override fun onTextChanged(text: CharSequence?, p1: Int, p2: Int, p3: Int) {
                 text?.let {
-                    if (text?.isNotEmpty()) {
+                    if (it.isNotEmpty()) {
                         actButton.isClickable = true
                         actButton.setImageResource(R.drawable.ic_send_black_24dp)
                     } else {
@@ -133,19 +133,19 @@ class RemarkStatesActivity : com.noordwind.apps.collectively.presentation.BaseAc
     }
 
     override fun hideResolvingRemarkMessage() {
-        resolvingRemarkToast?.let { resolvingRemarkToast!!.hide() }
+        resolvingRemarkToast?.let { it.hide() }
     }
 
     override fun hideReopeningRemarkMessage() {
-        reopeningRemarkToast?.let { reopeningRemarkToast!!.hide() }
+        reopeningRemarkToast?.let { it.hide() }
     }
 
     override fun hideProcessingRemarkMessage() {
-        processingRemarkToast?.let { processingRemarkToast!!.hide() }
+        processingRemarkToast?.let { it.hide() }
     }
 
     override fun hideRemovingRemarkMessage() {
-        removingRemarkToast?.let { removingRemarkToast!!.hide() }
+        removingRemarkToast?.let { it.hide() }
     }
 
     override fun showRemarkResolvedMessage() {

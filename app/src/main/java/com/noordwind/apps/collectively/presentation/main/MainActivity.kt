@@ -33,8 +33,18 @@ import com.google.maps.android.clustering.ClusterManager
 import com.noordwind.apps.collectively.Constants
 import com.noordwind.apps.collectively.R
 import com.noordwind.apps.collectively.TheApp
+import com.noordwind.apps.collectively.data.datasource.FiltersTranslationsDataSource
+import com.noordwind.apps.collectively.data.datasource.MapFiltersRepository
 import com.noordwind.apps.collectively.data.model.Remark
 import com.noordwind.apps.collectively.data.model.RemarkCategory
+import com.noordwind.apps.collectively.data.repository.RemarksRepository
+import com.noordwind.apps.collectively.data.repository.UserGroupsRepository
+import com.noordwind.apps.collectively.domain.interactor.remark.LoadRemarkCategoriesUseCase
+import com.noordwind.apps.collectively.domain.interactor.remark.LoadRemarksUseCase
+import com.noordwind.apps.collectively.domain.interactor.remark.filters.map.LoadMapFiltersUseCase
+import com.noordwind.apps.collectively.domain.repository.LocationRepository
+import com.noordwind.apps.collectively.domain.thread.PostExecutionThread
+import com.noordwind.apps.collectively.domain.thread.UseCaseThread
 import com.noordwind.apps.collectively.presentation.adapter.MainScreenInfoWindowAdapter
 import com.noordwind.apps.collectively.presentation.adapter.MainScreenRemarksListAdapter
 import com.noordwind.apps.collectively.presentation.addremark.AddRemarkActivity
@@ -45,11 +55,11 @@ import com.noordwind.apps.collectively.presentation.extension.visibleRadius
 import com.noordwind.apps.collectively.presentation.main.mvp.MainMvp
 import com.noordwind.apps.collectively.presentation.main.mvp.MainPresenter
 import com.noordwind.apps.collectively.presentation.rxjava.CameraIdleFunc
-import com.noordwind.apps.collectively.presentation.settings.dagger.MainScreenModule
 import com.noordwind.apps.collectively.presentation.util.RemarkClusterRenderer
 import com.noordwind.apps.collectively.presentation.views.MainScreenRemarkBottomSheetDialog
 import com.noordwind.apps.collectively.presentation.views.dialogs.mapfilters.MapFiltersDialog
 import com.noordwind.apps.collectively.presentation.views.toast.ToastManager
+import com.noordwind.apps.collectively.usecases.LoadAddressFromLocationUseCase
 import io.reactivex.Observable
 import io.reactivex.ObservableOnSubscribe
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -82,6 +92,26 @@ class MainActivity : com.noordwind.apps.collectively.presentation.BaseActivity()
     private var reloadRemarksList: Boolean = false
 
     @Inject
+    lateinit var remarksRepository: RemarksRepository
+
+    @Inject
+    lateinit var mapFiltersRepository: MapFiltersRepository
+
+    @Inject
+    lateinit var translationDataSource: FiltersTranslationsDataSource
+
+    @Inject
+    lateinit var userGroupsRepository: UserGroupsRepository
+
+    @Inject
+    lateinit var locationRepository: LocationRepository
+
+    @Inject
+    lateinit var ioThread: UseCaseThread
+
+    @Inject
+    lateinit var uiThread: PostExecutionThread
+
     lateinit var mainPresenter: MainPresenter
 
     private var toast: ToastManager? = null
@@ -93,7 +123,6 @@ class MainActivity : com.noordwind.apps.collectively.presentation.BaseActivity()
     private var userMarker: Marker? = null
     private var userMarkerLocation: LatLng? = null
     private var mainScreenInfoWindowAdapter: MainScreenInfoWindowAdapter? = null
-//    private val remarkMarkers = LinkedList<Marker>()
 
     private val USER_MARKER_SNIPPET = "user_marker"
 
@@ -101,7 +130,7 @@ class MainActivity : com.noordwind.apps.collectively.presentation.BaseActivity()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        TheApp[this].appComponent?.plusMainScreenComponent(MainScreenModule(this)).inject(this)
+        TheApp[this].appComponent?.inject(this)
         setContentView(R.layout.activity_main)
         mainMenu.setOnClickListener { drawerLayout.openDrawer(Gravity.LEFT) }
 
@@ -130,6 +159,12 @@ class MainActivity : com.noordwind.apps.collectively.presentation.BaseActivity()
         })
 
         setupUpMapFragment()
+
+        mainPresenter = MainPresenter(this, LoadRemarksUseCase(remarksRepository, ioThread, uiThread),
+                LoadRemarkCategoriesUseCase(remarksRepository, translationDataSource, ioThread, uiThread),
+                LoadMapFiltersUseCase(mapFiltersRepository, userGroupsRepository, ioThread, uiThread),
+                LoadAddressFromLocationUseCase(locationRepository, ioThread, uiThread),
+                translationDataSource)
 
         mainPresenter.onCreate()
         filtersButton.setOnClickListener { mainPresenter.loadMapFiltersDialog() }
@@ -227,9 +262,7 @@ class MainActivity : com.noordwind.apps.collectively.presentation.BaseActivity()
     }
 
     override fun onMapLongClick(latLng: LatLng?) {
-        userMarker?.let {
-            userMarker?.remove()
-        }
+        userMarker?.let { it.remove() }
 
         latLng?.let {
             var markerOptions = MarkerOptions();
@@ -245,15 +278,16 @@ class MainActivity : com.noordwind.apps.collectively.presentation.BaseActivity()
 
     override fun updateInfoWindow(address: String) {
         userMarker?.let {
-            userMarker!!.hideInfoWindow()
-            userMarker?.remove()
+            it.hideInfoWindow()
+            it.remove()
 
             var markerOptions = MarkerOptions();
             markerOptions.position(userMarkerLocation!!);
             markerOptions.snippet(USER_MARKER_SNIPPET)
-            userMarker = map?.addMarker(markerOptions)
             mainScreenInfoWindowAdapter?.markerAddress = address
-            userMarker?.showInfoWindow()
+            it.showInfoWindow()
+
+            userMarker = map?.addMarker(markerOptions)
         }
     }
 
@@ -360,7 +394,7 @@ class MainActivity : com.noordwind.apps.collectively.presentation.BaseActivity()
     }
 
     override fun clearMap() {
-        map?.let { map!!.clear() }
+        map?.let { it.clear() }
         remarksClusterManager.clearItems()
     }
 
@@ -395,9 +429,7 @@ class MainActivity : com.noordwind.apps.collectively.presentation.BaseActivity()
 
     override fun removeRemark(lastSelectedRemark: Remark) {
         remarksClusterManager.removeItem(lastSelectedRemark)
-        bottomDialog?.let {
-            bottomDialog?.hide()
-        }
+        bottomDialog?.let { it.hide() }
     }
 
     override fun showNewRemarks(remarks: List<Remark>) {
@@ -458,7 +490,7 @@ class MainActivity : com.noordwind.apps.collectively.presentation.BaseActivity()
                 var remarkLocation = data!!.extras[Constants.BundleKey.LOCATION] as LatLng
                 map?.moveCamera(CameraUpdateFactory.newLatLng(LatLng(remarkLocation.latitude, remarkLocation.longitude)));
                 map?.animateCamera(CameraUpdateFactory.zoomTo(20.0f));
-                userMarker?.let { userMarker?.remove() }
+                userMarker?.let { it.remove() }
                 userMarkerLocation = null
             }
         }
@@ -480,9 +512,7 @@ class MainActivity : com.noordwind.apps.collectively.presentation.BaseActivity()
         super.onDestroy()
         mainPresenter.destroy()
 
-        disposable?.let {
-            disposable?.dispose()
-        }
+        disposable?.let { it.dispose() }
         disposable = null
     }
 }

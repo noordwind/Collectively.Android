@@ -94,7 +94,7 @@ class RemarkCommentsActivity : com.noordwind.apps.collectively.presentation.Base
 
             override fun onTextChanged(text: CharSequence?, p1: Int, p2: Int, p3: Int) {
                 text?.let {
-                    if (text?.isNotEmpty()) {
+                    if (it.isNotEmpty()) {
                         sendCommentButton.isClickable = true
                         sendCommentButton.setImageResource(R.drawable.ic_send_black_24dp)
                     } else {
