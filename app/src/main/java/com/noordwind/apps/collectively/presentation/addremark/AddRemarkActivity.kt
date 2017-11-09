@@ -227,7 +227,7 @@ class AddRemarkActivity : com.noordwind.apps.collectively.presentation.BaseActiv
             newView.setBackgroundCompat(R.drawable.remark_tag_unselected_background)
 
             var translation = it.translation
-            translation?.let { newView.text = translation!!.uppercaseFirstLetter() }
+            translation?.let { newView.text = it.uppercaseFirstLetter() }
             newView.gravity = Gravity.CENTER
             newView.setTextColor(ContextCompat.getColor(baseContext, R.color.white))
             newView.setPadding(30, 5, 30, 5)

@@ -21,12 +21,7 @@ class UserStatisticRowHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
         statisticLabel.text = userStatistic.statistic.toString()
 
         userImage.setImageResource(R.drawable.ic_person_grey_48dp);
-        userStatistic.avatarUrl?.let {
-            Glide.with(itemView.context)
-                    .load(userStatistic.avatarUrl)
-//                    .error(R.drawable.ic_person_grey_48dp)
-                    .into(userImage)
-        }
+        userStatistic.avatarUrl?.let { Glide.with(itemView.context).load(it).into(userImage) }
 
         itemView.setOnClickListener { ProfileActivity.start(itemView.context, User(avatarUrl = userStatistic.avatarUrl,
                 name = userStatistic.name, userId = userStatistic.userId)) }

@@ -78,9 +78,7 @@ class RemarksByCategoryChart : BarChart {
             values.add(BarEntry(valuePosition.toFloat(), catStatistics.reportedCount().toFloat()))
 
             var categoryName = catStatistics.name
-            translationsDataSource?.let {
-                categoryName = translationsDataSource!!.translateFromType(categoryName)
-            }
+            translationsDataSource?.let { categoryName = it.translateFromType(categoryName) }
 
             var set = BarDataSet(values, categoryName.uppercaseFirstLetter())
             set.color = Color.parseColor(catStatistics.name.colorOfCategoryForStatistics())

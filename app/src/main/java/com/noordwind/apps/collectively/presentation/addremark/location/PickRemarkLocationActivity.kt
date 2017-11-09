@@ -27,13 +27,8 @@ import com.google.android.gms.maps.model.MarkerOptions
 import com.noordwind.apps.collectively.Constants
 import com.noordwind.apps.collectively.R
 import com.noordwind.apps.collectively.TheApp
-import com.noordwind.apps.collectively.domain.repository.LocationRepository
-import com.noordwind.apps.collectively.domain.thread.PostExecutionThread
-import com.noordwind.apps.collectively.domain.thread.UseCaseThread
 import com.noordwind.apps.collectively.presentation.addremark.PickRemarkLocationMvp
-import com.noordwind.apps.collectively.presentation.addremark.PickRemarkLocationPresenter
 import com.noordwind.apps.collectively.presentation.settings.dagger.PickRemarkLocationScreenModule
-import com.noordwind.apps.collectively.usecases.LoadAddressFromLocationUseCase
 import jonathanfinerty.once.Once
 import kotlinx.android.synthetic.main.activity_pick_location.*
 import kotlinx.android.synthetic.main.view_toolbar_with_title.*
@@ -95,9 +90,9 @@ class PickRemarkLocationActivity : com.noordwind.apps.collectively.presentation.
         }
 
         selectedLocation?.let {
-            showMarker(selectedLocation!!)
+            showMarker(it)
 
-            var cameraUpdate = CameraUpdateFactory.newLatLngZoom(selectedLocation, 14.0f);
+            var cameraUpdate = CameraUpdateFactory.newLatLngZoom(it, 14.0f);
             map?.animateCamera(cameraUpdate);
         }
     }
@@ -187,9 +182,7 @@ class PickRemarkLocationActivity : com.noordwind.apps.collectively.presentation.
     }
 
     override fun onMapLongClick(latLng: LatLng?) {
-        latLng?.let {
-            showMarker(latLng)
-        }
+        latLng?.let { showMarker(it) }
     }
 
     fun showMarker(latLng: LatLng) {

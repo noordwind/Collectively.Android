@@ -29,7 +29,7 @@ class RemarkStateView(context: Context, state: RemarkState) : LinearLayout(conte
         var stateIcon = state.state.getRemarkStateIcon()
         stateIcon?.let {
             stateImage.visibility = View.VISIBLE
-            stateImage.setImageResource(stateIcon)
+            stateImage.setImageResource(it)
         }
     }
 }

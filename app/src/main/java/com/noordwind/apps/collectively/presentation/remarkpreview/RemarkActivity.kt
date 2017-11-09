@@ -249,11 +249,11 @@ class RemarkActivity : com.noordwind.apps.collectively.presentation.BaseActivity
             }
 
             Glide.with(baseContext)
-                    .load(firstBigPhoto?.url)
+                    .load(it.url)
                     .listener(listener)
                     .into(imageView)
 
-            Glide.with(baseContext).load(firstBigPhoto?.url).into(expandedRemarkImage)
+            Glide.with(baseContext).load(it.url).into(expandedRemarkImage)
         }
     }
 

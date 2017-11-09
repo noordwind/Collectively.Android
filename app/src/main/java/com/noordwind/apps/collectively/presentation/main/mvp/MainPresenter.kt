@@ -52,8 +52,8 @@ class MainPresenter(val view: MainMvp.View,
     override fun onStart() {
         if (remarkRemoved) {
             removedRemarkId?.let {
-                var remark = allLoadedRemarks.remove(removedRemarkId!!)
-                remark?.let { view.removeRemark(remark) }
+                var remark = allLoadedRemarks.remove(it)
+                remark?.let { view.removeRemark(it) }
             }
         }
     }
@@ -92,7 +92,7 @@ class MainPresenter(val view: MainMvp.View,
                     var remark = it
 
                     lastLocation?.let {
-                        val distanceInMeters = lastLocation!!.distanceTo(remarkLocation)
+                        val distanceInMeters = it.distanceTo(remarkLocation)
                         remark.distanceToRemark = distanceInMeters.toInt()
                     }
                 }
