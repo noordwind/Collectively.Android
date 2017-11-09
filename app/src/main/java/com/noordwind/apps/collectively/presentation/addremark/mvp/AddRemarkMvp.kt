@@ -29,7 +29,7 @@ interface AddRemarkMvp {
         fun checkInternetConnection(): Boolean
         fun loadRemarkCategories()
         fun loadLastKnownAddress()
-        fun saveRemark(category: String, description: String, selectedTags: List<String>, capturedImageUri: Uri?)
+        fun saveRemark(category: String, description: String, capturedImageUri: Uri?)
         fun hasAddress(): Boolean
         fun getLocation(): LatLng
         fun setLastKnownAddress(address: String)

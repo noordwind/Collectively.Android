@@ -64,6 +64,7 @@ class RemarkNotFromList(
 )
 
 class NewRemark(
+        val tags: List<String>,
         val category: String,
         val latitude: Double,
         val longitude: Double,

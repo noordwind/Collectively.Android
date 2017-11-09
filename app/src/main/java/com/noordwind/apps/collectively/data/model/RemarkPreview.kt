@@ -11,7 +11,7 @@ class RemarkPreview(
         val category: RemarkCategory,
         val description: String,
         val location: Location,
-        val tags: Array<String>,
+        val tags: Array<RemarkTag>,
         val photos: Array<RemarkPhoto>,
         val votes: Array<RemarkVote>,
         val state: RemarkState,

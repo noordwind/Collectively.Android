@@ -109,7 +109,7 @@ class AddRemarkActivity : com.noordwind.apps.collectively.presentation.BaseActiv
             } else if (getCategory().equals("")) {
                 ToastManager(this, getString(R.string.add_remark_category_not_selected), Toast.LENGTH_SHORT).error().show()
             } else {
-                presenter.saveRemark(getCategory(), getDescription(), getSelectedTags(), capturedImageUri)
+                presenter.saveRemark(getCategory(), getDescription(), capturedImageUri)
             }
         }
 
@@ -234,13 +234,6 @@ class AddRemarkActivity : com.noordwind.apps.collectively.presentation.BaseActiv
     fun getCategory() = translationDataSource.translateToType(selectedCategory)
 
     fun getDescription() = descriptionLabel.text.toString()
-
-    fun getSelectedTags(): List<String> {
-        var tags = LinkedList<String>()
-        var tagViews = tagsLayout!!.getChildViewsWithType(RemarkTagView::class.java)
-        tagViews.filter { it.isSelected!! }.forEach { tags.add(it.text.toString()) }
-        return tags
-    }
 
     override fun showAvailableRemarkCategories(categories: List<RemarkCategory>) {
 

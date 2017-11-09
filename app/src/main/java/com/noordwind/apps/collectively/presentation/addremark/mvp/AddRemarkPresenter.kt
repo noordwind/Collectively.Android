@@ -189,7 +189,7 @@ class AddRemarkPresenter(val view: AddRemarkMvp.View,
         loadLastKnownLocationUseCase.execute(observer)
     }
 
-    override fun saveRemark(category: String, description: String, selectedTags: List<String>, capturedImageUri: Uri?) {
+    override fun saveRemark(category: String, description: String, capturedImageUri: Uri?) {
         if (chosenTags.isEmpty()) {
             view.showTagsNotSelectedDialog()
             return
@@ -229,7 +229,9 @@ class AddRemarkPresenter(val view: AddRemarkMvp.View,
             }
         }
 
+        var tagIds = chosenTags.values.map { it.id }
         var newRemark = NewRemark(
+                tags = tagIds,
                 category = category.toLowerCase(),
                 latitude = lastKnownLatitude!!,
                 longitude = lastKnownLongitude!!,
