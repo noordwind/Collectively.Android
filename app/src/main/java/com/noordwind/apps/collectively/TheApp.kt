@@ -1,5 +1,6 @@
 package com.noordwind.apps.collectively
 
+import android.app.Application
 import android.content.Context
 import android.os.StrictMode
 import android.support.multidex.MultiDexApplication
@@ -10,7 +11,7 @@ import com.noordwind.apps.collectively.presentation.dagger.*
 import io.fabric.sdk.android.Fabric
 import jonathanfinerty.once.Once
 
-class TheApp : MultiDexApplication() {
+class TheApp : Application() {
 
     companion object {
         operator fun get(context: Context): TheApp {

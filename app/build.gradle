@@ -1,7 +1,7 @@
 apply plugin: 'com.android.application'
 apply plugin: 'me.tatarka.retrolambda'
-apply plugin: 'com.neenbedankt.android-apt'
 apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-kapt'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'io.fabric'
 
@@ -21,6 +21,8 @@ android {
         vectorDrawables.useSupportLibrary = true
     }
 
+    flavorDimensions "default"
+
     signingConfigs {
         release {
             storeFile file(project.property("collectivelyStoreFilePath"))
@@ -28,6 +30,10 @@ android {
             storePassword project.property("collectivelyStorePassword")
             keyPassword project.property("collectivelyKeyPassword")
         }
+    }
+
+    kapt {
+        generateStubs = true
     }
 
     buildTypes {
@@ -72,10 +78,6 @@ android {
                                     FABRIC_KEY    : project.property("collectivelyFabricKey")]
         }
     }
-    kapt {
-        generateStubs = true
-    }
-
 
     packagingOptions {
         pickFirst 'META-INF/rxjava.properties'
@@ -100,10 +102,9 @@ dependencies {
     compile "com.android.support:palette-v7:$rootProject.supportLibraryVersion"
 
     //DEPENDENCY INJECTION
-    compile "com.google.dagger:dagger:$rootProject.daggerVersion"
-    compile "com.google.dagger:dagger-producers:$rootProject.daggerVersion"
-    apt "com.google.dagger:dagger-compiler:$rootProject.daggerVersion"
-    kapt "com.google.dagger:dagger-compiler:$rootProject.daggerVersion"
+    compile 'com.google.dagger:dagger-android:2.11'
+    annotationProcessor 'com.google.dagger:dagger-android-processor:2.11'
+    kapt 'com.google.dagger:dagger-compiler:2.11'
 
     //RX JAVA
     compile "io.reactivex.rxjava2:rxjava:2.0.0"

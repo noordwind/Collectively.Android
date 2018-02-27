@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="remark_category_defect_name">Defekt</string>
+    <string name="remark_category_issue_name">Problem</string>
+    <string name="remark_category_praise_name">Lob</string>
+    <string name="remark_category_suggestion_name">Vorschlag</string>
+
+    <string name="remark_state_new_name">Neu</string>
+    <string name="remark_state_processing_name">In Bearbeitung</string>
+    <string name="remark_state_removed_name">Entfernt</string>
+    <string name="remark_state_renewed_name">Erneuert</string>
+    <string name="remark_state_resolved_name">Gelöst</string>
+</resources>
